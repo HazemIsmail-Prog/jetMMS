@@ -14,7 +14,8 @@
         <span id="pagination"></span>
     </x-slot>
 
-    @livewire('fleet.action-modal')
+    @livewire('orders.order-form')
+
 
     @teleport('#counter')
         <span
@@ -80,8 +81,16 @@
                             {{ $customer->balance > 0 ? $customer->balance : '-' }}
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
-                            <a wire:navigate href="{{ route('customer.form', $customer) }}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+
+                            <x-badgeWithCounter
+                                title="{{ __('messages.add_order') }}"
+                                wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
+                                <x-svgs.plus class="h-4 w-4" />
+                            </x-badgeWithCounter>
+
+                            <a title="{{ __('messages.edit') }}" wire:navigate
+                                href="{{ route('customer.form', $customer) }}"
+                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.edit class="w-4 h-4" />
                             </a>
                         </td>

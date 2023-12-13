@@ -7,12 +7,25 @@ use App\Models\OrderStatus;
 
 class OrderObserver
 {
-    /**
-     * Handle the Order "created" event.
-     */
+
+    public function creating(Order $order) : void {
+        
+        $order->index = Order::query()
+                    ->where('department_id', $order->department_id)
+                    ->where('status_id', 1)
+                    ->min('index')
+                    - 1;
+    }
+
     public function created(Order $order): void
     {
-        //
+        // to add order_status record with status id 1 when creating new order
+        OrderStatus::create([
+            'order_id' => $order->id,
+            'status_id' => $order->status_id,
+            'technician_id' => $order->technician_id,
+            'user_id' => auth()->id() ?? 1,
+        ]);
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Livewire\Fleet\ActionIndex;
 use App\Livewire\Fleet\ActionReport;
 use App\Livewire\Fleet\CarForm;
 use App\Livewire\Fleet\CarIndex;
+use App\Livewire\Orders\OrderForm;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
@@ -34,8 +35,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     
+    // Dashboard
     Route::get('/', function () { return view('dashboard'); })->name('dashboard');
 
+    //Dispatching 
     Route::get('dispatch-panel/{department}', DispatchingIndex::class)->name('dispatch-panel.index');
 
     // Users
@@ -48,8 +51,9 @@ Route::middleware([
 
     // Orders
     Route::get('orders',OrderIndex::class)->name('order.index');
+    // Route::get('orders/form/{customer}/{order?}',OrderForm::class)->name('order.form');
 
-    // Fleet
+    // Assets
     Route::get('cars',CarIndex::class)->name('car.index');
     Route::get('cars/form/{car?}',CarForm::class)->name('car.form');
     Route::get('car-actions/{car}',ActionIndex::class)->name('car.action.index');

@@ -26,10 +26,10 @@
     <x-banner />
 
     {{-- Chatting --}}
-    @persist('chats')
+    {{-- @persist('chats') --}}
         @livewire('chats.chat-button')
         @livewire('chats.chat-modal')
-    @endpersist
+    {{-- @endpersist --}}
 
     <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
         @livewire('sidebar')
@@ -68,6 +68,8 @@
     </div>
 
     @stack('modals')
+
+
 
     <script>
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -121,7 +123,9 @@
 
         });
     </script>
+
     @livewireScripts
+
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dispatching;
 
+use App\Events\RefreshDepartmentScreenEvent;
 use App\Models\Department;
 use App\Models\Order;
 use App\Models\User;
@@ -14,11 +15,16 @@ class DispatchingIndex extends Component
     public Department $department;
     public $change_order_technician = [];
 
-    public $listeners = [
-        'commentsUpdated' => '$refresh',
-        'invoiceCreated' => '$refresh',
-        'invoiceDeleted' => '$refresh',
-    ];
+    public function getListeners()
+    {
+        $authID = auth()->id();
+        return [
+            'commentsUpdated' => '$refresh',
+            'invoiceCreated' => '$refresh',
+            'invoiceDeleted' => '$refresh',
+            "echo:departments.{$this->department->id},RefreshDepartmentScreenEvent" => '$refresh',
+        ];
+    }
 
     public function mount()
     {
@@ -110,6 +116,8 @@ class DispatchingIndex extends Component
         $this->fillTechnicianIdForEachOrder();
 
         // if any change send event to department dispatch screen
+        RefreshDepartmentScreenEvent::dispatch($this->department->id);
+
 
         //if just index changed send to tech if the first one changed
 

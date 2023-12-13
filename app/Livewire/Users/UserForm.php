@@ -18,7 +18,6 @@ class UserForm extends Component
     public $titles;
     public $shifts;
     public $roles;
-
     public FormsUserForm $form;
 
     public function mount(User $user)
@@ -30,11 +29,7 @@ class UserForm extends Component
         $this->roles = Role::select('id', 'name_en', 'name_ar')->get();
 
         $this->form->fill($this->user);
-
-        $this->form->roles = [];
-        foreach($this->user->roles as $role){
-            $this->form->roles[] = $role->id;
-        }
+        $this->form->roles = collect($this->user->roles->pluck('id'))->toArray();
 
         if(request()->is_duplicate){
             $this->form->id = null;

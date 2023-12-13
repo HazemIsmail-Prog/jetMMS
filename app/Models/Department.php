@@ -15,7 +15,7 @@ class Department extends Model
 
     public function technicians()
     {
-        return $this->belongsToMany(User::class)->whereIn('title_id', [10, 11]);
+        return $this->hasMany(User::class)->whereIn('title_id', [10, 11]);
     }
 
     public function orders()

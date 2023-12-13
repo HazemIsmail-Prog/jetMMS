@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Chats;
 
+use App\Events\MessageReadEvent;
+use App\Events\MessageSentEvent;
 use App\Models\Message;
 use App\Models\User;
 use Livewire\Attributes\Computed;
@@ -32,11 +34,12 @@ class ChatModal extends Component
     {
         return User::query()
             ->where('id', '!=', auth()->id())
-            ->where('active',true)
-            ->whereNotIn('title_id',[10,11])
-            ->when($this->search,function($q){
-                $q->where('name_en','like',"%{$this->search}%");
-                $q->orWhere('name_ar','like',"%{$this->search}%");
+            ->where('active', true)
+            ->orderBy('name_' . config('app.locale'))
+            ->whereNotIn('title_id', [10, 11])
+            ->when($this->search, function ($q) {
+                $q->where('name_en', 'like', "%{$this->search}%");
+                $q->orWhere('name_ar', 'like', "%{$this->search}%");
             })
             ->get();
     }
@@ -44,18 +47,10 @@ class ChatModal extends Component
     public function selectUser(User $user)
     {
         $this->selectedUser = $user;
-        Message::where('read',false)
-        ->where('sender_user_id',$this->selectedUser->id)
-        ->where('receiver_user_id',auth()->id())
-        ->update(['read'=>true])
-        ;
+        $this->markAsRead();
         $this->dispatch('userSelected');
-        $this->js("
-        setTimeout(function() { 
-            const el = document.getElementById('messages');
-            el.scrollTop = el.scrollHeight - el.clientHeight;
-         }, 100);
-        ");
+        $this->scrollToBottom();
+
         $this->js("
         setTimeout(function() { 
             document.getElementById('message').focus();
@@ -63,8 +58,40 @@ class ChatModal extends Component
         ");
     }
 
+    public function markAsRead()
+    {
+        $unreadMessages =
+            Message::where('read', false)
+            ->where('sender_user_id', $this->selectedUser->id)
+            ->where('receiver_user_id', auth()->id());
+
+        if ($unreadMessages->count() > 0) {
+            $unreadMessages
+                ->update(['read' => true]);
+            MessageReadEvent::dispatch($this->selectedUser->id);
+            $this->dispatch('markedAsRead');
+        }
+    }
+
+    public function getListeners()
+    {
+        $authID = auth()->id();
+        return [
+            "echo:messages.{$authID},MessageSentEvent" => 'broadcastedNotifications',
+            "echo:messages.{$authID},MessageReadEvent" => '$refresh',
+        ];
+    }
+
+    public function broadcastedNotifications($event)
+    {
+        if ($this->showModal) {
+            if ($event['sender_id'] == $this->selectedUser->id) {
+                $this->selectUser($this->selectedUser);
+            }
+        }
+    }
+
     #[Computed]
-    #[On('messageSent')]
     #[On('userSelected')]
     public function selectedMessages()
     {
@@ -85,13 +112,17 @@ class ChatModal extends Component
             'message' => $this->message,
         ]);
         $this->reset('message');
-        $this->dispatch('messageSent');
+        $this->scrollToBottom();
+        MessageSentEvent::dispatch($this->selectedUser->id, auth()->id());
+    }
+
+    public function scrollToBottom()
+    {
         $this->js("
         setTimeout(function() { 
             const el = document.getElementById('messages');
             el.scrollTop = el.scrollHeight - el.clientHeight;
          }, 100);
-
         ");
     }
 

@@ -79,7 +79,7 @@ class UserIndex extends Component
             ->when($this->filters['status'] != 'all', function ($q) {
                 $q->where('active', $this->filters["status"]);
             })
-            ->paginate(10);
+            ->paginate(1000);
     }
 
 

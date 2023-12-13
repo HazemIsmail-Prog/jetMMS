@@ -163,19 +163,36 @@ class User extends Authenticatable
     public function getUnreadMessagesAttribute()
     {
         return $this->messages()
-            ->where('sender_user_id',$this->id)
-            ->where('receiver_user_id',auth()->id())
-            ->where('read',false)
-            ->count()
-            ;
+            ->where('sender_user_id', $this->id)
+            ->where('receiver_user_id', auth()->id())
+            ->where('read', false)
+            ->count();
     }
 
     public function getTotalUnreadMessagesAttribute()
     {
         return $this->messages()
-            ->where('receiver_user_id',auth()->id())
-            ->where('read',false)
-            ->count()
-            ;
+            ->where('receiver_user_id', auth()->id())
+            ->where('read', false)
+            ->count();
     }
+
+    public function getLatestMessageDateTimeAttribute()
+    {
+        $last_message =
+            $this->messages()
+            ->where(function($q){
+                $q->
+                where('receiver_user_id',auth()->id())
+                ->orWhere('sender_user_id',auth()->id());
+            })
+            ->latest()
+            ->first();
+        return $last_message ? $last_message->created_at : '0';
+    }
+
+    // public function receivesBroadcastNotificationsOn(): string
+    // {
+    //     return 'users.' . $this->id;
+    // }
 }

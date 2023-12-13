@@ -93,16 +93,18 @@
         </div>
     </div>
 
-    {{-- <livewire:pages.orders.order-comments-modal />
-    <livewire:pages.orders.order-statuses-modal />
-    <livewire:pages.orders.order-invoices-modal /> --}}
+</div>
 
-    <!-- Sortablejs -->
+@assets
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+@endassets
+
+@script
     <script>
-        var box = document.querySelectorAll('.box')
+
+        box = document.querySelectorAll('.box')
         box.forEach(element => {
-            var sortable = new Sortable.create(element, {
+            sortable = new Sortable.create(element, {
                 group: 'box', // set both lists to same group
                 draggable: ".draggable", // Specifies which items inside the element should be draggable
                 swapThreshold: 1,
@@ -112,9 +114,9 @@
                 onEnd: function( /**Event*/ evt) {
                     //Apply code only if order change its box or index otherwise do nothing
                     if ((evt.oldIndex !== evt.newIndex) || (evt.to.id !== evt.from.id)) {
-                        var order_id = evt.item.id.replace('order-', '');
-                        var destenation_id = evt.to.id.replace('tech', '');
-                        var source_id = evt.from.id.replace('tech', '');
+                        order_id = evt.item.id.replace('order-', '');
+                        destenation_id = evt.to.id.replace('tech', '');
+                        source_id = evt.from.id.replace('tech', '');
                         if (evt.item.previousElementSibling) {
                             prev = evt.item.previousElementSibling.getAttribute('data-index');
                         } else {
@@ -150,4 +152,4 @@
             });
         });
     </script>
-</div>
+@endscript

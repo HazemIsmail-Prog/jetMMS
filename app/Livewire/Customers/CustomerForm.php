@@ -6,18 +6,14 @@ use App\Livewire\Forms\CustomerForm as FormsCustomerForm;
 use App\Models\Area;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class CustomerForm extends Component
 {
     public $customer;
-
     public $areas;
     public FormsCustomerForm $form;
-
-    // protected $listeners = ['selectedCompanyItem',];
 
     public function mount(Customer $customer)
     {
@@ -27,49 +23,14 @@ class CustomerForm extends Component
         $this->form->fill($this->customer);
 
         if ($this->customer->id) {
-            $this->form->phones = [];
-            foreach ($this->customer->phones as $phone) {
-                $this->form->phones[] = [
-                    'id' =>  $phone->id,
-                    'number' =>  $phone->number,
-                    'type' =>  $phone->type,
-                ];
-            }
-
-            $this->form->addresses = [];
-            foreach ($this->customer->addresses as $address) {
-                $this->form->addresses[] = [
-                    'id' =>  $address->id,
-                    'area_id' =>  $address->area_id,
-                    'block' =>  $address->block,
-                    'street' =>  $address->street,
-                    'jadda' =>  $address->jadda,
-                    'building' =>  $address->building,
-                    'floor' =>  $address->floor,
-                    'apartment' =>  $address->apartment,
-                    'notes' =>  $address->notes,
-                ];
-            }
+            $this->form->phones = collect($this->customer->phones)->toArray();
+            $this->form->addresses = collect($this->customer->addresses)->toArray();
+            $this->dispatch('select2');
         } else {
             $this->add_row('phone');
             $this->add_row('address');
         }
     }
-
-    // public function hydrate()
-    // {
-    //     $this->emit('select2');
-    // }
-
-    // public function selectedCompanyItem($index, $value)
-    // {
-    //     $this->form->addresses[$index]['area_id'] = $value;
-    // }
-
-    // public function updated()
-    // {
-    //     $this->dispatchBrowserEvent('render_select2');
-    // }
 
     public function add_row($type)
     {
@@ -94,6 +55,8 @@ class CustomerForm extends Component
                 'number' => null,
             ];
         }
+
+        $this->dispatch('select2');
     }
 
     public function delete_row($type, $index)
@@ -158,19 +121,19 @@ class CustomerForm extends Component
                 $this->customer->addresses()->doesntHave('orders')->delete();
                 foreach ($this->form->phones as $phone) {
                     $this->customer
-                    ->phones()
-                    ->updateOrCreate(
-                        [
-                            'id' => $phone['id'],
-                        ],
-                        [
-                            'type' => $phone['type'],
-                            'number' => $phone['number'],
+                        ->phones()
+                        ->updateOrCreate(
+                            [
+                                'id' => $phone['id'],
+                            ],
+                            [
+                                'type' => $phone['type'],
+                                'number' => $phone['number'],
                             ]
                         );
-                    }
-                    foreach ($this->form->addresses as $address) {
-                        $this->customer
+                }
+                foreach ($this->form->addresses as $address) {
+                    $this->customer
                         ->addresses()
                         ->updateOrCreate(
                             [
@@ -185,22 +148,22 @@ class CustomerForm extends Component
                                 'floor' => $address['floor'],
                                 'apartment' => $address['apartment'],
                                 'notes' => $address['notes'],
-                                ]
-                            );
-                        }
-                        DB::commit();
-                        $this->form->reset();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        dd($e);
-                        throw ValidationException::withMessages(['error' => __('messages.something went wrong ' . '(' . $e->getMessage() . ')')]);
-                    }
+                            ]
+                        );
                 }
-                return redirect()->route('customer.index');
+                DB::commit();
+                $this->form->reset();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+                throw ValidationException::withMessages(['error' => __('messages.something went wrong ' . '(' . $e->getMessage() . ')')]);
             }
-            
-            public function render()
-            {
-                return view('livewire.customers.customer-form');
+        }
+        return redirect()->route('customer.index');
+    }
+
+    public function render()
+    {
+        return view('livewire.customers.customer-form');
     }
 }

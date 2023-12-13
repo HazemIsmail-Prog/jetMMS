@@ -6,6 +6,7 @@
                 {{ __('messages.orders') }}
                 <span id="counter"></span>
             </h2>
+            
         </div>
     </x-slot>
 
@@ -15,9 +16,8 @@
 
     @livewire('orders.invoice-modal')
     @livewire('orders.comment-modal')
+    @livewire('orders.order-form')
     @livewire('orders.status-history-modal')
-
-    {{-- @include('livewire.orders.includes.filters') --}}
 
     @teleport('#counter')
         <span
@@ -39,8 +39,8 @@
                             class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.order_number') }}" />
                     </th>
                     <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter" value=""
-                            data-start="filters.start_created_at" data-end="filters.end_created_at"
+                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
+                            value="" data-start="filters.start_created_at" data-end="filters.end_created_at"
                             placeholder="{{ __('messages.created_at') }}" />
                     </th>
                     <th scope="col" class=" text-center">
@@ -87,8 +87,8 @@
 
                     </th>
                     <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter" value=""
-                            data-start="filters.start_completed_at" data-end="filters.end_completed_at"
+                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
+                            value="" data-start="filters.start_completed_at" data-end="filters.end_completed_at"
                             placeholder="{{ __('messages.completed_date') }}" />
 
                     </th>
@@ -104,13 +104,14 @@
                             placeholder="{{ __('messages.customer_phone') }}" />
                     </th>
                     <th scope="col" class=" text-center">
-                        <x-select class="w-36 min-w-full text-center py-0" id="areas" wire:model.live="filters.areas">
+                        <x-select class="w-36 min-w-full text-center py-0" id="areas"
+                            wire:model.live="filters.areas">
                             <option value="">{{ __('messages.address') }}</option>
                             @foreach ($areas->sortBy->name as $area)
                                 <option value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                         </x-select>
-                        
+
                     </th>
                     <th scope="col" class=" text-center">
                         {{ __('messages.remaining_amount') }}
@@ -160,22 +161,23 @@
                         </td>
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
-                                <div wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})"
-                                    class="flex items-center gap-1">
-                                    <x-svgs.invoice class="h-4 w-4" />
-                                    <span
-                                        class="text-xs">{{ $order->invoices_count > 0 ? $order->invoices_count : '' }}</span>
-                                </div>
-                                <div wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})"
-                                    class="flex items-center">
+
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}" wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+
+                                <x-badgeWithCounter title="{{ __('messages.order_progress') }}" wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.list class="h-4 w-4" />
-                                </div>
-                                <div wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})"
-                                    class="flex items-center gap-1">
+                                </x-badgeWithCounter>
+
+                                <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}" wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.comment class="h-4 w-4" />
-                                    <span
-                                        class="text-xs">{{ $order->all_comments > 0 ? $order->all_comments : '' }}</span>
-                                </div>
+                                </x-badgeWithCounter>
+
+                                <x-badgeWithCounter :counter="$order->invoices_count" title="{{ __('messages.invoices') }}" wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
+                                    <x-svgs.invoice class="h-4 w-4" />
+                                </x-badgeWithCounter>
+
                             </div>
                         </td>
                     </tr>
@@ -183,11 +185,19 @@
             </tbody>
         </table>
     </div>
+
+
+</div>
+
+@assets
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <script type="text/javascript">
+@endassets
+
+@script
+    <script>
         $(function() {
 
             $('input[name="datefilter"]').daterangepicker({
@@ -212,4 +222,4 @@
 
         });
     </script>
-</div>
+@endscript

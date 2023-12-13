@@ -11,14 +11,14 @@
                     <x-input wire:model.live="search" class="w-full" placeholder="{{ __('messages.search') }}" />
                     <div
                         class=" flex flex-col overflow-auto hidden-scrollbar divide-y divide-gray-200 dark:divide-gray-700">
-                        @foreach ($this->users->sortBy('name') as $user)
+                        @foreach ($this->users->sortByDesc('latest_message_date_time') as $user)
                             <div wire:click="selectUser({{ $user->id }})"
                                 class="flex items-center justify-between p-4 cursor-pointer select-none {{ @$selectedUser->id == $user->id ? 'bg-blue-600 text-white dark:bg-gray-900' : '' }}">
                                 <div>{{ $user->name }}</div>
                                 @if ($user->unread_messages > 0)
                                     
                                 <span
-                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
                                     {{ $user->unread_messages }}
                                 </span>
                                 @endif

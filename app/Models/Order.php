@@ -15,7 +15,7 @@ class Order extends Model
     protected $guarded = [];
     
     protected $casts = [
-        'estimated_start_date' => 'date',
+        'estimated_start_date' => 'date:Y-m-d',
         'completed_at' => 'datetime',
         'cancelled_at' => 'datetime',
     ];

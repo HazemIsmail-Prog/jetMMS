@@ -112,15 +112,15 @@
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
                             <a wire:navigate href="{{ route('user.form', $user) }}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                <x-svgs.edit class="w-3 h-3" />
+                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <x-svgs.edit class="w-4 h-4" />
                             </a>
 
 
                             <a wire:navigate
                                 href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
-                                class="font-medium text-green-600 dark:text-green-500 hover:underline">
-                                <x-svgs.duplicate class="w-3 h-3" />
+                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <x-svgs.duplicate class="w-4 h-4" />
                             </a>
                         </td>
                     </tr>
