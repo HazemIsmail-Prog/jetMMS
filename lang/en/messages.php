@@ -284,6 +284,8 @@ return [
     'blocked_account' => 'Blocked Account, Please contact your administrator',
     'add_company' => 'Add Company',
     'edit_company' => 'Edit Company',
+    'edit_status' => 'Edit Status',
+
 
 
 

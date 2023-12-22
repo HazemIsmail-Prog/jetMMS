@@ -295,6 +295,7 @@ return [
     'blocked_account' => 'تم تعطيل حسابك ، يرجى مراجعة المسؤول',
     'add_company' => 'اضافة شركة',
     'edit_company' => 'تعديل شركة',
+    'edit_status' => 'تعديل الحالة',
 
 
     // Employees

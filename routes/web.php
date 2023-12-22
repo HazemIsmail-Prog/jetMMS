@@ -16,6 +16,7 @@ use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderForm;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
@@ -61,6 +62,9 @@ Route::middleware([
     
     // Companies
     Route::get('companies',CompanyIndex::class)->name('company.index');
+
+    // Statuses
+    Route::get('statuses',StatusIndex::class)->name('status.index');
     
     // Areas
     Route::get('areas',AreaIndex::class)->name('area.index');
