@@ -291,6 +291,39 @@ return [
     'comments_for_order_number' => 'تعليقات الطلب رقم - ',
     'statuses_for_order_number' => 'حالات الطلب رقم - ',
     'invoices_for_order_number' => 'فواتير الطلب رقم - ',
+    'saved_successfully' => 'تم الحفظ بنجاج',
+
+
+    // Employees
+    'add_employee' => 'اضافة موظف',
+    'add_employee_details' => 'اضافة بيانات موظف',
+    'edit_employee_details' => 'تعديل بيانات موظف',
+    'user_details' => 'بيانات المستخدم',
+    'employee_details' => 'بيانات الموظف',
+    'joinDate' => 'تاريخ التعيين',
+    'recidencyExpirationDate' => 'تاريخ انتهاء الاقامة',
+    'passportExpirationDate' => 'تاريخ انتهاء الجواز',
+    'passportIssueDate' => 'تاريخ اصدار الجواز',
+    'passport_no' => 'رقم جواز السفر',
+    'startingSalary' => 'الراتب الابتدائي',
+    'startingLeaveBalance' => 'رصيد الاجازات الابتدائي',
+    'lastWorkingDate' => 'تاريخ اخر يوم دوام',
+    'active_employee' => 'يداوم',
+    'resigned' => 'مستقيل',
+    'terminated' => 'منهي خدماته',
+    'under_test' => 'تحت التجربة',
+
+
+    'attachments' => 'المرفقات',
+    'add_attachment' => 'اضافة مرفق',
+    'description_ar' => 'الوصف (عربي)',
+    'description_en' => 'الوصف (انجليزي)',
+    'description' => 'الوصف',
+    'select_file' => 'اختر الملف',
+    'expirationDate' => 'تاريخ الانتهاء',
+    'alertable' => 'تنبيه',
+    'alertBefore' => 'عدد ايام التنبيه',
+    'upload_done' => 'تم تحميل الملف',
 
 
 

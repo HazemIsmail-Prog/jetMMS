@@ -31,8 +31,8 @@ class OrderIndex extends Component
     public $tags;
     public $filters;
 
-
     public function mount() {
+        
         $this->areas = Area::select('id','name_en','name_ar')->get();
         $this->creators = User::whereHas('orders_creator')->select('id', 'name_en', 'name_ar')->get();
         $this->statuses = Status::orderBy('index')->select('id', 'name_en', 'name_ar')->get();
@@ -70,6 +70,7 @@ class OrderIndex extends Component
     public function orders()
     {
         return Order::query()
+
             ->with('creator')
             ->with('status')
             ->with('department')
@@ -97,7 +98,6 @@ class OrderIndex extends Component
             ->when($this->filters['street'],function(Builder $q){
                 $q->whereRelation('address', 'street',$this->filters['street']);
             })
-            
             ->when($this->filters['order_number'],function($q){
                 $q->where('id',$this->filters['order_number']);
             })
@@ -129,10 +129,9 @@ class OrderIndex extends Component
                 $q->whereDate('completed_at','<=',$this->filters['end_completed_at']);
             })
 
-
-
-            ->paginate(20);
+            ->paginate(15);
     }
+
     public function render()
     {
         return view('livewire.orders.order-index');

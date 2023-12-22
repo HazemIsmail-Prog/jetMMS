@@ -104,7 +104,7 @@
 
             <x-sidebar-item icon="diversity_3" route="customer.index" :title="__('messages.customers')" />
             <x-sidebar-item icon="dashboard" route="order.index" :title="__('messages.orders')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.marketing')" />
+            <x-sidebar-item icon="dashboard" route="marketing.index" :title="__('messages.marketing')" />
 
             <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'bg-slate-900' }} @endif"
                 x-data="{ open: {{ in_array(Route::current()->getName(), ['dispatch-panel.index']) ? 1 : 0 }} }">
@@ -179,7 +179,7 @@
 
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.hr') }}</h3>
 
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.employees')" />
+            <x-sidebar-item icon="dashboard" route="employee.index" :title="__('messages.employees')" />
 
             <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
                 x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
@@ -229,7 +229,7 @@
 
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
 
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.roles')" />
+            <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />
             <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.titles')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.statuses')" />

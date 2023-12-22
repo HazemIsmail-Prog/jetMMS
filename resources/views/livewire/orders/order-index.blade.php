@@ -6,7 +6,7 @@
                 {{ __('messages.orders') }}
                 <span id="counter"></span>
             </h2>
-            
+
         </div>
     </x-slot>
 
@@ -127,13 +127,18 @@
                             {{ $order->id }}
                         </th>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $order->created_at->format('d-m-Y H:i') }}
+                            <div dir="ltr">
+
+                                {{ $order->created_at->format('d-m-Y | H:i') }}
+                            </div>
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
                             {{ $order->creator->name }}
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $order->estimated_start_date->format('d-m-Y') }}
+                            <div dir="ltr">
+                                {{ $order->estimated_start_date->format('d-m-Y') }}
+                            </div>
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap" style="color: {{ $order->status->color }}">
                             {{ $order->status->name }}
@@ -145,7 +150,9 @@
                             {{ $order->technician->name ?? '-' }}
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div>{{ $order->completed_at ? $order->completed_at->format('d-m-Y H:i') : '' }}</div>
+                            <div dir="ltr">
+                                {{ $order->completed_at ? $order->completed_at->format('d-m-Y | H:i') : '' }}
+                            </div>
                         </td>
                         <td class="px-6 py-1 text-start whitespace-nowrap ">
                             <div>{{ $order->customer->name }}</div>
@@ -162,19 +169,23 @@
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
 
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}" wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
 
-                                <x-badgeWithCounter title="{{ __('messages.order_progress') }}" wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">
+                                <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
+                                    wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.list class="h-4 w-4" />
                                 </x-badgeWithCounter>
 
-                                <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}" wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
+                                <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}"
+                                    wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.comment class="h-4 w-4" />
                                 </x-badgeWithCounter>
 
-                                <x-badgeWithCounter :counter="$order->invoices_count" title="{{ __('messages.invoices') }}" wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
+                                <x-badgeWithCounter :counter="$order->invoices_count" title="{{ __('messages.invoices') }}"
+                                    wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.invoice class="h-4 w-4" />
                                 </x-badgeWithCounter>
 

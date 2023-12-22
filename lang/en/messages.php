@@ -280,8 +280,40 @@ return [
     'comments_for_order_number' => 'Comments for Order No. - ',
     'statuses_for_order_number' => 'Statuses for Order No. - ',
     'invoices_for_order_number' => 'Invoices for Order No. - ',
+    'saved_successfully' => 'Saved Successfully',
 
 
+    // Employees
+    'add_employee' => 'Add Employee',
+    'add_employee_details' => 'Add Employee Details',
+    'edit_employee_details' => 'Edit Employee Details',
+    'user_details' => 'User Details',
+    'employee_details' => 'Employee Details',
+    'joinDate' => 'Join Date',
+    'recidencyExpirationDate' => 'Recidency Expiration Date',
+    'passportExpirationDate' => 'Passport Expiration Date',
+    'passportIssueDate' => 'Passport Issue Date',
+    'passport_no' => 'Passport Number',
+    'startingSalary' => 'Starting Salary',
+    'startingLeaveBalance' => 'Starting Leave Balance',
+    'lastWorkingDate' => 'Last Working Day',
+    'active_employee' => 'Active',
+    'resigned' => 'Resigned',
+    'terminated' => 'Terminated',
+    'under_test' => 'Under Test',
+
+
+
+    'attachments' => 'Attachments',
+    'add_attachment' => 'Add Attachment',
+    'description_ar' => 'Description (ar)',
+    'description_en' => 'Description (en)',
+    'description' => 'Description',
+    'select_file' => 'Select File',
+    'expirationDate' => 'Expiration Date',
+    'alertable' => 'Alert',
+    'alertBefore' => 'Alert Before',
+    'upload_done' => 'File Uploaded',
 
 
 
