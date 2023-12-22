@@ -10,15 +10,6 @@
 
         </div>
     </x-slot>
-
-    @if ($this->shifts->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
-    @livewire('shifts.shift-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showShiftFormModal')">
             {{ __('messages.add_shift') }}
@@ -32,9 +23,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->shifts->links() }}</div>
-    @endteleport
+    @if ($this->shifts->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->shifts->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('shifts.shift-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

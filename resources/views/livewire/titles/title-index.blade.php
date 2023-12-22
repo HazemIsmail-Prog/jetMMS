@@ -10,15 +10,6 @@
 
         </div>
     </x-slot>
-
-    @if ($this->titles->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
-    @livewire('titles.title-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showTitleFormModal')">
             {{ __('messages.add_title') }}
@@ -32,9 +23,18 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->titles->links() }}</div>
-    @endteleport
+    @if ($this->titles->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->titles->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('titles.title-form')
+
+
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

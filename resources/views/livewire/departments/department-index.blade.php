@@ -10,14 +10,6 @@
 
         </div>
     </x-slot>
-    @if ($this->departments->hasMorePages())
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
-    @endif
-
-    @livewire('departments.department-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showDepartmentFormModal')">
             {{ __('messages.add_department') }}
@@ -31,9 +23,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->departments->links() }}</div>
-    @endteleport
+    @if ($this->departments->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->departments->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('departments.department-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

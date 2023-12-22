@@ -28,11 +28,5 @@
 
             @endif
         </x-slot>
-
-        <x-slot name="footer">
-            {{-- <x-secondary-button wire:click="$toggle('showModal')" wire:loading.attr="disabled">
-                {{ __('messages.back') }}
-            </x-secondary-button> --}}
-        </x-slot>
     </x-dialog-modal>
 </div>

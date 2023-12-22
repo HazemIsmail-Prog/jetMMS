@@ -9,17 +9,6 @@
 
         </div>
     </x-slot>
-    @if ($this->orders->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
-    @livewire('orders.invoice-modal')
-    @livewire('orders.comment-modal')
-    @livewire('orders.order-form')
-    @livewire('orders.status-history-modal')
-
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
@@ -27,9 +16,19 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->orders->links() }}</div>
-    @endteleport
+    @if ($this->orders->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->orders->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('orders.invoice-modal')
+    @livewire('orders.comment-modal')
+    @livewire('orders.order-form')
+    @livewire('orders.status-history-modal')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

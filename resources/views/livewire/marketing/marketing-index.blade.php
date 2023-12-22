@@ -10,14 +10,6 @@
 
         </div>
     </x-slot>
-    @if ($this->marketings->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
-    @livewire('marketing.marketing-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showMarketingFormModal')">
             {{ __('messages.add_marketing') }}
@@ -31,9 +23,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->marketings->links() }}</div>
-    @endteleport
+    @if ($this->marketings->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->marketings->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('marketing.marketing-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

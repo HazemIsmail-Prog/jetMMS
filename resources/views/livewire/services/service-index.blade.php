@@ -10,13 +10,6 @@
 
         </div>
     </x-slot>
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
-
-    @livewire('services.service-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showServiceFormModal')">
             {{ __('messages.add_service') }}
@@ -30,16 +23,24 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->services->links() }}</div>
-    @endteleport
+    @if ($this->services->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->services->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('services.service-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="text-start">
-                        <x-input wire:model.live="filters.name" class="w-full py-0" placeholder="{{ __('messages.name') }}" />
+                        <x-input wire:model.live="filters.name" class="w-full py-0"
+                            placeholder="{{ __('messages.name') }}" />
                     </th>
                     <th scope="col" class="px-6 py-1 text-start">
                         {{ __('messages.min_price') }}

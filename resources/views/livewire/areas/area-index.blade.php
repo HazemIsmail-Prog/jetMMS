@@ -10,13 +10,6 @@
 
         </div>
     </x-slot>
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
-
-    @livewire('areas.area-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showAreaFormModal')">
             {{ __('messages.add_area') }}
@@ -30,9 +23,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->areas->links() }}</div>
-    @endteleport
+    @if ($this->areas->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->areas->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('areas.area-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

@@ -9,13 +9,6 @@
             <x-anchor class="no-print" href="{{ route('user.form') }}">{{ __('messages.add_user') }}</x-anchor>
         </div>
     </x-slot>
-
-    @if ($this->users->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
@@ -23,9 +16,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->users->links() }}</div>
-    @endteleport
+    @if ($this->users->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->users->links() }}</div>
+        @endteleport
+    @endif
+
+
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

@@ -10,14 +10,6 @@
 
         </div>
     </x-slot>
-    @if ($this->roles->hasMorePages())
-        <x-slot name="footer">
-            <span id="pagination"></span>
-        </x-slot>
-    @endif
-
-    @livewire('roles.role-form')
-
     @teleport('#addNew')
         <x-button wire:click="$dispatch('showRoleFormModal')">
             {{ __('messages.add_role') }}
@@ -31,9 +23,16 @@
         </span>
     @endteleport
 
-    @teleport('#pagination')
-        <div class="">{{ $this->roles->links() }}</div>
-    @endteleport
+    @if ($this->roles->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->roles->links() }}</div>
+        @endteleport
+    @endif
+
+    @livewire('roles.role-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
