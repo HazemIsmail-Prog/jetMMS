@@ -292,6 +292,7 @@ return [
     'statuses_for_order_number' => 'حالات الطلب رقم - ',
     'invoices_for_order_number' => 'فواتير الطلب رقم - ',
     'saved_successfully' => 'تم الحفظ بنجاج',
+    'blocked_account' => 'تم تعطيل حسابك ، يرجى مراجعة المسؤول',
 
 
     // Employees

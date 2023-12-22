@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Livewire\Roles;
+namespace App\Livewire\Titles;
 
-use App\Models\Role;
+use App\Models\Title;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RoleIndex extends Component
+class TitleIndex extends Component
 {
     use WithPagination;
 
     public $listeners = [];
 
     #[Computed()]
-    #[On('rolesUpdated')]
-    public function roles()
+    #[On('titlesUpdated')]
+    public function titles()
     {
-        return Role::query()
+        return Title::query()
             ->paginate(15);
     }
-    
+
     public function render()
     {
-        return view('livewire.roles.role-index');
+        return view('livewire.titles.title-index');
     }
 }

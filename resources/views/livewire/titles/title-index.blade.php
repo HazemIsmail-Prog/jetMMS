@@ -3,7 +3,7 @@
         <div class=" flex items-center justify-between">
 
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.roles') }}
+                {{ __('messages.titles') }}
                 <span id="counter"></span>
             </h2>
             <span id="addNew"></span>
@@ -15,23 +15,23 @@
         <span id="pagination"></span>
     </x-slot>
 
-    @livewire('roles.role-form')
+    @livewire('titles.title-form')
 
     @teleport('#addNew')
-        <x-button wire:click="$dispatch('showRoleFormModal')">
-            {{ __('messages.add_role') }}
+        <x-button wire:click="$dispatch('showTitleFormModal')">
+            {{ __('messages.add_title') }}
         </x-button>
     @endteleport
 
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-            {{ $this->roles->total() }}
+            {{ $this->titles->total() }}
         </span>
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->roles->links() }}</div>
+        <div class="mt-4">{{ $this->titles->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -45,19 +45,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($this->roles as $role)
+                @foreach ($this->titles as $title)
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                         <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $role->name }}</div>
+                            <div>{{ $title->name }}</div>
                         </td>
 
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
 
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showRoleFormModal',{role:{{ $role }}})">
+                                    wire:click="$dispatch('showTitleFormModal',{title:{{ $title }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
 

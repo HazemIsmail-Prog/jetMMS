@@ -14,6 +14,7 @@ use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderForm;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,9 @@ Route::middleware([
 
     // Roles
     Route::get('roles',RoleIndex::class)->name('role.index');
+
+    // Titles
+    Route::get('titles',TitleIndex::class)->name('title.index');
 
     // Users
     Route::get('users',UserIndex::class)->name('user.index');

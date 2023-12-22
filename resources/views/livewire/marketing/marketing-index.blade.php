@@ -85,7 +85,7 @@
             <tbody>
                 @foreach ($this->marketings as $marketing)
                 <tr
-                class="bg-white bmarketing-b dark:bg-gray-800 dark:bmarketing-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="px-6 py-1 text-center whitespace-nowrap">
                     {{ $marketing->created_at->format('d-m-Y H:i') }}
                         </td>

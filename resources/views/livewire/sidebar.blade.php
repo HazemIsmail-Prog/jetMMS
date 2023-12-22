@@ -231,7 +231,7 @@
 
             <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />
             <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.titles')" />
+            <x-sidebar-item icon="dashboard" route="title.index" :title="__('messages.titles')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.statuses')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.departments')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.companies')" />

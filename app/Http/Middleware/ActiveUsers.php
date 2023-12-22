@@ -15,13 +15,11 @@ class ActiveUsers
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if($request->user()){
-        //     dd(auth()->user()->acitve);
-        // };
-        // if (!$request->user()->acitve) {
-        //     $request->session()->flush();
-        //     return redirect()->route('login')->with(['fail' => 'Your account is not activated!']);
-        // }
-        return $next($request);
+        if($request->user()->active){
+            return $next($request);
+        }else{
+                $request->session()->flush();
+                return redirect()->route('login')->with(['fail' => __('messages.blocked_account')]);
+        }
     }
 }

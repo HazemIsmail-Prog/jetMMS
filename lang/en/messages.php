@@ -281,6 +281,8 @@ return [
     'statuses_for_order_number' => 'Statuses for Order No. - ',
     'invoices_for_order_number' => 'Invoices for Order No. - ',
     'saved_successfully' => 'Saved Successfully',
+    'blocked_account' => 'Blocked Account, Please contact your administrator',
+
 
 
     // Employees

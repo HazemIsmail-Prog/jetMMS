@@ -22,24 +22,6 @@
                             <x-input-error for="form.name_en" />
                         </div>
 
-                        <div class=" space-y-2">
-                            @foreach ($this->permissions as $permission => $sub_permissions)
-                            <div class=" border dark:border-gray-700 rounded-lg p-2">
-                                <x-label class=" uppercase mb-2">{{ $permission }}</x-label>
-                                @foreach ($sub_permissions as $sub_permission)
-                                <x-label for="permission-{{ $sub_permission->id }}" class="flex items-center">
-                                    <x-checkbox value="{{ $sub_permission->id }}" wire:model="form.permissions"
-                                        id="permission-{{ $sub_permission->id }}" />
-                                    <span class="ms-2 ">{{ $sub_permission->description }}</span>
-                                </x-label>
-                                    
-                                @endforeach
-                            </div>
-                            @endforeach
-                            <x-input-error for="form.permissions" />
-
-                        </div>
-
                     </div>
 
                     <div class="mt-3">
