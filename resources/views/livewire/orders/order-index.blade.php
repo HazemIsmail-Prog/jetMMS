@@ -9,10 +9,11 @@
 
         </div>
     </x-slot>
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->orders->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('orders.invoice-modal')
     @livewire('orders.comment-modal')
@@ -27,7 +28,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->orders->links() }}</div>
+        <div class="">{{ $this->orders->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

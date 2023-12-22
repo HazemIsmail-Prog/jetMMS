@@ -9,10 +9,11 @@
         </div>
     </x-slot>
 
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->customers->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('orders.order-form')
 
@@ -25,7 +26,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->customers->links() }}</div>
+        <div class="">{{ $this->customers->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -78,12 +79,11 @@
                             @endforeach
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $customer->balance > 0 ? $customer->balance : '-' }}
+                            {{ $customer->balance > 0 ? number_format($customer->balance, 3) : '-' }}
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
 
-                            <x-badgeWithCounter
-                                title="{{ __('messages.add_order') }}"
+                            <x-badgeWithCounter title="{{ __('messages.add_order') }}"
                                 wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
                                 <x-svgs.plus class="h-4 w-4" />
                             </x-badgeWithCounter>

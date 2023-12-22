@@ -10,10 +10,11 @@
         </div>
     </x-slot>
 
-
-    <x-slot name="footer">
+    @if ($this->users->hasMorePages())
+        <x-slot name="footer">
             <span id="pagination"></span>
-    </x-slot>
+        </x-slot>
+    @endif
 
     @teleport('#counter')
         <span
@@ -23,7 +24,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->users->links() }}</div>
+        <div class="">{{ $this->users->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

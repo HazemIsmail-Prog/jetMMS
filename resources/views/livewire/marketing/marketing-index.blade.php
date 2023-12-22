@@ -10,10 +10,11 @@
 
         </div>
     </x-slot>
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->marketings->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('marketing.marketing-form')
 
@@ -31,7 +32,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->marketings->links() }}</div>
+        <div class="">{{ $this->marketings->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -53,21 +54,21 @@
                     </th>
                     <th scope="col" class=" text-center">
                         <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
-                        wire:model.live="filters.name" placeholder="{{ __('messages.customer_name') }}" />
-                        
-                        
+                            wire:model.live="filters.name" placeholder="{{ __('messages.customer_name') }}" />
+
+
                     </th>
                     <th scope="col" class=" text-center">
                         <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="phone"
-                        wire:model.live="filters.phone" placeholder="{{ __('messages.phone') }}" />
+                            wire:model.live="filters.phone" placeholder="{{ __('messages.phone') }}" />
                     </th>
                     <th scope="col" class=" text-center">
                         <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="address"
-                        wire:model.live="filters.address" placeholder="{{ __('messages.address') }}" />
-                        
+                            wire:model.live="filters.address" placeholder="{{ __('messages.address') }}" />
+
                     </th>
-                    
-                    
+
+
                     <th scope="col" class=" text-center">
                         {{ __('messages.notes') }}
                     </th>
@@ -84,10 +85,10 @@
             </thead>
             <tbody>
                 @foreach ($this->marketings as $marketing)
-                <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td class="px-6 py-1 text-center whitespace-nowrap">
-                    {{ $marketing->created_at->format('d-m-Y H:i') }}
+                    <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                            {{ $marketing->created_at->format('d-m-Y H:i') }}
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
                             {{ $marketing->user->name }}
@@ -105,7 +106,7 @@
                             <div>{{ $marketing->notes }}</div>
                         </td>
                         <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ __('messages.'.$marketing->type) }}</div>
+                            <div>{{ __('messages.' . $marketing->type) }}</div>
                         </td>
 
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">

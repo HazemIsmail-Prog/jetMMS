@@ -10,10 +10,11 @@
         </div>
     </x-slot>
 
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->employees->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('attachment-modal')
 
@@ -25,7 +26,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->employees->links() }}</div>
+        <div class="">{{ $this->employees->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

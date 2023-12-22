@@ -10,10 +10,11 @@
 
         </div>
     </x-slot>
-
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->roles->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('roles.role-form')
 
@@ -31,7 +32,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->roles->links() }}</div>
+        <div class="">{{ $this->roles->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

@@ -15,5 +15,9 @@ return [
 
     'previous' => '&laquo; السابق',
     'next' => 'التالي &raquo;',
+    'showing' => 'عرض',
+    'to' => 'الى',
+    'of' => 'من',
+    'results' => 'نتيجة',
 
 ];

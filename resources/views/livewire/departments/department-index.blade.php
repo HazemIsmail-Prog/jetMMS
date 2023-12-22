@@ -10,10 +10,11 @@
 
         </div>
     </x-slot>
-
+    @if ($this->departments->hasMorePages())
     <x-slot name="footer">
         <span id="pagination"></span>
     </x-slot>
+    @endif
 
     @livewire('departments.department-form')
 
@@ -31,7 +32,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->departments->links() }}</div>
+        <div class="">{{ $this->departments->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

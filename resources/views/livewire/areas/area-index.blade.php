@@ -31,7 +31,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->areas->links() }}</div>
+        <div class="">{{ $this->areas->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">

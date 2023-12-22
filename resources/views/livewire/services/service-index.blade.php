@@ -31,15 +31,15 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->services->links() }}</div>
+        <div class="">{{ $this->services->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="w-full px-6 py-1 text-start">
-                        <x-input wire:model.live="filters.name" class="p-0" placeholder="{{ __('messages.name') }}" />
+                    <th scope="col" class="text-start">
+                        <x-input wire:model.live="filters.name" class="w-full py-0" placeholder="{{ __('messages.name') }}" />
                     </th>
                     <th scope="col" class="px-6 py-1 text-start">
                         {{ __('messages.min_price') }}
@@ -48,7 +48,7 @@
                         {{ __('messages.max_price') }}
                     </th>
                     <th scope="col" class="px-6 py-1 text-start">
-                        <x-select wire:model.live="filters.department_id" class=" p-0 w-full">
+                        <x-select wire:model.live="filters.department_id" class="w-full py-0">
                             <option value="">{{ __('messages.department') }}</option>
                             @foreach ($this->departments as $department)
                                 <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -56,7 +56,7 @@
                         </x-select>
                     </th>
                     <th scope="col" class="px-6 py-1 text-start">
-                        <x-select wire:model.live="filters.type" class=" p-0 w-full">
+                        <x-select wire:model.live="filters.type" class="w-full py-0">
                             <option value="">{{ __('messages.type') }}</option>
                             @foreach (App\Enums\ServiceTypeEnum::cases() as $type)
                                 <option value="{{ $type->value }}">{{ $type->title() }}</option>

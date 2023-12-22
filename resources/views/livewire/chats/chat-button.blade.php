@@ -2,7 +2,7 @@
     class=" absolute bottom-10 end-7 {{ auth()->user()->total_unread_messages > 0 ? 'animate-bounce' : '' }}   z-50 ">
 
     <button type="button"
-        class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+        class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white dark:text-gray-800 bg-gray-800 dark:bg-gray-200 hover:bg-gray-700 dark:hover:bg-white rounded-lg">
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
             viewBox="0 0 20 16">
             <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />

@@ -10,9 +10,11 @@
         </div>
     </x-slot>
 
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
+    @if ($this->statuses->hasMorePages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+    @endif
 
     @livewire('statuses.status-form')
 
@@ -24,7 +26,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->statuses->links() }}</div>
+        <div class="">{{ $this->statuses->links() }}</div>
     @endteleport
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -49,7 +51,8 @@
                             <div>{{ $status->name }}</div>
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div class=" m-auto w-40 rounded-lg text-center text-white" style="background-color: {{ $status->color }};">{{ $status->color }}</div>
+                            <div class=" m-auto w-40 rounded-lg text-center text-white"
+                                style="background-color: {{ $status->color }};">{{ $status->color }}</div>
                         </td>
 
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
