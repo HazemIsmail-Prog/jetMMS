@@ -1,6 +1,6 @@
 @props(['route', 'title','icon'])
 <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (request()->routeIs($route)) {{ 'bg-slate-900' }} @endif">
-    <a wire:navigate class="block truncate transition duration-150" href="{{ route($route) }}">
+    <a class="block truncate transition duration-150" href="{{ route($route) }}">
         <div
             class="flex items-center {{ request()->routeIs($route) ? 'text-indigo-500' : 'text-slate-400 hover:text-white' }}">
             <span class="material-symbols-outlined">{{ $icon }}</span>
