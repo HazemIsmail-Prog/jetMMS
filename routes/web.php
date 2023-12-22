@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LanguageController;
+use App\Livewire\Accounts\AccountIndex;
 use App\Livewire\Areas\AreaIndex;
 use App\Livewire\Companies\CompanyIndex;
 use App\Livewire\Customers\CustomerForm;
@@ -61,6 +62,9 @@ Route::middleware([
 
 
     // ========== Accounting ==========
+
+    // Accounts
+    Route::get('accounts', AccountIndex::class)->name('account.index');
 
     // Invoices
     Route::get('invoices', InvoiceIndex::class)->name('invoice.index');

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\App;
 
 class Area extends Model
 {
@@ -18,9 +17,9 @@ class Area extends Model
         return $this->hasManyThrough(Order::class, Address::class);
     }
 
-    public function getNameAttribute($value)
+    public function getNameAttribute()
     {
-        if (App::getLocale() == 'ar') {
+        if (app()->getLocale() == 'ar') {
             return $this->name_ar ?? $this->name_en;
         } else {
             return $this->name_en ?? $this->name_ar;

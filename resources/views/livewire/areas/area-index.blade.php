@@ -56,7 +56,7 @@
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
 
-                                <x-badgeWithCounter area="{{ __('messages.edit') }}"
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>

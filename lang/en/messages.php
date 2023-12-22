@@ -285,6 +285,9 @@ return [
     'add_company' => 'Add Company',
     'edit_company' => 'Edit Company',
     'edit_status' => 'Edit Status',
+    'add_account' => 'Add Account',
+    'edit_account' => 'Edit Account',
+    'index' => 'Index',
 
 
 

@@ -296,6 +296,9 @@ return [
     'add_company' => 'اضافة شركة',
     'edit_company' => 'تعديل شركة',
     'edit_status' => 'تعديل الحالة',
+    'add_account' => 'اضافة حساب',
+    'edit_account' => 'تعديل حساب',
+    'index' => 'الترتيب',
 
 
     // Employees

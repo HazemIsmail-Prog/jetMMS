@@ -2,7 +2,7 @@
 
 <div {!! $attributes->merge([
     'class' =>
-        'flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600',
+        'flex items-center gap-1 border text-gray-700 dark:text-gray-300 dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600',
 ]) !!}>
     {{ $slot }}
     @if ($counter > 0)
