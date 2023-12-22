@@ -233,7 +233,7 @@
             <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
             <x-sidebar-item icon="dashboard" route="title.index" :title="__('messages.titles')" />
             <x-sidebar-item icon="dashboard" route="status.index" :title="__('messages.statuses')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.departments')" />
+            <x-sidebar-item icon="dashboard" route="department.index" :title="__('messages.departments')" />
             <x-sidebar-item icon="dashboard" route="company.index" :title="__('messages.companies')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.shifts')" />
             <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
