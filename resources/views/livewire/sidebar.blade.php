@@ -151,7 +151,7 @@
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.accounting') }}</h3>
 
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.accounts')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.invoices')" />
+            <x-sidebar-item icon="dashboard" route="invoice.index" :title="__('messages.invoices')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.journal_vouchers')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_payment')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_receipt')" />
@@ -237,6 +237,7 @@
             <x-sidebar-item icon="dashboard" route="company.index" :title="__('messages.companies')" />
             <x-sidebar-item icon="dashboard" route="shift.index" :title="__('messages.shifts')" />
             <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
+            <x-sidebar-item icon="dashboard" route="service.index" :title="__('messages.services')" />
             <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.settings')" />
 
         </ul>

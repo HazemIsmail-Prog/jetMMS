@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,10 @@ class Invoice extends Model
 
     protected $guarded = [];
     // protected $appends = ['payment_status'];
+
+    protected $casts = [
+        'payment_status' => PaymentStatusEnum::class
+    ];
 
     public function invoice_details()
     {
@@ -42,14 +47,14 @@ class Invoice extends Model
         });
     }
 
-    public function getPaymentStatusAttribute()
-    {
-        if ($this->payments()->count() == 0) {
-            return $this->amount > 0 ? 'pending' : 'free' ;
-        } else {
-            return $this->remaining_amount == 0 ? 'paid' : 'partially_paid' ;
-        }
-    }
+    // public function getPaymentStatusAttribute()
+    // {
+    //     if ($this->payments()->count() == 0) {
+    //         return $this->amount > 0 ? 'pending' : 'free' ;
+    //     } else {
+    //         return $this->remaining_amount == 0 ? 'paid' : 'partially_paid' ;
+    //     }
+    // }
 
     public function getServicesAmountAttribute()
     {

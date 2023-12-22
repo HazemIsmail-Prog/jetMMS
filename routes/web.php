@@ -14,26 +14,16 @@ use App\Livewire\Fleet\ActionReport;
 use App\Livewire\Fleet\CarForm;
 use App\Livewire\Fleet\CarIndex;
 use App\Livewire\Marketing\MarketingIndex;
-use App\Livewire\Orders\OrderForm;
+use App\Livewire\Orders\InvoiceIndex;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Services\ServiceIndex;
 use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
@@ -53,7 +43,7 @@ Route::middleware([
 
 
     
-    // =========== Operations ==============
+    // ========== Operations ==========
 
     // Customers
     Route::get('customers', CustomerIndex::class)->name('customer.index');
@@ -70,8 +60,15 @@ Route::middleware([
 
 
 
+    // ========== Accounting ==========
 
-    // ========= HR ===================
+    // Invoices
+    Route::get('invoices', InvoiceIndex::class)->name('invoice.index');
+
+
+
+
+    // ========== HR ==========
 
     // Employees
     Route::get('employees', EmployeeIndex::class)->name('employee.index');
@@ -80,12 +77,10 @@ Route::middleware([
 
 
 
-    // ========== Assets ======================
+    // ========== Assets ==========
 
     // Cars
-    Route::get('cars',
-        CarIndex::class
-    )->name('car.index');
+    Route::get('cars', CarIndex::class)->name('car.index');
     Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
     Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
     Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
@@ -93,7 +88,7 @@ Route::middleware([
 
 
 
-    // ========== Admin Settings ===================
+    // ========== Admin Settings ==========
 
     // Roles
     Route::get('roles', RoleIndex::class)->name('role.index');
@@ -120,6 +115,9 @@ Route::middleware([
 
     // Areas
     Route::get('areas', AreaIndex::class)->name('area.index');
+
+    // Services
+    Route::get('services', ServiceIndex::class)->name('service.index');
 
 
 

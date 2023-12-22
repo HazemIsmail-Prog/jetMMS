@@ -25,6 +25,7 @@ class InvoiceCard extends Component
     public function deletePayment(Payment $payment) {
         $payment->delete();
     }
+    
     public function deleteInvoice(Invoice $invoice) {
         $invoice->payments()->delete();
         $invoice->delete();
