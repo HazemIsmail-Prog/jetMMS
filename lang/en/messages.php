@@ -282,6 +282,8 @@ return [
     'invoices_for_order_number' => 'Invoices for Order No. - ',
     'saved_successfully' => 'Saved Successfully',
     'blocked_account' => 'Blocked Account, Please contact your administrator',
+    'add_company' => 'Add Company',
+    'edit_company' => 'Edit Company',
 
 
 

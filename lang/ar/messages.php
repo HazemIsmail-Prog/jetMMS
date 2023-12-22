@@ -293,6 +293,8 @@ return [
     'invoices_for_order_number' => 'فواتير الطلب رقم - ',
     'saved_successfully' => 'تم الحفظ بنجاج',
     'blocked_account' => 'تم تعطيل حسابك ، يرجى مراجعة المسؤول',
+    'add_company' => 'اضافة شركة',
+    'edit_company' => 'تعديل شركة',
 
 
     // Employees

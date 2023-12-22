@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\LanguageController;
+use App\Livewire\Areas\AreaIndex;
+use App\Livewire\Companies\CompanyIndex;
 use App\Livewire\Customers\CustomerForm;
 use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Dispatching\DispatchingIndex;
@@ -49,12 +51,19 @@ Route::middleware([
     // Roles
     Route::get('roles',RoleIndex::class)->name('role.index');
 
-    // Titles
-    Route::get('titles',TitleIndex::class)->name('title.index');
-
+    
     // Users
     Route::get('users',UserIndex::class)->name('user.index');
     Route::get('users/form/{user?}',UserForm::class)->name('user.form');
+    
+    // Titles
+    Route::get('titles',TitleIndex::class)->name('title.index');
+    
+    // Companies
+    Route::get('companies',CompanyIndex::class)->name('company.index');
+    
+    // Areas
+    Route::get('areas',AreaIndex::class)->name('area.index');
 
     // Customers
     Route::get('customers',CustomerIndex::class)->name('customer.index');
