@@ -17,6 +17,7 @@ use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderForm;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Roles\RoleIndex;
+use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
@@ -49,8 +50,50 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+
+
+    
+    // =========== Operations ==============
+
+    // Customers
+    Route::get('customers', CustomerIndex::class)->name('customer.index');
+    Route::get('customers/form/{customer?}', CustomerForm::class)->name('customer.form');
+    
+    // Orders
+    Route::get('orders', OrderIndex::class)->name('order.index');
+    
+    // Marketings
+    Route::get('marketings', MarketingIndex::class)->name('marketing.index');
+  
     //Dispatching 
     Route::get('dispatch-panel/{department}', DispatchingIndex::class)->name('dispatch-panel.index');
+
+
+
+
+    // ========= HR ===================
+
+    // Employees
+    Route::get('employees', EmployeeIndex::class)->name('employee.index');
+    Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
+
+
+
+
+    // ========== Assets ======================
+
+    // Cars
+    Route::get('cars',
+        CarIndex::class
+    )->name('car.index');
+    Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
+    Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
+    Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
+
+
+
+
+    // ========== Admin Settings ===================
 
     // Roles
     Route::get('roles', RoleIndex::class)->name('role.index');
@@ -63,35 +106,22 @@ Route::middleware([
     // Titles
     Route::get('titles', TitleIndex::class)->name('title.index');
 
-    // Companies
-    Route::get('companies', CompanyIndex::class)->name('company.index');
-
     // Statuses
     Route::get('statuses', StatusIndex::class)->name('status.index');
-
-    // Areas
-    Route::get('areas', AreaIndex::class)->name('area.index');
 
     // Departments
     Route::get('departments', DepartmentIndex::class)->name('department.index');
 
-    // Customers
-    Route::get('customers', CustomerIndex::class)->name('customer.index');
-    Route::get('customers/form/{customer?}', CustomerForm::class)->name('customer.form');
+    // Companies
+    Route::get('companies', CompanyIndex::class)->name('company.index');
 
-    // Orders
-    Route::get('orders', OrderIndex::class)->name('order.index');
+    // Shifts
+    Route::get('shifts', ShiftIndex::class)->name('shift.index');
 
-    // Marketings
-    Route::get('marketings', MarketingIndex::class)->name('marketing.index');
+    // Areas
+    Route::get('areas', AreaIndex::class)->name('area.index');
 
-    // Employees
-    Route::get('employees', EmployeeIndex::class)->name('employee.index');
-    Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
 
-    // Assets
-    Route::get('cars', CarIndex::class)->name('car.index');
-    Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
-    Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
-    Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
+
+
 });
