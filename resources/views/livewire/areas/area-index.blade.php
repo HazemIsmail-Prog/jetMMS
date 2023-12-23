@@ -23,7 +23,7 @@
         </span>
     @endteleport
 
-    @if ($this->areas->hasMorePages())
+    @if ($this->areas->hasPages())
         <x-slot name="footer">
             <span id="pagination"></span>
         </x-slot>

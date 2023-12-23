@@ -23,7 +23,7 @@
         </span>
     @endteleport
 
-    @if ($this->titles->hasMorePages())
+    @if ($this->titles->hasPages())
         <x-slot name="footer">
             <span id="pagination"></span>
         </x-slot>

@@ -16,7 +16,7 @@
         </span>
     @endteleport
 
-    @if ($this->statuses->hasMorePages())
+    @if ($this->statuses->hasPages())
         <x-slot name="footer">
             <span id="pagination"></span>
         </x-slot>
