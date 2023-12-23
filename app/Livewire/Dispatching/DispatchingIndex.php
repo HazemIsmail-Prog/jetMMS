@@ -3,8 +3,12 @@
 namespace App\Livewire\Dispatching;
 
 use App\Events\RefreshDepartmentScreenEvent;
+use App\Models\Comment;
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Order;
+use App\Models\Phone;
+use App\Models\Status;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -29,6 +33,7 @@ class DispatchingIndex extends Component
     public function mount()
     {
         $this->fillTechnicianIdForEachOrder();
+        // dd($this->orders());
     }
 
     public function fillTechnicianIdForEachOrder()
@@ -58,17 +63,13 @@ class DispatchingIndex extends Component
         return Order::query()
             ->where('department_id', $this->department->id)
             ->whereNotIn('status_id', [Order::COMPLETED, Order::CANCELLED])
-            ->with('customer:id,name')
-            ->with('phone:id,number')
+            ->addSelect(['customer_name' => Customer::select('name')->whereColumn('id', 'orders.customer_id')])
+            ->addSelect(['phone_number' => Phone::select('number')->whereColumn('id', 'orders.phone_id')])
+            ->addSelect(['status_color' => Status::select('color')->whereColumn('id', 'orders.status_id')])
+            ->addSelect(['order_creator' => User::select('name_'.app()->getLocale())->whereColumn('id', 'orders.created_by')])
             ->with('address.area')
-            ->with('status:id,color as colorrrrr')
-            ->with('creator:id,name_en,name_ar')
-            ->withCount('comments as all_comments')
-            ->withCount('invoices')
-            ->withCount(['comments as unread' => function ($q) {
-                $q->where('is_read', false);
-                $q->where('user_id', '!=', auth()->id());
-            }])
+            ->withCount('invoices as custom_invoices_count')
+            ->with('comments')
             ->orderBy('index')
             ->get();
     }

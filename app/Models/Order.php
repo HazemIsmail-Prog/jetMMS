@@ -125,10 +125,6 @@ class Order extends Model
     {
         return $this->invoices()->count();
     }
-    public function getUnreadCommentsCountAttribute()
-    {
-        return $this->comments()->where('is_read', false)->where('user_id', '!=', auth()->id())->count();
-    }
 
     public function scopeFilterWhenRequest($query, $filter)
     {

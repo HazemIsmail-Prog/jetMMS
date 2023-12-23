@@ -1,7 +1,7 @@
 <div id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
         {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }} 
-        {{ $order->unread > 0 ? ' animate-wiggle hover:animate-none' : '' }} 
+        {{ $order->comments->where('is_read',false)->where('user_id','!=',auth()->id())->count() > 0 ? ' animate-wiggle hover:animate-none' : '' }} 
         order 
         card 
         border-2
@@ -9,11 +9,11 @@
         cursor-pointer
          rounded-lg
         "
-    style="border-color: {{ $order->status->colorrrrr }}">
+    style="border-color: {{ $order->status_color }}">
 
     <div class="flex justify-between items-center">
-        <div class="text-md font-semibold">{{ $order->customer->name }}</div>
-        <div class="text-xs">{{ $order->phone->number }}</div>
+        <div class="text-md font-semibold">{{ $order->customer_name }}</div>
+        <div class="text-xs">{{ $order->phone_number }}</div>
     </div>
 
     <h4 class="mt-2 text-xs">{{ $order->address->full_address }}</h4>
@@ -23,7 +23,7 @@
         <div
             class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             <i class="mgc_user_3_line text-base me-1"></i>
-            {{ $order->creator->name }}
+            {{ $order->order_creator }}
         </div>
 
         <div
@@ -75,12 +75,12 @@
                 <x-svgs.list class="h-4 w-4" />
             </x-badgeWithCounter>
 
-            <x-badgeWithCounter :counter="$order->all_comments"
+            <x-badgeWithCounter :counter="$order->comments->count()"
                 wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
                 <x-svgs.comment class="h-4 w-4" />
             </x-badgeWithCounter>
 
-            <x-badgeWithCounter :counter="$order->invoices_count"
+            <x-badgeWithCounter :counter="$order->custom_invoices_count"
                 wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
                 <x-svgs.invoice class="h-4 w-4" />
             </x-badgeWithCounter>
