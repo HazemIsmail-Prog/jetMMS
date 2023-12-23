@@ -41,7 +41,7 @@
                     <th>
                         <x-select wire:model.live="filters.area_id" class=" w-full py-0">
                             <option value="">{{ __('messages.area') }}</option>
-                            @foreach ($areas->sortBy('name') as $area)
+                            @foreach ($this->areas->sortBy('name') as $area)
                                 <option value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                         </x-select>

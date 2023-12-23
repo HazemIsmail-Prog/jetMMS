@@ -1,7 +1,7 @@
-@if (App\Models\Setting::find(1)->logo)
+@if ($logo)
 <div class=" w-full flex justify-center">
 
-  <img src="https://miskalddartestbucket.s3.amazonaws.com/{{ App\Models\Setting::find(1)->logo }}" alt="">
+  <img src="https://miskalddartestbucket.s3.amazonaws.com/{{ $logo }}" alt="">
 </div>
 @else
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>

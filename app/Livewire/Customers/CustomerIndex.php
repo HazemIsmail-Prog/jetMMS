@@ -12,7 +12,6 @@ class CustomerIndex extends Component
 {
     use WithPagination;
 
-    public $areas = [];
     public $filters = [
         'name' => '',
         'phone' => '',
@@ -26,9 +25,10 @@ class CustomerIndex extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    #[Computed(cache: true)]
+    public function areas()
     {
-        $this->areas = Area::select('id', 'name_en', 'name_ar')->get();
+        return Area::select('id', 'name_en', 'name_ar')->get();
     }
 
     #[Computed]
@@ -43,16 +43,16 @@ class CustomerIndex extends Component
                 $q->where('name', 'like', '%' . $this->filters["name"] . '%');
             })
             ->when($this->filters['phone'], function ($q) {
-                $q->whereRelation('phones','number', 'like', '%' . $this->filters["phone"] . '%');
+                $q->whereRelation('phones', 'number', 'like', '%' . $this->filters["phone"] . '%');
             })
             ->when($this->filters['area_id'], function ($q) {
-                $q->whereRelation('addresses','area_id', $this->filters["area_id"]);
+                $q->whereRelation('addresses', 'area_id', $this->filters["area_id"]);
             })
             ->when($this->filters['block'], function ($q) {
-                $q->whereRelation('addresses','block', $this->filters["block"]);
+                $q->whereRelation('addresses', 'block', $this->filters["block"]);
             })
             ->when($this->filters['street'], function ($q) {
-                $q->whereRelation('addresses','street', $this->filters["street"]);
+                $q->whereRelation('addresses', 'street', $this->filters["street"]);
             })
             ->paginate(20);
     }

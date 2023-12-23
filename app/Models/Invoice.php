@@ -35,16 +35,18 @@ class Invoice extends Model
 
 
     // this function to prevent eager loading for get attributes
-    public function newQuery($excludeDeleted = true)
-    {
-        return parent::newQuery($excludeDeleted)->with('invoice_details');
-    }
+    // public function newQuery($excludeDeleted = true)
+    // {
+    //     return parent::newQuery($excludeDeleted)->with('invoice_details');
+    // }
 
     public function getAmountAttribute()
     {
-        return $this->invoice_details->sum(function ($detail) {
-            return $detail->quantity * $detail->price;
-        });
+        $amount = 0;
+        foreach ($this->invoice_details() as $row) {
+            $amount += $row->total;
+        }
+        return $amount;
     }
 
     // public function getPaymentStatusAttribute()
@@ -58,26 +60,30 @@ class Invoice extends Model
 
     public function getServicesAmountAttribute()
     {
-        return $this->invoice_details->where('service.type','service')->sum('total');;
+        return $this->invoice_details->where('service.type', 'service')->sum('total');;
     }
     public function getPartsAmountAttribute()
     {
-        return $this->invoice_details->where('service.type','part')->sum('total');;
+        return $this->invoice_details->where('service.type', 'part')->sum('total');;
     }
 
     public function getCashAmountAttribute()
     {
-        return $this-> payments->where('method', 'cash')->sum('amount');
+        return $this->payments->where('method', 'cash')->sum('amount');
     }
 
     public function getKnetAmountAttribute()
     {
-        return $this-> payments->where('method', 'knet')->sum('amount');
+        return $this->payments->where('method', 'knet')->sum('amount');
     }
 
     public function getTotalPaidAmountAttribute()
     {
-        return $this-> payments()->sum('amount');
+        $amount = 0;
+        foreach ($this->payments() as $row) {
+            $amount += $row->amount;
+        }
+        return $amount;
     }
 
     public function getRemainingAmountAttribute()
