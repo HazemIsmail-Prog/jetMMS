@@ -238,7 +238,7 @@
             <x-sidebar-item icon="dashboard" route="shift.index" :title="__('messages.shifts')" />
             <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
             <x-sidebar-item icon="dashboard" route="service.index" :title="__('messages.services')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.settings')" />
+            <x-sidebar-item icon="dashboard" route="settings.form" :title="__('messages.settings')" />
 
         </ul>
     </div>

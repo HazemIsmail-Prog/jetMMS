@@ -299,6 +299,12 @@ return [
     'add_account' => 'اضافة حساب',
     'edit_account' => 'تعديل حساب',
     'index' => 'الترتيب',
+    'edit_settings' => 'تعديل اعدادات النظام',
+    'logo' => 'الشعار',
+    'favicon' => 'الشعار العلوي',
+    'fax' => 'الفاكس',
+    'address_ar' => 'العنوان بالعربي',
+    'address_en' => 'العنوان بالانجليزي',
 
 
     // Employees

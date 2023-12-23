@@ -19,6 +19,7 @@ use App\Livewire\Orders\InvoiceIndex;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\Roles\RoleIndex;
 use App\Livewire\Services\ServiceIndex;
+use App\Livewire\Settings\SettingsForm;
 use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Titles\TitleIndex;
@@ -122,6 +123,9 @@ Route::middleware([
 
     // Services
     Route::get('services', ServiceIndex::class)->name('service.index');
+
+    // Settings
+    Route::get('settings', SettingsForm::class)->name('settings.form');
 
 
 
