@@ -31,8 +31,7 @@
         duration-200 
         ease-in-out"
         :class="sidebarOpen ? 'translate-x-0' : '{{ app()->getLocale() == 'ar' ? 'translate-x-64' : '-translate-x-64' }}'"
-        @click.outside="sidebarOpen = false" @keydown.escape.window="sidebarOpen = false"
-        >
+        @click.outside="sidebarOpen = false" @keydown.escape.window="sidebarOpen = false">
 
         <!-- Sidebar header -->
         <div class="flex justify-between mb-10 pe-3 sm:px-2">
@@ -244,3 +243,19 @@
         </ul>
     </div>
 </div>
+
+
+@script
+    {{-- this script to keep sidebar scroll position on change pages --}}
+    <script>
+        let sidebar = document.getElementById("sidebar");
+        let top = localStorage.getItem("sidebar-scroll");
+        if (top !== null) {
+            sidebar.scrollTop = parseInt(top, 10);
+        }
+
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("sidebar-scroll", sidebar.scrollTop);
+        });
+    </script>
+@endscript
