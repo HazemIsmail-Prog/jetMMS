@@ -31,7 +31,8 @@
         duration-200 
         ease-in-out"
         :class="sidebarOpen ? 'translate-x-0' : '{{ app()->getLocale() == 'ar' ? 'translate-x-64' : '-translate-x-64' }}'"
-        @click.outside="sidebarOpen = false" @keydown.escape.window="sidebarOpen = false" x-cloak="lg">
+        @click.outside="sidebarOpen = false" @keydown.escape.window="sidebarOpen = false"
+        >
 
         <!-- Sidebar header -->
         <div class="flex justify-between mb-10 pe-3 sm:px-2">
