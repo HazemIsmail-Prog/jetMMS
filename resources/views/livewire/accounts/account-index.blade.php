@@ -23,7 +23,7 @@
         <div class=" space-y-2">
             @foreach ($this->accounts as $account)
                 <div
-                    class=" ms-{{ 20 * $account->level }} px-4 py-1 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg flex items-center justify-between">
+                    class=" px-4 py-1 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg flex items-center justify-between">
                     <x-label>{{ $account->name }}</x-label>
                     <div class=" flex items-center gap-2">
                         <x-badgeWithCounter title="{{ __('messages.add') }}"

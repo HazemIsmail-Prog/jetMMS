@@ -1,6 +1,12 @@
 @foreach ($account->child_accounts as $account)
     <div
-        class=" ms-{{ 20 * $account->level }} px-4 py-1 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg flex items-center justify-between">
+        @class([
+            'px-4 py-1 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg flex items-center justify-between', 
+            'ms-20' => $account->level == 1,
+            'ms-40' => $account->level == 2,
+            'ms-60' => $account->level == 3,
+            ])
+        >
         <x-label>{{ $account->name }}</x-label>
         <div class=" flex items-center gap-2">
             @if ($account->level < 3)
