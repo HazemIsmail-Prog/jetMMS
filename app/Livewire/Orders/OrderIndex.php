@@ -23,23 +23,40 @@ class OrderIndex extends Component
         'invoiceDeleted' => '$refresh',
     ];
 
-    public $areas;
-    public $creators;
-    public $statuses;
-    public $technicians;
-    public $departments;
-    public $tags;
     public $filters;
+
+    #[Computed(cache:true)]
+    public function areas() {
+        return Area::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed(cache:true)]
+    public function creators() {
+        return User::whereHas('orders_creator')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed(cache:true)]
+    public function statuses() {
+        return Status::orderBy('index')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed(cache:true)]
+    public function technicians() {
+        return User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed(cache:true)]
+    public function departments() {
+        return Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    // #[Computed(cache:true)]
+    // public function tags() {
+    //     return Order::whereNotNull('tag')->groupBy('tag')->pluck('tag');
+    // }
 
     public function mount() {
         
-        $this->areas = Area::select('id','name_en','name_ar')->get();
-        $this->creators = User::whereHas('orders_creator')->select('id', 'name_en', 'name_ar')->get();
-        $this->statuses = Status::orderBy('index')->select('id', 'name_en', 'name_ar')->get();
-        $this->technicians = User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
-        $this->departments = Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
-        $this->tags = Order::whereNotNull('tag')->groupBy('tag')->pluck('tag');
-
         $this->filters =
         [
             'customer_name' => '',
@@ -79,7 +96,7 @@ class OrderIndex extends Component
             ->with('phone')
             ->with('address')
             ->with('invoices')
-            ->withCount('invoices')
+            ->withCount('invoices as custom_invoices_count')
             ->withCount('comments as all_comments')
             ->orderBy('id' , 'desc')
 

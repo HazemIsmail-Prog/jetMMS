@@ -46,7 +46,7 @@
                     <th scope="col" class=" text-center">
                         <x-select wire:model.live="filters.creators" class="w-36 min-w-full text-center py-0">
                             <option value="">{{ __('messages.creator') }}</option>
-                            @foreach ($creators as $creator)
+                            @foreach ($this->creators as $creator)
                                 <option value="{{ $creator->id }}">{{ $creator->name }}</option>
                             @endforeach
                         </x-select>
@@ -59,7 +59,7 @@
                         <x-select class="w-36 min-w-full text-center py-0" id="statuses" wire:ignore
                             wire:model.live="filters.statuses">
                             <option value="">{{ __('messages.status') }}</option>
-                            @foreach ($statuses as $status)
+                            @foreach ($this->statuses as $status)
                                 <option value="{{ $status->id }}">{{ $status->name }}</option>
                             @endforeach
                         </x-select>
@@ -69,7 +69,7 @@
                         <x-select class="w-36 min-w-full text-center py-0" id="departments" wire:ignore
                             wire:model.live="filters.departments">
                             <option value="">{{ __('messages.department') }}</option>
-                            @foreach ($departments as $department)
+                            @foreach ($this->departments as $department)
                                 <option value="{{ $department->id }}">{{ $department->name }}
                                 </option>
                             @endforeach
@@ -80,7 +80,7 @@
                         <x-select class="w-36 min-w-full text-center py-0" id="technicians" wire:ignore
                             wire:model.live="filters.technicians">
                             <option value="">{{ __('messages.technician') }}</option>
-                            @foreach ($technicians->sortBy('name') as $technician)
+                            @foreach ($this->technicians->sortBy('name') as $technician)
                                 <option value="{{ $technician->id }}">{{ $technician->name }}</option>
                             @endforeach
                         </x-select>
@@ -107,7 +107,7 @@
                         <x-select class="w-36 min-w-full text-center py-0" id="areas"
                             wire:model.live="filters.areas">
                             <option value="">{{ __('messages.address') }}</option>
-                            @foreach ($areas->sortBy->name as $area)
+                            @foreach ($this->areas->sortBy->name as $area)
                                 <option value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                         </x-select>
@@ -170,7 +170,7 @@
                             <div class=" flex items-center gap-2">
 
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
+                                    wire:click="$dispatch('showOrderFormModal',{order:{{ $order->id }},customer:{{ $order->customer }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
 
@@ -184,7 +184,7 @@
                                     <x-svgs.comment class="h-4 w-4" />
                                 </x-badgeWithCounter>
 
-                                <x-badgeWithCounter :counter="$order->invoices_count" title="{{ __('messages.invoices') }}"
+                                <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
                                     wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
                                     <x-svgs.invoice class="h-4 w-4" />
                                 </x-badgeWithCounter>
