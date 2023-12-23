@@ -169,13 +169,13 @@
                         </td>
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
-
-                                <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
-                                    wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
-                                    wire:click="delete({{ $invoice->id }})">
-                                    <x-svgs.trash class="h-4 w-4" />
-                                </x-badgeWithCounter>
-
+                                @if ($invoice->order->invoices_count > 1)
+                                    <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
+                                        wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
+                                        wire:click="delete({{ $invoice->id }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endif
                             </div>
                         </td>
                     </tr>
