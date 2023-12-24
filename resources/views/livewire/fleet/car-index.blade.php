@@ -89,12 +89,12 @@
                             {{ $car->insurance_expiration_date->format('d-m-Y') }}
                         </td>
                         <td class="px-6 py-4">
-                            <a wire:navigate href="{{ route('car.action.index', $car) }}"
+                            <a href="{{ route('car.action.index', $car) }}"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ $car->actions_count }}</a>
                             
                         </td>
                         <td class="px-6 py-4 text-right no-print">
-                            <a wire:navigate href="{{ route('car.form', $car) }}"
+                            <a href="{{ route('car.form', $car) }}"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('messages.edit') }}</a>
                         </td>
                     </tr>

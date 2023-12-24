@@ -30,6 +30,7 @@
     >
     <x-banner />
 
+
     {{-- Chatting --}}
     {{-- @persist('chats') --}}
         @livewire('chats.chat-button')

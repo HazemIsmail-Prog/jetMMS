@@ -110,13 +110,13 @@
                             <livewire:users.status-switcher :$user :key="'switcher-' . $user->id . '-' . now()">
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
-                            <a wire:navigate href="{{ route('user.form', $user) }}"
+                            <a href="{{ route('user.form', $user) }}"
                                 class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.edit class="w-4 h-4" />
                             </a>
 
 
-                            <a wire:navigate
+                            <a
                                 href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
                                 class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.duplicate class="w-4 h-4" />

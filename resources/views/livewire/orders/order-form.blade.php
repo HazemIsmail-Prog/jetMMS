@@ -13,7 +13,7 @@
                             {{ $customer->name }}
                         </h2>
                         {{-- @can('customers_edit') --}}
-                        <a title="{{ __('messages.edit') }}" wire:navigate href="{{ route('customer.form', $customer) }}"
+                        <a title="{{ __('messages.edit') }}" href="{{ route('customer.form', $customer) }}"
                             class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                             <x-svgs.edit class="w-4 h-4" />
                         </a>

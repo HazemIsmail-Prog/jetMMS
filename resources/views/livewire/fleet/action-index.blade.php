@@ -63,19 +63,19 @@
                         </td>
 
                         <td class="px-6 py-4 text-right flex items-center gap-2 no-print">
-                            <a wire:navigate href="{{ route('car.action.report',$action) }}" class="font-medium text-gray-600 dark:text-gray-500">
+                            <a href="{{ route('car.action.report',$action) }}" class="font-medium text-gray-600 dark:text-gray-500">
                                 <span class="material-symbols-outlined">
                                     print
                                 </span>
                             </a>
 
-                            <a wire:navigate href="#" class="font-medium text-blue-600 dark:text-blue-500">
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500">
                                 <span class="material-symbols-outlined">
                                     edit_square
                                 </span>
                             </a>
 
-                            <a wire:navigate href="#" class="font-medium text-red-600 dark:text-red-500">
+                            <a href="#" class="font-medium text-red-600 dark:text-red-500">
                                 <span class="material-symbols-outlined">
                                     delete
                                 </span>
