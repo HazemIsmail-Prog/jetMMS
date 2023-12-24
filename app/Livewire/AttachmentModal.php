@@ -83,6 +83,7 @@ class AttachmentModal extends Component
             
         }
         $this->reset(['showForm', 'attachment']);
+        $this->dispatch('attachmentsUpdated');
     }
 
     public function saveToS3($file)
@@ -104,6 +105,8 @@ class AttachmentModal extends Component
     {
         Storage::disk('s3')->delete($attachment->file);
         $attachment->delete();
+        $this->dispatch('attachmentsUpdated');
+
     }
     public function render()
     {

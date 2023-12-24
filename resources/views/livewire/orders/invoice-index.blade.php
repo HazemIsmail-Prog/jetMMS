@@ -117,7 +117,7 @@
                             {{ $invoice->id }}
                         </th>
                         <th class=" text-center px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <x-badgeWithCounter :counter="$invoice->order->invoices_count > 1 ? $invoice->order->invoices_count : null" title="{{ __('messages.invoices') }}"
+                            <x-badgeWithCounter :counter="$this->invoices->where('order_id',$invoice->order_id)->count() > 1 ? $this->invoices->where('order_id',$invoice->order_id)->count() : null" title="{{ __('messages.invoices') }}"
                                 wire:click="$dispatch('showInvoicesModal',{order_id:{{ $invoice->order->id }}})">
                                 {{ $invoice->order_id }}
                             </x-badgeWithCounter>
@@ -169,7 +169,7 @@
                         </td>
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
-                                @if ($invoice->order->invoices_count > 1)
+                                @if ($this->invoices->where('order_id',$invoice->order_id)->count() > 1)
                                     <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
                                         wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
                                         wire:click="delete({{ $invoice->id }})">

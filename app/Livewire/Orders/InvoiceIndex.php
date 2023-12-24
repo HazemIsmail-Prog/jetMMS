@@ -49,7 +49,7 @@ class InvoiceIndex extends Component
     }
 
     #[Computed()]
-    #[On('invoiceDeleted')]
+    #[On('invoicesUpdated')]
     public function invoices()
     {
         return Invoice::query()
@@ -92,7 +92,7 @@ class InvoiceIndex extends Component
     public function delete(Invoice $invoice) {
         $invoice->payments()->delete();
         $invoice->delete();
-        $this->dispatch('invoiceDeleted');
+        $this->dispatch('invoicesUpdated');
     }
 
     public function dateClicked($date) {

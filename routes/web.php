@@ -10,6 +10,7 @@ use App\Livewire\Departments\DepartmentIndex;
 use App\Livewire\Dispatching\DispatchingIndex;
 use App\Livewire\Employees\EmployeeForm;
 use App\Livewire\Employees\EmployeeIndex;
+use App\Livewire\Employees\EmployeeView;
 use App\Livewire\Fleet\ActionIndex;
 use App\Livewire\Fleet\ActionReport;
 use App\Livewire\Fleet\CarForm;
@@ -78,6 +79,7 @@ Route::middleware([
     // Employees
     Route::get('employees', EmployeeIndex::class)->name('employee.index');
     Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
+    Route::get('employee/view/{employee}', EmployeeView::class)->name('employee.view');
 
 
 

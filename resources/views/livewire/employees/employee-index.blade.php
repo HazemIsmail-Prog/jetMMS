@@ -100,9 +100,13 @@
                                 wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
                                 <x-svgs.attachment class="w-4 h-4" />
                             </x-badgeWithCounter>
-                            <a wire:navigate href="{{ route('employee.form', $employee) }}"
+                            <a href="{{ route('employee.form', $employee) }}"
                                 class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.edit class="w-4 h-4" />
+                            </a>
+                            <a href="{{ route('employee.view', $employee) }}"
+                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <x-svgs.view class="w-4 h-4" />
                             </a>
                         </td>
                     </tr>

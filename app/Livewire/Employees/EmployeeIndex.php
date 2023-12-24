@@ -44,6 +44,7 @@ class EmployeeIndex extends Component
 
     #[Computed()]
     #[On('statusChanged')]
+    #[On('attachmentsUpdated')]
     public function employees()
     {
         return Employee::query()
