@@ -307,6 +307,23 @@ return [
     'address_en' => 'العنوان بالانجليزي',
 
 
+    'leaves' => 'الاجازات',
+    'add_leave' => 'اضافة اجازة',
+    'start_date' => 'تاريخ البداية',
+    'end_date' => 'تاريخ النهاية',
+    'edit_leave' => 'تعديل اجازة',
+    'increases' => 'الزيادات',
+    'add_increase' => 'اضافة زيادة',
+    'increase_date' => 'تاريخ الزيادة',
+    'edit_increase' => 'تعديل زيادة',
+    'no_leaves_found' => 'لا يوجد اجازات',
+    'no_increases_found' => 'لا يوجد زيادات',
+    'leave_days_count' => 'عدد ايام الاجازة',
+    'no_attachments_found' => 'لا يوجد مرفقات',
+
+
+
+
     // Employees
     'add_employee' => 'اضافة موظف',
     'add_employee_details' => 'اضافة بيانات موظف',

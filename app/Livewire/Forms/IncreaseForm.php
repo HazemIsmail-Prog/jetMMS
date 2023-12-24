@@ -2,18 +2,16 @@
 
 namespace App\Livewire\Forms;
 
-use App\Rules\OverlappingLeavePeriods;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class LeaveForm extends Form
+class IncreaseForm extends Form
 {
     public $id;
     public $employee_id;
-    public $start_date;
-    public $end_date;
+    public $increase_date;
+    public $amount;
     public $type;
-    public $status;
     public $notes;
     public $created_by;
 
@@ -22,10 +20,9 @@ class LeaveForm extends Form
         return [
             'id' => 'nullable',
             'employee_id' => 'required',
-            'start_date' => ['required', new OverlappingLeavePeriods()],
-            'end_date' => ['required', new OverlappingLeavePeriods()],
+            'increase_date' => 'required',
+            'amount' => 'required',
             'type' => 'required',
-            'status' => 'required',
             'notes' => 'nullable',
             'created_by' => 'required',
         ];

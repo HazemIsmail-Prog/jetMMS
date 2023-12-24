@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leaves', function (Blueprint $table) {
+        Schema::create('increases', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class,'created_by');
             $table->foreignIdFor(Employee::class);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('increase_date');
+            $table->float('amount');
             $table->string('type');
-            $table->string('status');
             $table->string('notes')->nullable();
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leaves');
+        Schema::dropIfExists('increases');
     }
 };

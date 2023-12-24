@@ -27,7 +27,8 @@ class LeaveForm extends Component
         $this->modalTitle = $this->leave->id ? __('messages.edit_leave') : __('messages.add_leave');
         $this->form->fill($this->leave);
         if(!$this->leave->id){
-            // Edit
+            // create
+            $this->form->created_by = auth()->id();
             $this->form->employee_id = $this->employee->id;
         }
     }

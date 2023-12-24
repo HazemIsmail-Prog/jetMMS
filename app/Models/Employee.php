@@ -32,6 +32,10 @@ class Employee extends Model
         return $this->hasMany(Leave::class);
     }
 
+    public function increases() : HasMany {
+        return $this->hasMany(Increase::class);
+    }
+
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable');

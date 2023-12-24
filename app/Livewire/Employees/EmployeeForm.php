@@ -20,7 +20,7 @@ class EmployeeForm extends Component
         $this->employee = $employee;
         $this->form->fill($this->employee);
         if($this->employee->id){
-            $this->selectedUser = User::find($this->employee->id);
+            $this->selectedUser = User::find($this->employee->user_id);
         }
     }
 

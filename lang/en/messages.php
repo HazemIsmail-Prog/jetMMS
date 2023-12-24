@@ -289,6 +289,29 @@ return [
     'edit_account' => 'Edit Account',
     'index' => 'Index',
 
+    'edit_settings' => 'Edit System Settings',
+    'logo' => 'Logo',
+    'favicon' => 'Favicon',
+    'fax' => 'Fax',
+    'address_ar' => 'Arabic Address',
+    'address_en' => 'English Address',
+
+
+    'leaves' => 'Leaves',
+    'add_leave' => 'Add Leave',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'edit_leave' => 'Edit Leave',
+    'increases' => 'Increases',
+    'add_increase' => 'Add Increase',
+    'increase_date' => 'Increase Date',
+    'edit_increase' => 'Edit Increase',
+    'no_leaves_found' => 'No leaves found',
+    'no_increases_found' => 'No increases found',
+    'leave_days_count' => 'Leave Days',
+    'no_attachments_found' => 'No attachments found',
+
+
 
 
 

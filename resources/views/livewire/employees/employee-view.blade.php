@@ -1,6 +1,10 @@
 <div>
 
-    <div class=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+    {{-- Modals --}}
+    @livewire('attachment-modal')
+
+
+    <div class=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5">
         <div>
             <x-label class=" font-normal">{{ __('messages.name') }}</x-label>
             <x-label>{{ $employee->user->name }}</x-label>
@@ -37,6 +41,11 @@
         {{-- Leaves --}}
         <div class=" col-span-full">
             <livewire:employees.leave-index :$employee :key="'leaves-' . $employee->id . '-' . now()">
+        </div>
+
+        {{-- Increases --}}
+        <div class=" col-span-full">
+            <livewire:employees.increase-index :$employee :key="'increases-' . $employee->id . '-' . now()">
         </div>
     </div>
 
