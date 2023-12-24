@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('type');
             $table->string('status');
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

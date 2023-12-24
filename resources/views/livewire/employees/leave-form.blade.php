@@ -33,6 +33,12 @@
                                 type="text" id="status" />
                             <x-input-error for="form.status" />
                         </div>
+                        <div>
+                            <x-label for="notes">{{ __('messages.notes') }}</x-label>
+                            <x-input required class="w-full py-0" wire:model="form.notes" autocomplete="off"
+                                type="text" id="notes" />
+                            <x-input-error for="form.notes" />
+                        </div>
 
                     </div>
 

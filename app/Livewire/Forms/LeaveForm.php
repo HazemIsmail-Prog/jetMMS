@@ -13,6 +13,7 @@ class LeaveForm extends Form
     public $end_date;
     public $type;
     public $status;
+    public $notes;
 
     public function rules()
     {
@@ -23,6 +24,7 @@ class LeaveForm extends Form
             'end_date' => 'required',
             'type' => 'required',
             'status' => 'required',
+            'notes' => 'nullable',
         ];
     }
 }

@@ -36,6 +36,9 @@
                         <th scope="col" class="px-6 py-1 text-start">
                             {{ __('messages.status') }}
                         </th>
+                        <th scope="col" class="px-6 py-1 text-start">
+                            {{ __('messages.notes') }}
+                        </th>
                         <th scope="col" class=" no-print"></th>
                     </tr>
                 </thead>
@@ -58,6 +61,9 @@
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
                                 <div>{{ $leave->status }}</div>
+                            </td>
+                            <td class="px-6 py-1 text-start whitespace-nowrap ">
+                                <div>{{ $leave->notes }}</div>
                             </td>
 
                             <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">

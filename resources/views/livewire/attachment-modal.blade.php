@@ -89,42 +89,48 @@
 
                 {{-- Attachments Table --}}
                 @if ($currentRecord)
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-1 whitespace-nowrap text-start">
-                                    {{ __('messages.description') }}</th>
-                                <th scope="col" class="px-6 py-1 whitespace-nowrap text-center">
-                                    {{ __('messages.expirationDate') }}</th>
-                                <th scope="col" class="px-6 py-1 whitespace-nowrap text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($this->attachments as $attachment)
-                                <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $attachment->description }}
-                                    </th>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
-                                        {{ $attachment->expirationDate?->format('d-m-Y') }}
-                                    </td>
-                                    <td class="px-6 py-1 text-end whitespace-nowrap">
-                                        <div class=" flex items-center justify-end gap-2">
-                                            <a target="__blank" href="{{ $attachment->full_path }}">
-                                                <x-svgs.view class="w-6 h-6" />
-                                            </a>
-                                            <x-svgs.edit wire:click="edit({{ $attachment }})" class="w-6 h-6" />
-                                            <x-svgs.trash wire:confirm="{{ __('messages.are_u_sure') }}"
-                                                wire:click="delete({{ $attachment }})" class="w-6 h-6" />
-                                        </div>
-                                    </td>
+                    @if ($this->attachments->count() > 0)
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-1 whitespace-nowrap text-start">
+                                        {{ __('messages.description') }}</th>
+                                    <th scope="col" class="px-6 py-1 whitespace-nowrap text-center">
+                                        {{ __('messages.expirationDate') }}</th>
+                                    <th scope="col" class="px-6 py-1 whitespace-nowrap text-center"></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($this->attachments as $attachment)
+                                    <tr
+                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <th
+                                            class="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $attachment->description }}
+                                        </th>
+                                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                                            {{ $attachment->expirationDate?->format('d-m-Y') }}
+                                        </td>
+                                        <td class="px-6 py-1 text-end whitespace-nowrap">
+                                            <div class=" flex items-center justify-end gap-2">
+                                                <a target="__blank" href="{{ $attachment->full_path }}">
+                                                    <x-svgs.view class="w-6 h-6" />
+                                                </a>
+                                                <x-svgs.edit wire:click="edit({{ $attachment }})" class="w-6 h-6" />
+                                                <x-svgs.trash wire:confirm="{{ __('messages.are_u_sure') }}"
+                                                    wire:click="delete({{ $attachment }})" class="w-6 h-6" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <x-label class=" text-center">{{ __('messages.no_attachments_found') }}</x-label>
+                    @endif
                 @endif
-
+                
             </x-slot>
 
         </x-dialog-modal>
