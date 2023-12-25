@@ -310,6 +310,8 @@ return [
     'no_increases_found' => 'No increases found',
     'leave_days_count' => 'Leave Days',
     'no_attachments_found' => 'No attachments found',
+    'nationality' => 'Nationality',
+    'gender' => 'Gender',
 
 
 

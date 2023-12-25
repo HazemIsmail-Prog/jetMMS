@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,8 +23,10 @@ class EmployeeIndex extends Component
     public $departments;
     public $shifts;
     public $roles;
+
+    #[Url()]
     public $filters = [
-        'name' => '',
+        'name' => null,
         'title_id' => '',
         'department_id' => '',
         'shift_id' => '',
@@ -43,8 +46,8 @@ class EmployeeIndex extends Component
     }
 
     #[Computed()]
-    #[On('statusChanged')]
     #[On('attachmentsUpdated')]
+    #[On('employeesUpdated')]
     public function employees()
     {
         return Employee::query()

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('passportExpirationDate');
             $table->date('lastWorkingDate')->nullable();
             $table->string('status');
+            $table->string('nationality');
             $table->string('cid');
             $table->string('passport_no');
             $table->integer('startingSalary');

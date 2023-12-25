@@ -41,7 +41,7 @@
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $increase->increase_date }}</div>
+                                <div>{{ $increase->increase_date->format('d-m-Y') }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
                                 <div>{{ $increase->amount }}</div>
@@ -54,7 +54,7 @@
                             </td>
 
                             <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                                <div class=" flex items-center gap-2">
+                                <div class=" flex items-center justify-end gap-2">
 
                                     <x-badgeWithCounter increase="{{ __('messages.edit') }}"
                                         wire:click="$dispatch('showIncreaseFormModal',{increase:{{ $increase }}})">

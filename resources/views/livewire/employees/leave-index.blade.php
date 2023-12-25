@@ -21,10 +21,7 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-1 text-start">
-                            {{ __('messages.start_date') }}
-                        </th>
-                        <th scope="col" class="px-6 py-1 text-start">
-                            {{ __('messages.end_date') }}
+                            {{ __('messages.date') }}
                         </th>
                         <th scope="col" class="px-6 py-1 text-start">
                             {{ __('messages.leave_days_count') }}
@@ -47,10 +44,8 @@
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $leave->start_date }}</div>
-                            </td>
-                            <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $leave->end_date }}</div>
+                                <div>{{ $leave->start_date->format('d-m-Y') }}</div>
+                                <div>{{ $leave->end_date->format('d-m-Y') }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
                                 <div>{{ $leave->leave_days_count }}</div>
@@ -61,12 +56,12 @@
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
                                 <div>{{ $leave->status }}</div>
                             </td>
-                            <td class="px-6 py-1 text-start whitespace-nowrap ">
+                            <td class="px-6 py-1 text-start ">
                                 <div>{{ $leave->notes }}</div>
                             </td>
 
                             <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                                <div class=" flex items-center gap-2">
+                                <div class=" flex items-center justify-end gap-2">
 
                                     <x-badgeWithCounter leave="{{ __('messages.edit') }}"
                                         wire:click="$dispatch('showLeaveFormModal',{leave:{{ $leave }}})">

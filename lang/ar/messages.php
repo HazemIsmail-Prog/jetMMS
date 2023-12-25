@@ -320,6 +320,8 @@ return [
     'no_increases_found' => 'لا يوجد زيادات',
     'leave_days_count' => 'عدد ايام الاجازة',
     'no_attachments_found' => 'لا يوجد مرفقات',
+    'nationality' => 'الجنسية',
+    'gender' => 'الجنس',
 
 
 

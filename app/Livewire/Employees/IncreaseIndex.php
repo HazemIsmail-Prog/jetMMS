@@ -19,6 +19,7 @@ class IncreaseIndex extends Component
     {
         return Increase::query()
             ->where('employee_id', $this->employee->id)
+            ->orderBy('increase_date','desc')
             ->withCount('attachments')
             ->get();
     }

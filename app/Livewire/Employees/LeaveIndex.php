@@ -15,14 +15,17 @@ class LeaveIndex extends Component
     #[Computed()]
     #[On('leavesUpdated')]
     #[On('attachmentsUpdated')]
-    public function leaves() {
+    public function leaves()
+    {
         return Leave::query()
-        ->where('employee_id',$this->employee->id)
-        ->withCount('attachments')
-        ->get();
+            ->where('employee_id', $this->employee->id)
+            ->orderBy('start_date', 'desc')
+            ->withCount('attachments')
+            ->get();
     }
 
-    public function delete(Leave $leave) {
+    public function delete(Leave $leave)
+    {
         // TODO:delete attachments with its observer
         $leave->delete();
         $this->dispatch('leavesUpdated');

@@ -15,6 +15,8 @@ class EmployeeForm extends Form
     public $passportIssueDate;
     public $company_id;
     public $cid;
+    public $nationality;
+    public $gender;
     public $passport_no;
     public $startingSalary;
     public $startingLeaveBalance;
@@ -32,10 +34,12 @@ class EmployeeForm extends Form
             'passportIssueDate' => 'required',
             'company_id' => 'nullable',
             'cid' => 'required|min:12|max:12',
+            'nationality' => 'required',
+            'gender' => 'required',
             'passport_no' => 'required',
             'startingSalary' => 'required',
             'startingLeaveBalance' => 'required',
-            'lastWorkingDate' => 'nullable|required_unless:status,=,"active"',
+            'lastWorkingDate' => 'nullable|required_unless:status,in,"active","under_test"',
             'status' => 'required',
         ];
     }

@@ -1,5 +1,16 @@
 <div>
 
+    <x-slot name="header">
+        <div class=" flex items-center justify-between">
+
+            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
+                {{ $employee->user->name }}
+                <span id="counter"></span>
+            </h2>
+            <x-anchor class="no-print" href="{{ url()->previous() }}">{{ __('messages.back') }}</x-anchor>
+        </div>
+    </x-slot>
+
     {{-- Modals --}}
     @livewire('attachment-modal')
 
@@ -38,13 +49,14 @@
             <x-label class=" font-normal">{{ __('messages.status') }}</x-label>
             <x-label>{{ $employee->status->title() }}</x-label>
         </div>
+        <div class="col-span-full"></div>
         {{-- Leaves --}}
-        <div class=" col-span-full">
+        <div class=" col-span-3">
             <livewire:employees.leave-index :$employee :key="'leaves-' . $employee->id . '-' . now()">
         </div>
 
         {{-- Increases --}}
-        <div class=" col-span-full">
+        <div class=" col-span-3">
             <livewire:employees.increase-index :$employee :key="'increases-' . $employee->id . '-' . now()">
         </div>
     </div>

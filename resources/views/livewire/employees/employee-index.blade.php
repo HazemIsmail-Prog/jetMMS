@@ -6,9 +6,16 @@
                 {{ __('messages.employees') }}
                 <span id="counter"></span>
             </h2>
-            <x-anchor class="no-print" href="{{ route('employee.form') }}">{{ __('messages.add_employee') }}</x-anchor>
+            <span id="addNew"></span>
+
+
         </div>
     </x-slot>
+    @teleport('#addNew')
+        <x-button class=" no-print"
+            wire:click="$dispatch('showEmployeeFormModal')">{{ __('messages.add_employee') }}</x-button>
+    @endteleport
+
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
@@ -26,6 +33,7 @@
     @endif
 
     @livewire('attachment-modal')
+    @livewire('employees.employee-form')
 
 
 
@@ -100,10 +108,10 @@
                                 wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
                                 <x-svgs.attachment class="w-4 h-4" />
                             </x-badgeWithCounter>
-                            <a href="{{ route('employee.form', $employee) }}"
-                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
+                                wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee->id }}})">
                                 <x-svgs.edit class="w-4 h-4" />
-                            </a>
+                            </x-badgeWithCounter>
                             <a href="{{ route('employee.view', $employee) }}"
                                 class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.view class="w-4 h-4" />
