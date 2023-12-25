@@ -24,12 +24,17 @@ class PaymentForm extends Component
 
     public function save_payment()
     {
+
+        // TODO:DB::transaction
         Payment::create([
             'invoice_id'=>$this->invoice->id,
             'amount'=>$this->payment['amount'],
             'method'=>$this->payment['method'],
             'user_id'=>auth()->id(),
         ]);
+
+        $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
+
         $this->dispatch('paymentReceived');
     }
 

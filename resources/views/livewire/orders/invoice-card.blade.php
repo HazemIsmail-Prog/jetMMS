@@ -1,9 +1,13 @@
 <div class=" p-4 border dark:border-gray-700 rounded-lg">
+
+    {{-- Header Section --}}
     <div class=" flex items-center justify-between">
         <h3 class="font-semibold text-gray-900 dark:text-white">{{ $invoice->id }}</h3>
         <x-svgs.trash wire:click="deleteInvoice({{ $invoice->id }})" wire:confirm="adcflkhlkh"
             class=" w-4 h-4 text-red-600" />
     </div>
+
+    {{-- Invoice Table --}}
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -19,6 +23,8 @@
                 </th>
             </tr>
         </thead>
+
+        {{-- Services Section --}}
         @if ($invoice->invoice_details->load('service')->where('service.type', 'service')->count() > 0)
             <tr>
                 <th scope="col" class="py-1 text-start">
@@ -34,6 +40,8 @@
                 </tr>
             @endforeach
         @endif
+
+        {{-- Parts Section --}}
         @if ($invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0)
             <tr>
                 <th scope="col" class="py-1 text-start">
@@ -49,6 +57,8 @@
                 </tr>
             @endforeach
         @endif
+
+        {{-- Totals Section --}}
         <tr class=" border-t dark:border-gray-700">
             <th>{{ __('messages.total') }}</th>
             <th></th>

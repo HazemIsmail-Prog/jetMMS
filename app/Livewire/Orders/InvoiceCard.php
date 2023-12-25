@@ -23,7 +23,10 @@ class InvoiceCard extends Component
     }
 
     public function deletePayment(Payment $payment) {
+        // TODO:DB transaction
         $payment->delete();
+        $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
+
     }
     
     public function deleteInvoice(Invoice $invoice) {
@@ -34,6 +37,7 @@ class InvoiceCard extends Component
 
     public function render()
     {
+        // dd($this->invoice->amount);
         return view('livewire.orders.invoice-card');
     }
 }

@@ -164,7 +164,7 @@
                             <div>{{ $order->address->full_address }}</div>
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            {{ $order->remaining_amount > 0 ? $order->remaining_amount : '-' }}
+                            {{ $order->remaining_amount > 0 ? number_format($order->remaining_amount,3) : '-' }}
                         </td>
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
