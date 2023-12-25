@@ -59,9 +59,8 @@
                     <th scope="col" class="px-6 py-1 text-start">
                         <x-select wire:model.live="filters.type" class="w-full py-0">
                             <option value="">{{ __('messages.type') }}</option>
-                            @foreach (App\Enums\ServiceTypeEnum::cases() as $type)
-                                <option value="{{ $type->value }}">{{ $type->title() }}</option>
-                            @endforeach
+                            <option value="service">{{ __('messages.services') }}</option>
+                            <option value="part">{{ __('messages.parts') }}</option>
                         </x-select>
                     </th>
                     <th scope="col" class=" no-print"></th>
@@ -85,7 +84,7 @@
                             <div>{{ $service->department->name }}</div>
                         </td>
                         <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $service->type->title() }}</div>
+                            <div>{{ __('messages.' . $service->type . 's') }}</div>
                         </td>
 
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">

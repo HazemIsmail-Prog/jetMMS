@@ -1,10 +1,12 @@
 <div>
+    {{-- Invoice Form --}}
+    @if (!$showForm)
+        <x-button wire:click="$dispatch('showInvoiceForm')">{{ __('messages.create_invoice') }}</x-button>
+        <x-section-border />
+    @endif
     @if ($showForm)
-        <div wire:transition class="mb-4">
-            {{-- Invoice Form --}}
-            @include('livewire.orders.includes.invoice-search-section')
-            @include('livewire.orders.includes.invoice-form-section')
-            <x-section-border />
-        </div>
+        @include('livewire.orders.includes.invoice-search-section')
+        @include('livewire.orders.includes.invoice-form-section')
+        <x-section-border />
     @endif
 </div>

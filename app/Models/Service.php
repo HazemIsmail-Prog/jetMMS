@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\ServiceTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -12,10 +11,6 @@ class Service extends Model
     use HasFactory;
 
     protected $guarded = [];
-
-    protected $casts = [
-        'type' => ServiceTypeEnum::class
-    ];
 
     public function department()
     {

@@ -3,13 +3,13 @@
         <x-dialog-modal maxWidth="2xl" wire:model.live="showModal">
             <x-slot name="title">
                 <div>{{ $modalTitle }}</div>
+                <x-section-border/>
             </x-slot>
 
             <x-slot name="content">
                 @if ($order)
 
-                    <x-button class="mb-4"
-                        wire:click="$dispatch('showInvoiceForm')">{{ __('messages.create_invoice') }}</x-button>
+
 
                     <livewire:orders.invoice-form :$order :key="'order-' . $order->id . '-' . now()">
 

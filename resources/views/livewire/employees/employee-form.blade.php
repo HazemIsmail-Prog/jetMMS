@@ -13,7 +13,7 @@
         <div class="flex gap-3">
             {{-- User --}}
 
-            <div class=" border rounded-lg p-2">
+            <div class=" border dark:border-gray-700 rounded-lg p-2">
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     {{ __('messages.user_details') }}
                 </h2>
@@ -34,24 +34,44 @@
                     @if ($selectedUser)
                         <table>
                             <tr>
-                                <th class=" text-start p-2">{{ __('messages.name_ar') }}</th>
-                                <td class="p-2">{{ $selectedUser->name_ar }}</td>
+                                <th class=" text-start p-2">
+                                    <x-label class=" font-normal">{{ __('messages.name_ar') }}</x-label>
+                                </th>
+                                <td class="p-2">
+                                    <x-label>{{ $selectedUser->name_ar }}</x-label>
+                                </td>
                             </tr>
                             <tr>
-                                <th class=" text-start p-2">{{ __('messages.name_en') }}</th>
-                                <td class="p-2">{{ $selectedUser->name_en }}</td>
+                                <th class=" text-start p-2">
+                                    <x-label class=" font-normal">{{ __('messages.name_en') }}</x-label>
+                                </th>
+                                <td class="p-2">
+                                    <x-label>{{ $selectedUser->name_en }}</x-label>
+                                </td>
                             </tr>
                             <tr>
-                                <th class=" text-start p-2">{{ __('messages.department') }}</th>
-                                <td class="p-2">{{ $selectedUser->department->name }}</td>
+                                <th class=" text-start p-2">
+                                    <x-label class=" font-normal">{{ __('messages.department') }}</x-label>
+                                </th>
+                                <td class="p-2">
+                                    <x-label>{{ $selectedUser->department->name }}</x-label>
+                                </td>
                             </tr>
                             <tr>
-                                <th class=" text-start p-2">{{ __('messages.title') }}</th>
-                                <td class="p-2">{{ $selectedUser->title->name }}</td>
+                                <th class=" text-start p-2">
+                                    <x-label class=" font-normal">{{ __('messages.title') }}</x-label>
+                                </th>
+                                <td class="p-2">
+                                    <x-label>{{ $selectedUser->title->name }}</x-label>
+                                </td>
                             </tr>
                             <tr>
-                                <th class=" text-start p-2">{{ __('messages.shift') }}</th>
-                                <td class="p-2">{{ $selectedUser->shift->name ?? '-' }}</td>
+                                <th class=" text-start p-2">
+                                    <x-label class=" font-normal">{{ __('messages.shift') }}</x-label>
+                                </th>
+                                <td class="p-2">
+                                    <x-label>{{ $selectedUser->shift->name ?? '-' }}</x-label>
+                                </td>
                             </tr>
                         </table>
                     @endif
@@ -59,7 +79,7 @@
             </div>
 
             {{-- Employee Details --}}
-            <div class=" border rounded-lg p-2 flex-1">
+            <div class=" border dark:border-gray-700 rounded-lg p-2 flex-1">
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     {{ __('messages.employee_details') }}
                 </h2>
