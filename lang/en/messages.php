@@ -313,6 +313,27 @@ return [
     'nationality' => 'Nationality',
     'gender' => 'Gender',
 
+    'pending_leave' => 'Pending',
+    'approved' => 'Approved',
+    'rejected' => 'Rejected',
+    'annual' => 'Annual',
+    'unpaid' => 'Un-Paid',
+    'sick' => 'Sick Leave',
+    'urgent' => 'Urgent',
+
+    'basic' => 'Basic',
+    'allowance' => 'Allowance',
+
+    'salaryActions' => 'Salary Actions',
+    'add_salaryAction' => 'Add Salary Action',
+    'edit_salaryAction' => 'Edit Salary Action',
+    'increase' => 'Increase',
+    'deduction' => 'Deduction',
+    'salary_action_pending' => 'Pending',
+    'salary_action_done' => 'Done',
+    'no_salaryActions_found' => 'No salary actions found',
+
+
 
 
 

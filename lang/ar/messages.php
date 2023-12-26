@@ -323,6 +323,28 @@ return [
     'nationality' => 'الجنسية',
     'gender' => 'الجنس',
 
+    'pending_leave' => 'قيد المراجعة',
+    'approved' => 'معتمدة',
+    'rejected' => 'مرفوضة',
+    'annual' => 'سنوية',
+    'unpaid' => 'غير مدفوعة',
+    'sick' => 'مرضية',
+    'urgent' => 'طارئة',
+    'basic' => 'اساسية',
+    'allowance' => 'بدلات',
+
+
+
+    'salaryActions' => 'الزيادات والخصومات',
+    'add_salaryAction' => 'اضافة زيادة / خصم',
+    'edit_salaryAction' => 'تعديل زيادة / خصم',
+    'increase' => 'زيادة',
+    'deduction' => 'خصم',
+    'salary_action_pending' => 'قيد المراجعة',
+    'salary_action_done' => 'تم التنفيذ',
+    'no_salaryActions_found' => 'لا يوجد زيادات او خصومات',
+
+
 
 
 

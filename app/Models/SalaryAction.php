@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\IncreaseTypeEnum;
+use App\Enums\SalaryActionStatusEnum;
+use App\Enums\SalaryActionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Increase extends Model
+class SalaryAction extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
     protected $casts = [
-        'increase_date' => 'date:Y-m-d',
-        'type' => IncreaseTypeEnum::class,
+        'date' => 'date:Y-m-d',
+        'type' => SalaryActionTypeEnum::class,
+        'status' => SalaryActionStatusEnum::class,
 
     ];
 

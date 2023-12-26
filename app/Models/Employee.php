@@ -36,6 +36,10 @@ class Employee extends Model
         return $this->hasMany(Increase::class);
     }
 
+    public function salaryActions() : HasMany {
+        return $this->hasMany(SalaryAction::class);
+    }
+
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable');

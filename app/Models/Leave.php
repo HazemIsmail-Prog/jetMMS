@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\LeaveStatusEnum;
+use App\Enums\LeaveTypeEnum;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +19,8 @@ class Leave extends Model
     protected $casts = [
         'start_date' => 'date:Y-m-d',
         'end_date' => 'date:Y-m-d',
+        'type' => LeaveTypeEnum::class,
+        'status' => LeaveStatusEnum::class,
     ];
 
     public function attachments(): MorphMany

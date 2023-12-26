@@ -29,8 +29,8 @@
             </div>
         </div>
 
-        <div class=" p-4 flex flex-col gap-2 items-start border rounded-lg">
-            <div>{{ __('messages.phone') }}</div>
+        <div class=" p-4 flex flex-col gap-2 items-start border dark:border-gray-700 rounded-lg">
+            <x-label>{{ __('messages.phone') }}</x-label>
             @foreach ($form->phones as $index => $phone)
                 <div class=" flex items-center gap-2">
                     <div>
@@ -55,8 +55,8 @@
             <x-button type="button" wire:click="add_row('phone')">{{ __('messages.add phone') }}</x-button>
         </div>
 
-        <div class=" p-4 flex flex-col gap-2 items-start border rounded-lg overflow-x-auto">
-            <div>{{ __('messages.address') }}</div>
+        <div class=" p-4 flex flex-col gap-2 items-start border dark:border-gray-700 rounded-lg overflow-x-auto">
+            <x-label>{{ __('messages.address') }}</x-label>
             @foreach ($form->addresses as $index => $address)
                 <div class=" flex items-center gap-2">
                     <div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\LeaveStatusEnum;
 use App\Rules\OverlappingLeavePeriods;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -13,7 +14,7 @@ class LeaveForm extends Form
     public $start_date;
     public $end_date;
     public $type;
-    public $status;
+    public $status = LeaveStatusEnum::PENDING;
     public $notes;
     public $created_by;
 
@@ -22,8 +23,8 @@ class LeaveForm extends Form
         return [
             'id' => 'nullable',
             'employee_id' => 'required',
-            'start_date' => ['required', new OverlappingLeavePeriods()],
-            'end_date' => ['required', new OverlappingLeavePeriods()],
+            'start_date' => ['required', 'before_or_equal:end_date', new OverlappingLeavePeriods()],
+            'end_date' => ['required', 'after_or_equal:end_date', new OverlappingLeavePeriods()],
             'type' => 'required',
             'status' => 'required',
             'notes' => 'nullable',

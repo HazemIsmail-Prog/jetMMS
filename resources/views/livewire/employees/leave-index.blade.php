@@ -51,10 +51,10 @@
                                 <div>{{ $leave->leave_days_count }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $leave->type }}</div>
+                                <div>{{ $leave->type->title() }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $leave->status }}</div>
+                                <div>{{ $leave->status->title() }}</div>
                             </td>
                             <td class="px-6 py-1 text-start ">
                                 <div>{{ $leave->notes }}</div>

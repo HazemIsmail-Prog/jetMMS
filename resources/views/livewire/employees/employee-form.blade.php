@@ -154,13 +154,9 @@
                                     <x-input-error for="form.nationality" />
                                 </div>
 
-
-
-
-
                                 <div class="flex flex-col">
                                     <x-label for="gender">{{ __('messages.gender') }}</x-label>
-                                    <x-select wire:model="form.gender" id="gender">
+                                    <x-select required wire:model="form.gender" id="gender">
                                         <option value="">---</option>
                                         <option value="male">{{ __('messages.male') }}</option>
                                         <option value="female">{{ __('messages.female') }}</option>
@@ -169,7 +165,7 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <x-label for="company_id">{{ __('messages.company') }}</x-label>
-                                    <x-select wire:model="form.company_id" id="company_id">
+                                    <x-select required wire:model="form.company_id" id="company_id">
                                         <option value="">---</option>
                                         @foreach ($this->companies as $company)
                                             <option value="{{ $company->id }}">{{ $company->name }}</option>

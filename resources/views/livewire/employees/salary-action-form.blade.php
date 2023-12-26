@@ -11,10 +11,10 @@
 
                     <div class=" space-y-3">
                         <div>
-                            <x-label for="increase_date">{{ __('messages.increase_date') }}</x-label>
-                            <x-input required class="w-full py-0" wire:model="form.increase_date" autocomplete="off"
-                                type="date" id="increase_date" />
-                            <x-input-error for="form.increase_date" />
+                            <x-label for="date">{{ __('messages.date') }}</x-label>
+                            <x-input required class="w-full py-0" wire:model="form.date" autocomplete="off"
+                                type="date" id="date" />
+                            <x-input-error for="form.date" />
                         </div>
                         <div>
                             <x-label for="amount">{{ __('messages.amount') }}</x-label>
@@ -26,7 +26,7 @@
                         <div>
                             <x-label for="type">{{ __('messages.type') }}</x-label>
                             <div class="p-3 border dark:border-gray-700 rounded-lg space-y-2 ">
-                                @foreach (App\Enums\IncreaseTypeEnum::cases() as $type)
+                                @foreach (App\Enums\SalaryActionTypeEnum::cases() as $type)
                                     <div class="flex items-center">
                                         <input wire:model="form.type" id="type-{{ $type->value }}" type="radio"
                                             value="{{ $type->value }}"
@@ -37,6 +37,13 @@
                                 @endforeach
                             </div>
                             <x-input-error for="form.type" />
+                        </div>
+
+                        <div>
+                            <x-label for="reason">{{ __('messages.reason') }}</x-label>
+                            <x-input required class="w-full py-0" wire:model="form.reason" autocomplete="off" type="text"
+                                id="reason" />
+                            <x-input-error for="form.reason" />
                         </div>
 
                         <div>

@@ -59,6 +59,11 @@
         <div class=" col-span-3">
             <livewire:employees.increase-index :$employee :key="'increases-' . $employee->id . '-' . now()">
         </div>
+
+        {{-- Salay Actions --}}
+        <div class=" col-span-3">
+            <livewire:employees.salary-action-index :$employee :key="'salary-actions-' . $employee->id . '-' . now()">
+        </div>
     </div>
 
 

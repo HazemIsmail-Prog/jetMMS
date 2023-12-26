@@ -74,7 +74,7 @@ class EmployeeIndex extends Component
             ->when($this->filters['status'], function ($q) {
                 $q->where('status', $this->filters["status"]);
             })
-            ->paginate(1000);
+            ->paginate(15);
     }
 
     public function render()
