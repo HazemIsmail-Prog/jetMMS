@@ -94,6 +94,12 @@
                                         wire:model="form.cid" id="cid" dir="ltr" />
                                     <x-input-error for="form.cid" />
                                 </div>
+                                <div class="flex flex-col">
+                                    <x-label for="iban">{{ __('messages.iban') }}</x-label>
+                                    <x-input required type="text"
+                                        wire:model="form.iban" id="iban" dir="ltr" />
+                                    <x-input-error for="form.iban" />
+                                </div>
 
 
 

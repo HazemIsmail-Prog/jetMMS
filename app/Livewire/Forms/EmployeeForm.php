@@ -15,6 +15,7 @@ class EmployeeForm extends Form
     public $passportIssueDate;
     public $company_id;
     public $cid;
+    public $iban;
     public $nationality;
     public $gender;
     public $passport_no;
@@ -34,6 +35,7 @@ class EmployeeForm extends Form
             'passportIssueDate' => 'required',
             'company_id' => 'nullable',
             'cid' => 'required|min:12|max:12',
+            'iban' => 'required',
             'nationality' => 'required',
             'gender' => 'required',
             'passport_no' => 'required',

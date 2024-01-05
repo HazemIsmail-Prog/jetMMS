@@ -49,6 +49,14 @@
             <x-label class=" font-normal">{{ __('messages.status') }}</x-label>
             <x-label>{{ $employee->status->title() }}</x-label>
         </div>
+        <div>
+            <x-label class=" font-normal">{{ __('messages.salary') }}</x-label>
+            <x-label>{{ number_format($employee->salary, 3) }}</x-label>
+        </div>
+        <div>
+            <x-label class=" font-normal">{{ __('messages.leave_balance') }}</x-label>
+            <x-label>{{ number_format($employee->LeaveDaysBalance, 3) }}</x-label>
+        </div>
         <div class="col-span-full"></div>
         {{-- Leaves --}}
         <div class=" col-span-3">
@@ -61,8 +69,13 @@
         </div>
 
         {{-- Salay Actions --}}
-        <div class=" col-span-3">
+        {{-- <div class=" col-span-3">
             <livewire:employees.salary-action-index :$employee :key="'salary-actions-' . $employee->id . '-' . now()">
+        </div> --}}
+
+        {{-- Absence --}}
+        <div class=" col-span-3">
+            <livewire:employees.absence-index :$employee :key="'absence-' . $employee->id . '-' . now()">
         </div>
     </div>
 

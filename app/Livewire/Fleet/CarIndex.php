@@ -21,7 +21,6 @@ class CarIndex extends Component
         ->with('type')
         ->with('driver')
         ->with('technician')
-        ->withCount('actions')
         ->when($this->filters['code'],function($q){
             $q->where('code',$this->filters['code']);
         })

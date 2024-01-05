@@ -356,6 +356,23 @@ return [
     'resigned' => 'Resigned',
     'terminated' => 'Terminated',
     'under_test' => 'Under Test',
+    'iban' => 'IBAN',
+
+    'salary' => 'Salary',
+    'leave_balance' => 'Leave Balance',
+    'net_working_days' => 'Working Days',
+    'indemnity' => 'Indemnity',
+    'male' => 'Male',
+    'female' => 'Female',
+
+    'absences' => 'Absences',
+    'add_absence' => 'Add Absence',
+    'edit_absence' => 'Edit Absence',
+    'deduction_days' => 'Deduction Days',
+    'deduction_amount' => 'Deduction Amount',
+    'absence_days_count' => 'Absence Days',
+
+
 
 
 

@@ -366,6 +366,21 @@ return [
     'resigned' => 'مستقيل',
     'terminated' => 'منهي خدماته',
     'under_test' => 'تحت التجربة',
+    'iban' => 'ايبان',
+    'salary' => 'الراتب',
+    'leave_balance' => 'رصيد الاجازات',
+    'net_working_days' => 'ايام العمل',
+    'indemnity' => 'مكافأة نهاية الخدمة',
+    'male' => 'ذكر',
+    'female' => 'انثى',
+
+
+    'absences' => 'الغيابات',
+    'add_absence' => 'اضافة غياب',
+    'edit_absence' => 'تعديل غياب',
+    'deduction_days' => 'عدد ايام الخصم',
+    'deduction_amount' => 'مبلغ الخصم',
+    'absence_days_count' => 'عدد ايام الغياب',
 
 
     'attachments' => 'المرفقات',

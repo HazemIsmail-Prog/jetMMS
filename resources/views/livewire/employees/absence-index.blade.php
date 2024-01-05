@@ -1,21 +1,21 @@
 <div class=" border dark:border-gray-700 rounded-lg p-4">
 
     {{-- Modals --}}
-    @livewire('employees.salaryAction-form')
+    @livewire('employees.absence-form')
 
 
     <div class=" flex items-center justify-between">
 
         <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('messages.salaryActions') }}
+            {{ __('messages.absences') }}
             <span id="counter"></span>
         </h2>
         <x-button class=" no-print"
-            wire:click="$dispatch('showSalaryActionFormModal',{employee:{{ $employee }}})">{{ __('messages.add_salaryAction') }}</x-button>
+            wire:click="$dispatch('showAbsenceFormModal',{employee:{{ $employee }}})">{{ __('messages.add_absence') }}</x-button>
     </div>
     <x-section-border />
 
-    @if ($employee->salaryActions->count() > 0)
+    @if ($employee->absences->count() > 0)
         <div class=" overflow-x-auto sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -24,13 +24,13 @@
                             {{ __('messages.date') }}
                         </th>
                         <th scope="col" class="px-6 py-1 text-start">
-                            {{ __('messages.amount') }}
+                            {{ __('messages.absence_days_count') }}
                         </th>
                         <th scope="col" class="px-6 py-1 text-start">
-                            {{ __('messages.reason') }}
+                            {{ __('messages.deduction_days') }}
                         </th>
                         <th scope="col" class="px-6 py-1 text-start">
-                            {{ __('messages.status') }}
+                            {{ __('messages.deduction_amount') }}
                         </th>
                         <th scope="col" class="px-6 py-1 text-start">
                             {{ __('messages.notes') }}
@@ -39,43 +39,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($this->salaryActions as $salaryAction)
+                    @foreach ($this->absences as $absence)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $salaryAction->date->format('d-m-Y') }}</div>
+                                <div>{{ $absence->start_date->format('d-m-Y') }}</div>
+                                <div>{{ $absence->end_date->format('d-m-Y') }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div class="{{ $salaryAction->type->color() }}">{{ number_format($salaryAction->amount,3) }}</div>
+                                <div>{{ $absence->absence_days_count }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $salaryAction->reason }}</div>
+                                <div>{{ $absence->deduction_days }}</div>
                             </td>
                             <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div class="{{ $salaryAction->status->color() }}">{{ $salaryAction->status->title() }}</div>
+                                <div>{{ $absence->deduction_amount }}</div>
                             </td>
-                            <td class="px-6 py-1 text-start whitespace-nowrap ">
-                                <div>{{ $salaryAction->notes }}</div>
+                            <td class="px-6 py-1 text-start ">
+                                <div>{{ $absence->notes }}</div>
                             </td>
 
                             <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                                 <div class=" flex items-center justify-end gap-2">
 
-                                    @if ($salaryAction->status)
-                                        
-                                    @endif
-                                    <x-badgeWithCounter salaryAction="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showSalaryActionFormModal',{salaryAction:{{ $salaryAction }}})">
+                                    <x-badgeWithCounter absence="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showAbsenceFormModal',{absence:{{ $absence }}})">
                                         <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
-                                    <x-badgeWithCounter :counter="$salaryAction->attachments_count" title="{{ __('messages.attachments') }}"
-                                        wire:click="$dispatch('showAttachmentModal',{model:'SalaryAction',id:{{ $salaryAction->id }}})">
+                                    <x-badgeWithCounter :counter="$absence->attachments_count" title="{{ __('messages.attachments') }}"
+                                        wire:click="$dispatch('showAttachmentModal',{model:'Absence',id:{{ $absence->id }}})">
                                         <x-svgs.attachment class="w-4 h-4" />
                                     </x-badgeWithCounter>
                                     <x-badgeWithCounter title="{{ __('messages.delete') }}"
                                         wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $salaryAction->id }})">
+                                        wire:click="delete({{ $absence->id }})">
                                         <x-svgs.trash class="w-4 h-4" />
                                     </x-badgeWithCounter>
 
@@ -87,7 +85,7 @@
             </table>
         </div>
     @else
-        <x-label class=" text-center">{{ __('messages.no_salaryActions_found') }}</x-label>
+        <x-label class=" text-center">{{ __('messages.no_absences_found') }}</x-label>
     @endif
 
 </div>

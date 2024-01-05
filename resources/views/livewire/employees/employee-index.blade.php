@@ -77,7 +77,11 @@
                             @endforeach
                         </x-select>
                     </th>
-                    <th class=" text-center">{{ __('messages.joinDate') }}</th>
+                    <th class="px-6 py-1 text-center">{{ __('messages.joinDate') }}</th>
+                    <th class="px-6 py-1 text-right">{{ __('messages.salary') }}</th>
+                    <th class="px-6 py-1 text-center">{{ __('messages.leave_balance') }}</th>
+                    <th class="px-6 py-1 text-center">{{ __('messages.net_working_days') }}</th>
+                    <th class="px-6 py-1 text-right">{{ __('messages.indemnity') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -102,6 +106,19 @@
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
                             {{ $employee->joinDate->format('d-m-Y') }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap">
+                            {{ number_format($employee->salary,3) }}
+                        </td>
+                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                            <div>{{ number_format($employee->LeaveDaysBalance,2) }}</div>
+                            <div>{{ number_format($employee->LeaveBalanceAmount,3) }}</div>
+                        </td>
+                        <td class="px-6 py-1 text-center whitespace-nowrap">
+                            {{ $employee->NetWorkingDays }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap">
+                            {{ number_format($employee->Indemnity,3) }}
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
                             <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
