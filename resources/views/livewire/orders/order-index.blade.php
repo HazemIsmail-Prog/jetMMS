@@ -164,15 +164,17 @@
                             <div>{{ $order->address->full_address }}</div>
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            {{ $order->remaining_amount > 0 ? number_format($order->remaining_amount,3) : '-' }}
+                            {{ $order->remaining_amount > 0 ? number_format($order->remaining_amount, 3) : '-' }}
                         </td>
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
                             <div class=" flex items-center gap-2">
-
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showOrderFormModal',{order:{{ $order->id }},customer:{{ $order->customer }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                
+                                @can('update', $order)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showOrderFormModal',{order:{{ $order->id }},customer:{{ $order->customer }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
 
                                 <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
                                     wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">

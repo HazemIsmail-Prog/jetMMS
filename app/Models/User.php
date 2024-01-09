@@ -108,7 +108,7 @@ class User extends Authenticatable
     public function permissions()
     {
         $permissionList = [];
-
+        
         foreach ($this->roles as $role) {
             foreach ($role->permissions as $permission) {
                 if (!in_array($permission->id, $permissionList)) {
@@ -195,9 +195,4 @@ class User extends Authenticatable
             ->first();
         return $last_message ? $last_message->created_at : '0';
     }
-
-    // public function receivesBroadcastNotificationsOn(): string
-    // {
-    //     return 'users.' . $this->id;
-    // }
 }

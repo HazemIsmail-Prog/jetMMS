@@ -50,195 +50,253 @@
         <!-- Links -->
         <!-- Pages group -->
         <ul class="space-y-1">
+
             <!-- Dashboard -->
-            {{-- @can('dashboard_menu') --}}
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.dashboard')" />
-            {{-- @endcan --}}
+            @can('dashboard_menu')
+                <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.dashboard')" />
+            @endcan
 
-            {{-- @canany(['roles_menu', 'permissions_menu', 'users_menu'])
-                <!-- Setting -->
-                <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                    x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                    <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                        href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <x-svgs.settings />
-                                <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.settings') }}</span>
+            {{-- Operations --}}
+            @canany(['viewAny'], [App\Models\Order::class, App\Models\Customer::class, App\Models\Marketing::class])
+
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.operations') }}</h3>
+
+                @can('viewAny', App\Models\Customer::class)
+                    <x-sidebar-item icon="diversity_3" route="customer.index" :title="__('messages.customers')" />
+                @endcan
+
+                @can('viewAny', App\Models\Order::class)
+                    <x-sidebar-item icon="dashboard" route="order.index" :title="__('messages.orders')" />
+                @endcan
+
+                @can('viewAny', App\Models\Marketing::class)
+                    <x-sidebar-item icon="dashboard" route="marketing.index" :title="__('messages.marketing')" />
+                @endcan
+
+                @can('dispatching_menu')
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['dispatch-panel.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'hover:text-slate-200' }} @endif"
+                            href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="material-symbols-outlined">airport_shuttle</span>
+                                    <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.dispatching') }}</span>
+                                </div>
+                                <x-svgs.chevron />
                             </div>
-                            <x-svgs.chevron />
-                        </div>
-                    </a>
-                    <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                        :class="open ? '!block' : 'hidden'">
-                        @can('roles_menu')
-                            <li class="mb-1 last:mb-0">
-                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (request()->routeIs('roles.index')) {{ '!text-indigo-500' }} @endif"
-                                    href="{{ route('roles.index') }}">
-                                    <span class="text-sm font-medium duration-200">{{ __('messages.roles') }}</span>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('permissions_menu')
-                            <li class="mb-1 last:mb-0">
-                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (request()->routeIs('permissions.index')) {{ '!text-indigo-500' }} @endif"
-                                    href="{{ route('permissions.index') }}">
-                                    <span class="text-sm font-medium duration-200">{{ __('messages.permissions') }}</span>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('users_menu')
-                            <li class="mb-1 last:mb-0">
-                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (request()->routeIs('users.index')) {{ '!text-indigo-500' }} @endif"
-                                    href="{{ route('users.index') }}">
-                                    <span class="text-sm font-medium duration-200">{{ __('messages.users') }}</span>
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
-            @endcanany --}}
+                        </a>
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'hidden' }} @endif"
+                            :class="open ? '!block' : 'hidden'">
+                            @foreach ($this->departments as $department)
+                                <x-nested-sidebar-item route="dispatch-panel.index" :param="$department->id" :title="$department->name" />
+                            @endforeach
 
+                        </ul>
+                    </li>
+                @endcan
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.operations') }}</h3>
+                @can('operations_reports')
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
+                            href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <x-svgs.settings />
+                                    <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
+                                </div>
+                                <x-svgs.chevron />
+                            </div>
+                        </a>
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
+                            :class="open ? '!block' : 'hidden'">
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
+                        </ul>
+                    </li>
+                @endcan
 
-            <x-sidebar-item icon="diversity_3" route="customer.index" :title="__('messages.customers')" />
-            <x-sidebar-item icon="dashboard" route="order.index" :title="__('messages.orders')" />
-            <x-sidebar-item icon="dashboard" route="marketing.index" :title="__('messages.marketing')" />
+            @endcanany
 
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['dispatch-panel.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="material-symbols-outlined">airport_shuttle</span>
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.dispatching') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    @foreach ($this->departments as $department)
-                        <x-nested-sidebar-item route="dispatch-panel.index" :param="$department->id" :title="$department->name" />
-                    @endforeach
+            {{-- Accounting --}}
+            @canany(['viewAny'], [App\Models\Account::class, App\Models\Invoice::class])
 
-                </ul>
-            </li>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.accounting') }}</h3>
 
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <x-svgs.settings />
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                </ul>
-            </li>
+                @can('viewAny', App\Models\Account::class)
+                    <x-sidebar-item icon="dashboard" route="account.index" :title="__('messages.accounts')" />
+                @endcan
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.accounting') }}</h3>
+                @can('viewAny', App\Models\Invoice::class)
+                    <x-sidebar-item icon="dashboard" route="invoice.index" :title="__('messages.invoices')" />
+                @endcan
 
-            <x-sidebar-item icon="dashboard" route="account.index" :title="__('messages.accounts')" />
-            <x-sidebar-item icon="dashboard" route="invoice.index" :title="__('messages.invoices')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.journal_vouchers')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_payment')" />
-            <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_receipt')" />
+                @can('journal_vouchers_menu')
+                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.journal_vouchers')" />
+                @endcan
 
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <x-svgs.settings />
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                </ul>
-            </li>
+                @can('bank_payments_menu')
+                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_payment')" />
+                @endcan
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.hr') }}</h3>
+                @can('bank_receipts_menu')
+                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_receipt')" />
+                @endcan
 
-            <x-sidebar-item icon="dashboard" route="employee.index" :title="__('messages.employees')" />
+                @can('accounting_reports')
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
+                            href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <x-svgs.settings />
+                                    <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
+                                </div>
+                                <x-svgs.chevron />
+                            </div>
+                        </a>
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
+                            :class="open ? '!block' : 'hidden'">
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
+                        </ul>
+                    </li>
+                @endcan
 
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <x-svgs.settings />
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                </ul>
-            </li>
+            @endcanany
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.assets') }}</h3>
+            {{-- HR --}}
+            @canany(['viewAny'], [App\Models\Employee::class])
 
-            <x-sidebar-item icon="dashboard" route="car.index" :title="__('messages.cars')" />
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.hr') }}</h3>
 
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <x-svgs.settings />
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                </ul>
-            </li>
+                @can('viewAny', App\Models\Employee::class)
+                    <x-sidebar-item icon="dashboard" route="employee.index" :title="__('messages.employees')" />
+                @endcan
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
+                @can('hr_reports')
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
+                            href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <x-svgs.settings />
+                                    <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
+                                </div>
+                                <x-svgs.chevron />
+                            </div>
+                        </a>
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
+                            :class="open ? '!block' : 'hidden'">
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
+                        </ul>
+                    </li>
+                @endcan
 
-            <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />
-            <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
-            <x-sidebar-item icon="dashboard" route="title.index" :title="__('messages.titles')" />
-            <x-sidebar-item icon="dashboard" route="status.index" :title="__('messages.statuses')" />
-            <x-sidebar-item icon="dashboard" route="department.index" :title="__('messages.departments')" />
-            <x-sidebar-item icon="dashboard" route="company.index" :title="__('messages.companies')" />
-            <x-sidebar-item icon="dashboard" route="shift.index" :title="__('messages.shifts')" />
-            <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
-            <x-sidebar-item icon="dashboard" route="service.index" :title="__('messages.services')" />
-            <x-sidebar-item icon="dashboard" route="settings.form" :title="__('messages.settings')" />
+            @endcanany
+
+            {{-- Assets --}}
+            @canany(['viewAny'], [App\Models\Car::class])
+
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.assets') }}</h3>
+
+                @can('viewAny', App\Models\Car::class)
+                    <x-sidebar-item icon="dashboard" route="car.index" :title="__('messages.cars')" />
+                @endcan
+
+                @can('assets_reports')
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
+                            href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <x-svgs.settings />
+                                    <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
+                                </div>
+                                <x-svgs.chevron />
+                            </div>
+                        </a>
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
+                            :class="open ? '!block' : 'hidden'">
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
+                            <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
+                        </ul>
+                    </li>
+                @endcan
+
+            @endcanany
+
+            {{-- Admin --}}
+            @canany(['viewAny'], [
+                App\Models\Role::class, 
+                App\Models\User::class, 
+                App\Models\Title::class,
+                App\Models\Status::class, 
+                App\Models\Department::class, 
+                App\Models\Company::class, 
+                App\Models\Shift::class,
+                App\Models\Area::class, 
+                App\Models\Service::class, 
+                App\Models\Setting::class
+                ])
+
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
+
+                @can('viewAny', App\Models\Role::class)
+                    <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />
+                @endcan
+
+                @can('viewAny', App\Models\User::class)
+                    <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
+                @endcan
+
+                @can('viewAny', App\Models\Title::class)
+                    <x-sidebar-item icon="dashboard" route="title.index" :title="__('messages.titles')" />
+                @endcan
+
+                @can('viewAny', App\Models\Status::class)
+                    <x-sidebar-item icon="dashboard" route="status.index" :title="__('messages.statuses')" />
+                @endcan
+
+                @can('viewAny', App\Models\Department::class)
+                    <x-sidebar-item icon="dashboard" route="department.index" :title="__('messages.departments')" />
+                @endcan
+
+                @can('viewAny', App\Models\Company::class)
+                    <x-sidebar-item icon="dashboard" route="company.index" :title="__('messages.companies')" />
+                @endcan
+
+                @can('viewAny', App\Models\Shift::class)
+                    <x-sidebar-item icon="dashboard" route="shift.index" :title="__('messages.shifts')" />
+                @endcan
+
+                @can('viewAny', App\Models\Area::class)
+                    <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
+                @endcan
+
+                @can('viewAny', App\Models\Service::class)
+                    <x-sidebar-item icon="dashboard" route="service.index" :title="__('messages.services')" />
+                @endcan
+
+                @can('viewAny', App\Models\Setting::class)
+                    <x-sidebar-item icon="dashboard" route="settings.form" :title="__('messages.settings')" />
+                @endcan
+
+            @endcanany
+
 
         </ul>
     </div>

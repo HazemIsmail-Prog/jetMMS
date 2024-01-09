@@ -5,7 +5,9 @@
                 {{ __('messages.customers') }}
                 <span id="counter"></span>
             </h2>
-            <x-anchor class="no-print" href="{{ route('customer.form') }}">{{ __('messages.add_customer') }}</x-anchor>
+            @can('create', App\Models\Customer::class)
+                <x-anchor class="no-print" href="{{ route('customer.form') }}">{{ __('messages.add_customer') }}</x-anchor>
+            @endcan
         </div>
     </x-slot>
     @teleport('#counter')
@@ -80,16 +82,20 @@
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
 
-                            <x-badgeWithCounter title="{{ __('messages.add_order') }}"
-                                wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
-                                <x-svgs.plus class="h-4 w-4" />
-                            </x-badgeWithCounter>
+                            @can('create', App\Models\Order::class)
+                                <x-badgeWithCounter title="{{ __('messages.add_order') }}"
+                                    wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
+                                    <x-svgs.plus class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                            <a title="{{ __('messages.edit') }}"
-                                href="{{ route('customer.form', $customer) }}"
-                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <x-svgs.edit class="w-4 h-4" />
-                            </a>
+                            @can('update',$customer)
+                                <a title="{{ __('messages.edit') }}" href="{{ route('customer.form', $customer) }}"
+                                    class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <x-svgs.edit class="w-4 h-4" />
+                                </a>
+                            @endcan
+
                         </td>
                     </tr>
                 @endforeach
