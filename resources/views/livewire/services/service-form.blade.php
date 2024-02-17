@@ -49,9 +49,8 @@
                             <x-select required class="w-full py-0" wire:model="form.type" autocomplete="off"
                                 type="number" id="type">
                                 <option value="">---</option>
-                                @foreach (App\Enums\ServiceTypeEnum::cases() as $type)
-                                    <option value="{{ $type->value }}">{{ $type->title() }}</option>
-                                @endforeach
+                                <option value="service">{{ __('messages.service') }}</option>
+                                <option value="part">{{ __('messages.parts') }}</option>
                             </x-select>
                             <x-input-error for="form.department_id" />
                         </div>

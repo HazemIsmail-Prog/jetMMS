@@ -1,4 +1,4 @@
-@props(['route', 'title','icon'])
+@props(['route','param' => null, 'title','icon'])
 @php
     $active = explode('.',request()->route()->getName())[0] == explode('.',$route)[0];
 @endphp

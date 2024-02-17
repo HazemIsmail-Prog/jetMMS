@@ -27,6 +27,11 @@ class AccountPolicy
     /**
      * Determine whether the user can create models.
      */
+    public function create_root(User $user): bool
+    {
+        return false;
+    }
+
     public function create(User $user): bool
     {
         return true;

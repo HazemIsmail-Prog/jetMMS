@@ -3,119 +3,83 @@
         <div class=" flex items-center justify-between">
 
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.marketings') }}
+                {{ $title }}
                 <span id="counter"></span>
             </h2>
-            @can('create', App\Models\Marketing::class)
+            @can('create', App\Models\Voucher::class)
                 <span id="addNew"></span>
             @endcan
 
         </div>
     </x-slot>
     @teleport('#addNew')
-        <x-button wire:click="$dispatch('showMarketingFormModal')">
-            {{ __('messages.add_marketing') }}
+        <x-button wire:click="$dispatch('showVoucherFormModal')">
+            {{ $add_button_label }}
         </x-button>
     @endteleport
 
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-            {{ $this->marketings->total() }}
+            {{ $this->vouchers->total() }}
         </span>
     @endteleport
 
-    @if ($this->marketings->hasPages())
+    @if ($this->vouchers->hasPages())
         <x-slot name="footer">
             <span id="pagination"></span>
         </x-slot>
         @teleport('#pagination')
-            <div class="">{{ $this->marketings->links() }}</div>
+            <div class="">{{ $this->vouchers->links() }}</div>
         @endteleport
     @endif
 
-    @livewire('marketing.marketing-form')
+    @livewire('accounts.voucher-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class=" text-center">
+                        {{ __('messages.voucher_number') }}
+                    </th>
+                    <th scope="col" class=" text-center">
                         <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
                             value="" data-start="filters.start_created_at" data-end="filters.end_created_at"
-                            placeholder="{{ __('messages.created_at') }}" />
+                            placeholder="{{ __('messages.date') }}" />
                     </th>
-                    <th scope="col" class=" text-center">
-                        <x-select wire:model.live="filters.creators" class="w-36 min-w-full text-center py-0">
-                            <option value="">{{ __('messages.creator') }}</option>
-                            @foreach ($creators as $creator)
-                                <option value="{{ $creator->id }}">{{ $creator->name }}</option>
-                            @endforeach
-                        </x-select>
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
-                            wire:model.live="filters.name" placeholder="{{ __('messages.customer_name') }}" />
-
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="phone"
-                            wire:model.live="filters.phone" placeholder="{{ __('messages.phone') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="address"
-                            wire:model.live="filters.address" placeholder="{{ __('messages.address') }}" />
-
-                    </th>
-
-
-                    <th scope="col" class=" text-center">
+                    <th scope="col" class="px-6 py-1 text-start">
                         {{ __('messages.notes') }}
                     </th>
-                    <th scope="col" class=" text-center">
-                        <x-select wire:model.live="filters.type" class="w-36 min-w-full text-center py-0">
-                            <option value="">{{ __('messages.type') }}</option>
-                            <option value="marketing">{{ __('messages.marketing') }}</option>
-                            <option value="information">{{ __('messages.information') }}</option>
-                            <option value="service_not_available">{{ __('messages.service_not_available') }}</option>
-                        </x-select>
+                    <th scope="col" class="px-6 py-1 text-right">
+                        {{ __('messages.amount') }}
                     </th>
                     <th scope="col" class=" no-print"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($this->marketings as $marketing)
+                @foreach ($this->vouchers as $voucher)
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $marketing->created_at->format('d-m-Y H:i') }}
+                            {{ $voucher->id }}
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $marketing->user->name }}
+                            {{ $voucher->date->format('d-m-Y') }}
                         </td>
                         <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->name }}</div>
+                            <div>{{ $voucher->notes }}</div>
                         </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div>{{ $marketing->phone }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->address }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->notes }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ __('messages.' . $marketing->type) }}</div>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            <div>{{ number_format($voucher->amount, 3) }}</div>
                         </td>
 
                         <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-                                
-                                @can('update', $marketing)
+                            <div class=" flex items-center justify-end gap-2">
+
+                                @can('update', $voucher)
                                     <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showMarketingFormModal',{marketing:{{ $marketing }}})">
+                                        wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }}})">
                                         <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan

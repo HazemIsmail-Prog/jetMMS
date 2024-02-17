@@ -135,15 +135,7 @@
                 @endcan
 
                 @can('journal_vouchers_menu')
-                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.journal_vouchers')" />
-                @endcan
-
-                @can('bank_payments_menu')
-                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_payment')" />
-                @endcan
-
-                @can('bank_receipts_menu')
-                    <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.bank_receipt')" />
+                    <x-sidebar-item icon="dashboard" route="voucher.index" :title="__('messages.journal_vouchers')" />
                 @endcan
 
                 @can('accounting_reports')

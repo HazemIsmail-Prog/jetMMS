@@ -85,6 +85,11 @@ class User extends Authenticatable
         return $this->hasMany(Marketing::class);
     }
 
+    public function vouchers()
+    {
+        return $this->hasMany(Voucher::class ,'created_by');
+    }
+
     public function orders_technician()
     {
         return $this->hasMany(Order::class, 'technician_id');

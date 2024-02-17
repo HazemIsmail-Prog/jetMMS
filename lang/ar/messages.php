@@ -110,7 +110,7 @@ return [
     'devices' => 'الأجهزة',
     'user' => 'المستخدم',
     'serial_no' => 'الرقم المسلسل',
-    'add_line' => 'اضافة خط',
+    'add_line' => 'اضافة سطر',
     'add address' => 'اضافة عنوان',
     'add phone' => 'اضافة هاتف',
     'number' => 'الرقم',
@@ -381,6 +381,7 @@ return [
     'deduction_days' => 'عدد ايام الخصم',
     'deduction_amount' => 'مبلغ الخصم',
     'absence_days_count' => 'عدد ايام الغياب',
+    'no_absences_found' => 'لا يوجد غيابات',
 
 
     'attachments' => 'المرفقات',
@@ -393,6 +394,24 @@ return [
     'alertable' => 'تنبيه',
     'alertBefore' => 'عدد ايام التنبيه',
     'upload_done' => 'تم تحميل الملف',
+
+
+
+
+
+    'voucher_number' => 'رقم القيد',
+    'manual_id' => 'الرقم اليدوي',
+    'add_journal_voucher' => 'اضافة قيد',
+    'edit_journal_voucher' => 'تعديل قيد رقم ',
+    'account' => 'الحساب',
+    'cost_center' => 'مركز التكلفة',
+    'contact' => 'ذمم',
+    'narration' => 'البيان',
+    'debit' => 'مدين',
+    'credit' => 'دائن',
+    'copy_from' => 'نسخ من',
+    'copy' => 'نسخ',
+    'invalid_voucher_number' => 'لا يوجد قيد بهذا الرقم',
 
 
 

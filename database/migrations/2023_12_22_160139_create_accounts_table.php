@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_ar');
             $table->string('usage')->nullable();
-            $table->foreignIdFor(Account::class)->nullable();
+            $table->foreignId('account_id')->nullable()->constrained('accounts');
             $table->integer('level');
             $table->integer('index');
             $table->boolean('active');

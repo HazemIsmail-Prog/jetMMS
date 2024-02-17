@@ -371,6 +371,8 @@ return [
     'deduction_days' => 'Deduction Days',
     'deduction_amount' => 'Deduction Amount',
     'absence_days_count' => 'Absence Days',
+    'no_absences_found' => 'No absence found',
+
 
 
 
@@ -387,6 +389,20 @@ return [
     'alertBefore' => 'Alert Before',
     'upload_done' => 'File Uploaded',
 
+
+    'voucher_number' => 'Voucher Number',
+    'manual_id' => 'Manual Number',
+    'add_journal_voucher' => 'Add Journal Voucher',
+    'edit_journal_voucher' => 'Edit Journal Voucher No. ',
+    'account' => 'Account',
+    'cost_center' => 'Cost Center',
+    'contact' => 'Contac',
+    'narration' => 'Narration',
+    'debit' => 'Debit',
+    'credit' => 'Credit',
+    'copy_from' => 'Copy From',
+    'copy' => 'Copy',
+    'invalid_voucher_number' => 'Invalid Voucher Number',
 
 
 
