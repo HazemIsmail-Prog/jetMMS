@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(!app()->isProduction());
 
-        View::share('logo',Setting::find(1)->logo);
+        // View::share('logo',Setting::find(1)->logo);
     }
 }
