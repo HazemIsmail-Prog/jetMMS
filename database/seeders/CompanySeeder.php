@@ -48,8 +48,6 @@ class CompanySeeder extends Seeder
             ],
         ];
 
-        Company::query()->truncate();
-
 
         foreach ($companies as $company) {
             Company::create($company);

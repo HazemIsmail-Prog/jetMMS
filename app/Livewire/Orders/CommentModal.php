@@ -15,18 +15,6 @@ class CommentModal extends Component
     public $modalTitle = '';
     public Order $order;
 
-    #[Rule('required')]
-    public $comment;
-
-    #[Computed]
-    public function comments()
-    {
-        return Comment::query()
-            ->where('order_id', $this->order->id)
-            ->with('user')
-            ->get();
-    }
-
     #[On('showCommentsModal')]
     public function show($order_id)
     {
@@ -34,13 +22,6 @@ class CommentModal extends Component
         $this->order = Order::find($order_id);
         $this->modalTitle = __('messages.comments_for_order_number') . $order_id;
         $this->showModal = true;
-        $this->js("
-        setTimeout(function() { 
-            const el = document.getElementById('messages');
-            el.scrollTop = el.scrollHeight - el.clientHeight;
-         }, 100);
-
-        ");
 
         $this->setCurrentCommentAsRead($order_id);
     }
@@ -54,26 +35,6 @@ class CommentModal extends Component
             ->update(['is_read' => true]);
 
         $this->dispatch('commentsUpdated');
-    }
-
-    public function save()
-    {
-        $this->validate();
-        Comment::create([
-            'user_id' => auth()->id(),
-            'order_id' => $this->order->id,
-            'comment' => $this->comment,
-        ]);
-        $this->reset('comment');
-        $this->js("
-        setTimeout(function() { 
-            const el = document.getElementById('messages');
-            el.scrollTop = el.scrollHeight - el.clientHeight;
-         }, 100);
-
-        ");
-        $this->dispatch('commentsUpdated');
-
     }
 
     public function render()

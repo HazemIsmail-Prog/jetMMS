@@ -21,14 +21,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class);
-            $table->foreignIdFor(Phone::class);
-            $table->foreignIdFor(Address::class);
-            $table->foreignIdFor(User::class, 'created_by');
-            $table->foreignIdFor(User::class, 'updated_by');
-            $table->foreignIdFor(User::class, 'technician_id')->nullable();
-            $table->foreignIdFor(Status::class)->nullable();
-            $table->foreignIdFor(Department::class);
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('phone_id')->constrained('phones');
+            $table->foreignId('address_id')->constrained('addresses');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
+            $table->foreignId('technician_id')->nullable()->constrained('users');
+            $table->foreignId('status_id')->nullable()->constrained('statuses');
+            $table->foreignId('department_id')->constrained('departments');
             $table->integer('index')->nullable()->default(0);
             $table->date('estimated_start_date')->nullable();
             $table->text('notes')->nullable();

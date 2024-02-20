@@ -24,6 +24,7 @@ use App\Livewire\Services\ServiceIndex;
 use App\Livewire\Settings\SettingsForm;
 use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
+use App\Livewire\TechnicianPage;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
@@ -39,101 +40,103 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    // Dashboard
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/technician_page', TechnicianPage::class)->name('technician_page'); //livewire
 
 
+    Route::group(['middleware' => 'no_technicians'], function () {
 
-    
-    // ========== Operations ==========
-
-    // Customers
-    Route::get('customers', CustomerIndex::class)->name('customer.index');
-    Route::get('customers/form/{customer?}', CustomerForm::class)->name('customer.form');
-    
-    // Orders
-    Route::get('orders', OrderIndex::class)->name('order.index');
-    
-    // Marketings
-    Route::get('marketings', MarketingIndex::class)->name('marketing.index');
-  
-    //Dispatching 
-    Route::get('dispatch-panel/{department}', DispatchingIndex::class)->name('dispatch-panel.index');
-
-
-
-    // ========== Accounting ==========
-
-    // Accounts
-    Route::get('accounts', AccountIndex::class)->name('account.index');
-
-    // Invoices
-    Route::get('invoices', InvoiceIndex::class)->name('invoice.index');
-
-    // Vouchers
-    Route::get('vouchers', VoucherIndex::class)->name('voucher.index');
+        // Dashboard
+        Route::get('/', function () {
+            return view('dashboard');
+        })->name('dashboard');
 
 
 
 
-    // ========== HR ==========
+        // ========== Operations ==========
 
-    // Employees
-    Route::get('employees', EmployeeIndex::class)->name('employee.index');
-    Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
-    Route::get('employee/view/{employee}', EmployeeView::class)->name('employee.view');
+        // Customers
+        Route::get('customers', CustomerIndex::class)->name('customer.index');
+        Route::get('customers/form/{customer?}', CustomerForm::class)->name('customer.form');
 
+        // Orders
+        Route::get('orders', OrderIndex::class)->name('order.index');
 
+        // Marketings
+        Route::get('marketings', MarketingIndex::class)->name('marketing.index');
 
-
-    // ========== Assets ==========
-
-    // Cars
-    Route::get('cars', CarIndex::class)->name('car.index');
-    Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
-    Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
-    Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
+        //Dispatching 
+        Route::get('dispatch-panel/{department}', DispatchingIndex::class)->name('dispatch-panel.index');
 
 
 
+        // ========== Accounting ==========
 
-    // ========== Admin Settings ==========
+        // Accounts
+        Route::get('accounts', AccountIndex::class)->name('account.index');
 
-    // Roles
-    Route::get('roles', RoleIndex::class)->name('role.index');
+        // Invoices
+        Route::get('invoices', InvoiceIndex::class)->name('invoice.index');
 
-
-    // Users
-    Route::get('users', UserIndex::class)->name('user.index');
-    Route::get('users/form/{user?}', UserForm::class)->name('user.form');
-
-    // Titles
-    Route::get('titles', TitleIndex::class)->name('title.index');
-
-    // Statuses
-    Route::get('statuses', StatusIndex::class)->name('status.index');
-
-    // Departments
-    Route::get('departments', DepartmentIndex::class)->name('department.index');
-
-    // Companies
-    Route::get('companies', CompanyIndex::class)->name('company.index');
-
-    // Shifts
-    Route::get('shifts', ShiftIndex::class)->name('shift.index');
-
-    // Areas
-    Route::get('areas', AreaIndex::class)->name('area.index');
-
-    // Services
-    Route::get('services', ServiceIndex::class)->name('service.index');
-
-    // Settings
-    Route::get('settings', SettingsForm::class)->name('settings.form');
+        // Vouchers
+        Route::get('vouchers', VoucherIndex::class)->name('voucher.index');
 
 
 
 
+        // ========== HR ==========
+
+        // Employees
+        Route::get('employees', EmployeeIndex::class)->name('employee.index');
+        Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
+        Route::get('employee/view/{employee}', EmployeeView::class)->name('employee.view');
+
+
+
+
+        // ========== Assets ==========
+
+        // Cars
+        Route::get('cars', CarIndex::class)->name('car.index');
+        Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
+        Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
+        Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
+
+
+
+
+        // ========== Admin Settings ==========
+
+        // Roles
+        Route::get('roles', RoleIndex::class)->name('role.index');
+
+
+        // Users
+        Route::get('users', UserIndex::class)->name('user.index');
+        Route::get('users/form/{user?}', UserForm::class)->name('user.form');
+
+        // Titles
+        Route::get('titles', TitleIndex::class)->name('title.index');
+
+        // Statuses
+        Route::get('statuses', StatusIndex::class)->name('status.index');
+
+        // Departments
+        Route::get('departments', DepartmentIndex::class)->name('department.index');
+
+        // Companies
+        Route::get('companies', CompanyIndex::class)->name('company.index');
+
+        // Shifts
+        Route::get('shifts', ShiftIndex::class)->name('shift.index');
+
+        // Areas
+        Route::get('areas', AreaIndex::class)->name('area.index');
+
+        // Services
+        Route::get('services', ServiceIndex::class)->name('service.index');
+
+        // Settings
+        Route::get('settings', SettingsForm::class)->name('settings.form');
+    });
 });

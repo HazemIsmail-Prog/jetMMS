@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class);
+            $table->foreignId('customer_id')->constrained('customers');
             $table->string('type');
             $table->string('number');
             $table->timestamps();

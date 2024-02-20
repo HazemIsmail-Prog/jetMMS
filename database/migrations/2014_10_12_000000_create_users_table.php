@@ -18,9 +18,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Department::class);
-            $table->foreignIdFor(Title::class);
-            $table->foreignIdFor(Shift::class)->nullable();
+            $table->foreignId('department_id')->nullable()->constrained('departments');
+            $table->foreignId('title_id')->nullable()->constrained('titles');
+            $table->foreignId('shift_id')->nullable()->constrained('shifts');
             $table->string('name_ar');
             $table->string('name_en')->nullable();
             $table->string('username')->unique();

@@ -18,9 +18,9 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('comment');
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Order::class);
-            $table->boolean('is_read')->default(1);
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('order_id')->constrained('orders');
+            $table->boolean('is_read')->default(0);
             $table->timestamps();
         });
     }

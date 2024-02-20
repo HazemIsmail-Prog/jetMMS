@@ -16,8 +16,8 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'sender_user_id');
-            $table->foreignIdFor(User::class, 'receiver_user_id');
+            $table->foreignId('sender_user_id')->constrained('users');
+            $table->foreignId('receiver_user_id')->constrained('users');
             $table->text('message');
             $table->boolean('read')->default(0);
             $table->timestamps();

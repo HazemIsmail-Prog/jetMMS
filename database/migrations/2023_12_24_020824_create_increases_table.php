@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('increases', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class,'created_by');
-            $table->foreignIdFor(Employee::class);
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('employee_id')->constrained('employees');
             $table->date('increase_date');
             $table->float('amount');
             $table->string('type');

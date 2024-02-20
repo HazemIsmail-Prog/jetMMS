@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('marketings', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignId('user_id')->constrained('users');
             $table->string('name');
             $table->string('phone');
             $table->string('address')->nullable();

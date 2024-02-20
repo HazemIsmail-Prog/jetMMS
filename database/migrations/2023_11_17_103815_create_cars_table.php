@@ -18,11 +18,9 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->integer('code')->unique();
-            $table->foreignIdFor(Company::class);
-            $table->foreignIdFor(CarBrand::class);
-            $table->foreignIdFor(CarType::class)->nullable();
-            $table->foreignIdFor(User::class, 'driver_id')->nullable();
-            $table->foreignIdFor(User::class, 'technician_id')->nullable();
+            $table->foreignId('company_id')->constrained('companies');
+            $table->foreignId('car_brand_id')->constrained('car_brands');
+            $table->foreignId('car_type_id')->nullable()->constrained('car_types');
             $table->integer('plate_no');
             $table->integer('management_no')->nullable();
             $table->integer('year');

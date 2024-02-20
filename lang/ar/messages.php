@@ -412,10 +412,11 @@ return [
     'copy_from' => 'نسخ من',
     'copy' => 'نسخ',
     'invalid_voucher_number' => 'لا يوجد قيد بهذا الرقم',
-
-
-
-
+    
+    
+    
+    
+    'receiver' => 'المستلم',
 
 
 

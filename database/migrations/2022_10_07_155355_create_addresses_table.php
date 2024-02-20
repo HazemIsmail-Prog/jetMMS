@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class);
-            $table->foreignIdFor(Area::class);
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('area_id')->constrained('areas');
             $table->string('block');
             $table->string('street');
             $table->string('jadda')->nullable();

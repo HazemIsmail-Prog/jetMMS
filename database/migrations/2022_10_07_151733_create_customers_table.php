@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->string('cid')->nullable();
             $table->boolean('active');
-            $table->foreignIdFor(User::class, 'created_by');
-            $table->foreignIdFor(User::class, 'updated_by');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });

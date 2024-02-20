@@ -17,9 +17,9 @@ class CreateInvoiceDetailsTable extends Migration
     {
         Schema::create('invoice_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Invoice::class);
-            $table->foreignIdFor(Service::class);
-            $table->integer('quantity');
+            $table->foreignId('invoice_id')->constrained('invoices');
+            $table->foreignId('service_id')->constrained('services');
+            $table->float('quantity');
             $table->float('price');
             $table->timestamps();
         });

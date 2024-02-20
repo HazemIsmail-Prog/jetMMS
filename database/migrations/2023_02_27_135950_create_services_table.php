@@ -16,7 +16,7 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Department::class);
+            $table->foreignId('department_id')->constrained('departments');
             $table->string('name_ar');
             $table->string('name_en');
             $table->boolean('active');

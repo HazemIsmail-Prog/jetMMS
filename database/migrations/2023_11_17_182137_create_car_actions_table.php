@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('car_actions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Car::class);
-            $table->foreignIdFor(User::class,'driver_id')->nullable();
-            $table->foreignIdFor(User::class,'created_by');
+            $table->foreignId('car_id')->constrained('cars');
+            $table->foreignId('driver_id')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
             $table->string('type');  // assign - unassign
             $table->string('notes')->nullable();
             $table->date('date');

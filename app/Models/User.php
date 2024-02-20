@@ -200,4 +200,13 @@ class User extends Authenticatable
             ->first();
         return $last_message ? $last_message->created_at : '0';
     }
+
+    public function getCurrentOrderForTechnicianAttribute()
+    {
+        return $this->orders_technician()
+            ->whereIn('status_id', [2, 3, 7])
+            ->orderBy('index')
+            ->with('invoices.payments')
+            ->first();
+    }
 }

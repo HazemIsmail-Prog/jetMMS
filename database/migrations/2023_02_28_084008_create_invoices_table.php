@@ -17,8 +17,8 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Order::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('payment_status')->default('pending');
             $table->timestamps();
             $table->softDeletes();

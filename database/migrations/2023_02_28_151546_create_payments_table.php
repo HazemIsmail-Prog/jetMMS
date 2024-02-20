@@ -17,8 +17,8 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Invoice::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignId('invoice_id')->constrained('invoices');
+            $table->foreignId('user_id')->constrained('users');
             $table->float('amount');
             $table->string('method');
             $table->timestamps();

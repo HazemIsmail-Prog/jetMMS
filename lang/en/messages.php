@@ -404,6 +404,7 @@ return [
     'copy' => 'Copy',
     'invalid_voucher_number' => 'Invalid Voucher Number',
 
+    'receiver' => 'Receiver',
 
 
 

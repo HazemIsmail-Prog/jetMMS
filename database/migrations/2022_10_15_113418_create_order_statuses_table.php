@@ -18,10 +18,10 @@ class CreateOrderStatusesTable extends Migration
     {
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Order::class);
-            $table->foreignIdFor(Status::class);
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(User::class, 'technician_id')->nullable();
+            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignId('status_id')->constrained('statuses');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('technician_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

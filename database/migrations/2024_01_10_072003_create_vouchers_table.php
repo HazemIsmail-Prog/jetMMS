@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('manual_id')->nullable();
-            $table->foreignIdFor(User::class,'created_by');
+            $table->foreignId('created_by')->constrained('users');
             $table->date('date');
             $table->string('type');
             $table->string('notes')->nullable();
