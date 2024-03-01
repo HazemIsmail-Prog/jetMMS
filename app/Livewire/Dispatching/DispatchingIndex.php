@@ -33,7 +33,6 @@ class DispatchingIndex extends Component
     public function mount()
     {
         $this->fillTechnicianIdForEachOrder();
-        // dd($this->orders());
     }
 
     public function fillTechnicianIdForEachOrder()
@@ -56,7 +55,7 @@ class DispatchingIndex extends Component
         $this->dragEnd($order_id, $destenation_id, $source_id, $new_index);
     }
 
-    #[Computed]
+    #[Computed()]
     #[On('dragEnd')]
     public function orders()
     {
@@ -74,7 +73,7 @@ class DispatchingIndex extends Component
             ->get();
     }
 
-    #[Computed]
+    #[Computed()]
     public function technicians()
     {
         return User::query()
@@ -114,13 +113,13 @@ class DispatchingIndex extends Component
 
         $current_order->save();
         $this->dispatch('dragEnd');
-        $this->fillTechnicianIdForEachOrder();
-
+        
         // if any change send event to department dispatch screen
         RefreshDepartmentScreenEvent::dispatch($this->department->id);
+        $this->fillTechnicianIdForEachOrder();
 
 
-        //if just index changed send to tech if the first one changed
+        // TODO: if just index changed send to tech if the first one changed
 
     }
 

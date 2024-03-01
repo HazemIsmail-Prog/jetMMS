@@ -1,4 +1,4 @@
-<div id="order-{{ $order->id }}" data-index="{{ $order->index }}"
+<div wire:key="order-{{ $order->id }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
         {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }} 
         {{ $order->comments->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0? ' animate-wiggle hover:animate-none': '' }} 
