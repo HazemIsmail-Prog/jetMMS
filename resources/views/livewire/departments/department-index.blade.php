@@ -1,13 +1,11 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.departments') }}
                 <span id="counter"></span>
             </h2>
             <span id="addNew"></span>
-
         </div>
     </x-slot>
     @teleport('#addNew')
@@ -35,39 +33,28 @@
     @livewire('departments.department-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.name') }}
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->departments as $department)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $department->name }}</div>
-                        </td>
-
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-
+                    <x-tr>
+                        <x-td>{{ $department->name }}</x-td>
+                        <x-td>
+                            <div class="flex items-center justify-end gap-2">
                                 <x-badgeWithCounter department="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showDepartmentFormModal',{department:{{ $department }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
-
-
 </div>

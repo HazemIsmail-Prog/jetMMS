@@ -405,18 +405,25 @@ return [
     'edit_journal_voucher' => 'تعديل قيد رقم ',
     'account' => 'الحساب',
     'cost_center' => 'مركز التكلفة',
-    'contact' => 'ذمم',
+    'contact' => 'الموظف المرتبط',
     'narration' => 'البيان',
     'debit' => 'مدين',
     'credit' => 'دائن',
     'copy_from' => 'نسخ من',
     'copy' => 'نسخ',
     'invalid_voucher_number' => 'لا يوجد قيد بهذا الرقم',
+    'balance' => 'الرصيد',
+    'opening_balance' => 'الرصيد السابق',
+    'usage' => 'الاستخدام',
     
     
     
     
     'receiver' => 'المستلم',
+    'delivery' => 'التوصيل',
+    'discount' => 'الخصم',
+    'discount_must_be_less_than_or_equal_services' => 'يطبق الخصم على اعمال اصيانة فقط',
+    'services_after_discount' => 'الخدمات بعد الخصم',
 
 
 
@@ -471,4 +478,26 @@ return [
     'click_to_unassign' => 'اضغط هنا لاستلام السيارة من السائق',
     'car_actions' => 'تسليمات السيارة',
     'action_type' => 'نوع الحركة',
+
+
+
+
+    'cashier' => 'التحصيل',
+    'cash_collection' => 'تحصيل نقدي',
+    'knet_collection' => 'تحصيل K-Net',
+    'collect' => 'تحصيل',
+    'knet_ref_number' => 'رقم التفويض',
+    'add_part' => 'اضافة قطعة',
+    'internal' => 'داخلي',
+    'external' => 'خارجي',
+    'part_source' => 'مصدر القطعة',
+    'internal_parts' => 'بضاعة داخلية',
+    'external_parts' => 'بضاعة خارجية',
+    'no_uncollected_payments' => 'لا يوجد دفعات غير محصلة',
+    'income_account_id' => 'حساب الايراد',
+    'cost_account_id' => 'حساب التكاليف',
+    'cost_centers' => 'مراكز التكلفة',
+    'add_cost_center' => 'مركز تكلفة جديد',
+    'edit_cost_center' => 'تعديل مركز التكلفة ',
+
 ];

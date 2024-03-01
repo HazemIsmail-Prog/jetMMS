@@ -121,6 +121,22 @@
 
             @endcanany
 
+
+            {{-- Cashier --}}
+            {{-- @canany(['viewAny'], [App\Models\Order::class, App\Models\Customer::class, App\Models\Marketing::class]) --}}
+
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.cashier') }}</h3>
+
+                {{-- @can('viewAny', App\Models\Customer::class) --}}
+                    <x-sidebar-item icon="diversity_3" route="cash_collection" :title="__('messages.cash_collection')" />
+                {{-- @endcan --}}
+
+                {{-- @can('viewAny', App\Models\Order::class) --}}
+                    <x-sidebar-item icon="dashboard" route="knet_collection" :title="__('messages.knet_collection')" />
+                {{-- @endcan --}}
+
+            {{-- @endcanany --}}
+
             {{-- Accounting --}}
             @canany(['viewAny'], [App\Models\Account::class, App\Models\Invoice::class])
 
@@ -139,9 +155,9 @@
                 @endcan
 
                 @can('accounting_reports')
-                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                        x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
+                    <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
+                        x-data="{ open: {{ in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
+                        <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
                             href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -151,9 +167,9 @@
                                 <x-svgs.chevron />
                             </div>
                         </a>
-                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
+                        <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
                             :class="open ? '!block' : 'hidden'">
-                            <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
+                            <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                             <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
                             <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
                             <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
@@ -246,6 +262,10 @@
                 ])
 
                 <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
+
+                {{-- @can('viewAny', App\Models\Role::class) --}}
+                    <x-sidebar-item icon="dashboard" route="cost_center.index" :title="__('messages.cost_centers')" />
+                {{-- @endcan --}}
 
                 @can('viewAny', App\Models\Role::class)
                     <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />

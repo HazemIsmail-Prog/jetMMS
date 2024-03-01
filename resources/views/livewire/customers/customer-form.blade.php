@@ -60,14 +60,9 @@
             @foreach ($form->addresses as $index => $address)
                 <div class=" flex items-center gap-2">
                     <div>
-                        <div wire:ignore>
-                            <select data-property="form.addresses.{{ $index }}.area_id"
-                                wire:model="form.addresses.{{ $index }}.area_id" class="select2">
-                                <option value="">{{ __('messages.area') }}</option>
-                                @foreach ($areas->sortBy('name') as $area)
-                                    <option value="{{ $area->id }}">{{ $area->name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="w-64">
+                            <x-searchable-select :list="$areas"
+                                model="form.addresses.{{ $index }}.area_id" />
                         </div>
                         <x-input-error for="form.addresses.{{ $index }}.area_id" />
                     </div>

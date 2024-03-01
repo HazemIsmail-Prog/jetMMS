@@ -23,6 +23,15 @@
                             <x-input-error for="form.name_en" />
                         </div>
                         <div>
+                            <x-label for="usage">{{ __('messages.usage') }}</x-label>
+                            <x-select required disabled class="w-full py-0" wire:model="form.usage" id="usage">
+                                <option value="">---</option>
+                                <option value="debit">{{ __('messages.debit') }}</option>
+                                <option value="credit">{{ __('messages.credit') }}</option>
+                            </x-select>
+                            <x-input-error for="form.usage" />
+                        </div>
+                        <div>
                             <x-label for="active" class="flex items-center">
                                 <x-checkbox wire:model="form.active" id="active" />
                                 <span class="ms-2 ">{{ __('messages.active') }}</span>

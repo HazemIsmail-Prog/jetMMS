@@ -3,7 +3,9 @@
 namespace App\Livewire\Departments;
 
 use App\Livewire\Forms\DepartmentForm as FormsDepartmentForm;
+use App\Models\Account;
 use App\Models\Department;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -14,6 +16,17 @@ class DepartmentForm extends Component
     public Department $department;
 
     public FormsDepartmentForm $form;
+
+    #[Computed()]
+    public function accounts()
+    {
+        return Account::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name', 'account_id')
+            ->orderBy('name_' . app()->getLocale())
+            ->where('level', 3)
+            ->with('parent')
+            ->get();
+    }
 
     #[On('showDepartmentFormModal')]
     public function show(Department $department)

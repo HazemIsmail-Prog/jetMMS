@@ -54,6 +54,7 @@
                                 <option value="{{ $department->id }}">{{ $department->name }}</option>
                             @endforeach
                         </x-select>
+
                     </th>
                     <th>
                         <x-select wire:model.live="filters.role_id" class=" w-full py-0">
@@ -116,8 +117,7 @@
                             </a>
 
 
-                            <a
-                                href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
+                            <a href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
                                 class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <x-svgs.duplicate class="w-4 h-4" />
                             </a>

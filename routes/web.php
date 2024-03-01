@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\LanguageController;
 use App\Livewire\Accounts\AccountIndex;
+use App\Livewire\Accounts\Reports\AccountStatement;
 use App\Livewire\Accounts\VoucherIndex;
 use App\Livewire\Areas\AreaIndex;
+use App\Livewire\Cashier\CashCollection;
+use App\Livewire\Cashier\KnetCollection;
 use App\Livewire\Companies\CompanyIndex;
+use App\Livewire\CostCenters\CostCenterIndex;
 use App\Livewire\Customers\CustomerForm;
 use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Departments\DepartmentIndex;
@@ -70,10 +74,17 @@ Route::middleware([
 
 
 
+        // ========== Cashier ==========
+        
+        Route::get('cash-collection', CashCollection::class)->name('cash_collection');
+        Route::get('knet-collection', KnetCollection::class)->name('knet_collection');
+
+        
         // ========== Accounting ==========
 
         // Accounts
         Route::get('accounts', AccountIndex::class)->name('account.index');
+        Route::get('accounts/reports/account_statement', AccountStatement::class)->name('account_statement');
 
         // Invoices
         Route::get('invoices', InvoiceIndex::class)->name('invoice.index');
@@ -107,6 +118,9 @@ Route::middleware([
 
         // ========== Admin Settings ==========
 
+        // Cost Centers
+        Route::get('cost_centers', CostCenterIndex::class)->name('cost_center.index');
+        
         // Roles
         Route::get('roles', RoleIndex::class)->name('role.index');
 

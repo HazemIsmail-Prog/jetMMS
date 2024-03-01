@@ -35,38 +35,29 @@
     @livewire('areas.area-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.name') }}
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->areas as $area)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $area->name }}</div>
-                        </td>
-
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-
+                    <x-tr>
+                        <x-td>{{ $area->name }}</x-td>
+                        <x-td>
+                            <div class="flex items-center justify-end gap-2">
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
 
 

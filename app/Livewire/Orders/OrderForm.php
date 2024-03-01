@@ -132,6 +132,9 @@ class OrderForm extends Component
 
         // $this->form->reset();
         $this->showModal = false;
+
+        //Dispatch customers screen to update orders counters
+        $this->dispatch('ordersUpdated');
         RefreshDepartmentScreenEvent::dispatch($this->form->department_id);
 
     }

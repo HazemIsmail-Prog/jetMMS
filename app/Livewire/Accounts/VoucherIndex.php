@@ -37,9 +37,15 @@ class VoucherIndex extends Component
     public function vouchers()
     {
         return Voucher::query()
+            ->latest()
             ->with('user')
             ->orderBy('id', 'desc')
             ->paginate(15);
+    }
+
+    public function delete(Voucher $voucher)
+    {
+        $voucher->delete();
     }
 
     public function render()

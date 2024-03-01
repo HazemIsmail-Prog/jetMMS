@@ -1,8 +1,10 @@
 <div class=" p-4 border dark:border-gray-700 rounded-lg">
 
     {{-- Header Section --}}
-    <div class=" flex items-center justify-between">
-        <h3 class="font-semibold text-gray-900 dark:text-white">{{ $invoice->id }}</h3>
+    <div class=" flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-gray-900 dark:text-white">
+            {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
+        </h3>
         <x-svgs.trash wire:click="deleteInvoice({{ $invoice->id }})" wire:confirm="adcflkhlkh"
             class=" w-4 h-4 text-red-600" />
     </div>
@@ -42,7 +44,7 @@
         @endif
 
         {{-- Parts Section --}}
-        @if ($invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0)
+        @if ($invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 || $invoice->invoice_part_details->count() > 0)
             <tr>
                 <th scope="col" class="py-1 text-start">
                     {{ __('messages.parts') }}
@@ -56,10 +58,32 @@
                     <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
                 </tr>
             @endforeach
+            @foreach ($invoice->invoice_part_details as $row)
+                <tr>
+                    <td class=" px-1 text-start">{{ $row->name }}</td>
+                    <td class=" px-1 text-center">{{ $row->quantity }}</td>
+                    <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
+                    <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
+                </tr>
+            @endforeach
         @endif
 
         {{-- Totals Section --}}
         <tr class=" border-t dark:border-gray-700">
+            <th>{{ __('messages.delivery') }}</th>
+            <th></th>
+            <th></th>
+            <th class=" text-right">{{ number_format($invoice->delivery, 3) }}
+            </th>
+        </tr>
+        <tr>
+            <th>{{ __('messages.discount') }}</th>
+            <th></th>
+            <th></th>
+            <th class=" text-right text-red-500 line-through">{{ number_format($invoice->discount, 3) }}
+            </th>
+        </tr>
+        <tr>
             <th>{{ __('messages.total') }}</th>
             <th></th>
             <th></th>

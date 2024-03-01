@@ -16,10 +16,14 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('manual_id')->nullable();
             $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('invoice_id')->nullable()->constrained('invoices');
+            $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->date('date');
-            $table->string('type');
+            $table->string('type')->index();
             $table->string('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

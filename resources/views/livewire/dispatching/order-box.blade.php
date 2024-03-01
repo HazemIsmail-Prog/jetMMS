@@ -29,7 +29,7 @@
         <div
             class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             <i class="mgc_hashtag_line text-base me-1"></i>
-            {{ $order->id }}
+            {{ str_pad($order->id, 8, '0', STR_PAD_LEFT) }}
         </div>
 
         @if (!in_array($order->status_id, [3, 7]))

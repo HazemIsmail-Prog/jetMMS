@@ -10,19 +10,27 @@
             <div class="  flex gap-2">
                 <div class="flex flex-col flex-1">
                     <x-label for="amount">{{ __('messages.amount') }}</x-label>
-                    <x-input required type="number" wire:model="payment.amount" id="amount" dir="ltr"
+                    <x-input required type="number" wire:model="amount" id="amount" dir="ltr"
                         min="0" max="{{ $invoice->remaining_amount }}" />
-                    <x-input-error for="payment.amount" />
+                    <x-input-error for="amount" />
                 </div>
                 <div class="flex flex-col flex-1">
                     <x-label for="method">{{ __('messages.payment_method') }}</x-label>
-                    <x-select required wire:model="payment.method" id="method">
+                    <x-select required wire:model.live="method" id="method">
                         <option value="">---</option>
                         <option value="cash">{{ __('messages.cash') }}</option>
                         <option value="knet">{{ __('messages.knet') }}</option>
                     </x-select>
-                    <x-input-error for="payment.method" />
+                    <x-input-error for="method" />
                 </div>
+                    @if ($method == 'knet')
+                        <div class="flex flex-col flex-1">
+                            <x-label for="knet_ref_number">{{ __('messages.knet_ref_number') }}</x-label>
+                            <x-input type="text" wire:model="knet_ref_number" id="knet_ref_number"
+                                dir="ltr" />
+                            <x-input-error for="knet_ref_number" />
+                        </div>
+                    @endif
             </div>
             <div>
                 <x-button>{{ __('messages.save') }}</x-button>

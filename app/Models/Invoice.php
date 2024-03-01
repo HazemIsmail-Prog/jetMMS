@@ -3,11 +3,16 @@
 namespace App\Models;
 
 use App\Enums\PaymentStatusEnum;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Observers\InvoiceObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(InvoiceObserver::class)]
 class Invoice extends Model
 {
     use HasFactory, SoftDeletes;
@@ -18,27 +23,37 @@ class Invoice extends Model
         'payment_status' => PaymentStatusEnum::class
     ];
 
-    public function invoice_details()
+    public function invoice_details(): HasMany
     {
         return $this->hasMany(InvoiceDetails::class);
     }
 
-    public function payments()
+    public function invoice_part_details(): HasMany
+    {
+        return $this->hasMany(InvoicePartDetail::class);
+    }
+
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
 
-    public function order()
+    public function voucher(): HasOne
+    {
+        return $this->hasOne(Voucher::class);
+    }
+
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
-
 
     // this function to prevent eager loading for get attributes
     public function newQuery($excludeDeleted = true)
     {
         return parent::newQuery($excludeDeleted)->with([
             'invoice_details',
+            'invoice_part_details',
             'payments',
         ]);
     }
@@ -49,7 +64,10 @@ class Invoice extends Model
         foreach ($this->invoice_details as $row) {
             $amount += $row->total;
         }
-        return $amount;
+        foreach ($this->invoice_part_details as $row) {
+            $amount += $row->total;
+        }
+        return $amount + $this->delivery - $this->discount;
     }
 
     public function getTotalPaidAmountAttribute()
@@ -68,11 +86,55 @@ class Invoice extends Model
 
     public function getServicesAmountAttribute()
     {
-        return $this->invoice_details->where('service.type', 'service')->sum('total');;
+        $amount = 0;
+        foreach ($this->invoice_details as $row) {
+            if ($row->service->type == 'service') {
+                $amount += $row->total;
+            }
+        }
+        return $amount;
     }
+
     public function getPartsAmountAttribute()
     {
-        return $this->invoice_details->where('service.type', 'part')->sum('total');;
+        $amount = 0;
+        foreach ($this->invoice_details as $row) {
+            if ($row->service->type == 'part') {
+                $amount += $row->total;
+            }
+        }
+        foreach ($this->invoice_part_details as $row) {
+            $amount += $row->total;
+        }
+        return $amount;
+    }
+
+    public function getInternalPartsAmountAttribute()
+    {
+        $amount = 0;
+        foreach ($this->invoice_details as $row) {
+            if ($row->service->type == 'part') {
+                $amount += $row->total;
+            }
+        }
+        foreach ($this->invoice_part_details->where('type','internal') as $row) {
+            $amount += $row->total;
+        }
+        return $amount;
+    }
+
+    public function getExternalPartsAmountAttribute()
+    {
+        $amount = 0;
+        foreach ($this->invoice_part_details->where('type','external') as $row) {
+            $amount += $row->total;
+        }
+        return $amount;
+    }
+
+    public function getServicesAmountAfterDiscountAttribute()
+    {
+        return $this->services_amount - $this->discount;
     }
 
     public function getCashAmountAttribute()
@@ -93,6 +155,4 @@ class Invoice extends Model
             return $this->remaining_amount == 0 ? 'paid' : 'partially_paid';
         }
     }
-
-
 }

@@ -5,6 +5,7 @@ namespace App\Livewire\Customers;
 use App\Models\Area;
 use App\Models\Customer;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -25,19 +26,24 @@ class CustomerIndex extends Component
         $this->resetPage();
     }
 
-    #[Computed(cache: true)]
+    #[Computed()]
     public function areas()
     {
-        return Area::select('id', 'name_en', 'name_ar')->get();
+        return Area::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed]
+    #[On('ordersUpdated')]
     public function customers()
     {
         return Customer::query()
             ->orderBy('id', 'desc')
             ->with('phones')
             ->with('addresses')
+            ->with('orders')
             ->with('invoices')
             ->when($this->filters['name'], function ($q) {
                 $q->where('name', 'like', '%' . $this->filters["name"] . '%');

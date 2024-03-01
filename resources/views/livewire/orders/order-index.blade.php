@@ -124,7 +124,7 @@
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class=" text-center px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->id }}
+                            {{ str_pad($order->id, 8, '0', STR_PAD_LEFT) }}
                         </th>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
                             <div dir="ltr">

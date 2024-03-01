@@ -35,73 +35,52 @@
     @livewire('services.service-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="text-start">
+                    <x-th>
                         <x-input wire:model.live="filters.name" class="w-full py-0"
                             placeholder="{{ __('messages.name') }}" />
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.min_price') }}
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.max_price') }}
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
+                    </x-th>
+                    <x-th>{{ __('messages.min_price') }}</x-th>
+                    <x-th>{{ __('messages.max_price') }}</x-th>
+                    <x-th>
                         <x-select wire:model.live="filters.department_id" class="w-full py-0">
                             <option value="">{{ __('messages.department') }}</option>
                             @foreach ($this->departments as $department)
                                 <option value="{{ $department->id }}">{{ $department->name }}</option>
                             @endforeach
                         </x-select>
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
+                    </x-th>
+                    <x-th>
                         <x-select wire:model.live="filters.type" class="w-full py-0">
                             <option value="">{{ __('messages.type') }}</option>
                             <option value="service">{{ __('messages.services') }}</option>
                             <option value="part">{{ __('messages.parts') }}</option>
                         </x-select>
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    </x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->services as $service)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $service->name }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-right whitespace-nowrap ">
-                            <div>{{ number_format($service->min_price, 3) }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-right whitespace-nowrap ">
-                            <div>{{ number_format($service->max_price, 3) }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $service->department->name }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ __('messages.' . $service->type . 's') }}</div>
-                        </td>
-
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-
-                                <x-badgeWithCounter service="{{ __('messages.edit') }}"
+                    <x-tr>
+                        <x-td>{{ $service->name }}</x-td>
+                        <x-td>{{ number_format($service->min_price, 3) }}</x-td>
+                        <x-td>{{ number_format($service->max_price, 3) }}</x-td>
+                        <x-td>{{ $service->department->name }}</x-td>
+                        <x-td>{{ __('messages.' . $service->type . 's') }}</x-td>
+                        <x-td>
+                            <div class="flex items-center justify-end gap-2">
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showServiceFormModal',{service:{{ $service }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
-
-
 </div>

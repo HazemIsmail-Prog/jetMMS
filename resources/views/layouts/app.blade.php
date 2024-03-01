@@ -24,17 +24,14 @@
 </head>
 
 <body class="{{ app()->getLocale() == 'ar' ? 'font-messiri' : ' font-Nunito' }}  antialiased h-screen overflow-hidden"
-    :class="{ 'sidebar-expanded': sidebarExpanded }" 
-    x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }" 
-    x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))"
-    >
+    :class="{ 'sidebar-expanded': sidebarExpanded }" x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }" x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
     <x-banner />
 
 
     {{-- Chatting --}}
     {{-- @persist('chats') --}}
-        @livewire('chats.chat-button')
-        @livewire('chats.chat-modal')
+    @livewire('chats.chat-button')
+    @livewire('chats.chat-modal')
     {{-- @endpersist --}}
 
     <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
@@ -131,6 +128,7 @@
     </script>
 
     @livewireScripts
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
 </body>
 

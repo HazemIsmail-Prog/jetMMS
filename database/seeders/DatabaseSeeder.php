@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             AccountSeeder::class,
             StatusSeeder::class,
             DepartmentSeeder::class,
+            CostCenterSeeder::class,
             ServiceSeeder::class,
             TitleSeeder::class,
             ShiftSeeder::class,

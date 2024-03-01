@@ -405,6 +405,18 @@ return [
     'invalid_voucher_number' => 'Invalid Voucher Number',
 
     'receiver' => 'Receiver',
+    'delivery' => 'Delivery',
+    'discount' => 'Discount',
+    'discount_must_be_less_than_or_equal_services' => 'Discount Available Only for services',
+    'services_after_discount' => 'Services After Discount',
+    'balance' => 'Balance',
+    'opening_balance' => 'Opening Balance',
+    'usage' => 'Usage',
+
+
+
+
+
 
 
 
@@ -457,6 +469,25 @@ return [
     'click_to_unassign' => 'Click to Unassign',
     'car_actions' => 'Actions',
     'action_type' => 'Action Type',
+
+
+    'cashier' => 'Cashier',
+    'cash_collection' => 'Cash Collection',
+    'knet_collection' => 'K-Net Collection',
+    'collect' => 'Collect',
+    'knet_ref_number' => 'K-Net ref Number',
+    'add_part' => 'Add Part',
+    'internal' => 'Internal',
+    'external' => 'External',
+    'part_source' => 'Part Source',
+    'no_uncollected_payments' => 'No Uncollected Payments',
+    'income_account_id' => 'Income Account',
+    'cost_account_id' => 'Cost Account',
+    'cost_centers' => 'Cost Centers',
+    'add_cost_center' => 'Add Cost Center',
+    'edit_cost_center' => 'Edit Cost Center ',
+
+
 
 
 ];

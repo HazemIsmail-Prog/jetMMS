@@ -31,7 +31,8 @@ class ServiceForm extends Component
     public function departments()
     {
         return Department::query()
-            ->select('id', 'name_ar', 'name_en')
+            ->select('id', 'name_ar', 'name_en','name_'.app()->getLocale().' as name')
+            ->orderBy('name')
             ->where('is_service', true)
             ->get();
     }

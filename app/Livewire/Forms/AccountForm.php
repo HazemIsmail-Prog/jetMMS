@@ -10,7 +10,9 @@ class AccountForm extends Form
     public $id;
     public $name_ar;
     public $name_en;
-    public $account_id;
+    public $income_account_id;
+    public $cost_account_id;
+    public $usage;
     public $level = 0;
     public $index = 0;
     public bool $active = true;
@@ -21,6 +23,7 @@ class AccountForm extends Form
             'id' => 'nullable',
             'name_ar' => 'required',
             'name_en' => 'required',
+            'usage' => 'nullable',
             'level' => 'required',
             'index' => 'required',
             'active' => 'nullable',

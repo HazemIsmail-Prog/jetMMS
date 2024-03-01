@@ -5,6 +5,8 @@ namespace App\Livewire\Orders;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Service;
+use App\Services\CreateCostVoucher;
+use App\Services\CreateInvoiceVoucher;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -19,11 +21,38 @@ class InvoiceForm extends Component
     #[Rule('required')]
     public $selected_services = [];
     public $select_service = [];
-
+    public $discount = 0;
+    public $delivery = 0;
+    public $parts = [];
 
     #[On('showInvoiceForm')]
     public function showInvoiceForm() {
         $this->showForm = true;
+    }
+
+    public function updatedParts($val, $key)
+    {
+        $index = explode('.', $key)[0];
+        if ($this->parts[$index]['quantity'] && $this->parts[$index]['price']) {
+            $this->parts[$index]['total'] = $this->parts[$index]['quantity'] * $this->parts[$index]['price'];
+        } else {
+            $this->parts[$index]['total'] = 0;
+        }
+    }
+
+    public function addPartRow() {
+        $this->parts [] = [
+            'name' => '',
+            'quantity' => '',
+            'price' => '',
+            'total' => 0,
+            'type' => '',
+        ];
+    }
+
+    public function deletePartRow($index) {
+        unset($this->parts[$index]);
+
     }
 
     public function hideInvoiceForm()
@@ -44,6 +73,7 @@ class InvoiceForm extends Component
             })
             ->get();
     }
+
 
     public function updatedSelectedServices($val, $key)
     {
@@ -88,6 +118,8 @@ class InvoiceForm extends Component
             $invoice = Invoice::create([
                 'order_id' => $this->order->id,
                 'user_id' => auth()->id(),
+                'discount' => $this->discount,
+                'delivery' => $this->delivery,
                 'payment_status' => collect($this->selected_services)->sum('service_total') > 0 ? 'pending' : 'free',
             ]);
             foreach ($this->selected_services as $row) {
@@ -96,6 +128,20 @@ class InvoiceForm extends Component
                     'quantity' => $row['quantity'],
                     'price' => $row['price'],
                 ]);
+            }
+            foreach ($this->parts as $row) {
+                $invoice->invoice_part_details()->create([
+                    'name' => $row['name'],
+                    'quantity' => $row['quantity'],
+                    'price' => $row['price'],
+                    'type' => $row['type'],
+                ]);
+            }
+            CreateInvoiceVoucher::createVoucher($invoice);
+
+            if(collect($this->parts)->where('type','external')->sum('total') > 0)
+            {
+                CreateCostVoucher::createVoucher($invoice);
             }
             DB::commit();
             $this->reset('select_service', 'selected_services', 'search', 'showForm');

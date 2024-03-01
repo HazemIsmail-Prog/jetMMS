@@ -78,13 +78,25 @@
                             placeholder="{{ __('messages.customer_phone') }}" />
                     </th>
                     <th scope="col" class=" text-center">
-                        {{ __('messages.amount') }}
-                    </th>
-                    <th scope="col" class=" text-center">
                         {{ __('messages.services') }}
                     </th>
                     <th scope="col" class=" text-center">
-                        {{ __('messages.parts') }}
+                        {{ __('messages.discount') }}
+                    </th>
+                    <th scope="col" class=" text-center">
+                        {{ __('messages.services_after_discount') }}
+                    </th>
+                    <th scope="col" class=" text-center">
+                        {{ __('messages.internal_parts') }}
+                    </th>
+                    <th scope="col" class=" text-center">
+                        {{ __('messages.external_parts') }}
+                    </th>
+                    <th scope="col" class=" text-center">
+                        {{ __('messages.delivery') }}
+                    </th>
+                    <th scope="col" class=" text-center">
+                        {{ __('messages.amount') }}
                     </th>
                     <th scope="col" class=" text-center">
                         {{ __('messages.cash') }}
@@ -114,12 +126,12 @@
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class=" text-center px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $invoice->id }}
+                            {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
                         </th>
                         <th class=" text-center px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <x-badgeWithCounter :counter="$this->invoices->where('order_id',$invoice->order_id)->count() > 1 ? $this->invoices->where('order_id',$invoice->order_id)->count() : null" title="{{ __('messages.invoices') }}"
                                 wire:click="$dispatch('showInvoicesModal',{order_id:{{ $invoice->order->id }}})">
-                                {{ $invoice->order_id }}
+                                {{ str_pad($invoice->order_id, 8, '0', STR_PAD_LEFT) }}
                             </x-badgeWithCounter>
                         </th>
                         <td class="px-6 py-1 text-center whitespace-nowrap">
@@ -144,13 +156,25 @@
                             {{ $invoice->order->phone->number }}
                         </td>
                         <td class="px-6 py-1 text-right whitespace-nowrap ">
-                            {{ $invoice->amount > 0 ? number_format($invoice->amount, 3) : '-' }}
-                        </td>
-                        <td class="px-6 py-1 text-right whitespace-nowrap ">
                             {{ $invoice->services_amount > 0 ? number_format($invoice->services_amount, 3) : '-' }}
                         </td>
                         <td class="px-6 py-1 text-right whitespace-nowrap ">
-                            {{ $invoice->parts_amount > 0 ? number_format($invoice->parts_amount, 3) : '-' }}
+                            {{ $invoice->parts_amount > 0 ? number_format($invoice->discount, 3) : '-' }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            {{ $invoice->services_amount_after_discount > 0 ? number_format($invoice->services_amount_after_discount, 3) : '-' }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            {{ $invoice->internal_parts_amount > 0 ? number_format($invoice->internal_parts_amount, 3) : '-' }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            {{ $invoice->external_parts_amount > 0 ? number_format($invoice->external_parts_amount, 3) : '-' }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            {{ $invoice->parts_amount > 0 ? number_format($invoice->delivery, 3) : '-' }}
+                        </td>
+                        <td class="px-6 py-1 text-right whitespace-nowrap ">
+                            {{ $invoice->amount > 0 ? number_format($invoice->amount, 3) : '-' }}
                         </td>
                         <td class="px-6 py-1 text-right whitespace-nowrap ">
                             {{ $invoice->cash_amount > 0 ? number_format($invoice->cash_amount, 3) : '-' }}

@@ -19,8 +19,11 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->foreignId('invoice_id')->constrained('invoices');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('collected_by')->nullable()->constrained('users');
+            $table->boolean('is_collected');
             $table->float('amount');
             $table->string('method');
+            $table->string('knet_ref_number')->nullable();
             $table->timestamps();
         });
     }

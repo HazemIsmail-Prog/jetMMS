@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('voucher_id')->constrained('vouchers');
             $table->foreignId('account_id')->constrained('accounts');
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->string('cost_center')->nullable();
+            $table->foreignId('cost_center_id')->nullable()->constrained('cost_centers');
             $table->string('narration')->nullable();
             $table->float('debit',10,3);
             $table->float('credit',10,3);

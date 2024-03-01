@@ -83,6 +83,13 @@
                                         <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
+                                @can('delete', $voucher)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $voucher }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
 
                             </div>
                         </td>

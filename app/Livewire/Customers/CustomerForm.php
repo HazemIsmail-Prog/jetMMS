@@ -18,7 +18,10 @@ class CustomerForm extends Component
     public function mount(Customer $customer)
     {
         $this->customer = $customer;
-        $this->areas = Area::select('id', 'name_en', 'name_ar')->get();
+        $this->areas = Area::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name' )
+            ->get();
 
         $this->form->fill($this->customer);
 

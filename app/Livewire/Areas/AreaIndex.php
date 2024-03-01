@@ -19,6 +19,8 @@ class AreaIndex extends Component
     public function areas()
     {
         return Area::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
             ->paginate(15);
     }
 

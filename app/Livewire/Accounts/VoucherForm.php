@@ -4,6 +4,7 @@ namespace App\Livewire\Accounts;
 
 use App\Livewire\Forms\VoucherForm as FormsVoucherForm;
 use App\Models\Account;
+use App\Models\CostCenter;
 use App\Models\User;
 use App\Models\Voucher;
 use Livewire\Attributes\Computed;
@@ -23,11 +24,12 @@ class VoucherForm extends Component
     public Voucher $voucher;
     public FormsVoucherForm $form;
 
-    public function copy() {
+    public function copy()
+    {
         $voucher = Voucher::find($this->copy_from);
-        if($voucher){
+        if ($voucher) {
             $this->form->details = [];
-            foreach($voucher->voucherDetails as $row){
+            foreach ($voucher->voucherDetails as $row) {
                 $this->form->details[] = [
                     'account_id' => $row['account_id'],
                     'cost_center' => $row['cost_center'],
@@ -39,8 +41,8 @@ class VoucherForm extends Component
             }
             $this->getBalance();
             $this->resetErrorBag();
-        }else{
-            $this->addError('copy_from',__('messages.invalid_voucher_number'));
+        } else {
+            $this->addError('copy_from', __('messages.invalid_voucher_number'));
         }
     }
 
@@ -67,18 +69,20 @@ class VoucherForm extends Component
 
     #[On('debit')]
     #[On('credit')]
-    public function getBalance() {
+    public function getBalance()
+    {
         $this->balance = 0;
         $this->total_debit = 0;
         $this->total_credit = 0;
-        foreach($this->form->details as $row){
-            $this->total_debit += $row['debit'] != '' ? $row['debit']: 0;
-            $this->total_credit += $row['credit'] != '' ? $row['credit']: 0;
+        foreach ($this->form->details as $row) {
+            $this->total_debit += $row['debit'] != '' ? $row['debit'] : 0;
+            $this->total_credit += $row['credit'] != '' ? $row['credit'] : 0;
         }
         $this->balance = $this->total_debit - $this->total_credit;
     }
 
-    public function addRow(){
+    public function addRow()
+    {
         $this->form->details[] = [
             'account_id' => '',
             'cost_center' => null,
@@ -89,20 +93,37 @@ class VoucherForm extends Component
         ];
     }
 
-    public function deleteRow($index) {
+    public function deleteRow($index)
+    {
         unset($this->form->details[$index]);
     }
 
     #[Computed()]
     public function accounts()
     {
-        return Account::query()->select('id','name_en','name_ar')->where('level', 3)->get();
+        return Account::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->where('level', 3)
+            ->get();
+    }
+
+    #[Computed()]
+    public function cost_centers()
+    {
+        return CostCenter::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
     public function users()
     {
-        return User::query()->select('id','name_en','name_ar')->get();
+        return User::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     public function save()
@@ -114,8 +135,8 @@ class VoucherForm extends Component
         unset($validated['details']);
         $voucher = Voucher::updateOrCreate(['id' => $validated['id']], $validated);
         $voucher->voucherDetails()->delete();
-        foreach($this->form->details as $row){
-            if($row['user_id'] == ''){
+        foreach ($this->form->details as $row) {
+            if ($row['user_id'] == '') {
                 $row['user_id'] = null;
             }
             $voucher->voucherDetails()->create($row);

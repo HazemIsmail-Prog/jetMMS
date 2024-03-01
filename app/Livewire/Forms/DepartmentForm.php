@@ -10,6 +10,8 @@ class DepartmentForm extends Form
     public $id;
     public $name_ar;
     public $name_en;
+    public $income_account_id;
+    public $cost_account_id;
 
     public function rules()
     {
@@ -17,6 +19,8 @@ class DepartmentForm extends Form
             'id' => 'nullable',
             'name_ar' => 'required',
             'name_en' => 'required',
+            'income_account_id' => 'nullable',
+            'cost_account_id' => 'nullable',
         ];
     }
 }

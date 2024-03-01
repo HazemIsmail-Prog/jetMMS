@@ -21,7 +21,7 @@ class InvoiceModal extends Component
     {
         $this->reset();
         $this->order = Order::find($order_id);
-        $this->modalTitle = __('messages.invoices_for_order_number') . $order_id;
+        $this->modalTitle = __('messages.invoices_for_order_number') . str_pad($order_id, 8, '0', STR_PAD_LEFT);
         $this->showModal = true;
     }
 

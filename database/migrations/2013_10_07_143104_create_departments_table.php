@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('income_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('cost_account_id')->nullable()->constrained('accounts');
             $table->string('name_ar');
             $table->string('name_en');
             $table->boolean('active');

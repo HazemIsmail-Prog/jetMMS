@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(!app()->isProduction());
 
-        View::share('logo',Setting::find(1)->logo);
+        if (Schema::hasTable('settings')) {
+            View::share('logo', Setting::find(1)->logo);
+        }
     }
 }

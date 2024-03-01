@@ -19,6 +19,8 @@ class CreateInvoicesTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('user_id')->constrained('users');
+            $table->float('discount', 8, 3)->default(0);
+            $table->float('delivery', 8, 3)->default(0);
             $table->string('payment_status')->default('pending');
             $table->timestamps();
             $table->softDeletes();

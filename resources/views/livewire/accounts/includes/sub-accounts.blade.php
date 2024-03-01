@@ -5,7 +5,7 @@
         'ms-40' => $account->level == 2,
         'ms-60' => $account->level == 3,
     ])>
-        <x-label>{{ $account->name }}</x-label>
+        <x-label>{{ $account->id }} - {{ $account->name }}</x-label>
         <div class=" flex items-center gap-2">
             @if ($account->level < 3)
                 @can('create', App\Models\Account::class)

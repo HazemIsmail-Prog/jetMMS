@@ -35,50 +35,34 @@
     @livewire('shifts.shift-form')
 
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.name') }}
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.start_time') }}
-                    </th>
-                    <th scope="col" class="px-6 py-1 text-start">
-                        {{ __('messages.end_time') }}
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th>{{ __('messages.start_time') }}</x-th>
+                    <x-th>{{ __('messages.end_time') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->shifts as $shift)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <x-tr>
+                        <x-td>{{ $shift->name }}</x-td>
+                        <x-td>{{ $shift->start_time }}</x-td>
+                        <x-td>{{ $shift->end_time }}</x-td>
 
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $shift->name }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $shift->start_time }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $shift->end_time }}</div>
-                        </td>
-
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-
+                        <x-td>
+                            <div class="flex items-center justify-end gap-2">
                                 <x-badgeWithCounter shift="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showShiftFormModal',{shift:{{ $shift }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
 
 
