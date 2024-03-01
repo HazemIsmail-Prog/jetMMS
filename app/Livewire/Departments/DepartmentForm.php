@@ -22,7 +22,7 @@ class DepartmentForm extends Component
     {
         return Account::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name', 'account_id')
-            ->orderBy('name_' . app()->getLocale())
+            ->orderBy('name')
             ->where('level', 3)
             ->with('parent')
             ->get();
