@@ -7,7 +7,6 @@
         </div>
     </x-slot>
 
-
     <form wire:submit="save" class=" space-y-4 max-w-md mx-auto">
 
         <div class="flex flex-col">
@@ -41,7 +40,36 @@
             <x-input-error for="form.address_en" />
         </div>
 
-
+        <div class="flex flex-col">
+            <x-label for="knet_tax">{{ __('messages.knet_tax') }}</x-label>
+            <x-input type="text" wire:model="form.knet_tax" id="knet_tax" dir="ltr" />
+            <x-input-error for="form.knet_tax" />
+        </div>
+        <div class="flex flex-col">
+            <x-label for="cash_account_id">{{ __('messages.cash_account_id') }}</x-label>
+            <x-searchable-select position="relative" :list="$this->accounts" model="form.cash_account_id" />
+            <x-input-error for="form.cash_account_id" />
+        </div>
+        <div class="flex flex-col">
+            <x-label for="bank_account_id">{{ __('messages.bank_account_id') }}</x-label>
+            <x-searchable-select position="relative" :list="$this->accounts" model="form.bank_account_id" />
+            <x-input-error for="form.bank_account_id" />
+        </div>
+        <div class="flex flex-col">
+            <x-label for="bank_charges_account_id">{{ __('messages.bank_charges_account_id') }}</x-label>
+            <x-searchable-select position="relative" :list="$this->accounts" model="form.bank_charges_account_id" />
+            <x-input-error for="form.bank_charges_account_id" />
+        </div>
+        <div class="flex flex-col">
+            <x-label for="receivables_account_id">{{ __('messages.receivables_account_id') }}</x-label>
+            <x-searchable-select position="relative" :list="$this->accounts" model="form.receivables_account_id" />
+            <x-input-error for="form.receivables_account_id" />
+        </div>
+        <div class="flex flex-col">
+            <x-label for="internal_parts_account_id">{{ __('messages.internal_parts_account_id') }}</x-label>
+            <x-searchable-select position="relative" :list="$this->accounts" model="form.internal_parts_account_id" />
+            <x-input-error for="form.internal_parts_account_id" />
+        </div>
 
         <div class="text-end">
             <x-button>{{ __('messages.save') }}</x-button>

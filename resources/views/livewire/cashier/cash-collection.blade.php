@@ -27,7 +27,7 @@
                         <x-td>{{ $payment->user->name }}</x-td>
                         <x-td>{{ number_format($payment->amount, 3) }}</x-td>
                         <x-td class=" text-end">
-                            <x-button wire:confirm="ascsacsac"
+                            <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
                                 wire:click="collect_payment({{ $payment }})">{{ __('messages.collect') }}</x-button>
                         </x-td>
                     </x-tr>

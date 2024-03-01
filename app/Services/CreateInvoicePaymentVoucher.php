@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Payment;
+use App\Models\Setting;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +27,7 @@ class CreateInvoicePaymentVoucher
             $details = [];
             $details[] =
                 [
-                    'account_id' => 53, // الخزينة 1
+                    'account_id' => Setting::find(1)->cash_account_id, // الخزينة 1
                     'narration' => 'دفع نقدي للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => $payment->amount,
@@ -35,7 +36,7 @@ class CreateInvoicePaymentVoucher
 
             $details[] =
                 [
-                    'account_id' => 92,  // ذمم موظفيين - فواتير مؤجلة
+                    'account_id' => Setting::find(1)->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
                     'narration' => 'دفع نقدي للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => 0,
@@ -66,25 +67,25 @@ class CreateInvoicePaymentVoucher
             $details = [];
             $details[] =
                 [
-                    'account_id' => 57, // البنك  // TODO: make dynamic
+                    'account_id' => Setting::find(1)->bank_account_id, // البنك
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
-                    'debit' => $payment->amount - 0.07, // TODO: make dynamic
+                    'debit' => $payment->amount - Setting::find(1)->knet_tax, // عمولة البنك
                     'credit' => 0,
                 ];
 
             $details[] =
                 [
-                    'account_id' => 366, // مصروف عمولات روابط بنكية  // TODO: make dynamic
+                    'account_id' => Setting::find(1)->bank_charges_account_id, // مصروف عمولات روابط بنكية
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
-                    'debit' => 0.07, // TODO: make dynamic
+                    'debit' => Setting::find(1)->knet_tax, // عمولة البنك
                     'credit' => 0,
                 ];
 
             $details[] =
                 [
-                    'account_id' => 92,  // ذمم موظفيين - فواتير مؤجلة  // TODO: make dynamic
+                    'account_id' => Setting::find(1)->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => 0,

@@ -3,8 +3,10 @@
 namespace App\Livewire\Settings;
 
 use App\Livewire\Forms\SettingForm;
+use App\Models\Account;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Setting;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
@@ -14,6 +16,16 @@ class SettingsForm extends Component
 
     public SettingForm $form;
     public Setting $setting;
+
+    #[Computed()]
+    public function accounts()
+    {
+        return Account::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name_' . app()->getLocale())
+            ->where('level', 3)
+            ->get();
+    }
 
     public function mount()
     {
@@ -27,11 +39,11 @@ class SettingsForm extends Component
         
         
         if ($validated['logo'] !== $this->setting->logo) {
-            Storage::disk('s3')->delete($this->setting->logo);
+            // Storage::disk('s3')->delete($this->setting->logo);
             $validated['logo'] = $this->saveToS3($validated['logo']);
         }
         if ($validated['favicon'] !== $this->setting->favicon) {
-            Storage::disk('s3')->delete($this->setting->favicon);
+            // Storage::disk('s3')->delete($this->setting->favicon);
             $validated['favicon'] = $this->saveToS3($validated['favicon']);
         }
         $this->setting->update($validated);

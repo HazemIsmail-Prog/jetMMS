@@ -140,7 +140,23 @@
                             <th class="px-6 py-1 text-start">
                                 {{ $account->voucher_details->sum('credit') == 0 ? '-' : number_format($account->voucher_details->sum('credit'), 3) }}
                             </th>
-                            <th></th>
+                            <th @class([
+                                'px-6 py-1 text-start whitespace-nowrap',
+                                'text-red-500' => $balance < 0,
+                            ])>
+                                @switch($balance)
+                                    @case(0)
+                                        {{ '-' }}
+                                    @break
+
+                                    @case($balance < 0)
+                                        {{ '(' . number_format(abs($balance), 3) . ')' }}
+                                    @break
+
+                                    @default
+                                        {{ number_format($balance, 3) }}
+                                @endswitch
+                            </th>
                         </tr>
                     </tfoot>
                 </table>

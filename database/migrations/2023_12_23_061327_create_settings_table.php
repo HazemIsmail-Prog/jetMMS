@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('fax')->nullable();
             $table->string('address_ar')->nullable();
             $table->string('address_en')->nullable();
+            $table->float('knet_tax',3,3)->nullable();
+            $table->foreignId('cash_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('bank_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('bank_charges_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('receivables_account_id')->nullable()->constrained('accounts');
+            $table->foreignId('internal_parts_account_id')->nullable()->constrained('accounts');
             $table->timestamps();
         });
 

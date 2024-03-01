@@ -500,4 +500,13 @@ return [
     'add_cost_center' => 'مركز تكلفة جديد',
     'edit_cost_center' => 'تعديل مركز التكلفة ',
 
+
+
+    'knet_tax' => 'عمولة ال K-Net',
+    'cash_account_id' => 'حساب النقدية',
+    'bank_account_id' => 'حساب البنك',
+    'bank_charges_account_id' => 'حساب العمولات البنكية',
+    'receivables_account_id' => 'حساب المؤجلات',
+    'internal_parts_account_id' => 'حساب البضاعة الداخلية',
+
 ];

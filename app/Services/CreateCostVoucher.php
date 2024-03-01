@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Invoice;
+use App\Models\Setting;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +18,7 @@ class CreateCostVoucher
                 'invoice_id' => $invoice->id,
                 'date' => $invoice->created_at,
                 'type' => 'cost',
-                'notes' => 'Cost for Invoice No. ' . $invoice->id,
+                'notes' => 'تكاليف بضاعة خارجية للفاتورة رقم ' . $invoice->id,
             ]);
 
             // Create Voucher Details For Created Voucher for Created Invoice
@@ -25,7 +26,7 @@ class CreateCostVoucher
             $details[] =
                 [
                     'account_id' => $invoice->order->department->cost_account_id,
-                    'narration' => 'Cost for Invoice No. ' . $invoice->id,
+                    'narration' => 'تكاليف بضاعة خارجية للفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
                     'debit' => $invoice->external_parts_amount,
                     'credit' => 0,
@@ -33,8 +34,8 @@ class CreateCostVoucher
 
             $details[] =
                 [
-                    'account_id' => 53, // الخزينة
-                    'narration' => 'Cost for Invoice No. ' . $invoice->id,
+                    'account_id' => Setting::find(1)->cash_account_id, // الخزينة
+                    'narration' => 'تكاليف بضاعة خارجية للفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
                     'debit' => 0,
                     'credit' => $invoice->external_parts_amount,

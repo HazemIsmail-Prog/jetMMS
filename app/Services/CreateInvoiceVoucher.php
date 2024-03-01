@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\CostCenter;
 use App\Models\Invoice;
+use App\Models\Setting;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
@@ -18,15 +19,15 @@ class CreateInvoiceVoucher
                 'invoice_id' => $invoice->id,
                 'date' => $invoice->created_at,
                 'type' => 'inv',
-                'notes' => 'Invoice No. ' . $invoice->id,
+                'notes' => 'الفاتورة رقم ' . $invoice->id,
             ]);
 
             // Create Voucher Details For Created Voucher for Created Invoice
             $details = [];
             $details[] =
                 [
-                    'account_id' => 92, // ذمم موظفين - فواتير مؤجلة  // TODO: make dynamic
-                    'narration' => 'Invoice No. ' . $invoice->id,
+                    'account_id' => Setting::find(1)->receivables_account_id, // ذمم موظفين - فواتير مؤجلة
+                    'narration' => 'الفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
                     'debit' => $invoice->amount,
                     'credit' => 0,
@@ -35,9 +36,9 @@ class CreateInvoiceVoucher
             if ($invoice->services_amount_after_discount > 0) {
                 $details[] =
                     [
-                        'account_id' => $invoice->order->department->income_account_id,
+                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
                         'cost_center_id' => CostCenter::SERVICES,
-                        'narration' => 'Invoice No. ' . $invoice->id,
+                        'narration' => 'الفاتورة رقم ' . $invoice->id,
                         'user_id' => $invoice->order->technician_id,
                         'debit' => 0,
                         'credit' => $invoice->services_amount_after_discount,
@@ -47,9 +48,9 @@ class CreateInvoiceVoucher
             if ($invoice->external_parts_amount > 0) {
                 $details[] =
                     [
-                        'account_id' => $invoice->order->department->income_account_id,
+                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
                         'cost_center_id' => CostCenter::PARTS,
-                        'narration' => 'Invoice No. ' . $invoice->id,
+                        'narration' => 'الفاتورة رقم ' . $invoice->id,
                         'user_id' => $invoice->order->technician_id,
                         'debit' => 0,
                         'credit' => $invoice->external_parts_amount,
@@ -59,9 +60,9 @@ class CreateInvoiceVoucher
             if ($invoice->internal_parts_amount > 0) {
                 $details[] =
                     [
-                        'account_id' => 91, // ذمم موظفيين - بضاعة // TODO: make dynamic
+                        'account_id' => Setting::find(1)->internal_parts_account_id, // ذمم موظفين - بضاعة
                         'cost_center_id' => CostCenter::PARTS,
-                        'narration' => 'Invoice No. ' . $invoice->id,
+                        'narration' => 'الفاتورة رقم ' . $invoice->id,
                         'user_id' => $invoice->order->technician_id,
                         'debit' => 0,
                         'credit' => $invoice->internal_parts_amount,
@@ -71,9 +72,9 @@ class CreateInvoiceVoucher
             if ($invoice->delivery > 0) {
                 $details[] =
                     [
-                        'account_id' => $invoice->order->department->income_account_id,
+                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
                         'cost_center_id' => CostCenter::DELIVERY,
-                        'narration' => 'Invoice No. ' . $invoice->id,
+                        'narration' => 'الفاتورة رقم ' . $invoice->id,
                         'user_id' => $invoice->order->technician_id,
                         'debit' => 0,
                         'credit' => $invoice->delivery,
@@ -81,7 +82,6 @@ class CreateInvoiceVoucher
             }
 
             $voucher->voucherDetails()->createMany($details);
-
         });
     }
 }

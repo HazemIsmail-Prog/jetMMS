@@ -487,6 +487,13 @@ return [
     'add_cost_center' => 'Add Cost Center',
     'edit_cost_center' => 'Edit Cost Center ',
 
+    'knet_tax' => 'K-Net Tax',
+    'cash_account_id' => 'Cash Account',
+    'bank_account_id' => 'Bank Account',
+    'bank_charges_account_id' => 'Bank Charges Account',
+    'receivables_account_id' => 'Recievables Account',
+    'internal_parts_account_id' => 'Internal Parts Account',
+
 
 
 
