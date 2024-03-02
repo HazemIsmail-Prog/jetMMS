@@ -26,7 +26,7 @@ class AccountForm extends Component
         if($parentAccount->id){
             $this->form->account_id = $parentAccount->id;
             $this->form->level = $parentAccount->level + 1;
-            $this->form->usage = $parentAccount->usage;
+            $this->form->type = $parentAccount->type;
         }
 
     }

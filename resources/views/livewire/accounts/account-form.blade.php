@@ -23,13 +23,13 @@
                             <x-input-error for="form.name_en" />
                         </div>
                         <div>
-                            <x-label for="usage">{{ __('messages.usage') }}</x-label>
-                            <x-select required disabled class="w-full py-0" wire:model="form.usage" id="usage">
+                            <x-label for="type">{{ __('messages.type') }}</x-label>
+                            <x-select required disabled class="w-full py-0" wire:model="form.type" id="type">
                                 <option value="">---</option>
                                 <option value="debit">{{ __('messages.debit') }}</option>
                                 <option value="credit">{{ __('messages.credit') }}</option>
                             </x-select>
-                            <x-input-error for="form.usage" />
+                            <x-input-error for="form.type" />
                         </div>
                         <div>
                             <x-label for="active" class="flex items-center">

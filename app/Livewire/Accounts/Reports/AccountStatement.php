@@ -31,12 +31,12 @@ class AccountStatement extends Component
     {
         $debit = $this->accountsVoucherDetails()->first()->voucher_details_sum_debit;
         $credit = $this->accountsVoucherDetails()->first()->voucher_details_sum_credit;
-        $usage = $this->accountsVoucherDetails()->first()->usage;
+        $type = $this->accountsVoucherDetails()->first()->type;
         $openning = [
             'debit' => $debit,
             'credit' => $credit,
-            'usage' => $usage,
-            'balance' => $usage == 'debit' ? $debit - $credit : $credit - $debit,
+            'type' => $type,
+            'balance' => $type == 'debit' ? $debit - $credit : $credit - $debit,
         ];
 
         return $openning;

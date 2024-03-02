@@ -93,7 +93,7 @@
                         @foreach ($account->voucher_details as $row)
                             @php
                                 $balance +=
-                                    $account->usage == 'debit'
+                                    $account->type == 'debit'
                                         ? $row->debit - $row->credit
                                         : $row->credit - $row->debit;
                             @endphp
