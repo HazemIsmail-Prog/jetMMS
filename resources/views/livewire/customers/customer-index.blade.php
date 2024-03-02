@@ -28,29 +28,42 @@
 
     @livewire('orders.order-form')
 
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="name">{{ __('messages.name') }}</x-label>
+            <x-input id="name" placeholder="{{ __('messages.name') }}" wire:model.live="filters.name"
+                class="w-full text-start py-0" />
+        </div>
+        <div>
+            <x-label for="phone">{{ __('messages.phone') }}</x-label>
+            <x-input id="phone" placeholder="{{ __('messages.phone') }}" wire:model.live="filters.phone" class="w-full py-0"
+                dir="ltr" />
+        </div>
+        <div>
+            <x-label for="area">{{ __('messages.area') }}</x-label>
+            <x-searchable-select class=" !py-1" id="area" :list="$this->areas" model="filters.area_id" live />
+        </div>
+        <div>
+            <x-label for="block">{{ __('messages.block') }}</x-label>
+            <x-input id="block" placeholder="{{ __('messages.block') }}" wire:model.live="filters.block" class="w-full py-0"
+                dir="ltr" />
+        </div>
+        <div>
+            <x-label for="street">{{ __('messages.street') }}</x-label>
+            <x-input id="street" placeholder="{{ __('messages.street') }}" wire:model.live="filters.street" class="w-full py-0"
+                dir="ltr" />
+        </div>
+    </div>
+
     <div class=" overflow-x-auto sm:rounded-lg">
         <x-table>
             <x-thead>
                 <tr>
-                    <x-th>
-                        <x-input placeholder="{{ __('messages.name') }}" wire:model.live="filters.name"
-                            class="w-full text-start py-0" />
-                    </x-th>
-                    <x-th>
-                        <x-input placeholder="{{ __('messages.phone') }}" wire:model.live="filters.phone"
-                            class="w-full py-0" dir="ltr" />
-                    </x-th>
-                    <x-th>
-                        <x-searchable-select :list="$this->areas" model="filters.area_id" live />
-                    </x-th>
-                    <x-th>
-                        <x-input placeholder="{{ __('messages.block') }}" wire:model.live="filters.block"
-                            class="w-full py-0" dir="ltr" />
-                    </x-th>
-                    <x-th>
-                        <x-input placeholder="{{ __('messages.street') }}" wire:model.live="filters.street"
-                            class="w-full py-0" dir="ltr" />
-                    </x-th>
+                    <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th>{{ __('messages.phone') }}</x-th>
+                    <x-th>{{ __('messages.address') }}</x-th>
+                    <x-th>{{ __('messages.created_at') }}</x-th>
                     <x-th>{{ __('messages.remaining_amount') }}</x-th>
                     <x-th></x-th>
                 </tr>
@@ -64,17 +77,15 @@
                                 <div>{{ $phone->number }}</div>
                             @endforeach
                         </x-td>
-                        <x-td colspan="3">
+                        <x-td>
                             @foreach ($customer->addresses as $address)
-                                <div>{{ $address->full_address }}</div>
+                                <div class=" whitespace-nowrap">{{ $address->full_address }}</div>
                             @endforeach
                         </x-td>
+                        <x-td>{{ $customer->fromated_created_at }}</x-td>
+                        <x-td>{{ $customer->fromated_balance }}</x-td>
                         <x-td>
-                            {{ $customer->balance > 0 ? number_format($customer->balance, 3) : '-' }}
-                        </x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end">
-
+                            <div class=" flex items-center justify-end gap-2">
                                 @can('create', App\Models\Order::class)
                                     <x-badgeWithCounter title="{{ __('messages.add_order') }}"
                                         wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
@@ -96,7 +107,6 @@
                                     </a>
                                 @endcan
                             </div>
-
                         </x-td>
                     </x-tr>
                 @endforeach

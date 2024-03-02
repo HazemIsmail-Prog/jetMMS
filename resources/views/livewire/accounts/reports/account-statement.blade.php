@@ -9,24 +9,25 @@
         </div>
     </x-slot>
 
-    <div class="pb-5 grid grid-cols-1 xl:grid-cols-6 gap-3 no-print">
-        <div class=" col-span-3">
+    <div class="pb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 no-print">
+
+        <div class=" col-span-1 md:col-span-2 xl:col-span-3">
             <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
             <x-input type="date" class="w-full" id="start_date" wire:model.live="start_date" />
         </div>
-        <div class=" col-span-3">
+        <div class=" col-span-1 md:col-span-2 xl:col-span-3">
             <x-label for="end_date">{{ __('messages.end_date') }}</x-label>
             <x-input type="date" class="w-full" id="end_date" wire:model.live="end_date" />
         </div>
-        <div class=" col-span-2">
+        <div class=" col-span-1 sm:col-span-2 xl:col-span-2">
             <x-label for="account_id">{{ __('messages.account') }}</x-label>
             <x-searchable-select :list="$this->accounts" model="account_id" live />
         </div>
-        <div class=" col-span-2">
+        <div class=" col-span-1 xl:col-span-2">
             <x-label for="cost_center">{{ __('messages.cost_center') }}</x-label>
             <x-searchable-select :list="$this->cost_centers" model="cost_center_id" live />
         </div>
-        <div class=" col-span-2">
+        <div class=" col-span-1 xl:col-span-2">
             <x-label for="contact">{{ __('messages.contact') }}</x-label>
             <x-searchable-select :list="$this->contacts" model="contact_id" live />
         </div>

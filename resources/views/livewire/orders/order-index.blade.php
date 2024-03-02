@@ -1,12 +1,10 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.orders') }}
                 <span id="counter"></span>
             </h2>
-
         </div>
     </x-slot>
     @teleport('#counter')
@@ -30,144 +28,113 @@
     @livewire('orders.order-form')
     @livewire('orders.status-history-modal')
 
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
+            <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
+                wire:model.live="filters.customer_name" />
+        </div>
+        <div>
+            <x-label for="customer_phone">{{ __('messages.customer_phone') }}</x-label>
+            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="customer_phone"
+                wire:model.live="filters.customer_phone" />
+        </div>
+        <div>
+            <x-label for="area">{{ __('messages.area') }}</x-label>
+            <x-searchable-select class=" !py-1" id="area" :list="$this->areas" model="filters.areas" live />
+        </div>
+        <div>
+            <x-label for="block">{{ __('messages.block') }}</x-label>
+            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="block"
+                wire:model.live="filters.block" />
+        </div>
+        <div>
+            <x-label for="street">{{ __('messages.street') }}</x-label>
+            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="street"
+                wire:model.live="filters.street" />
+        </div>
+    </div>
+
+
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div>
+            <x-label for="order_number">{{ __('messages.order_number') }}</x-label>
+            <x-input id="order_number" wire:model.live="filters.order_number" type="number" dir="ltr"
+                class="w-36 min-w-full text-center py-0" />
+        </div>
+        <div>
+            <x-label for="creator">{{ __('messages.creator') }}</x-label>
+            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creator" live />
+        </div>
+        <div>
+            <x-label for="status">{{ __('messages.status') }}</x-label>
+            <x-searchable-select class=" !py-1" id="status" :list="$this->statuses" model="filters.statuses" live />
+        </div>
+        <div>
+            <x-label for="technician">{{ __('messages.technician') }}</x-label>
+            <x-searchable-select class=" !py-1" id="technician" :list="$this->technicians" model="filters.technicians" live />
+        </div>
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select class=" !py-1" id="department" :list="$this->departments" model="filters.departments" live />
+        </div>
+        <div>
+            <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
+            <x-input id="start_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.start_created_at" />
+            <x-input id="end_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.end_created_at" />
+        </div>
+        <div>
+            <x-label for="start_completed_at">{{ __('messages.completed_at') }}</x-label>
+            <x-input id="start_completed_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.start_completed_at" />
+            <x-input id="end_completed_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.end_completed_at" />
+        </div>
+
+
+    </div>
+
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="">
-                        <x-input wire:model.live="filters.order_number" type="number" dir="ltr"
-                            class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.order_number') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
-                            value="" data-start="filters.start_created_at" data-end="filters.end_created_at"
-                            placeholder="{{ __('messages.created_at') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select wire:model.live="filters.creators" class="w-36 min-w-full text-center py-0">
-                            <option value="">{{ __('messages.creator') }}</option>
-                            @foreach ($this->creators as $creator)
-                                <option value="{{ $creator->id }}">{{ $creator->name }}</option>
-                            @endforeach
-                        </x-select>
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        {{ __('messages.estimated_start_date') }}
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select class="w-36 min-w-full text-center py-0" id="statuses" wire:ignore
-                            wire:model.live="filters.statuses">
-                            <option value="">{{ __('messages.status') }}</option>
-                            @foreach ($this->statuses as $status)
-                                <option value="{{ $status->id }}">{{ $status->name }}</option>
-                            @endforeach
-                        </x-select>
-
-                    </th>
-                    <th scope="col" class="">
-                        <x-select class="w-36 min-w-full text-center py-0" id="departments" wire:ignore
-                            wire:model.live="filters.departments">
-                            <option value="">{{ __('messages.department') }}</option>
-                            @foreach ($this->departments as $department)
-                                <option value="{{ $department->id }}">{{ $department->name }}
-                                </option>
-                            @endforeach
-                        </x-select>
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select class="w-36 min-w-full text-center py-0" id="technicians" wire:ignore
-                            wire:model.live="filters.technicians">
-                            <option value="">{{ __('messages.technician') }}</option>
-                            @foreach ($this->technicians->sortBy('name') as $technician)
-                                <option value="{{ $technician->id }}">{{ $technician->name }}</option>
-                            @endforeach
-                        </x-select>
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
-                            value="" data-start="filters.start_completed_at" data-end="filters.end_completed_at"
-                            placeholder="{{ __('messages.completed_date') }}" />
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
-                            wire:model.live="filters.customer_name" placeholder="{{ __('messages.customer_name') }}" />
-
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="customer_phone"
-                            wire:model.live="filters.customer_phone"
-                            placeholder="{{ __('messages.customer_phone') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select class="w-36 min-w-full text-center py-0" id="areas"
-                            wire:model.live="filters.areas">
-                            <option value="">{{ __('messages.address') }}</option>
-                            @foreach ($this->areas->sortBy->name as $area)
-                                <option value="{{ $area->id }}">{{ $area->name }}</option>
-                            @endforeach
-                        </x-select>
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        {{ __('messages.remaining_amount') }}
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    <x-th>{{ __('messages.order_number') }}</x-th>
+                    <x-th>{{ __('messages.created_at') }}</x-th>
+                    <x-th>{{ __('messages.creator') }}</x-th>
+                    <x-th>{{ __('messages.estimated_start_date') }}</x-th>
+                    <x-th>{{ __('messages.status') }}</x-th>
+                    <x-th>{{ __('messages.department') }}</x-th>
+                    <x-th>{{ __('messages.completed_date') }}</x-th>
+                    <x-th>{{ __('messages.technician') }}</x-th>
+                    <x-th>{{ __('messages.customer_name') }}</x-th>
+                    <x-th>{{ __('messages.customer_phone') }}</x-th>
+                    <x-th>{{ __('messages.address') }}</x-th>
+                    <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->orders as $order)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th class=" text-center px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ str_pad($order->id, 8, '0', STR_PAD_LEFT) }}
-                        </th>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            <div dir="ltr">
-
-                                {{ $order->created_at->format('d-m-Y | H:i') }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $order->creator->name }}
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            <div dir="ltr">
-                                {{ $order->estimated_start_date->format('d-m-Y') }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap" style="color: {{ $order->status->color }}">
+                    <x-tr>
+                        <x-td>{{ $order->formated_order_id }}</x-td>
+                        <x-td class=" whitespace-nowrap">{!! $order->formated_created_at !!}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->creator->name }}</x-td>
+                        <x-td class=" whitespace-nowrap">{!! $order->formated_estimated_start_date !!}</x-td>
+                        <x-td class=" whitespace-nowrap" style="color: {{ $order->status->color }}">
                             {{ $order->status->name }}
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $order->department->name }}
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $order->technician->name ?? '-' }}
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div dir="ltr">
-                                {{ $order->completed_at ? $order->completed_at->format('d-m-Y | H:i') : '' }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $order->customer->name }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div>{{ $order->phone->number }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $order->address->full_address }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            {{ $order->remaining_amount > 0 ? number_format($order->remaining_amount, 3) : '-' }}
-                        </td>
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
+                        </x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->department->name }}</x-td>
+                        <x-td class=" whitespace-nowrap">{!! $order->formated_completed_at !!}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->technician->name ?? '-' }}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->customer->name }}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->phone->number }}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->address->full_address }}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $order->formated_remaining_amount }}</x-td>
+                        <x-td>
+                            <div class=" flex items-center justify-end gap-2">
 
                                 @can('update', $order)
                                     <x-badgeWithCounter title="{{ __('messages.edit') }}"
@@ -196,49 +163,11 @@
                                         <x-svgs.invoice class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
-
-
 </div>
-
-@assets
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-@endassets
-
-@script
-    <script>
-        $(function() {
-
-            $('input[name="datefilter"]').daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                }
-            });
-
-            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format(
-                    'DD/MM/YYYY'));
-                @this.set($(this).data('start'), picker.startDate.format('YYYY-MM-DD'))
-                @this.set($(this).data('end'), picker.endDate.format('YYYY-MM-DD'))
-            });
-
-            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-                $(this).val('');
-                @this.set($(this).data('start'), null)
-                @this.set($(this).data('end'), null)
-            });
-
-        });
-    </script>
-@endscript

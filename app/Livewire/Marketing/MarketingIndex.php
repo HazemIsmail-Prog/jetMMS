@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,21 +16,28 @@ class MarketingIndex extends Component
     use WithPagination;
 
     public $listeners = [];
-
-    public $creators = [];
+    #[Url()]
     public $filters;
+
+    #[Computed()]
+    public function creators()
+    {
+        return User::query()
+            ->whereHas('marketings')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
 
     public function mount()
     {
-        $this->creators = User::whereHas('marketings')->select('id', 'name_en', 'name_ar')->get();
-
         $this->filters =
             [
                 'name' => '',
                 'phone' => '',
                 'address' => '',
                 'type' => '',
-                'creators' => [],
+                'creators' => '',
                 'start_created_at' => '',
                 'end_created_at' => '',
             ];
@@ -45,7 +53,7 @@ class MarketingIndex extends Component
     public function marketings()
     {
         return Marketing::query()
-        ->with('user')
+            ->with('user')
             ->orderBy('id', 'desc')
 
             ->when($this->filters['name'], function (Builder $q) {

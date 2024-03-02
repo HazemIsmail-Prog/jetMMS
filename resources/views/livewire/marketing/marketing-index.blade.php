@@ -1,7 +1,6 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.marketings') }}
                 <span id="counter"></span>
@@ -9,7 +8,6 @@
             @can('create', App\Models\Marketing::class)
                 <span id="addNew"></span>
             @endcan
-
         </div>
     </x-slot>
     @teleport('#addNew')
@@ -36,132 +34,77 @@
 
     @livewire('marketing.marketing-form')
 
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
+            <x-input class="w-full text-center py-0" id="customer_name" wire:model.live="filters.name" />
+        </div>
+        <div>
+            <x-label for="phone">{{ __('messages.phone') }}</x-label>
+            <x-input dir="ltr" class="w-full text-center py-0" id="phone" wire:model.live="filters.phone" />
+        </div>
+        <div>
+            <x-label for="creator">{{ __('messages.creator') }}</x-label>
+            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creators" live />
+        </div>
+        <div>
+            <x-label for="type">{{ __('messages.type') }}</x-label>
+            <x-select id="type" wire:model.live="filters.type" class="w-full text-center py-0">
+                <option value="">---</option>
+                <option value="marketing">{{ __('messages.marketing') }}</option>
+                <option value="information">{{ __('messages.information') }}</option>
+                <option value="service_not_available">{{ __('messages.service_not_available') }}</option>
+            </x-select>
+        </div>
+        <div>
+            <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
+            <x-input id="start_created_at" class="w-full text-center py-0" type="date"
+                wire:model.live="filters.start_created_at" />
+            <x-input id="end_created_at" class="w-full text-center py-0" type="date"
+                wire:model.live="filters.end_created_at" />
+        </div>
+    </div>
+
     <div class=" overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter"
-                            value="" data-start="filters.start_created_at" data-end="filters.end_created_at"
-                            placeholder="{{ __('messages.created_at') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select wire:model.live="filters.creators" class="w-36 min-w-full text-center py-0">
-                            <option value="">{{ __('messages.creator') }}</option>
-                            @foreach ($creators as $creator)
-                                <option value="{{ $creator->id }}">{{ $creator->name }}</option>
-                            @endforeach
-                        </x-select>
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
-                            wire:model.live="filters.name" placeholder="{{ __('messages.customer_name') }}" />
-
-
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="phone"
-                            wire:model.live="filters.phone" placeholder="{{ __('messages.phone') }}" />
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="address"
-                            wire:model.live="filters.address" placeholder="{{ __('messages.address') }}" />
-
-                    </th>
-
-
-                    <th scope="col" class=" text-center">
-                        {{ __('messages.notes') }}
-                    </th>
-                    <th scope="col" class=" text-center">
-                        <x-select wire:model.live="filters.type" class="w-36 min-w-full text-center py-0">
-                            <option value="">{{ __('messages.type') }}</option>
-                            <option value="marketing">{{ __('messages.marketing') }}</option>
-                            <option value="information">{{ __('messages.information') }}</option>
-                            <option value="service_not_available">{{ __('messages.service_not_available') }}</option>
-                        </x-select>
-                    </th>
-                    <th scope="col" class=" no-print"></th>
+                    <x-th>{{ __('messages.created_at') }}</x-th>
+                    <x-th>{{ __('messages.creator') }}</x-th>
+                    <x-th>{{ __('messages.customer_name') }}</x-th>
+                    <x-th>{{ __('messages.phone') }}</x-th>
+                    <x-th>{{ __('messages.address') }}</x-th>
+                    <x-th>{{ __('messages.notes') }}</x-th>
+                    <x-th>{{ __('messages.type') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->marketings as $marketing)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $marketing->created_at->format('d-m-Y H:i') }}
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap">
-                            {{ $marketing->user->name }}
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->name }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <div>{{ $marketing->phone }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->address }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ $marketing->notes }}</div>
-                        </td>
-                        <td class="px-6 py-1 text-start whitespace-nowrap ">
-                            <div>{{ __('messages.' . $marketing->type) }}</div>
-                        </td>
-
-                        <td class="px-6 py-1 text-end align-middle whitespace-nowrap no-print">
-                            <div class=" flex items-center gap-2">
-                                
+                    <x-tr>
+                        <x-td class="whitespace-nowrap">
+                            <span dir="ltr">{{ $marketing->created_at->format('d-m-Y | H:i') }}</span>
+                        </x-td>
+                        <x-td class="whitespace-nowrap">{{ $marketing->user->name }}</x-td>
+                        <x-td class="whitespace-nowrap">{{ $marketing->name }}</x-td>
+                        <x-td class="whitespace-nowrap">{{ $marketing->phone }}</x-td>
+                        <x-td class="whitespace-nowrap">{{ $marketing->address }}</x-td>
+                        <x-td class="whitespace-nowrap">{{ $marketing->notes }}</x-td>
+                        <x-td class="whitespace-nowrap">{{ __('messages.' . $marketing->type) }}</x-td>
+                        <x-td>
+                            <div class=" flex items-center justify-end gap-2">
                                 @can('update', $marketing)
                                     <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                         wire:click="$dispatch('showMarketingFormModal',{marketing:{{ $marketing }}})">
                                         <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
-
                             </div>
-                        </td>
-                    </tr>
+                        </x-td>
+                    </x-tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
-
-
 </div>
-
-@assets
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-@endassets
-
-@script
-    <script>
-        $(function() {
-
-            $('input[name="datefilter"]').daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                }
-            });
-
-            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format(
-                    'DD/MM/YYYY'));
-                @this.set($(this).data('start'), picker.startDate.format('YYYY-MM-DD'))
-                @this.set($(this).data('end'), picker.endDate.format('YYYY-MM-DD'))
-            });
-
-            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-                $(this).val('');
-                @this.set($(this).data('start'), null)
-                @this.set($(this).data('end'), null)
-            });
-
-        });
-    </script>
-@endscript

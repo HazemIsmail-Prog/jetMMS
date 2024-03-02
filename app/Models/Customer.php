@@ -36,4 +36,14 @@ class Customer extends Model
     {
         return $this->invoices->sum('remaining_amount');
     }
+
+    // Formatters
+
+    public function getFromatedCreatedAtAttribute() {
+        return $this->created_at ? $this->created_at->format('d-m-Y') : '-';
+    }
+
+    public function getFromatedBalanceAttribute() {
+        return $this->balance > 0 ? number_format($this->balance, 3) : '-';
+    }
 }

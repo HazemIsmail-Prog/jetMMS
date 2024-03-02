@@ -191,4 +191,25 @@ class Order extends Model
             })
             ;
     }
+
+    // Formatters
+    public function getFormatedCreatedAtAttribute() {
+        return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
+    }
+
+    public function getFormatedCompletedAtAttribute() {
+        return '<span dir="ltr">' . ($this->completed_at ? $this->completed_at->format('d-m-Y | H:i') : '-') . '</span>';
+    }
+    
+    public function getFormatedEstimatedStartDateAttribute() {
+        return '<span dir="ltr">' . ($this->estimated_start_date->format('d-m-Y')) . '</span>';
+    }
+
+    public function getFormatedRemainingAmountAttribute() {
+        return $this->remaining_amount > 0 ? number_format($this->remaining_amount, 3) : '-';
+    }
+
+    public function getFormatedOrderIdAttribute() {
+        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
+    }
 }

@@ -155,4 +155,54 @@ class Invoice extends Model
             return $this->remaining_amount == 0 ? 'paid' : 'partially_paid';
         }
     }
+
+
+    // Formaters
+
+    public function getFormatedServicesAmountAttribute() {
+        return $this->services_amount > 0 ? number_format($this->services_amount, 3) : '-';
+    }
+
+    public function getFormatedDiscountAmountAttribute() {
+        return $this->discount > 0 ? number_format($this->discount, 3) : '-';
+    }
+    public function getFormatedServiceAmountAfterDiscountAttribute() {
+        return $this->services_amount_after_discount > 0 ? number_format($this->services_amount_after_discount, 3) : '-';
+    }
+
+    public function getFormatedInternalPartsAmountAttribute() {
+        return $this->internal_parts_amount > 0 ? number_format($this->internal_parts_amount, 3) : '-';
+    }
+
+    public function getFormatedExternalPartsAmountAttribute() {
+        return $this->external_parts_amount > 0 ? number_format($this->external_parts_amount, 3) : '-';
+    }
+
+    public function getFormatedDeliveryAmountAttribute() {
+        return $this->delivery > 0 ? number_format($this->delivery, 3) : '-';
+    }
+
+    public function getFormatedAmountAttribute() {
+        return $this->amount > 0 ? number_format($this->amount, 3) : '-';
+    }
+
+    public function getFormatedCashAmountAttribute() {
+        return $this->cash_amount > 0 ? number_format($this->cash_amount, 3) : '-';
+    }
+
+    public function getFormatedKnetAmountAttribute() {
+        return $this->knet_amount > 0 ? number_format($this->knet_amount, 3) : '-';
+    }
+
+    public function getFormatedTotalPaidAmountAttribute() {
+        return $this->total_paid_amount > 0 ? number_format($this->total_paid_amount, 3) : '-';
+    }
+
+    public function getFormatedRemainingAmountAttribute() {
+        return $this->remaining_amount > 0 ? number_format($this->remaining_amount, 3) : '-';
+    }
+
+    public function getFormatedCreatedAtAttribute() {
+        return $this->created_at->format('d-m-Y | H:i');
+    }
 }
