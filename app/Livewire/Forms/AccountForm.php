@@ -10,8 +10,7 @@ class AccountForm extends Form
     public $id;
     public $name_ar;
     public $name_en;
-    public $income_account_id;
-    public $cost_account_id;
+    public $account_id;
     public $usage;
     public $level = 0;
     public $index = 0;
