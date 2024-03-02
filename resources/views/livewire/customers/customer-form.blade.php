@@ -61,7 +61,7 @@
                 <div class=" flex items-center gap-2">
                     <div>
                         <div class="w-64">
-                            <x-searchable-select :list="$areas"
+                            <x-searchable-select :list="$this->areas"
                                 model="form.addresses.{{ $index }}.area_id" />
                         </div>
                         <x-input-error for="form.addresses.{{ $index }}.area_id" />
@@ -102,49 +102,4 @@
             <x-button>{{ __('messages.save') }}</x-button>
         </div>
     </form>
-
-    <style>
-        .select2-container--default .select2-selection--single {
-            background: transparent;
-            height: 34px;
-            border-color: #d8dbe0;
-            border-radius: .25rem;
-
-
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 34px;
-            text-align: center;
-        }
-    </style>
 </div>
-
-@assets
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-@endassets
-
-@script
-    <script>
-        initSelectAreaDrop();
-
-        $wire.on('select2', () => {
-            initSelectAreaDrop();
-        });
-
-        function initSelectAreaDrop() {
-            setTimeout(function() {
-                $('.select2').select2();
-                $('.select2').on('change', function(e) {
-                    property = e.target.attributes['data-property'].value;
-                    value = e.target.value;
-                    $wire.$set(property, value)
-                });
-            }, 50);
-        }
-    </script>
-@endscript

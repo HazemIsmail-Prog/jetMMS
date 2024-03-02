@@ -26,13 +26,13 @@ class VoucherForm extends Component
 
     public function copy()
     {
-        $voucher = Voucher::find($this->copy_from);
+        $voucher = Voucher::find($this->copy_from)->load('voucherDetails.cost_center');
         if ($voucher) {
             $this->form->details = [];
             foreach ($voucher->voucherDetails as $row) {
                 $this->form->details[] = [
                     'account_id' => $row['account_id'],
-                    'cost_center' => $row['cost_center'],
+                    'cost_center_id' => $row['cost_center_id'],
                     'user_id' => $row['user_id'],
                     'narration' => $row['narration'],
                     'debit' => $row['debit'],
@@ -85,7 +85,7 @@ class VoucherForm extends Component
     {
         $this->form->details[] = [
             'account_id' => '',
-            'cost_center' => null,
+            'cost_center_id' => null,
             'user_id' => '',
             'narration' => $this->form->notes ?? null,
             'debit' => null,

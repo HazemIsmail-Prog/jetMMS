@@ -396,7 +396,7 @@ return [
     'edit_journal_voucher' => 'Edit Journal Voucher No. ',
     'account' => 'Account',
     'cost_center' => 'Cost Center',
-    'contact' => 'Contac',
+    'contact' => 'Contact',
     'narration' => 'Narration',
     'debit' => 'Debit',
     'credit' => 'Credit',

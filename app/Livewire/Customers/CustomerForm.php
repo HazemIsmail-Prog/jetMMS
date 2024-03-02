@@ -7,21 +7,26 @@ use App\Models\Area;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class CustomerForm extends Component
 {
     public $customer;
-    public $areas;
     public FormsCustomerForm $form;
+
+    #[Computed()]
+    public function areas()
+    {
+        return Area::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
 
     public function mount(Customer $customer)
     {
         $this->customer = $customer;
-        $this->areas = Area::query()
-            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name' )
-            ->get();
 
         $this->form->fill($this->customer);
 

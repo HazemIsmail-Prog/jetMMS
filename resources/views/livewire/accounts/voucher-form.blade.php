@@ -45,106 +45,114 @@
                         @if ($form->details)
                             <x-section-border />
                             <div class=" overflow-x-auto">
-                                <table class="w-full h-fit table-auto">
-                                    <thead>
-                                        <tr>
-                                            <th class="min-w-[130px]">{{ __('messages.account') }}</th>
-                                            <th class="min-w-[130px]">{{ __('messages.cost_center') }}</th>
-                                            <th class="min-w-[130px]">{{ __('messages.contact') }}</th>
-                                            <th class="min-w-[320px]">{{ __('messages.narration') }}</th>
-                                            <th class="min-w-[130px]">{{ __('messages.debit') }}</th>
-                                            <th class="min-w-[130px]">{{ __('messages.credit') }}</th>
-                                            <th class="min-w-[10px] "></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody x-data="{ form: @entangle('form') }">
-                                        @foreach ($form->details as $index => $row)
+                                <div class="min-w-max">
+                                    <table class="w-full">
+                                        <thead>
                                             <tr>
-                                                <td class=" align-top">
-                                                    <x-searchable-select position="relative" :list="$this->accounts"
-                                                        model="form.details.{{ $index }}.account_id" />
-
-                                                    {{-- <x-select @class([
-                                                        'w-full',
-                                                        'border-red-500' => $errors->has('form.details.' . $index . '.account_id'),
-                                                    ])
-                                                        wire:model="form.details.{{ $index }}.account_id">
-                                                        <option value="">---</option>
-                                                        @foreach ($this->accounts->sortBy('name') as $account)
-                                                            <option value="{{ $account->id }}">{{ $account->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </x-select> --}}
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-searchable-select position="relative" :list="$this->cost_centers"
-                                                        model="form.details.{{ $index }}.cost_center_id" />
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-searchable-select position="relative" :list="$this->users    "
-                                                        model="form.details.{{ $index }}.user_id" />
-                                                    {{-- <x-select @class([
-                                                        'w-full',
-                                                        'border-red-500' => $errors->has('form.details.' . $index . '.user_id'),
-                                                    ])
-                                                        wire:model="form.details.{{ $index }}.user_id">
-                                                        <option value="">---</option>
-                                                        @foreach ($this->users->sortBy('name') as $user)
-                                                            <option value="{{ $user->id }}">{{ $user->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </x-select> --}}
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-input class="w-full py-0"
-                                                        x-model="form.details[{{ $index }}].narration"
-                                                        autocomplete="off" type="text" />
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-input @class([
-                                                        'w-full py-0',
-                                                        'border-red-500' => $errors->has('form.details.' . $index . '.debit'),
-                                                    ]) step="0.001"
-                                                        x-model="form.details[{{ $index }}].debit"
-                                                        autocomplete="off" type="number" @input="$dispatch('debit')"
-                                                        x-on:input="form.details[{{ $index }}].credit = 0" />
-
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-input @class([
-                                                        'w-full py-0',
-                                                        'border-red-500' => $errors->has('form.details.' . $index . '.credit'),
-                                                    ]) step="0.001"
-                                                        x-model="form.details[{{ $index }}].credit"
-                                                        autocomplete="off" type="number" @input="$dispatch('credit')"
-                                                        x-on:input="form.details[{{ $index }}].debit = 0" />
-
-                                                </td>
-                                                <td class=" align-top">
-                                                    <x-svgs.trash class="w-4 h-4 text-red-500"
-                                                        wire:click="deleteRow({{ $index }})" />
-                                                </td>
+                                                <th class="min-w-[250px]">{{ __('messages.account') }}</th>
+                                                <th class="min-w-[130px]">{{ __('messages.cost_center') }}</th>
+                                                <th class="min-w-[130px]">{{ __('messages.contact') }}</th>
+                                                <th class="min-w-[320px]">{{ __('messages.narration') }}</th>
+                                                <th class="min-w-[50px]">{{ __('messages.debit') }}</th>
+                                                <th class="min-w-[50px]">{{ __('messages.credit') }}</th>
+                                                <th class="min-w-[10px] "></th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class=" text-center">{{ $total_debit }}</td>
-                                            <td class=" text-center">{{ $total_credit }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="2" class=" text-center">{{ $balance }}</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tbody x-data="{ form: @entangle('form') }">
+                                            @foreach ($form->details as $index => $row)
+                                                <tr>
+                                                    <td class=" align-top">
+                                                        <x-searchable-select position="relative"
+                                                            :list="$this->accounts"
+                                                            model="form.details.{{ $index }}.account_id" />
+    
+                                                        {{-- <x-select @class([
+                                                            'w-full',
+                                                            'border-red-500' => $errors->has('form.details.' . $index . '.account_id'),
+                                                        ])
+                                                            wire:model="form.details.{{ $index }}.account_id">
+                                                            <option value="">---</option>
+                                                            @foreach ($this->accounts->sortBy('name') as $account)
+                                                                <option value="{{ $account->id }}">{{ $account->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </x-select> --}}
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <x-searchable-select position="relative"
+                                                            :list="$this->cost_centers"
+                                                            model="form.details.{{ $index }}.cost_center_id" />
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <x-searchable-select position="relative"
+                                                            :list="$this->users"
+                                                            model="form.details.{{ $index }}.user_id" />
+                                                        {{-- <x-select @class([
+                                                            'w-full',
+                                                            'border-red-500' => $errors->has('form.details.' . $index . '.user_id'),
+                                                        ])
+                                                            wire:model="form.details.{{ $index }}.user_id">
+                                                            <option value="">---</option>
+                                                            @foreach ($this->users->sortBy('name') as $user)
+                                                                <option value="{{ $user->id }}">{{ $user->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </x-select> --}}
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <x-input class="w-full py-0"
+                                                            x-model="form.details[{{ $index }}].narration"
+                                                            autocomplete="off" type="text" />
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <x-input @class([
+                                                            'w-full py-0',
+                                                            'border-red-500' => $errors->has('form.details.' . $index . '.debit'),
+                                                        ]) step="0.001"
+                                                            x-model="form.details[{{ $index }}].debit"
+                                                            autocomplete="off" type="number" @input="$dispatch('debit')"
+                                                            x-on:input="form.details[{{ $index }}].credit = 0" />
+    
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <x-input @class([
+                                                            'w-full py-0',
+                                                            'border-red-500' => $errors->has('form.details.' . $index . '.credit'),
+                                                        ]) step="0.001"
+                                                            x-model="form.details[{{ $index }}].credit"
+                                                            autocomplete="off" type="number" @input="$dispatch('credit')"
+                                                            x-on:input="form.details[{{ $index }}].debit = 0" />
+    
+                                                    </td>
+                                                    <td class=" align-top">
+                                                        <div class="h-[35px] flex items-center">
+    
+                                                            <x-svgs.trash class="w-4 h-4 text-red-500"
+                                                                wire:click="deleteRow({{ $index }})" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class=" text-center">{{ $total_debit }}</td>
+                                                <td class=" text-center">{{ $total_credit }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td colspan="2" class=" text-center">{{ $balance }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         @endif
                         <div class=" text-center">
