@@ -63,7 +63,7 @@
             <x-input x-ref="search" class="w-full cursor-default" placeholder="{{ __('messages.search') }}"
                 type="text" x-model="search" @click="isOpen = true" @keydown.escape="isOpen = false" />
             <ul
-                class="max-h-60 overflow-y-auto hidden-scrollbar text-sm z-10  divide-y divide-gray-100 dark:divide-gray-700  dark:text-gray-400 ">
+                class="max-h-[120px] overflow-y-auto hidden-scrollbar text-sm z-10  divide-y divide-gray-100 dark:divide-gray-700  dark:text-gray-400 ">
                 <template x-for="(option, index) in filteredOptions" :key="option.id">
                     <li @click="selectOption(option)"
                         :class="{ 'bg-indigo-600 text-gray-100': option.id == selectedOption }"
