@@ -23,9 +23,6 @@ class Order extends Model
         'completed_at' => 'datetime',
         'cancelled_at' => 'datetime',
     ];
-    
-    const COMPLETED = 4;
-    const CANCELLED = 6;
 
     public function customer(): BelongsTo
     {

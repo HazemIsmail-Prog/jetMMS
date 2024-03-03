@@ -108,7 +108,7 @@
                             {{ $user->shift->name ?? '-' }}
                         </td>
                         <td class="px-6 py-1 text-center whitespace-nowrap ">
-                            <livewire:users.status-switcher :$user :key="'switcher-' . $user->id . '-' . now()">
+                            <livewire:users.status-switcher :$user :key="'switcher-' . $user->id . '-' . rand()">
                         </td>
                         <td class="px-6 py-1 text-end whitespace-nowrap flex items-center gap-2 no-print">
                             <a href="{{ route('user.form', $user) }}"

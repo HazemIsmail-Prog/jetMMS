@@ -12,6 +12,14 @@ class Status extends Model
 
     protected $table = 'statuses';
 
+    const CREATED = 1;
+    const DESTRIBUTED = 2;
+    const RECEIVED = 3;
+    const COMPLETED = 4;
+    const ON_HOLD = 5;
+    const CANCELLED = 6;
+    const ARRIVED = 7;
+
     protected $guarded = [];
 
     public function getNameAttribute($value)
