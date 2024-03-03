@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\RefreshDepartmentScreenEvent;
 use App\Models\Order;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -26,6 +27,8 @@ class TechnicianPage extends Component
         if ($order->technician_id == auth()->id()) {
             $this->order->update(['status_id' => 3]);
         }
+        RefreshDepartmentScreenEvent::dispatch($order->department_id);
+
     }
 
     public function arrived_order()
@@ -34,6 +37,7 @@ class TechnicianPage extends Component
         if ($order->technician_id == auth()->id()) {
             $this->order->update(['status_id' => 7]);
         }
+        RefreshDepartmentScreenEvent::dispatch($order->department_id);
     }
 
     public function complete_order()
@@ -46,6 +50,7 @@ class TechnicianPage extends Component
                 'index' => null,
             ]);
         }
+        RefreshDepartmentScreenEvent::dispatch($order->department_id);
     }
 
     #[Layout('layouts.technician')] 
