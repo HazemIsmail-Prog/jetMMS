@@ -509,4 +509,14 @@ return [
     'receivables_account_id' => 'حساب المؤجلات',
     'internal_parts_account_id' => 'حساب البضاعة الداخلية',
 
+    'suppliers' => 'الموردين',
+    'supplier' => 'المورد',
+    'add_supplier' => 'مورد جديد',
+    'edit_supplier' => 'تعديل المورد ',
+    'part_invoices' => 'فواتير بضاعة العهدة ',
+    'add_part_invoice' => 'تسجيل فاتورة بضاعة عهدة',
+    'cost_amount' => 'التكلفة',
+    'sales_amount' => 'سعر البيع',
+    'edit_part_invoice' => 'تعديل فاتورة بضاعة العهدة رقم ',
+
 ];

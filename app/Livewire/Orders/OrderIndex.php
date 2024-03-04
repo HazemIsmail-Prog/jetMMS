@@ -172,7 +172,7 @@ class OrderIndex extends Component
                 $q->whereDate('completed_at', '<=', $this->filters['end_completed_at']);
             })
 
-            ->paginate(15);
+            ->paginate(10);
     }
 
     public function render()

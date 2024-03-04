@@ -23,11 +23,13 @@ use App\Livewire\Fleet\CarIndex;
 use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\InvoiceIndex;
 use App\Livewire\Orders\OrderIndex;
+use App\Livewire\PartInvoices\PartInvoiceIndex;
 use App\Livewire\Roles\RoleIndex;
 use App\Livewire\Services\ServiceIndex;
 use App\Livewire\Settings\SettingsForm;
 use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
+use App\Livewire\Suppliers\SupplierIndex;
 use App\Livewire\TechnicianPage;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
@@ -78,6 +80,7 @@ Route::middleware([
         
         Route::get('cash-collection', CashCollection::class)->name('cash_collection');
         Route::get('knet-collection', KnetCollection::class)->name('knet_collection');
+        Route::get('part-invoices', PartInvoiceIndex::class)->name('part_invoice');
 
         
         // ========== Accounting ==========
@@ -117,6 +120,9 @@ Route::middleware([
 
 
         // ========== Admin Settings ==========
+
+        // Suppliers
+        Route::get('suppliers', SupplierIndex::class)->name('supplier.index');
 
         // Cost Centers
         Route::get('cost_centers', CostCenterIndex::class)->name('cost_center.index');

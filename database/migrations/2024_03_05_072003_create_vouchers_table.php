@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger('manual_id')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices');
+            $table->foreignId('part_invoice_id')->nullable()->constrained('part_invoices');
             $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->date('date');
             $table->string('type')->index();

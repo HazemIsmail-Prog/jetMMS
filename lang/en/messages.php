@@ -495,6 +495,17 @@ return [
     'internal_parts_account_id' => 'Internal Parts Account',
 
 
+    'suppliers' => 'Suppliers',
+    'supplier' => 'Supplier',
+    'add_supplier' => 'Add Supplier',
+    'edit_supplier' => 'Edit Supplier ',
+    'part_invoices' => 'Part Invoices',
+    'add_part_invoice' => 'Add Part Invoice',
+    'cost_amount' => 'Cost',
+    'sales_amount' => 'Sales Amount',
+    'edit_part_invoice' => 'Edit Part Invoice No. ',
+
+
 
 
 ];

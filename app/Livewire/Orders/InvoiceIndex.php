@@ -96,7 +96,6 @@ class InvoiceIndex extends Component
     }
 
     public function dateClicked($date) {
-        // dd($date);
         $this->filters['start_created_at'] = $date;
         $this->filters['end_created_at'] = $date;
     }

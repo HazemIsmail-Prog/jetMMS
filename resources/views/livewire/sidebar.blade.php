@@ -135,6 +135,10 @@
                     <x-sidebar-item icon="dashboard" route="knet_collection" :title="__('messages.knet_collection')" />
                 {{-- @endcan --}}
 
+                {{-- @can('viewAny', App\Models\Order::class) --}}
+                    <x-sidebar-item icon="dashboard" route="part_invoice" :title="__('messages.part_invoices')" />
+                {{-- @endcan --}}
+
             {{-- @endcanany --}}
 
             {{-- Accounting --}}
@@ -262,6 +266,10 @@
                 ])
 
                 <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
+
+                {{-- @can('viewAny', App\Models\Role::class) --}}
+                    <x-sidebar-item icon="dashboard" route="supplier.index" :title="__('messages.suppliers')" />
+                {{-- @endcan --}}
 
                 {{-- @can('viewAny', App\Models\Role::class) --}}
                     <x-sidebar-item icon="dashboard" route="cost_center.index" :title="__('messages.cost_centers')" />
