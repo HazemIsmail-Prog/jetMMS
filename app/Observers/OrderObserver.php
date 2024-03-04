@@ -2,19 +2,24 @@
 
 namespace App\Observers;
 
+use App\Events\RefreshDepartmentScreenEvent;
+use App\Events\RefreshTechnicianScreenEvent;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\Status;
+use App\Models\User;
 
 class OrderObserver
 {
 
-    public function creating(Order $order) : void {
-        
+    public function creating(Order $order): void
+    {
+
         $order->index = Order::query()
-                    ->where('department_id', $order->department_id)
-                    ->where('status_id', 1)
-                    ->min('index')
-                    - 1;
+            ->where('department_id', $order->department_id)
+            ->where('status_id', 1)
+            ->min('index')
+            - 1;
     }
 
     public function created(Order $order): void
@@ -43,6 +48,33 @@ class OrderObserver
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        }
+
+        RefreshDepartmentScreenEvent::dispatch($order->department_id);
+
+
+        if ($order->isDirty('technician_id') || $order->isDirty('index')) {
+            $oldTechnician = User::find($order->getOriginal('technician_id'));
+            $newTechnician = User::find($order->technician_id);
+
+            if ($newTechnician) {
+                if ($newTechnician->current_order_for_technician?->id == $order->id) {
+                    RefreshTechnicianScreenEvent::dispatch($newTechnician->id);
+                }
+            }
+
+            if ($oldTechnician) {
+
+                if(!$oldTechnician->current_order_for_technician){
+                    RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
+                    return;
+                }
+
+                if ($oldTechnician->current_order_for_technician->id != $order->id && $order->index< $oldTechnician->current_order_for_technician->index ) {
+                    RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
+                }
+
+            }
         }
     }
 

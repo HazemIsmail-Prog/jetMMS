@@ -29,8 +29,21 @@
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="tech0">
                         @foreach ($this->orders->where('status_id', 1) as $i => $order)
-                            @livewire('dispatching.order-box', ['order' => $order], key($order->id . rand()))
-                            {{-- @include('livewire.dispatching.order-box') --}}
+                                                @livewire(
+                                                    'dispatching.order-box',
+                                                    [
+                                                        'order' => $order,
+                                                        'technicians' => $this->technicians,
+                                                        'customer_name' => $order->customer_name,
+                                                        'phone_number' => $order->phone_number,
+                                                        'status_color' => $order->status_color,
+                                                        'order_creator' => $order->order_creator,
+                                                        'comments' => $order->comments,
+                                                        'address' => $order->address,
+                                                        'order_description' => $order->order_description,
+                                                    ],
+                                                    key($order->id . rand())
+                                                )
                         @endforeach
                     </div>
                 </div>
@@ -43,9 +56,21 @@
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="techhold">
                         @foreach ($this->orders->where('status_id', 5) as $i => $order)
-                            @livewire('dispatching.order-box', ['order' => $order], key($order->id . rand()))
-
-                            {{-- @include('livewire.dispatching.order-box') --}}
+                                                @livewire(
+                                                    'dispatching.order-box',
+                                                    [
+                                                        'order' => $order,
+                                                        'technicians' => $this->technicians,
+                                                        'customer_name' => $order->customer_name,
+                                                        'phone_number' => $order->phone_number,
+                                                        'status_color' => $order->status_color,
+                                                        'order_creator' => $order->order_creator,
+                                                        'comments' => $order->comments,
+                                                        'address' => $order->address,
+                                                        'order_description' => $order->order_description,
+                                                    ],
+                                                    key($order->id . rand())
+                                                )
                         @endforeach
                     </div>
                 </div>
@@ -82,8 +107,21 @@
                                         <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-320px)] rounded-md  border border-gray-200 dark:border-gray-700"
                                             id="tech{{ $technician->id }}">
                                             @foreach ($this->orders->where('technician_id', $technician->id) as $i => $order)
-                                                {{-- @include('livewire.dispatching.order-box') --}}
-                                                @livewire('dispatching.order-box', ['order' => $order], key($order->id . rand()))
+                                                @livewire(
+                                                    'dispatching.order-box',
+                                                    [
+                                                        'order' => $order,
+                                                        'technicians' => $this->technicians,
+                                                        'customer_name' => $order->customer_name,
+                                                        'phone_number' => $order->phone_number,
+                                                        'status_color' => $order->status_color,
+                                                        'order_creator' => $order->order_creator,
+                                                        'comments' => $order->comments,
+                                                        'address' => $order->address,
+                                                        'order_description' => $order->order_description,
+                                                    ],
+                                                    key($order->id . rand())
+                                                )
                                             @endforeach
                                         </div>
                                     </div>

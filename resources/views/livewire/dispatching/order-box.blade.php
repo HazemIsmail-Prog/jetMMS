@@ -1,7 +1,7 @@
 <div x-data={showBox:@entangle('showBox')} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
-    {{ $order->comments->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0 ? ' animate-wiggle hover:animate-none' : '' }}
+    {{ $comments->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0 ? ' animate-wiggle hover:animate-none' : '' }}
     order
     card
     border-2
@@ -9,21 +9,21 @@
     cursor-pointer
         rounded-lg
     "
-    style="border-color: {{ $order->status_color }}">
+    style="border-color: {{ $status_color }}">
 
     <div class="flex justify-between items-center">
-        <div class="text-md font-semibold">{{ $order->customer_name }}</div>
-        <div class="text-xs">{{ $order->phone_number }}</div>
+        <div class="text-md font-semibold">{{ $customer_name }}</div>
+        <div class="text-xs">{{ $phone_number }}</div>
     </div>
 
-    <h4 class="mt-2 text-xs">{{ $order->address->full_address }}</h4>
+    <h4 class="mt-2 text-xs">{{ $address->full_address }}</h4>
 
     <div class="mt-2">
 
         <div
             class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             <i class="mgc_user_3_line text-base me-1"></i>
-            {{ $order->order_creator }}
+            {{ $order_creator }}
         </div>
 
         <div
@@ -40,7 +40,7 @@
                     @if ($order->status_id != 2)
                         <option value="">---</option>
                     @endif
-                    @foreach ($this->technicians as $technician)
+                    @foreach ($technicians->sortBy('name') as $technician)
                         <option value="{{ $technician->id }}">{{ $technician->name }}</option>
                     @endforeach
                 </x-select>

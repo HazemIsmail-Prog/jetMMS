@@ -3,6 +3,8 @@
 namespace App\Livewire\Dispatching;
 
 use App\Events\RefreshDepartmentScreenEvent;
+use App\Events\RefreshTechnicianScreenEvent;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
@@ -13,32 +15,28 @@ class OrderBox extends Component
 {
     public Order $order;
     public $technician_id;
+    public $customer_name;
+    public $phone_number;
+    public $status_color;
+    public $order_creator;
+    public $comments;
+    public $address;
+    public $order_description;
+    public $technicians;
     public $showBox = true;
 
     public function getListeners()
     {
         return [
-            'commentsUpdated' => '$refresh',
+            // 'commentsUpdated' => '$refresh',
             'invoiceCreated' => '$refresh',
             'invoiceDeleted' => '$refresh',
-            "echo:departments.{$this->order->department_id},RefreshDepartmentScreenEvent" => '$refresh',
         ];
     }
 
-    public function mount(Order $order)
+    public function mount()
     {
-        $this->order = $order;
         $this->technician_id = $this->order->technician_id;
-    }
-
-    #[Computed()]
-    public function technicians()
-    {
-        return User::query()
-            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name')
-            ->activeTechniciansPerDepartment($this->order->department_id)
-            ->get();
     }
 
     public function updatedTechnicianId($val)
@@ -51,7 +49,6 @@ class OrderBox extends Component
         $this->order->status_id = Status::DESTRIBUTED;
         $this->order->save();
         $this->showBox = false;
-        RefreshDepartmentScreenEvent::dispatch($this->order->department_id);
     }
 
     public function holdOrder()
@@ -60,7 +57,6 @@ class OrderBox extends Component
         $this->order->status_id = Status::ON_HOLD;
         $this->order->save();
         $this->showBox = false;
-        RefreshDepartmentScreenEvent::dispatch($this->order->department_id);
     }
 
     public function cancelOrder()
@@ -70,7 +66,6 @@ class OrderBox extends Component
         $this->order->cancelled_at = now();
         $this->order->save();
         $this->showBox = false;
-        RefreshDepartmentScreenEvent::dispatch($this->order->department_id);
     }
 
     public function render()

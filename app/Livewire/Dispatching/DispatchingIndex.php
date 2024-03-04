@@ -48,11 +48,12 @@ class DispatchingIndex extends Component
     public function technicians()
     {
         return User::query()
-            ->select('id', 'name_ar', 'name_en')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
             ->activeTechniciansPerDepartment($this->department->id)
             ->with('shift')
             ->get()
-            ->sortBy('name');
+            ;
     }
 
     public function dragEnd($order_id, $destenation_id, $source_id, $new_index)
@@ -81,15 +82,7 @@ class DispatchingIndex extends Component
                 $current_order->technician_id = $destenation_id;
                 $current_order->status_id = Status::DESTRIBUTED;
         }
-
         $current_order->save();
-
-        // if any change send event to department dispatch screen
-        RefreshDepartmentScreenEvent::dispatch($this->department->id);
-
-
-        // TODO: if just index changed send to tech if the first one changed
-
     }
 
     public function render()

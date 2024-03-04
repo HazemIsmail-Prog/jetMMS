@@ -60,7 +60,7 @@ class CustomerIndex extends Component
             ->when($this->filters['street'], function ($q) {
                 $q->whereRelation('addresses', 'street', $this->filters["street"]);
             })
-            ->paginate(20);
+            ->paginate(15);
     }
 
     public function render()
