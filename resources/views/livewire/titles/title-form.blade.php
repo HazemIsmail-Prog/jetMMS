@@ -2,6 +2,7 @@
     <x-dialog-modal maxWidth="md" wire:model.live="showModal">
         <x-slot name="title">
             <div>{{ $modalTitle }}</div>
+            <x-section-border />
         </x-slot>
         <x-slot name="content">
             <form wire:submit="save">
