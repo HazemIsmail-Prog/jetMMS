@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('car_actions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('car_id')->constrained('cars');
-            $table->foreignId('driver_id')->constrained('users');
             $table->foreignId('created_by')->constrained('users');
-            $table->string('type');  // assign - unassign
+            $table->foreignId('from')->nullable()->constrained('users');
+            $table->foreignId('to')->nullable()->constrained('users');
             $table->string('notes')->nullable();
             $table->date('date');
             $table->time('time');

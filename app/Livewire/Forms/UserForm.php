@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -32,5 +33,23 @@ class UserForm extends Form
             'active' => 'nullable',
             'roles' => 'required',
         ];
+    }
+
+    public function updateOrCreate()
+    {
+        $this->validate();
+
+        if ($this->password) {
+
+            $this->password = bcrypt($this->password);
+            $user = User::updateOrCreate(['id' => $this->id], $this->except('roles'));
+
+        } else {
+
+            $user = User::updateOrCreate(['id' => $this->id], $this->except('password', 'roles'));
+
+        }
+
+        $user->roles()->sync($this->roles);
     }
 }

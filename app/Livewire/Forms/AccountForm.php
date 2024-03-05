@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Account;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -28,5 +29,10 @@ class AccountForm extends Form
             'active' => 'nullable',
             'account_id' => 'nullable',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        Account::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

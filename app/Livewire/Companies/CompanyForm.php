@@ -27,8 +27,7 @@ class CompanyForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Company::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('companiesUpdated');
         $this->showModal = false;
     }

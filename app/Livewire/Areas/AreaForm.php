@@ -27,8 +27,7 @@ class AreaForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Area::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('areasUpdated');
         $this->showModal = false;
     }

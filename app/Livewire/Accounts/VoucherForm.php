@@ -128,21 +128,8 @@ class VoucherForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        if (!$validated['id']) {
-            $validated['created_by'] = auth()->id();
-        }
-        unset($validated['details']);
-        $voucher = Voucher::updateOrCreate(['id' => $validated['id']], $validated);
-        $voucher->voucherDetails()->delete();
-        foreach ($this->form->details as $row) {
-            if ($row['user_id'] == '') {
-                $row['user_id'] = null;
-            }
-            $voucher->voucherDetails()->create($row);
-        }
+        $this->form->updateOrCreate();
         $this->dispatch('vouchersUpdated');
-
         $this->form->reset();
         $this->showModal = false;
     }

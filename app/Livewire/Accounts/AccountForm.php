@@ -16,25 +16,23 @@ class AccountForm extends Component
     public FormsAccountForm $form;
 
     #[On('showAccountFormModal')]
-    public function show(Account $account ,Account $parentAccount)
+    public function show(Account $account, Account $parentAccount)
     {
         $this->form->reset();
         $this->showModal = true;
         $this->account = $account;
         $this->modalTitle = $this->account->id ? __('messages.edit_account') . ' ' . $this->account->name : __('messages.add_account');
         $this->form->fill($this->account);
-        if($parentAccount->id){
+        if ($parentAccount->id) {
             $this->form->account_id = $parentAccount->id;
             $this->form->level = $parentAccount->level + 1;
             $this->form->type = $parentAccount->type;
         }
-
     }
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Account::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('accountsUpdated');
         $this->showModal = false;
     }

@@ -5,47 +5,59 @@ namespace App\Livewire\Fleet;
 use App\Livewire\Forms\CarForm as FormsCarForm;
 use App\Models\Car;
 use App\Models\CarBrand;
-use App\Models\CarType;
 use App\Models\Company;
-use App\Models\User;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CarForm extends Component
 {
 
+    public $showModal = false;
+    public $modalTitle = '';
+    public Car $car;
+
     public FormsCarForm $form;
 
-    public $companies;
-    public $car_brands;
-    public $car_types;
-    public $users;
-    public $car;
-
-    public function mount(Car $car)
+    #[On('showCarFormModal')]
+    public function show(Car $car)
     {
+        $this->form->reset();
+        $this->showModal = true;
         $this->car = $car;
-        $this->companies = Company::select('id', 'name_ar', 'name_en')->get();
-        $this->car_brands = CarBrand::select('id', 'name_ar', 'name_en')->get();
-        $this->car_types = CarType::select('id', 'name_ar', 'name_en')->get();
-        $this->users = User::select('id', 'name_ar', 'name_en')->get();
-        $this->form->fill($car);
+        $this->modalTitle = $this->car->id ? __('messages.edit_car') . ' ' . $this->car->code : __('messages.add_car');
+        $this->form->fill($this->car);
     }
 
-    public function updated($key){
-        if($key == 'form.has_installment'){
-            $this->form->reset('installment_company');
-        }
+    #[Computed()]
+    public function companies() {
+        return Company::query()
+        ->select('id' , 'name_en' , 'name_ar' , 'name_' . app()->getLocale() . ' as name')
+        ->orderBy('name')
+        ->get();
+    }
+
+    #[Computed()]
+    public function car_brands() {
+        return CarBrand::query()
+        ->select('id' , 'name_en' , 'name_ar' , 'name_' . app()->getLocale() . ' as name')
+        ->orderBy('name')
+        ->get();
+    }
+
+    #[Computed()]
+    public function car_types() {
+        return CarBrand::query()
+        ->select('id' , 'name_en' , 'name_ar' , 'name_' . app()->getLocale() . ' as name')
+        ->orderBy('name')
+        ->get();
     }
 
     public function save()
     {
-        $validated = $this->form->validate();
-        $validated['driver_id'] = $validated['driver_id'] == "" ? null : $validated['driver_id'];
-        $validated['technician_id'] = $validated['technician_id'] == "" ? null : $validated['technician_id'];
-        Car::updateOrCreate(['id' => $validated['id']], $validated);
-        $this->form->reset();
-        session()->flash('success', 'Car saved successfully.');
-        $this->redirect(CarIndex::class,navigate:true);
+        $this->form->updateOrCreate();
+        $this->dispatch('departmentsUpdated');
+        $this->showModal = false;
     }
 
     public function render()

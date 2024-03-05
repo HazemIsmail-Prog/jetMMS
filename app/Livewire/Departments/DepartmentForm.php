@@ -40,8 +40,7 @@ class DepartmentForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Department::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('departmentsUpdated');
         $this->showModal = false;
     }

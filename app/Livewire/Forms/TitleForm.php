@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -18,5 +19,11 @@ class TitleForm extends Form
             'name_ar' => 'required',
             'name_en' => 'required',
         ];
+    }
+
+    public function updateOrCreate()
+    {
+        $this->validate();
+        Title::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

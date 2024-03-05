@@ -28,17 +28,4 @@ class Car extends Model
     public function type() : BelongsTo {
         return $this->belongsTo(CarType::class,'car_type_id');
     }
-
-    
-    public function technician() : BelongsTo {
-        return $this->belongsTo(User::class,'technician_id');
-    }
-    
-    public function drivers() : BelongsToMany {
-        return $this->belongsToMany(User::class,'car_actions','driver_id');
-    }
-
-    public function driver() : BelongsTo {
-        $this->drivers()->wherePivot('');
-    }
 }

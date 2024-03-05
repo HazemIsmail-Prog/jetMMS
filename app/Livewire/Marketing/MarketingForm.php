@@ -27,17 +27,12 @@ class MarketingForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        if(!$validated['id']){
-            $validated['user_id'] = auth()->id();
-        }
-        // dd($validated);
-        Marketing::updateOrCreate(['id' => $validated['id']],$validated);
+        $this->form->updateOrCreate();
         $this->dispatch('marketingsUpdated');
-
         $this->form->reset();
         $this->showModal = false;
     }
+    
     public function render()
     {
         return view('livewire.marketing.marketing-form');

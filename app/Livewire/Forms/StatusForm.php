@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Status;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -20,5 +21,11 @@ class StatusForm extends Form
             'name_en' => 'required',
             'color' => 'required',
         ];
+    }
+
+    public function updateOrCreate()
+    {
+        $this->validate();
+        Status::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Marketing;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -13,6 +14,7 @@ class MarketingForm extends Form
     public $address;
     public $type;
     public $notes;
+    public $user_id;
 
     public function rules()
     {
@@ -24,5 +26,13 @@ class MarketingForm extends Form
             'type' => 'required',
             'notes' => 'nullable',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        if (!$this->id) {
+            $this->user_id = auth()->id();
+        }
+        Marketing::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

@@ -27,8 +27,7 @@ class StatusForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Status::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('statusesUpdated');
         $this->showModal = false;
     }

@@ -28,9 +28,7 @@ class CostCenterForm extends Component
 
     public function save()
     {
-        // dd($this->form);
-        $validated = $this->form->validate();
-        CostCenter::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('costCentersUpdated');
         $this->showModal = false;
     }

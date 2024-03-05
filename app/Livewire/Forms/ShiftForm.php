@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Shift;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -22,5 +23,11 @@ class ShiftForm extends Form
             'start_time' => 'required',
             'end_time' => 'required',
         ];
+    }
+
+    public function updateOrCreate()
+    {
+        $this->validate();
+        Shift::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

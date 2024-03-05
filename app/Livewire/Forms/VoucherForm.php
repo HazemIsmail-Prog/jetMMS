@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Voucher;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -29,5 +30,20 @@ class VoucherForm extends Form
             'details.*.debit' => 'required',
             'details.*.credit' => 'required',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        if (!$this->id) {
+            $this->created_by = auth()->id();
+        }
+        $voucher = Voucher::updateOrCreate(['id' => $this->id], $this->except('details'));
+        $voucher->voucherDetails()->delete();
+        foreach ($this->details as $row) {
+            if ($row['user_id'] == '') {
+                $row['user_id'] = null;
+            }
+            $voucher->voucherDetails()->create($row);
+        }
     }
 }

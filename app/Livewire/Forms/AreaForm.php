@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Area;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -18,5 +19,10 @@ class AreaForm extends Form
             'name_ar' => 'required',
             'name_en' => 'required',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        Area::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

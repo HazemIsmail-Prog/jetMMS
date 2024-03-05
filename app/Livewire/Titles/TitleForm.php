@@ -27,8 +27,7 @@ class TitleForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Title::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('titlesUpdated');
         $this->showModal = false;
     }

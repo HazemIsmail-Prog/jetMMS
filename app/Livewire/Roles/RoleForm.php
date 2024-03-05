@@ -36,10 +36,7 @@ class RoleForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        $validated = data_forget($validated, 'permissions');
-        $role = Role::updateOrCreate(['id' => $validated['id']], $validated);
-        $role->permissions()->sync($this->form->permissions);
+        $this->form->updateOrCreate();
         $this->dispatch('rolesUpdated');
         $this->showModal = false;
     }

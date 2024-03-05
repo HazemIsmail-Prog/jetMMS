@@ -19,17 +19,11 @@ class CarIndex extends Component
         return Car::query()
         ->with('brand')
         ->with('type')
-        ->with('driver')
-        ->with('technician')
         ->when($this->filters['code'],function($q){
             $q->where('code',$this->filters['code']);
         })
-        ->simplePaginate()
+        ->paginate(10)
         ;
-    }
-
-    public function showActionFormModal($car_id) {
-        $this->dispatch('showActionFormModal', car_id: $car_id);
     }
 
     public function render()

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Department;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -22,5 +23,10 @@ class DepartmentForm extends Form
             'income_account_id' => 'nullable',
             'cost_account_id' => 'nullable',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        Department::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

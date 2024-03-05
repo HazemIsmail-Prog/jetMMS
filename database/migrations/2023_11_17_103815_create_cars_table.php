@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->integer('code')->unique();
+            $table->foreignId('created_by')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('car_brand_id')->constrained('car_brands');
             $table->foreignId('car_type_id')->nullable()->constrained('car_types');

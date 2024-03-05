@@ -40,8 +40,7 @@ class SupplierForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Supplier::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('suppliersUpdated');
         $this->showModal = false;
     }

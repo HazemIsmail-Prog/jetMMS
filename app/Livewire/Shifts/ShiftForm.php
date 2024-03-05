@@ -27,8 +27,7 @@ class ShiftForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-        Shift::updateOrCreate(['id' => $validated['id']], $validated);
+        $this->form->updateOrCreate();
         $this->dispatch('shiftsUpdated');
         $this->showModal = false;
     }

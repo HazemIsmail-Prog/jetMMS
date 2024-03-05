@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Supplier;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -20,5 +21,11 @@ class SupplierForm extends Form
             'name_en' => 'required',
             'account_id' => 'nullable',
         ];
+    }
+
+    public function updateOrCreate()
+    {
+        $this->validate();
+        Supplier::updateOrCreate(['id' => $this->id], $this->all());
     }
 }

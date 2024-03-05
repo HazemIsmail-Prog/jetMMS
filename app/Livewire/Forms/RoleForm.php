@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Role;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -20,5 +21,11 @@ class RoleForm extends Form
             'name_en' => 'required',
             'permissions' => 'required',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        $role = Role::updateOrCreate(['id' => $this->id], $this->except('permissions'));
+        $role->permissions()->sync($this->permissions);
     }
 }
