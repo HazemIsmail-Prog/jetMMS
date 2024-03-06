@@ -5,11 +5,15 @@
                 {{ __('messages.customers') }}
                 <span id="counter"></span>
             </h2>
-            @can('create', App\Models\Customer::class)
-                <x-anchor class="no-print" href="{{ route('customer.form') }}">{{ __('messages.add_customer') }}</x-anchor>
-            @endcan
+            <span id="addNew"></span>
         </div>
     </x-slot>
+    @teleport('#addNew')
+        <x-button wire:click="$dispatch('showCustomerFormModal')">
+            {{ __('messages.add_customer') }}
+        </x-button>
+    @endteleport
+
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
@@ -27,6 +31,8 @@
     @endif
 
     @livewire('orders.order-form')
+    @livewire('customers.customer-form')
+
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
@@ -37,8 +43,8 @@
         </div>
         <div>
             <x-label for="phone">{{ __('messages.phone') }}</x-label>
-            <x-input id="phone" placeholder="{{ __('messages.phone') }}" wire:model.live="filters.phone" class="w-full py-0"
-                dir="ltr" />
+            <x-input id="phone" placeholder="{{ __('messages.phone') }}" wire:model.live="filters.phone"
+                class="w-full py-0" dir="ltr" />
         </div>
         <div>
             <x-label for="area">{{ __('messages.area') }}</x-label>
@@ -46,13 +52,13 @@
         </div>
         <div>
             <x-label for="block">{{ __('messages.block') }}</x-label>
-            <x-input id="block" placeholder="{{ __('messages.block') }}" wire:model.live="filters.block" class="w-full py-0"
-                dir="ltr" />
+            <x-input id="block" placeholder="{{ __('messages.block') }}" wire:model.live="filters.block"
+                class="w-full py-0" dir="ltr" />
         </div>
         <div>
             <x-label for="street">{{ __('messages.street') }}</x-label>
-            <x-input id="street" placeholder="{{ __('messages.street') }}" wire:model.live="filters.street" class="w-full py-0"
-                dir="ltr" />
+            <x-input id="street" placeholder="{{ __('messages.street') }}" wire:model.live="filters.street"
+                class="w-full py-0" dir="ltr" />
         </div>
     </div>
 
@@ -94,10 +100,10 @@
                                 @endcan
 
                                 @can('update', $customer)
-                                    <a title="{{ __('messages.edit') }}" href="{{ route('customer.form', $customer) }}"
-                                        class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <x-svgs.edit class="w-4 h-4" />
-                                    </a>
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showCustomerFormModal',{customer:{{ $customer }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
                                 @endcan
                                 @can('viewAny', App\Models\Order::class)
                                     <a href="{{ route('order.index', ['customer_id' => $customer->id]) }}">

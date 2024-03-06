@@ -37,6 +37,7 @@ class CustomerIndex extends Component
 
     #[Computed]
     #[On('ordersUpdated')]
+    #[On('customersUpdated')]
     public function customers()
     {
         return Customer::query()

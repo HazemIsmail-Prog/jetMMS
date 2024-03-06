@@ -8,12 +8,35 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CustomerForm extends Component
 {
-    public $customer;
+    public $showModal = false;
+    public $modalTitle = '';
+    public Customer $customer;
+
     public FormsCustomerForm $form;
+
+    #[On('showCustomerFormModal')]
+    public function show(Customer $customer)
+    {
+        $this->form->reset();
+        $this->showModal = true;
+        $this->customer = $customer;
+
+        $this->form->fill($this->customer);
+        $this->modalTitle = $this->customer->id ? __('messages.edit_customer') . ' ' . $this->customer->name : __('messages.add_customer');
+
+        if ($this->customer->id) {
+            $this->form->phones = collect($this->customer->phones)->toArray();
+            $this->form->addresses = collect($this->customer->addresses)->toArray();
+        } else {
+            $this->add_row('phone');
+            $this->add_row('address');
+        }
+    }
 
     #[Computed()]
     public function areas()
@@ -22,22 +45,6 @@ class CustomerForm extends Component
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();
-    }
-
-    public function mount(Customer $customer)
-    {
-        $this->customer = $customer;
-
-        $this->form->fill($this->customer);
-
-        if ($this->customer->id) {
-            $this->form->phones = collect($this->customer->phones)->toArray();
-            $this->form->addresses = collect($this->customer->addresses)->toArray();
-            $this->dispatch('select2');
-        } else {
-            $this->add_row('phone');
-            $this->add_row('address');
-        }
     }
 
     public function add_row($type)
@@ -63,8 +70,6 @@ class CustomerForm extends Component
                 'number' => null,
             ];
         }
-
-        $this->dispatch('select2');
     }
 
     public function delete_row($type, $index)
@@ -161,13 +166,14 @@ class CustomerForm extends Component
                 }
                 DB::commit();
                 $this->form->reset();
+                $this->showModal = false;
+                $this->dispatch('customersUpdated');
             } catch (\Exception $e) {
                 DB::rollback();
                 dd($e);
                 throw ValidationException::withMessages(['error' => __('messages.something went wrong ' . '(' . $e->getMessage() . ')')]);
             }
         }
-        return redirect()->route('customer.index');
     }
 
     public function render()

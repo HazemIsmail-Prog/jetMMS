@@ -110,6 +110,8 @@ class OrderIndex extends Component
     }
 
     #[Computed]
+    #[On('ordersUpdated')]
+    #[On('customersUpdated')]
     public function orders()
     {
         return Order::query()

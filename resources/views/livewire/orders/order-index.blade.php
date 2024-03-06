@@ -27,6 +27,8 @@
     @livewire('orders.comment-modal')
     @livewire('orders.order-form')
     @livewire('orders.status-history-modal')
+    @livewire('customers.customer-form')
+
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
