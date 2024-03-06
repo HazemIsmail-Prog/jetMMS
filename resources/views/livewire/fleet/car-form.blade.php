@@ -92,6 +92,16 @@
                         </div>
 
                         <div>
+                            <x-label for="fuel_card_serial">{{ __('messages.fuel_card_serial') }}</x-label>
+                            <x-input class="w-full py-0" type="text" wire:model="form.fuel_card_serial" id="fuel_card_serial" />
+                            <x-input-error for="form.fuel_card_serial" />
+                        </div>
+                        <div>
+                            <x-label for="fuel_card_number">{{ __('messages.fuel_card_number') }}</x-label>
+                            <x-input class="w-full py-0" type="text" wire:model="form.fuel_card_number" id="fuel_card_number" />
+                            <x-input-error for="form.fuel_card_number" />
+                        </div>
+                        <div>
                             <x-label for="notes">{{ __('messages.notes') }}</x-label>
                             <x-input class="w-full py-0" type="text" wire:model="form.notes" id="notes" />
                             <x-input-error for="form.notes" />

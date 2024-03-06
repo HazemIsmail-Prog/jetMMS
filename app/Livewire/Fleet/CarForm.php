@@ -5,6 +5,7 @@ namespace App\Livewire\Fleet;
 use App\Livewire\Forms\CarForm as FormsCarForm;
 use App\Models\Car;
 use App\Models\CarBrand;
+use App\Models\CarType;
 use App\Models\Company;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -47,7 +48,7 @@ class CarForm extends Component
 
     #[Computed()]
     public function car_types() {
-        return CarBrand::query()
+        return CarType::query()
         ->select('id' , 'name_en' , 'name_ar' , 'name_' . app()->getLocale() . ' as name')
         ->orderBy('name')
         ->get();
@@ -56,7 +57,7 @@ class CarForm extends Component
     public function save()
     {
         $this->form->updateOrCreate();
-        $this->dispatch('departmentsUpdated');
+        $this->dispatch('carsUpdated');
         $this->showModal = false;
     }
 

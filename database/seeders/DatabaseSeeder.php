@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             CustomerSeeder::class,
             OrderSeeder::class,
+            CarSeeder::class,
         ]);
     }
 }

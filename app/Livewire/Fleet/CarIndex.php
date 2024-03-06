@@ -4,6 +4,7 @@ namespace App\Livewire\Fleet;
 
 use App\Models\Car;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,6 +16,7 @@ class CarIndex extends Component
 
 
     #[Computed]
+    #[On('carsUpdated')]
     public function cars() {
         return Car::query()
         ->with('brand')

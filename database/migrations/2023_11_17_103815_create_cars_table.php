@@ -30,6 +30,8 @@ return new class extends Migration
             $table->date('adv_expiration_date')->nullable();
             $table->boolean('has_installment');
             $table->string('installment_company')->nullable();
+            $table->string('fuel_card_serial')->nullable();
+            $table->string('fuel_card_number')->nullable();
             $table->string('notes')->nullable();
             $table->boolean('active');
             $table->timestamps();

@@ -24,6 +24,8 @@ class CarForm extends Form
     public $notes;
     public bool $active = true;
     public $created_by;
+    public $fuel_card_serial;
+    public $fuel_card_number;
 
     public function rules()
     {
@@ -43,6 +45,8 @@ class CarForm extends Form
             'installment_company' => 'required_if:has_installment,true',
             'notes' => 'nullable',
             'active' => 'nullable',
+            'fuel_card_serial' => 'nullable',
+            'fuel_card_number' => 'nullable',
         ];
     }
 
