@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CarAction extends Model
 {
@@ -17,26 +18,22 @@ class CarAction extends Model
         'time' => 'date:H:i',
     ];
 
-    public function driver(): BelongsTo
+    public function from(): BelongsTo
     {
-        return $this->belongsTo(User::class,'driver_id');
+        return $this->belongsTo(User::class, 'from_id');
     }
+    public function to(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'to_id');
+    }
+
+    public function current_driver() : HasOne
+    {
+        return $this->hasOne(User::class, 'to_id')->latest();
+    }
+
     public function car(): BelongsTo
     {
         return $this->belongsTo(Car::class);
-    }
-
-    public function getFuelAttribute($val) {
-
-        $fuel = match ($val) {
-            0 => __('messages.empty'),
-            1 => '1/4',
-            2 => '1/2',
-            3 => '3/4',
-            4 => __('messages.full'),
-        };
-
-        return $fuel;
-
     }
 }

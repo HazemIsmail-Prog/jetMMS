@@ -31,7 +31,9 @@
     @endif
 
     @livewire('fleet.car-form')
-    @livewire('fleet.action-modal')
+    @livewire('fleet.action-index')
+    @livewire('fleet.action-form')
+
 
     <x-input wire:model.live="filters.code" class=" text-start py-0" />
 
@@ -43,8 +45,10 @@
                     <x-th>{{ __('messages.brand') }}</x-th>
                     <x-th>{{ __('messages.car_type') }}</x-th>
                     <x-th>{{ __('messages.receiver') }}</x-th>
+                    <x-th>{{ __('messages.department') }}</x-th>
                     <x-th>{{ __('messages.management_no') }}/{{ __('messages.plate_no') }}</x-th>
                     <x-th>{{ __('messages.insurance_expiration_date') }}</x-th>
+                    <x-th>{{ __('messages.notes') }}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>
@@ -54,14 +58,20 @@
                         <x-th>{{ $car->code }}</x-th>
                         <x-td>{{ $car->brand->name }}</x-td>
                         <x-td>{{ $car->type->name }}</x-td>
-                        <x-td>---</x-td>
+                        <x-td>{{ $car->latest_car_action->to->name ?? '-' }}</x-td>
+                        <x-td>{{ $car->latest_car_action->to->department->name ?? '-' }}</x-td>
                         <x-td>{{ $car->management_no }}/{{ $car->plate_no }}</x-td>
                         <x-td>{{ $car->insurance_expiration_date->format('d-m-Y') }}</x-td>
+                        <x-td>{{ $car->notes ?? '-' }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showCarFormModal',{car:{{ $car }}})">
                                     <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}" title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showCarActionsModal',{car:{{ $car }}})">
+                                    <x-svgs.list class="h-4 w-4" />
                                 </x-badgeWithCounter>
                             </div>
                         </x-td>

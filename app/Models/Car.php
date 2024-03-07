@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Car extends Model
 {
@@ -27,5 +29,13 @@ class Car extends Model
 
     public function type() : BelongsTo {
         return $this->belongsTo(CarType::class,'car_type_id');
+    }
+
+    public function car_actions() : HasMany {
+        return $this->hasMany(CarAction::class,'car_id');
+    }
+    
+    public function latest_car_action() : HasOne {
+        return $this->hasOne(CarAction::class, 'car_id')->orderBy('date','desc')->orderBy('time', 'desc');
     }
 }

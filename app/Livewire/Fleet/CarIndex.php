@@ -17,15 +17,23 @@ class CarIndex extends Component
 
     #[Computed]
     #[On('carsUpdated')]
-    public function cars() {
+    #[On('carActionsUpdated')]
+    public function cars()
+    {
         return Car::query()
-        ->with('brand')
-        ->with('type')
-        ->when($this->filters['code'],function($q){
-            $q->where('code',$this->filters['code']);
-        })
-        ->paginate(10)
-        ;
+            ->with('brand')
+            ->with('type')
+            ->with('latest_car_action.to.department')
+            ->withCount('car_actions')
+            ->when($this->filters['code'], function ($q) {
+                $q->where('code', $this->filters['code']);
+            })
+            ->paginate(15);
+    }
+
+    public function updatedFilters()
+    {
+        $this->resetPage();
     }
 
     public function render()

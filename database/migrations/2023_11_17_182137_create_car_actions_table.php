@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('car_id')->constrained('cars');
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('from')->nullable()->constrained('users');
-            $table->foreignId('to')->nullable()->constrained('users');
+            $table->foreignId('from_id')->nullable()->constrained('users');
+            $table->foreignId('to_id')->nullable()->constrained('users');
             $table->string('notes')->nullable();
             $table->date('date');
             $table->time('time');
