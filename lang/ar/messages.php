@@ -479,6 +479,9 @@ return [
     'car_actions' => 'حركات السيارة',
     'action_type' => 'نوع الحركة',
     'add_car_action' => 'تسجيل حركة',
+    'car_services' => 'صيانات السيارة',
+    'add_car_service' => 'تسجيل صيانة',
+    'cost' => 'التكلفة',
 
 
 

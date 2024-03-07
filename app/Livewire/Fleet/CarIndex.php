@@ -14,10 +14,10 @@ class CarIndex extends Component
 
     public $filters = ['code' => ''];
 
-
     #[Computed]
     #[On('carsUpdated')]
     #[On('carActionsUpdated')]
+    #[On('carServicesUpdated')]
     public function cars()
     {
         return Car::query()
@@ -25,6 +25,7 @@ class CarIndex extends Component
             ->with('type')
             ->with('latest_car_action.to.department')
             ->withCount('car_actions')
+            ->withCount('car_services')
             ->when($this->filters['code'], function ($q) {
                 $q->where('code', $this->filters['code']);
             })

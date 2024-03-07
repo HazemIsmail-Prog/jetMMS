@@ -34,6 +34,10 @@ class Car extends Model
     public function car_actions() : HasMany {
         return $this->hasMany(CarAction::class,'car_id');
     }
+
+    public function car_services() : HasMany {
+        return $this->hasMany(CarService::class,'car_id');
+    }
     
     public function latest_car_action() : HasOne {
         return $this->hasOne(CarAction::class, 'car_id')->orderBy('date','desc')->orderBy('time', 'desc');

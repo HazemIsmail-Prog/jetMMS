@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Fleet;
 
-use App\Livewire\Forms\ActionForm as FormsActionForm;
+use App\Livewire\Forms\CarActionForm;
 use App\Models\Car;
 use App\Models\CarAction;
 use App\Models\User;
@@ -14,7 +14,7 @@ class ActionForm extends Component
 {
     public $showModal = false;
     public CarAction $carAction;
-    public FormsActionForm $form;
+    public CarActionForm $form;
 
     #[On('showActionFormModal')]
     public function show(CarAction $carAction, Car $car)

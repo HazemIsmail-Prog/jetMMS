@@ -31,8 +31,12 @@
     @endif
 
     @livewire('fleet.car-form')
+    
     @livewire('fleet.action-index')
     @livewire('fleet.action-form')
+    
+    @livewire('fleet.service-index')
+    @livewire('fleet.service-form')
 
 
     <x-input wire:model.live="filters.code" class=" text-start py-0" />
@@ -69,9 +73,13 @@
                                     wire:click="$dispatch('showCarFormModal',{car:{{ $car }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}" title="{{ __('messages.edit') }}"
+                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}" title="{{ __('messages.car_actions') }}"
                                     wire:click="$dispatch('showCarActionsModal',{car:{{ $car }}})">
                                     <x-svgs.list class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                                <x-badgeWithCounter counter="{{ $car->car_services_count }}" title="{{ __('messages.car_services') }}"
+                                    wire:click="$dispatch('showCarServicesModal',{car:{{ $car }}})">
+                                    <x-svgs.scissors class="h-4 w-4" />
                                 </x-badgeWithCounter>
                             </div>
                         </x-td>

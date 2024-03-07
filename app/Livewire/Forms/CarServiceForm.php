@@ -2,33 +2,25 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\CarAction;
+use App\Models\CarService;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class ActionForm extends Form
+class CarServiceForm extends Form
 {
     public $id;
     public $car_id;
     public $created_by;
-    public int | null $from_id;
-    public int | null $to_id;
     public $notes;
     public $date;
-    public $time;
-    public $fuel = '2';
-    public $kilos;
+    public $cost;
 
     public function rules()
     {
         return [
-            'from_id' => 'nullable',
-            'to_id' => 'nullable',
-            'notes' => 'nullable',
+            'notes' => 'required',
             'date' => 'required',
-            'time' => 'required',
-            'fuel' => 'required',
-            'kilos' => 'required',
+            'cost' => 'required',
         ];
     }
 
@@ -38,8 +30,7 @@ class ActionForm extends Form
         if (!$this->id) {
             $this->created_by = auth()->id();
         }
-        CarAction::updateOrCreate(['id' => $this->id], $this->all());
+        CarService::updateOrCreate(['id' => $this->id], $this->all());
         $this->reset();
-
     }
 }
