@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Orders;
+namespace App\Livewire\Invoices;
 
-use App\Enums\PaymentStatusEnum;
 use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\User;
@@ -102,6 +101,6 @@ class InvoiceIndex extends Component
 
     public function render()
     {
-        return view('livewire.orders.invoice-index');
+        return view('livewire.invoices.invoice-index');
     }
 }
