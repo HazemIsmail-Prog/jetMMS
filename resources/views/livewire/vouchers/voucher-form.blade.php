@@ -1,12 +1,12 @@
 <div>
-    @if ($showModal)
-        <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
-            <x-slot name="title">
-                <div>{{ $modalTitle }}</div>
-                <x-section-border />
-            </x-slot>
+    <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
+        <x-slot name="title">
+            <div>{{ $modalTitle }}</div>
+            <x-section-border />
+        </x-slot>
 
-            <x-slot name="content">
+        <x-slot name="content">
+            @if ($showModal)
                 <form wire:submit="save">
 
                     <div class=" space-y-3">
@@ -62,10 +62,9 @@
                                             @foreach ($form->details as $index => $row)
                                                 <tr>
                                                     <td class=" align-top">
-                                                        <x-searchable-select position="relative"
-                                                            :list="$this->accounts"
+                                                        <x-searchable-select position="relative" :list="$this->accounts"
                                                             model="form.details.{{ $index }}.account_id" />
-    
+
                                                         {{-- <x-select @class([
                                                             'w-full',
                                                             'border-red-500' => $errors->has('form.details.' . $index . '.account_id'),
@@ -79,13 +78,11 @@
                                                         </x-select> --}}
                                                     </td>
                                                     <td class=" align-top">
-                                                        <x-searchable-select position="relative"
-                                                            :list="$this->cost_centers"
+                                                        <x-searchable-select position="relative" :list="$this->cost_centers"
                                                             model="form.details.{{ $index }}.cost_center_id" />
                                                     </td>
                                                     <td class=" align-top">
-                                                        <x-searchable-select position="relative"
-                                                            :list="$this->users"
+                                                        <x-searchable-select position="relative" :list="$this->users"
                                                             model="form.details.{{ $index }}.user_id" />
                                                         {{-- <x-select @class([
                                                             'w-full',
@@ -110,9 +107,10 @@
                                                             'border-red-500' => $errors->has('form.details.' . $index . '.debit'),
                                                         ]) step="0.001"
                                                             x-model="form.details[{{ $index }}].debit"
-                                                            autocomplete="off" type="number" @input="$dispatch('debit')"
+                                                            autocomplete="off" type="number"
+                                                            @input="$dispatch('debit')"
                                                             x-on:input="form.details[{{ $index }}].credit = 0" />
-    
+
                                                     </td>
                                                     <td class=" align-top">
                                                         <x-input @class([
@@ -120,13 +118,14 @@
                                                             'border-red-500' => $errors->has('form.details.' . $index . '.credit'),
                                                         ]) step="0.001"
                                                             x-model="form.details[{{ $index }}].credit"
-                                                            autocomplete="off" type="number" @input="$dispatch('credit')"
+                                                            autocomplete="off" type="number"
+                                                            @input="$dispatch('credit')"
                                                             x-on:input="form.details[{{ $index }}].debit = 0" />
-    
+
                                                     </td>
                                                     <td class=" align-top">
                                                         <div class="h-[35px] flex items-center">
-    
+
                                                             <x-svgs.trash class="w-4 h-4 text-red-500"
                                                                 wire:click="deleteRow({{ $index }})" />
                                                         </div>
@@ -170,7 +169,7 @@
                     @endif
 
                 </form>
-            </x-slot>
-        </x-dialog-modal>
-    @endif
+            @endif
+        </x-slot>
+    </x-dialog-modal>
 </div>
