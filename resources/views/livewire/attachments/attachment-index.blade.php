@@ -2,14 +2,12 @@
     <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
 
         <x-slot name="title">
-            @if ($showModal)
                 <div class=" flex items-center justify-between">
                     <div>{{ $modalTitle }}</div>
                     <x-button type="button"
-                        wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord->id }}})">{{ __('messages.add_attachment') }}</x-button>
+                        wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord?->id }}})">{{ __('messages.add_attachment') }}</x-button>
                 </div>
                 <x-section-border />
-            @endif
         </x-slot>
 
 
