@@ -20,6 +20,7 @@ class ActionForm extends Component
     public function show(CarAction $carAction, Car $car)
     {
         $this->resetErrorBag();
+        $this->form->reset();
         $this->carAction = $carAction;
         $this->form->fill($this->carAction);
         $this->form->car_id = $car->id;
