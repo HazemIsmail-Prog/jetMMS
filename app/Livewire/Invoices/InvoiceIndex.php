@@ -49,6 +49,7 @@ class InvoiceIndex extends Component
 
     #[Computed()]
     #[On('invoicesUpdated')]
+    #[On('paymentsUpdated')]
     public function invoices()
     {
         return Invoice::query()

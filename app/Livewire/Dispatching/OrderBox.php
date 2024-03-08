@@ -2,13 +2,8 @@
 
 namespace App\Livewire\Dispatching;
 
-use App\Events\RefreshDepartmentScreenEvent;
-use App\Events\RefreshTechnicianScreenEvent;
-use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Status;
-use App\Models\User;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class OrderBox extends Component
@@ -29,8 +24,7 @@ class OrderBox extends Component
     {
         return [
             // 'commentsUpdated' => '$refresh',
-            'invoiceCreated' => '$refresh',
-            'invoiceDeleted' => '$refresh',
+            // 'invoicesUpdated' => '$refresh',
         ];
     }
 

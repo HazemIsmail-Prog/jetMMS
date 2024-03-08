@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Dispatching;
 
-use App\Events\RefreshDepartmentScreenEvent;
 use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Order;
@@ -10,7 +9,6 @@ use App\Models\Phone;
 use App\Models\Status;
 use App\Models\User;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DispatchingIndex extends Component
@@ -20,9 +18,8 @@ class DispatchingIndex extends Component
     public function getListeners()
     {
         return [
-            // 'commentsUpdated' => '$refresh',
-            // 'invoiceCreated' => '$refresh',
-            // 'invoiceDeleted' => '$refresh',
+            'commentsUpdated' => '$refresh',
+            'invoicesUpdated' => '$refresh',
             "echo:departments.{$this->department->id},RefreshDepartmentScreenEvent" => '$refresh',
         ];
     }

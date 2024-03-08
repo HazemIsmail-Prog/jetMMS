@@ -72,21 +72,21 @@
 
             @can('view_order_progress', $order)
                 <x-badgeWithCounter
-                    wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">
+                    wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
             @can('view_order_comments', $order)
                 <x-badgeWithCounter :counter="$order->comments->count()"
-                    wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
+                    wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
                     <x-svgs.comment class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
             @can('view_order_invoices', $order)
                 <x-badgeWithCounter :counter="$order->custom_invoices_count"
-                    wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
+                    wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
                     <x-svgs.invoice class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan

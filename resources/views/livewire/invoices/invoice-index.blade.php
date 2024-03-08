@@ -12,7 +12,9 @@
         <span id="pagination"></span>
     </x-slot>
 
-    @livewire('orders.invoice-modal')
+    @livewire('orders.invoices.invoice-index')
+    @livewire('orders.invoices.invoice-form')
+    @livewire('orders.invoices.payments.payment-form')
 
     @teleport('#counter')
         <span
@@ -95,7 +97,7 @@
                             <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
                                 ? $this->invoices->where('order_id', $invoice->order_id)->count()
                                 : null" title="{{ __('messages.invoices') }}"
-                                wire:click="$dispatch('showInvoicesModal',{order_id:{{ $invoice->order->id }}})">
+                                wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
                                 {{ str_pad($invoice->order_id, 8, '0', STR_PAD_LEFT) }}
                             </x-badgeWithCounter>
                         </x-td>
