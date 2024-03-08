@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Fleet;
+namespace App\Livewire\Cars\Actions;
 
 use App\Models\CarAction;
 use Livewire\Component;
@@ -20,6 +20,6 @@ class ActionReport extends Component
 
     public function render()
     {
-        return view('livewire.fleet.action-report');
+        return view('livewire.cars.actions.action-report');
     }
 }

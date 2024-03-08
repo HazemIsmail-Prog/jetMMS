@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\Leaves;
 
 use App\Livewire\Forms\LeaveForm as FormsLeaveForm;
 use App\Models\Employee;
@@ -43,6 +43,6 @@ class LeaveForm extends Component
 
     public function render()
     {
-        return view('livewire.employees.leave-form');
+        return view('livewire.employees.leaves.leave-form');
     }
 }

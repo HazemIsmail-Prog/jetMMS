@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Fleet;
+namespace App\Livewire\Cars\Services;
 
 use App\Models\Car;
 use App\Models\CarService;
@@ -41,6 +41,6 @@ class ServiceIndex extends Component
 
     public function render()
     {
-        return view('livewire.fleet.service-index');
+        return view('livewire.cars.services.service-index');
     }
 }

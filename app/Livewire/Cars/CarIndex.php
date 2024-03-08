@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Fleet;
+namespace App\Livewire\Cars;
 
 use App\Models\Car;
 use Livewire\Attributes\Computed;
@@ -41,6 +41,6 @@ class CarIndex extends Component
 
     public function render()
     {
-        return view('livewire.fleet.car-index');
+        return view('livewire.cars.car-index');
     }
 }

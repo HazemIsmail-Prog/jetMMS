@@ -11,10 +11,6 @@
         </div>
     </x-slot>
 
-    {{-- Modals --}}
-    @livewire('attachments.attachment-index')
-    @livewire('attachments.attachment-form')
-
     <div class=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5">
         <div>
             <x-label class=" font-normal">{{ __('messages.name') }}</x-label>
@@ -60,22 +56,22 @@
         <div class="col-span-full"></div>
         {{-- Leaves --}}
         <div class=" col-span-3">
-            <livewire:employees.leave-index :$employee :key="'leaves-' . $employee->id . '-' . now()">
+            <livewire:employees.leaves.leave-index :$employee :key="'leaves-' . $employee->id . '-' . now()">
         </div>
 
         {{-- Increases --}}
         <div class=" col-span-3">
-            <livewire:employees.increase-index :$employee :key="'increases-' . $employee->id . '-' . now()">
+            <livewire:employees.increases.increase-index :$employee :key="'increases-' . $employee->id . '-' . now()">
         </div>
 
         {{-- Salay Actions --}}
-        {{-- <div class=" col-span-3">
-            <livewire:employees.salary-action-index :$employee :key="'salary-actions-' . $employee->id . '-' . now()">
-        </div> --}}
+        <div class=" col-span-3">
+            <livewire:employees.salary_actions.salary-action-index :$employee :key="'salary-actions-' . $employee->id . '-' . now()">
+        </div>
 
         {{-- Absence --}}
         <div class=" col-span-3">
-            <livewire:employees.absence-index :$employee :key="'absence-' . $employee->id . '-' . now()">
+            <livewire:employees.absences.absence-index :$employee :key="'absence-' . $employee->id . '-' . now()">
         </div>
     </div>
 

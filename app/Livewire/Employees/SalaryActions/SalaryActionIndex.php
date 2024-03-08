@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\SalaryActions;
 
 use App\Models\Employee;
 use App\Models\SalaryAction;
@@ -33,6 +33,6 @@ class SalaryActionIndex extends Component
 
     public function render()
     {
-        return view('livewire.employees.salary-action-index');
+        return view('livewire.employees.salary-actions.salary-action-index');
     }
 }

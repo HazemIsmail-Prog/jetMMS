@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Fleet;
+namespace App\Livewire\Cars\Services;
 
 use App\Livewire\Forms\CarServiceForm;
 use App\Models\Car;
@@ -33,6 +33,6 @@ class ServiceForm extends Component
 
     public function render()
     {
-        return view('livewire.fleet.service-form');
+        return view('livewire.cars.services.service-form');
     }
 }

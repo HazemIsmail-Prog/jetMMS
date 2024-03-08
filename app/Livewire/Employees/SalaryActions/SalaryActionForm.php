@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\SalaryActions;
 
 use App\Livewire\Forms\SalaryActionForm as FormsSalaryActionForm;
 use App\Models\Employee;
@@ -44,6 +44,6 @@ class SalaryActionForm extends Component
 
     public function render()
     {
-        return view('livewire.employees.salary-action-form');
+        return view('livewire.employees.salary-actions.salary-action-form');
     }
 }

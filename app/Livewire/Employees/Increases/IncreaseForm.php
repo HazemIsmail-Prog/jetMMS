@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\Increases;
 
 use App\Livewire\Forms\IncreaseForm as FormsIncreaseForm;
 use App\Models\Employee;
@@ -43,6 +43,6 @@ class IncreaseForm extends Component
 
     public function render()
     {
-        return view('livewire.employees.increase-form');
+        return view('livewire.employees.increases.increase-form');
     }
 }

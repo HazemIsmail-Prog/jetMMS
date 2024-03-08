@@ -30,16 +30,16 @@
         @endteleport
     @endif
 
-    @livewire('fleet.car-form')
+    @livewire('cars.car-form')
 
     @livewire('attachments.attachment-index')
     @livewire('attachments.attachment-form')
 
-    @livewire('fleet.action-index')
-    @livewire('fleet.action-form')
+    @livewire('cars.actions.action-index')
+    @livewire('cars.actions.action-form')
 
-    @livewire('fleet.service-index')
-    @livewire('fleet.service-form')
+    @livewire('cars.services.service-index')
+    @livewire('cars.services.service-form')
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">

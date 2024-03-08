@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Fleet;
+namespace App\Livewire\Cars\Actions;
 
 use App\Livewire\Forms\CarActionForm;
 use App\Models\Car;
@@ -59,6 +59,6 @@ class ActionForm extends Component
 
     public function render()
     {
-        return view('livewire.fleet.action-form');
+        return view('livewire.cars.actions.action-form');
     }
 }

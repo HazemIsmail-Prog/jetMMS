@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\Increases;
 
-use App\Models\Absence;
 use App\Models\Employee;
+use App\Models\Increase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class AbsenceIndex extends Component
+class IncreaseIndex extends Component
 {
     public Employee $employee;
 
     #[Computed()]
-    #[On('absencesUpdated')]
+    #[On('increasesUpdated')]
     #[On('attachmentsUpdated')]
-    public function absences()
+    public function increases()
     {
-        return Absence::query()
+        return Increase::query()
             ->where('employee_id', $this->employee->id)
-            ->orderBy('start_date', 'desc')
+            ->orderBy('increase_date','desc')
             ->withCount('attachments')
             ->get();
     }
 
-    public function delete(Absence $absence)
+    public function delete(Increase $increase)
     {
         // TODO:delete attachments with its observer
-        $absence->delete();
-        $this->dispatch('absencesUpdated');
+        $increase->delete();
+        $this->dispatch('increasesUpdated');
     }
 
     public function render()
     {
-        return view('livewire.employees.absence-index');
+        return view('livewire.employees.increases.increase-index');
     }
 }

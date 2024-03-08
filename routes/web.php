@@ -4,6 +4,7 @@ use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
 use App\Livewire\Accounts\AccountIndex;
 use App\Livewire\Areas\AreaIndex;
+use App\Livewire\Cars\CarIndex;
 use App\Livewire\Cashier\CashCollection;
 use App\Livewire\Cashier\KnetCollection;
 use App\Livewire\Companies\CompanyIndex;
@@ -15,10 +16,6 @@ use App\Livewire\Dispatching\DispatchingIndex;
 use App\Livewire\Employees\EmployeeForm;
 use App\Livewire\Employees\EmployeeIndex;
 use App\Livewire\Employees\EmployeeView;
-use App\Livewire\Fleet\ActionIndex;
-use App\Livewire\Fleet\ActionReport;
-use App\Livewire\Fleet\CarForm;
-use App\Livewire\Fleet\CarIndex;
 use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderIndex;
@@ -102,7 +99,6 @@ Route::middleware([
 
         // Employees
         Route::get('employees', EmployeeIndex::class)->name('employee.index');
-        Route::get('employees/form/{employee?}', EmployeeForm::class)->name('employee.form');
         Route::get('employee/view/{employee}', EmployeeView::class)->name('employee.view');
 
 
@@ -112,11 +108,6 @@ Route::middleware([
 
         // Cars
         Route::get('cars', CarIndex::class)->name('car.index');
-        Route::get('cars/form/{car?}', CarForm::class)->name('car.form');
-        Route::get('car-actions/{car}', ActionIndex::class)->name('car.action.index');
-        Route::get('car-action-report/{action}', ActionReport::class)->name('car.action.report');
-
-
 
 
         // ========== Admin Settings ==========

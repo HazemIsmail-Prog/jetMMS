@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\Leaves;
 
 use App\Models\Employee;
 use App\Models\Leave;
@@ -33,6 +33,6 @@ class LeaveIndex extends Component
 
     public function render()
     {
-        return view('livewire.employees.leave-index');
+        return view('livewire.employees.leaves.leave-index');
     }
 }

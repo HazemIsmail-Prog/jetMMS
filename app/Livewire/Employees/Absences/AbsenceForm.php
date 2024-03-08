@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employees;
+namespace App\Livewire\Employees\Absences;
 
 use App\Livewire\Forms\AbsenceForm as FormsAbsenceForm;
 use App\Models\Absence;
@@ -54,6 +54,6 @@ class AbsenceForm extends Component
 
     public function render()
     {
-        return view('livewire.employees.absence-form');
+        return view('livewire.employees.absences.absence-form');
     }
 }
