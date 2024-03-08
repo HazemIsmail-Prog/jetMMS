@@ -8,55 +8,85 @@ use App\Models\Role;
 use App\Models\Shift;
 use App\Models\Title;
 use App\Models\User;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UserForm extends Component
 {
 
-    public $user;
-    public $departments;
-    public $titles;
-    public $shifts;
-    public $roles;
+    public $showModal = false;
+    public $modalTitle = '';
+    public $newExpectedUsername;
+    public User $user;
+
     public FormsUserForm $form;
 
-    public function mount(User $user)
+    #[On('showUserFormModal')]
+    public function show(User $user)
     {
-        $this->user = $user->load('roles:id');
-        $this->departments = Department::select('id', 'name_en', 'name_ar')->get();
-        $this->titles = Title::select('id', 'name_en', 'name_ar')->get();
-        $this->shifts = Shift::select('id', 'name_en', 'name_ar')->get();
-        $this->roles = Role::select('id', 'name_en', 'name_ar')->get();
-
+        $this->form->reset();
+        $this->showModal = true;
+        $this->user = $user;
         $this->form->fill($this->user);
-        $this->form->roles = collect($this->user->roles->pluck('id'))->toArray();
+        $this->form->roles = $this->user->roles->pluck('id');
+        $this->getExpectedNewUsername();
+    }
 
-        if(request()->is_duplicate){
-            $this->form->id = null;
-            $this->form->name_ar = '';
-            $this->form->name_en = '';
-            $this->form->username = '';
-            $this->form->password = '';
+    public function getExpectedNewUsername()
+    {
+        if (!$this->user->id) {
+            // Only on Create Mode
+            for ($i = 25; $i <= 500; $i++) {
+                if (!User::pluck('username')->contains($i)) {
+                    $this->newExpectedUsername = $i;
+                    return;
+                }
+            }
         }
-        
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function titles()
+    {
+        return Title::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function shifts()
+    {
+        return Shift::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function roles()
+    {
+        return Role::select('id', 'name_en', 'name_ar')->get();
     }
 
     public function save()
     {
-        $validated = $this->form->validate();
-       
-        if ($validated['password']) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            $validated = data_forget($validated, 'password');
-        }
-        $validated = data_forget($validated, 'roles');
-        
-        $user = User::updateOrCreate(['id' => $validated['id']], $validated);
-        $user->roles()->sync($this->form->roles);
-        session()->flash('success', 'User saved successfully.');
-        $this->redirect(UserIndex::class, navigate: true);
+        $this->form->updateOrCreate();
+        $this->dispatch('usersUpdated');
+        $this->showModal = false;
     }
+
+    // public function mount(User $user)
+    // {
+    //     if (request()->is_duplicate) {
+    //         $this->form->id = null;
+    //         $this->form->name_ar = '';
+    //         $this->form->name_en = '';
+    //         $this->form->username = '';
+    //         $this->form->password = '';
+    //     }
+    // }
 
     public function render()
     {

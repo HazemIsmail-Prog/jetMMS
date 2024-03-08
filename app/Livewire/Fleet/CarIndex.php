@@ -12,7 +12,7 @@ class CarIndex extends Component
 {
     use WithPagination;
 
-    public $filters = ['code' => ''];
+    public $filters = ['car_code' => ''];
 
     #[Computed]
     #[On('carsUpdated')]
@@ -26,8 +26,8 @@ class CarIndex extends Component
             ->with('latest_car_action.to.department')
             ->withCount('car_actions')
             ->withCount('car_services')
-            ->when($this->filters['code'], function ($q) {
-                $q->where('code', $this->filters['code']);
+            ->when($this->filters['car_code'], function ($q) {
+                $q->where('code', $this->filters['car_code']);
             })
             ->paginate(15);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Accounts;
+namespace App\Livewire\Vouchers;
 
 use App\Models\User;
 use App\Models\Voucher;
@@ -50,6 +50,6 @@ class VoucherIndex extends Component
 
     public function render()
     {
-        return view('livewire.accounts.voucher-index');
+        return view('livewire.vouchers.voucher-index');
     }
 }

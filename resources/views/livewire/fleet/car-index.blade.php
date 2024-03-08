@@ -31,15 +31,20 @@
     @endif
 
     @livewire('fleet.car-form')
-    
+
     @livewire('fleet.action-index')
     @livewire('fleet.action-form')
-    
+
     @livewire('fleet.service-index')
     @livewire('fleet.service-form')
 
-
-    <x-input wire:model.live="filters.code" class=" text-start py-0" />
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="car_code">{{ __('messages.car_code') }}</x-label>
+            <x-input id="car_code" type="text" wire:model.live="filters.car_code" class="w-full text-start py-0" />
+        </div>
+    </div>
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <x-table>
@@ -73,11 +78,13 @@
                                     wire:click="$dispatch('showCarFormModal',{car:{{ $car }}})">
                                     <x-svgs.edit class="h-4 w-4" />
                                 </x-badgeWithCounter>
-                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}" title="{{ __('messages.car_actions') }}"
+                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}"
+                                    title="{{ __('messages.car_actions') }}"
                                     wire:click="$dispatch('showCarActionsModal',{car:{{ $car }}})">
                                     <x-svgs.list class="h-4 w-4" />
                                 </x-badgeWithCounter>
-                                <x-badgeWithCounter counter="{{ $car->car_services_count }}" title="{{ __('messages.car_services') }}"
+                                <x-badgeWithCounter counter="{{ $car->car_services_count }}"
+                                    title="{{ __('messages.car_services') }}"
                                     wire:click="$dispatch('showCarServicesModal',{car:{{ $car }}})">
                                     <x-svgs.scissors class="h-4 w-4" />
                                 </x-badgeWithCounter>

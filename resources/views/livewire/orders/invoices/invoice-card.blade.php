@@ -5,7 +5,7 @@
         <h3 class="font-semibold text-gray-900 dark:text-white">
             {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
         </h3>
-        <x-svgs.trash wire:click="deleteInvoice({{ $invoice->id }})" wire:confirm="adcflkhlkh"
+        <x-svgs.trash wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
             class=" w-4 h-4 text-red-600" />
     </div>
 
@@ -107,56 +107,9 @@
     </table>
     <x-section-border />
 
-    <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.payments') }}</h3>
-
-    @if ($this->payments->count() > 0)
-        <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-1 py-1">{{ __('messages.receiver') }}</th>
-                    <th scope="col" class="px-1 py-1 text-start">
-                        <div>{{ __('messages.date') }}</div>
-                    </th>
-                    <th scope="col" class="px-1 py-1 text-right">
-                        {{ __('messages.amount') }}
-                    </th>
-                    <th scope="col" class="px-1 py-1 text-right"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($this->payments as $payment)
-                    <tr>
-                        <td>{{ $payment->user->name }}</td>
-                        <td class="px-1 py-1">
-                            <div class=" whitespace-nowrap">{{ $payment->created_at->format('d-m-Y') }}</div>
-                            <div>{{ $payment->created_at->format('H:i') }}</div>
-                        </td>
-                        <td class="px-1 py-1 text-right">
-                            <div>{{ number_format($payment->amount,3) }}</div>
-                            <div>{{ $payment->method }}</div>
-                        </td>
-                        <td class="px-1 py-1">
-                            <x-svgs.trash wire:click="deletePayment({{ $payment->id }})" wire:confirm="adcflkhlkh"
-                                class=" w-4 h-4 text-red-600" />
-                        </td>
-                    </tr>
-                @endforeach
-                <tr></tr>
-            </tbody>
+    @livewire('orders.invoices.payments.payment-index', ['invoice' => $invoice], key($invoice->id . rand()))
 
 
-
-        </table>
-        <x-section-border />
-    @else
-        <div class="flex items-center justify-center font-bold text-red-600 p-2">
-            {{ __('messages.no_payments_found') }}
-        </div>
-    @endif
-
-    @if ($invoice->remaining_amount > 0)
-        <livewire:orders.payment-form :$invoice :key="'invoice-' . $invoice->id . '-' . now()">
-    @endif
 
 
 </div>

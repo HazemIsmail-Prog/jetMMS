@@ -482,6 +482,7 @@ return [
     'car_services' => 'صيانات السيارة',
     'add_car_service' => 'تسجيل صيانة',
     'cost' => 'التكلفة',
+    'expected' => 'المتوقع',
 
 
 

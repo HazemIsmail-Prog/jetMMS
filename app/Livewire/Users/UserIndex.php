@@ -46,6 +46,7 @@ class UserIndex extends Component
 
     #[Computed]
     #[On('statusChanged')]
+    #[On('usersUpdated')]
     public function users()
     {
         return User::query()

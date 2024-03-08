@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Orders;
+namespace App\Livewire\Orders\Invoices;
 
 use App\Models\Invoice;
 use App\Models\Order;
@@ -15,7 +15,7 @@ use Livewire\Component;
 
 class InvoiceForm extends Component
 {
-    public $showForm = false;
+    public $showModal = false;
     public Order $order;
     public $search = '';
     #[Rule('required')]
@@ -25,9 +25,10 @@ class InvoiceForm extends Component
     public $delivery = 0;
     public $parts = [];
 
-    #[On('showInvoiceForm')]
-    public function showInvoiceForm() {
-        $this->showForm = true;
+    #[On('showInvoiceFormModal')]
+    public function show(Order $order) {
+        $this->showModal = true;
+        $this->order = $order;
     }
 
     public function updatedParts($val, $key)
@@ -58,7 +59,7 @@ class InvoiceForm extends Component
     public function hideInvoiceForm()
     {
         $this->reset('select_service', 'selected_services', 'search');
-        $this->showForm = false;
+        $this->showModal = false;
     }
 
     #[Computed]
@@ -144,8 +145,8 @@ class InvoiceForm extends Component
                 CreateCostVoucher::createVoucher($invoice);
             }
             DB::commit();
-            $this->reset('select_service', 'selected_services', 'search', 'showForm');
-            $this->dispatch('invoiceCreated');
+            $this->reset('select_service', 'selected_services', 'search', 'showModal');
+            $this->dispatch('invoicesUpdated');
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
@@ -154,6 +155,6 @@ class InvoiceForm extends Component
 
     public function render()
     {
-        return view('livewire.orders.invoice-form');
+        return view('livewire.orders.invoices.invoice-form');
     }
 }

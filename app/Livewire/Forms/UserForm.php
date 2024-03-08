@@ -17,7 +17,7 @@ class UserForm extends Form
     public $department_id;
     public $shift_id;
     public bool $active = true;
-    public array $roles;
+    public $roles;
 
     public function rules()
     {

@@ -20,8 +20,7 @@ class OrderIndex extends Component
 
     public $listeners = [
         'commentsUpdated' => '$refresh',
-        'invoiceCreated' => '$refresh',
-        'invoiceDeleted' => '$refresh',
+        'invoicesUpdated' => '$refresh',
     ];
 
     #[Url()]

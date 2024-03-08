@@ -60,7 +60,7 @@ class OrderForm extends Component
             $this->form->estimated_start_date = today()->format('Y-m-d');
         } else {
             //edit
-            $this->modalTitle = __('messages.edit_order') . $this->order->id;
+            $this->modalTitle = __('messages.edit_order') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
             $this->form->fill($this->order);
         }
     }

@@ -32,11 +32,18 @@
         @endteleport
     @endif
 
-    @livewire('accounts.voucher-form')
+    @livewire('vouchers.voucher-form')
 
-    <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter" value=""
-        data-start="filters.start_created_at" data-end="filters.end_created_at"
-        placeholder="{{ __('messages.date') }}" />
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="date">{{ __('messages.date') }}</x-label>
+            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date" wire:model.live="filters.start_date"
+                class="w-full text-start py-0" />
+            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date" wire:model.live="filters.end_date"
+                class="w-full text-start py-0" />
+        </div>
+    </div>
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <x-table>

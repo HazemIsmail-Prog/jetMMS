@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Accounts;
+namespace App\Livewire\Vouchers;
 
 use App\Livewire\Forms\VoucherForm as FormsVoucherForm;
 use App\Models\Account;
@@ -136,6 +136,6 @@ class VoucherForm extends Component
 
     public function render()
     {
-        return view('livewire.accounts.voucher-form');
+        return view('livewire.vouchers.voucher-form');
     }
 }

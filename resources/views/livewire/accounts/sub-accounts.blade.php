@@ -31,5 +31,5 @@
             @endcan
         </div>
     </div>
-    @include('livewire.accounts.includes.sub-accounts')
+    @include('livewire.accounts.sub-accounts')
 @endforeach

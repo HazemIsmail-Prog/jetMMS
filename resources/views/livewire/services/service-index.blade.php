@@ -34,31 +34,40 @@
 
     @livewire('services.service-form')
 
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div>
+            <x-label for="name">{{ __('messages.name') }}</x-label>
+            <x-input id="name" wire:model.live="filters.name" class="w-full py-0" />
+        </div>
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-select id="department" wire:model.live="filters.department_id" class="w-full py-0">
+                <option value="">---</option>
+                @foreach ($this->departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <div>
+            <x-label for="type">{{ __('messages.type') }}</x-label>
+            <x-select id="type" wire:model.live="filters.type" class="w-full py-0">
+                <option value="">---</option>
+                <option value="service">{{ __('messages.services') }}</option>
+                <option value="part">{{ __('messages.parts') }}</option>
+            </x-select>
+        </div>
+    </div>
+
     <div class=" overflow-x-auto sm:rounded-lg">
         <x-table>
             <x-thead>
                 <tr>
-                    <x-th>
-                        <x-input wire:model.live="filters.name" class="w-full py-0"
-                            placeholder="{{ __('messages.name') }}" />
-                    </x-th>
+                    <x-th>{{ __('messages.name') }}</x-th>
                     <x-th>{{ __('messages.min_price') }}</x-th>
                     <x-th>{{ __('messages.max_price') }}</x-th>
-                    <x-th>
-                        <x-select wire:model.live="filters.department_id" class="w-full py-0">
-                            <option value="">{{ __('messages.department') }}</option>
-                            @foreach ($this->departments as $department)
-                                <option value="{{ $department->id }}">{{ $department->name }}</option>
-                            @endforeach
-                        </x-select>
-                    </x-th>
-                    <x-th>
-                        <x-select wire:model.live="filters.type" class="w-full py-0">
-                            <option value="">{{ __('messages.type') }}</option>
-                            <option value="service">{{ __('messages.services') }}</option>
-                            <option value="part">{{ __('messages.parts') }}</option>
-                        </x-select>
-                    </x-th>
+                    <x-th>{{ __('messages.department') }}</x-th>
+                    <x-th>{{ __('messages.type') }}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>

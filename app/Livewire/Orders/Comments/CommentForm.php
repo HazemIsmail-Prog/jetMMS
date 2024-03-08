@@ -8,7 +8,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
-class Form extends Component
+class CommentForm extends Component
 {
     public Order $order;
 
@@ -26,6 +26,7 @@ class Form extends Component
 
     public function mount()
     {
+        $this->reset('comment');
         $this->scrollToBottom();
     }
 
@@ -54,6 +55,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.orders.comments.form');
+        return view('livewire.orders.comments.comment-form');
     }
 }

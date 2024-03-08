@@ -23,11 +23,13 @@
         @endteleport
     @endif
 
-    @livewire('orders.invoice-modal')
-    @livewire('orders.comment-modal')
     @livewire('orders.order-form')
-    @livewire('orders.status-history-modal')
-    @livewire('customers.customer-form')
+    @livewire('orders.comments.comment-modal')
+    @livewire('orders.statuses.status-index')
+    @livewire('orders.invoices.invoice-index')
+    @livewire('orders.invoices.invoice-form')
+    @livewire('orders.invoices.payments.payment-form')
+
 
 
     {{-- Filters --}}
@@ -140,28 +142,28 @@
 
                                 @can('update', $order)
                                     <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showOrderFormModal',{order:{{ $order->id }},customer:{{ $order->customer }}})">
+                                        wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
                                         <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
 
                                 @can('view_order_progress', $order)
                                     <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
-                                        wire:click="$dispatch('showStatusHistoryModal',{order_id:{{ $order->id }}})">
+                                        wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
                                         <x-svgs.list class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
 
                                 @can('view_order_comments', $order)
                                     <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}"
-                                        wire:click="$dispatch('showCommentsModal',{order_id:{{ $order->id }}})">
+                                        wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
                                         <x-svgs.comment class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
 
                                 @can('view_order_invoices', $order)
                                     <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
-                                        wire:click="$dispatch('showInvoicesModal',{order_id:{{ $order->id }}})">
+                                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
                                         <x-svgs.invoice class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan

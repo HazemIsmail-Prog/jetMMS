@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Livewire\Orders;
+namespace App\Livewire\Orders\Invoices;
 
 use App\Models\Invoice;
 use App\Models\Order;
-use App\Models\Payment;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class InvoiceModal extends Component
+class InvoiceIndex extends Component
 {
     public $showModal = false;
     public $modalTitle = '';
     public Order $order;
 
-
     #[On('showInvoicesModal')]
-    public function show($order_id)
+    public function show(Order $order)
     {
-        $this->reset();
-        $this->order = Order::find($order_id);
-        $this->modalTitle = __('messages.invoices_for_order_number') . str_pad($order_id, 8, '0', STR_PAD_LEFT);
+        $this->order = $order;
+        $this->modalTitle = __('messages.invoices_for_order_number') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
         $this->showModal = true;
     }
 
     #[Computed]
-    #[On('invoiceCreated')]
-    #[On('invoiceDeleted')]
+    #[On('invoicesUpdated')]
+    #[On('paymentsUpdated')]
     public function invoices()
     {
         return
@@ -40,6 +37,6 @@ class InvoiceModal extends Component
 
     public function render()
     {
-        return view('livewire.orders.invoice-modal');
+        return view('livewire.orders.invoices.invoice-index');
     }
 }

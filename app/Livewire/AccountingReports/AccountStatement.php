@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Accounts\Reports;
+namespace App\Livewire\AccountingReports;
 
 use App\Models\Account;
 use App\Models\CostCenter;
@@ -111,6 +111,6 @@ class AccountStatement extends Component
 
     public function render()
     {
-        return view('livewire.accounts.reports.account-statement');
+        return view('livewire.accounting-reports.account-statement');
     }
 }

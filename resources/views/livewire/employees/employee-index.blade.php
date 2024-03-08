@@ -32,32 +32,49 @@
     @livewire('attachment-modal')
     @livewire('employees.employee-form')
 
-    <x-input placeholder="{{ __('messages.name') }}" wire:model.live="filters.name" class="w-full text-start py-0" />
-
-    <x-select wire:model.live="filters.title_id" class=" w-full py-0">
-        <option value="">{{ __('messages.title') }}</option>
-        @foreach ($titles as $title)
-            <option value="{{ $title->id }}">{{ $title->name }}</option>
-        @endforeach
-    </x-select>
-    <x-select wire:model.live="filters.department_id" class=" w-full py-0">
-        <option value="">{{ __('messages.department') }}</option>
-        @foreach ($departments as $department)
-            <option value="{{ $department->id }}">{{ $department->name }}</option>
-        @endforeach
-    </x-select>
-    <x-select wire:model.live="filters.shift_id" class=" w-full py-0">
-        <option value="">{{ __('messages.shift') }}</option>
-        @foreach ($shifts as $shift)
-            <option value="{{ $shift->id }}">{{ $shift->name }}</option>
-        @endforeach
-    </x-select>
-    <x-select required wire:model.live="filters.status" class=" w-full py-0">
-        <option value="">{{ __('messages.status') }}</option>
-        @foreach (App\Enums\EmployeeStatusEnum::cases() as $status)
-            <option value="{{ $status->value }}">{{ $status->title() }}</option>
-        @endforeach
-    </x-select>
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="name">{{ __('messages.name') }}</x-label>
+            <x-input id="name" type="text" wire:model.live="filters.name" class="w-full text-start py-0" />
+        </div>
+        <div>
+            <x-label for="title">{{ __('messages.title') }}</x-label>
+            <x-select wire:model.live="filters.title_id" class=" w-full py-0">
+                <option value="">---</option>
+                @foreach ($titles as $title)
+                    <option value="{{ $title->id }}">{{ $title->name }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-select wire:model.live="filters.department_id" class=" w-full py-0">
+                <option value="">---</option>
+                @foreach ($departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <div>
+            <x-label for="shift">{{ __('messages.shift') }}</x-label>
+            <x-select wire:model.live="filters.shift_id" class=" w-full py-0">
+                <option value="">---</option>
+                @foreach ($shifts as $shift)
+                    <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <div>
+            <x-label for="status">{{ __('messages.status') }}</x-label>
+            <x-select required wire:model.live="filters.status" class=" w-full py-0">
+                <option value="">---</option>
+                @foreach (App\Enums\EmployeeStatusEnum::cases() as $status)
+                    <option value="{{ $status->value }}">{{ $status->title() }}</option>
+                @endforeach
+            </x-select>
+        </div>
+    </div>
 
     <div class=" overflow-x-auto sm:rounded-lg">
         <x-table>
@@ -83,7 +100,8 @@
                         <x-td>{{ $employee->user->title->name }}</x-td>
                         <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
                         <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
-                        <x-td class="text-{{ $employee->status->color() }}-400">{{ $employee->status->title() }}</x-td>
+                        <x-td
+                            class="text-{{ $employee->status->color() }}-400">{{ $employee->status->title() }}</x-td>
                         <x-td>{{ $employee->joinDate->format('d-m-Y') }}</x-td>
                         <x-td>{{ number_format($employee->salary, 3) }}</x-td>
                         <x-td>

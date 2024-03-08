@@ -7,7 +7,7 @@
 
         <x-slot name="content">
             @if ($order)
-                @livewire('orders.comments.form', ['order' => $this->order], key($this->order->id))
+                @livewire('orders.comments.comment-form', ['order' => $order], key($order->id . rand()))
             @endif
         </x-slot>
     </x-dialog-modal>

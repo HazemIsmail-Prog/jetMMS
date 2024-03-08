@@ -1,9 +1,8 @@
 <?php
 
 use App\Http\Controllers\LanguageController;
+use App\Livewire\AccountingReports\AccountStatement;
 use App\Livewire\Accounts\AccountIndex;
-use App\Livewire\Accounts\Reports\AccountStatement;
-use App\Livewire\Accounts\VoucherIndex;
 use App\Livewire\Areas\AreaIndex;
 use App\Livewire\Cashier\CashCollection;
 use App\Livewire\Cashier\KnetCollection;
@@ -34,6 +33,7 @@ use App\Livewire\TechnicianPage;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
+use App\Livewire\Vouchers\VoucherIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
