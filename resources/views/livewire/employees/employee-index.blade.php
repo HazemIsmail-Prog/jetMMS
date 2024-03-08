@@ -29,7 +29,9 @@
         @endteleport
     @endif
 
-    @livewire('attachment-modal')
+    @livewire('attachments.attachment-index')
+    @livewire('attachments.attachment-form')
+
     @livewire('employees.employee-form')
 
     {{-- Filters --}}
@@ -111,18 +113,20 @@
                         <x-td>{{ $employee->NetWorkingDays }}</x-td>
                         <x-td>{{ number_format($employee->Indemnity, 3) }}</x-td>
                         <x-td>
-                            <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
-                                wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
-                                <x-svgs.attachment class="w-4 h-4" />
-                            </x-badgeWithCounter>
-                            <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
-                                wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee->id }}})">
-                                <x-svgs.edit class="w-4 h-4" />
-                            </x-badgeWithCounter>
-                            <a href="{{ route('employee.view', $employee) }}"
-                                class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <x-svgs.view class="w-4 h-4" />
-                            </a>
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('employee.view', $employee) }}"
+                                    class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <x-svgs.view class="w-4 h-4" />
+                                </a>
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee->id }}})">
+                                    <x-svgs.edit class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                                <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
+                                    wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
+                                    <x-svgs.attachment class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                            </div>
                         </x-td>
                     </x-tr>
                 @endforeach

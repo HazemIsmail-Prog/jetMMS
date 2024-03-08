@@ -18,12 +18,14 @@ class CarIndex extends Component
     #[On('carsUpdated')]
     #[On('carActionsUpdated')]
     #[On('carServicesUpdated')]
+    #[On('attachmentsUpdated')]
     public function cars()
     {
         return Car::query()
             ->with('brand')
             ->with('type')
             ->with('latest_car_action.to.department')
+            ->withCount('attachments')
             ->withCount('car_actions')
             ->withCount('car_services')
             ->when($this->filters['car_code'], function ($q) {

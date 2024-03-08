@@ -32,6 +32,9 @@
 
     @livewire('fleet.car-form')
 
+    @livewire('attachments.attachment-index')
+    @livewire('attachments.attachment-form')
+
     @livewire('fleet.action-index')
     @livewire('fleet.action-form')
 
@@ -87,6 +90,10 @@
                                     title="{{ __('messages.car_services') }}"
                                     wire:click="$dispatch('showCarServicesModal',{car:{{ $car }}})">
                                     <x-svgs.scissors class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                                <x-badgeWithCounter :counter="$car->attachments_count" title="{{ __('messages.attachments') }}"
+                                    wire:click="$dispatch('showAttachmentModal',{model:'Car',id:{{ $car->id }}})">
+                                    <x-svgs.attachment class="w-4 h-4" />
                                 </x-badgeWithCounter>
                             </div>
                         </x-td>

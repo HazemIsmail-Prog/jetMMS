@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('comapny_id')->constrained('companies');
+            $table->foreignId('company_id')->constrained('companies');
             $table->date('joinDate');
             $table->date('recidencyExpirationDate');
             $table->date('passportIssueDate');

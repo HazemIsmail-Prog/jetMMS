@@ -1,19 +1,19 @@
 <div>
-    @if ($showModal)
-        <x-dialog-modal maxWidth="md" wire:model.live="showModal">
-            <x-slot name="title">
-                <div>{{ $modalTitle }}</div>
-                <x-section-border />
-            </x-slot>
+    <x-dialog-modal maxWidth="md" wire:model.live="showModal">
+        <x-slot name="title">
+            <div>{{ $modalTitle }}</div>
+            <x-section-border />
+        </x-slot>
 
-            <x-slot name="content">
+        <x-slot name="content">
+            @if ($showModal)
                 <form wire:submit="save">
 
                     <div class=" space-y-3">
                         <div>
                             <x-label for="date">{{ __('messages.date') }}</x-label>
-                            <x-input required class="w-full py-0" wire:model="form.date" autocomplete="off"
-                                type="date" id="date" />
+                            <x-input required class="w-full py-0" wire:model="form.date" autocomplete="off" type="date"
+                                id="date" />
                             <x-input-error for="form.date" />
                         </div>
                         <div>
@@ -41,8 +41,8 @@
 
                         <div>
                             <x-label for="reason">{{ __('messages.reason') }}</x-label>
-                            <x-input required class="w-full py-0" wire:model="form.reason" autocomplete="off" type="text"
-                                id="reason" />
+                            <x-input required class="w-full py-0" wire:model="form.reason" autocomplete="off"
+                                type="text" id="reason" />
                             <x-input-error for="form.reason" />
                         </div>
 
@@ -60,7 +60,7 @@
                     </div>
 
                 </form>
-            </x-slot>
-        </x-dialog-modal>
-    @endif
+            @endif
+        </x-slot>
+    </x-dialog-modal>
 </div>

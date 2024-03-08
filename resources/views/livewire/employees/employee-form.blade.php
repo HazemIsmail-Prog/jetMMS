@@ -1,12 +1,12 @@
 <div>
-    @if ($showModal)
-        <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
-            <x-slot name="title">
-                <div>{{ $modalTitle }}</div>
-                <x-section-border />
-            </x-slot>
+    <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
+        <x-slot name="title">
+            <div>{{ $modalTitle }}</div>
+            <x-section-border />
+        </x-slot>
 
-            <x-slot name="content">
+        <x-slot name="content">
+            @if ($showModal)
 
 
                 <form wire:submit="save" class=" space-y-4">
@@ -96,8 +96,8 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <x-label for="iban">{{ __('messages.iban') }}</x-label>
-                                    <x-input required type="text"
-                                        wire:model="form.iban" id="iban" dir="ltr" />
+                                    <x-input required type="text" wire:model="form.iban" id="iban"
+                                        dir="ltr" />
                                     <x-input-error for="form.iban" />
                                 </div>
 
@@ -213,9 +213,9 @@
 
                 </form>
 
+            @endif
 
 
-            </x-slot>
-        </x-dialog-modal>
-    @endif
+        </x-slot>
+    </x-dialog-modal>
 </div>
