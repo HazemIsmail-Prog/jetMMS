@@ -483,6 +483,8 @@ return [
     'add_car_service' => 'تسجيل صيانة',
     'cost' => 'التكلفة',
     'expected' => 'المتوقع',
+    'fuel_card_serial' => 'سيريال كارت البنزين',
+    'fuel_card_number' => 'رقم كارت البنزين',
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Orders\Invoices;
 
+use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -16,7 +17,7 @@ class InvoiceCard extends Component
         DB::beginTransaction();
         try {
             $invoice->payments()->delete();
-            $invoice->delete();
+            $invoice->delete();  // Observer Applied
             DB::commit();
             $this->dispatch('invoicesUpdated');
         } catch (\Exception $e) {
@@ -27,6 +28,7 @@ class InvoiceCard extends Component
 
     #[On('invoicesUpdated')]
     #[On('paymentsUpdated')]
+    #[On('echo:payments.{invoice.id},RefreshInvoicePaymentsScreenEvent')]
     public function render()
     {
         return view('livewire.orders.invoices.invoice-card');

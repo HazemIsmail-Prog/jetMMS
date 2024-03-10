@@ -24,6 +24,11 @@ class DispatchingIndex extends Component
         ];
     }
 
+    function test($event)
+    {
+        $this->dispatch("refreshBoxForOrderNo.{$event['orderID']}");
+    }
+
     #[Computed()]
     public function orders()
     {
@@ -35,8 +40,12 @@ class DispatchingIndex extends Component
             ->addSelect(['status_color' => Status::select('color')->whereColumn('id', 'orders.status_id')])
             ->addSelect(['order_creator' => User::select('name_' . app()->getLocale())->whereColumn('id', 'orders.created_by')])
             ->with('address.area')
-            ->withCount('invoices as custom_invoices_count')
-            ->with('comments')
+            ->withCount('invoices')
+            ->withCount('comments')
+            ->withCount(['comments as unread_comments_count' => function ($q) {
+                $q->where('is_read', false);
+                $q->where('user_id','!=', auth()->id());
+            }])
             ->orderBy('index')
             ->get();
     }
@@ -49,8 +58,7 @@ class DispatchingIndex extends Component
             ->orderBy('name')
             ->activeTechniciansPerDepartment($this->department->id)
             ->with('shift')
-            ->get()
-            ;
+            ->get();
     }
 
     public function dragEnd($order_id, $destenation_id, $source_id, $new_index)

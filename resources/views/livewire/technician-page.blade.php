@@ -1,4 +1,7 @@
 <div>
+    @livewire('orders.invoices.invoice-modal')
+    @livewire('orders.invoices.invoice-form')
+    @livewire('orders.invoices.payments.payment-form')
     @if ($this->order)
         <div class="flex flex-col h-full gap-2">
             <div class=" px-2 border dark:border-gray-700 dark:text-gray-300 rounded-lg">
@@ -55,23 +58,12 @@
 
             </div>
 
-            @livewire('orders.comments.form', ['order' => $this->order], key('order-comments-' . $this->order->id))
+            @livewire('orders.comments.comment-form', ['order' => $this->order], key('order-comments-' . $this->order->id))
 
 
             @if (in_array($this->order->status_id, [4, 7]))
-                {{-- Existing Invoices --}}
-                @if ($this->order->invoices->count() > 0)
-                    <div class=" flex flex-col gap-3">
-                        @foreach ($this->order->invoices as $invoice)
-                            <livewire:orders.invoice-card :$invoice :key="'invoice-' . $invoice->id . '-' . now()">
-                        @endforeach
-                    </div>
-                @else
-                    <div class="flex items-center justify-center font-bold text-red-600 p-2">
-                        {{ __('messages.no_invoices_found') }}
-                    </div>
-                @endif
-                @livewire('orders.invoice-form', ['order' => $this->order], key('order-invoices-' . $this->order->id))
+                <x-button type="button" class=" flex justify-center"
+                    wire:click="$dispatch('showInvoicesModal',{order:{{ $this->order }}})">{{ __('messages.invoices') }}</x-button>
             @endif
         </div>
     @else
@@ -79,16 +71,3 @@
     @endif
 
 </div>
-
-@push('scripts')
-    <script>
-        Pusher.logToConsole = true;
-        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
-        });
-        var channel = pusher.subscribe("RefreshTechnicianPageChannel{{ auth()->id() }}");
-        channel.bind("App\\Events\\RefreshTechnicianPageEvent", (data) => {
-            livewire.emit('order_updated');
-        });
-    </script>
-@endpush

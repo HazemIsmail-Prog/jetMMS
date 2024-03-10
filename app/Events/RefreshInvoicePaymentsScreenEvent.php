@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RefreshDepartmentScreenEvent implements ShouldBroadcast
+class RefreshInvoicePaymentsScreenEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,17 +18,10 @@ class RefreshDepartmentScreenEvent implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public $departmentID,
-        public $orderID = null,
+        public $invoiceId,
     ) {
     }
 
-    public function broadcastWith() : array {
-        return [
-            'departmentID' => $this->departmentID,
-            'orderID' => $this->orderID,
-        ];
-    }
     /**
      * Get the channels the event should broadcast on.
      *
@@ -37,7 +29,6 @@ class RefreshDepartmentScreenEvent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('departments.' . $this->departmentID);
+        return new Channel('payments.' . $this->invoiceId);
     }
-
 }

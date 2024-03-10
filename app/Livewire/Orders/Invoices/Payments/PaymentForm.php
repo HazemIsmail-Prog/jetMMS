@@ -33,9 +33,10 @@ class PaymentForm extends Component
 
     public function save()
     {
-        $this->form->updateOrCreate();
+        $this->form->updateOrCreate(); // Ovserver Applied
         $this->dispatch('paymentsUpdated');
         $this->showModal = false;
+
     }
 
     public function render()

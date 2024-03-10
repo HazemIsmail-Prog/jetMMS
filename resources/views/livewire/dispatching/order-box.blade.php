@@ -1,7 +1,7 @@
 <div x-data={showBox:@entangle('showBox')} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
-    {{ $comments->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0 ? ' animate-wiggle hover:animate-none' : '' }}
+    {{ $animate ? ' animate-wiggle hover:animate-none' : '' }}
     order
     card
     border-2
@@ -78,14 +78,14 @@
             @endcan
 
             @can('view_order_comments', $order)
-                <x-badgeWithCounter :counter="$order->comments->count()"
+                <x-badgeWithCounter :counter="$comments_count"
                     wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
                     <x-svgs.comment class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
             @can('view_order_invoices', $order)
-                <x-badgeWithCounter :counter="$order->custom_invoices_count"
+                <x-badgeWithCounter :counter="$invoices_count"
                     wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
                     <x-svgs.invoice class="h-4 w-4" />
                 </x-badgeWithCounter>

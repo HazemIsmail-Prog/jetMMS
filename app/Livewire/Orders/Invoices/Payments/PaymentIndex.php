@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Orders\Invoices\Payments;
 
+use App\Events\RefreshInvoicePaymentsScreenEvent;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class PaymentIndex extends Component
     {
         DB::beginTransaction();
         try {
-            $payment->delete();
+            $payment->delete(); // Observer Applied
             $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
             DB::commit();
             $this->dispatch('paymentsUpdated');

@@ -8,7 +8,7 @@
 
     @livewire('orders.comments.comment-modal')
     @livewire('orders.statuses.status-index')
-    @livewire('orders.invoices.invoice-index')
+    @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
 
@@ -40,9 +40,11 @@
                                     'phone_number' => $order->phone_number,
                                     'status_color' => $order->status_color,
                                     'order_creator' => $order->order_creator,
-                                    'comments' => $order->comments,
+                                    'comments_count' => $order->comments_count,
                                     'address' => $order->address,
                                     'order_description' => $order->order_description,
+                                    'invoices_count' => $order->invoices_count,
+                                    'unread_comments_count' => $order->unread_comments_count,
                                 ],
                                 key($order->id . rand())
                             )
@@ -67,9 +69,11 @@
                                     'phone_number' => $order->phone_number,
                                     'status_color' => $order->status_color,
                                     'order_creator' => $order->order_creator,
-                                    'comments' => $order->comments,
+                                    'comments_count' => $order->comments_count,
                                     'address' => $order->address,
                                     'order_description' => $order->order_description,
+                                    'invoices_count' => $order->invoices_count,
+                                    'unread_comments_count' => $order->unread_comments_count,
                                 ],
                                 key($order->id . rand())
                             )
@@ -118,9 +122,11 @@
                                                         'phone_number' => $order->phone_number,
                                                         'status_color' => $order->status_color,
                                                         'order_creator' => $order->order_creator,
-                                                        'comments' => $order->comments,
+                                                        'comments_count' => $order->comments_count,
                                                         'address' => $order->address,
                                                         'order_description' => $order->order_description,
+                                                        'invoices_count' => $order->invoices_count,
+                                                        'unread_comments_count' => $order->unread_comments_count,
                                                     ],
                                                     key($order->id . rand())
                                                 )

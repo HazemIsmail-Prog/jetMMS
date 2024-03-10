@@ -120,10 +120,10 @@ class Order extends Model
 
 
 
-    public function getInvoicesCountAttribute()
-    {
-        return $this->invoices()->count();
-    }
+    // public function getInvoicesCountAttribute()
+    // {
+    //     return $this->invoices()->count();
+    // }
 
     public function scopeFilterWhenRequest($query, $filter)
     {

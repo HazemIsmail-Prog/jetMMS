@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Events\RefreshDepartmentScreenEvent;
+use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Models\Invoice;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +15,9 @@ class InvoiceObserver
      */
     public function created(Invoice $invoice): void
     {
-        //
+        broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
+        broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+
     }
 
     /**
@@ -32,6 +36,10 @@ class InvoiceObserver
         if ($invoice->voucher) {
             $invoice->voucher->delete();
         }
+
+        broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
+        broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+
     }
 
     /**

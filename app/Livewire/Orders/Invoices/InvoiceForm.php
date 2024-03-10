@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Orders\Invoices;
 
+use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Service;
@@ -122,7 +123,7 @@ class InvoiceForm extends Component
                 'discount' => $this->discount,
                 'delivery' => $this->delivery,
                 'payment_status' => collect($this->selected_services)->sum('service_total') > 0 ? 'pending' : 'free',
-            ]);
+            ]);  // Observer Applied
             foreach ($this->selected_services as $row) {
                 $invoice->invoice_details()->create([
                     'service_id' => $row['service_id'],
@@ -147,6 +148,8 @@ class InvoiceForm extends Component
             DB::commit();
             $this->reset('select_service', 'selected_services', 'search', 'showModal');
             $this->dispatch('invoicesUpdated');
+            
+
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);

@@ -4,17 +4,21 @@ namespace App\Livewire\Dispatching;
 
 use App\Models\Order;
 use App\Models\Status;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class OrderBox extends Component
 {
     public Order $order;
+    public bool $animate = false;
     public $technician_id;
     public $customer_name;
     public $phone_number;
     public $status_color;
     public $order_creator;
-    public $comments;
+    public $comments_count;
+    public $unread_comments_count;
+    public $invoices_count;
     public $address;
     public $order_description;
     public $technicians;
@@ -23,14 +27,14 @@ class OrderBox extends Component
     public function getListeners()
     {
         return [
-            // 'commentsUpdated' => '$refresh',
-            // 'invoicesUpdated' => '$refresh',
+            "refreshBoxForOrderNo.{$this->order->id}" => '$refresh',
         ];
     }
 
     public function mount()
     {
         $this->technician_id = $this->order->technician_id;
+        $this->animate = $this->unread_comments_count > 0;
     }
 
     public function updatedTechnicianId($val)

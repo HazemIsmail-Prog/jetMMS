@@ -12,7 +12,7 @@
         <span id="pagination"></span>
     </x-slot>
 
-    @livewire('orders.invoices.invoice-index')
+    @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
 

@@ -1,17 +1,18 @@
 <div>
-    <x-dialog-modal maxWidth="lg" wire:model.live="showModal">
+    {{-- <x-dialog-modal maxWidth="lg" wire:model.live="showModal">
         <x-slot name="title">
             <div class=" flex items-center justify-between">
                 <div>{{ $modalTitle }}</div>
                 <x-button type="button"
                     wire:click="$dispatch('showInvoiceFormModal',{order:{{ $order }}})">{{ __('messages.create_invoice') }}</x-button>
             </div>
+            {{ var_dump($this->getListeners()) }}
             <x-section-border />
         </x-slot>
 
 
-        <x-slot name="content">
-            @if ($showModal)
+        <x-slot name="content"> --}}
+            @if ($order)
                 @if ($this->invoices->count() > 0)
                     <div class=" flex flex-col gap-3">
                         @foreach ($this->invoices as $invoice)
@@ -24,6 +25,6 @@
                     </div>
                 @endif
             @endif
-        </x-slot>
-    </x-dialog-modal>
+        {{-- </x-slot>
+    </x-dialog-modal> --}}
 </div>

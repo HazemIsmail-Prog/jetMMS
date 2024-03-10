@@ -10,21 +10,12 @@ use Livewire\Component;
 
 class InvoiceIndex extends Component
 {
-    public $showModal = false;
-    public $modalTitle = '';
     public Order $order;
-
-    #[On('showInvoicesModal')]
-    public function show(Order $order)
-    {
-        $this->order = $order;
-        $this->modalTitle = __('messages.invoices_for_order_number') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
-        $this->showModal = true;
-    }
 
     #[Computed]
     #[On('invoicesUpdated')]
     #[On('paymentsUpdated')]
+    #[On('echo:invoices.{order.id},RefreshOrderInvoicesScreenEvent')]
     public function invoices()
     {
         return
