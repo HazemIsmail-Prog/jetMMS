@@ -22,6 +22,10 @@ class CompanyIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Company $company) {
+        $company->delete();
+    }
+
     public function render()
     {
         return view('livewire.companies.company-index');

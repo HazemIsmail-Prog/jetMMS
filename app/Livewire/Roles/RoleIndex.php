@@ -21,6 +21,10 @@ class RoleIndex extends Component
         return Role::query()
             ->paginate(15);
     }
+
+    public function delete(Role $role) {
+        $role->delete();
+    }
     
     public function render()
     {

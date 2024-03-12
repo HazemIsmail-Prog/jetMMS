@@ -22,6 +22,10 @@ class ShiftIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Shift $shift) {
+        $shift->delete();
+    }
+
     public function render()
     {
         return view('livewire.shifts.shift-index');

@@ -24,6 +24,12 @@ class PartInvoiceIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(PartInvoice $partInvoice) {
+        // TODO: transaction
+        // TODO: delete ralated voucher
+        $partInvoice->delete();
+    }
+
     public function render()
     {
         return view('livewire.part-invoices.part-invoice-index');

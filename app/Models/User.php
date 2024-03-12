@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -101,9 +102,9 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'created_by');
     }
 
-    public function roles()
+    public function roles() : BelongsToMany
     {
-        return $this->belongsToMany(Role::class)->with('permissions');
+        return $this->belongsToMany(Role::class);
     }
 
     public function messages()
@@ -117,8 +118,8 @@ class User extends Authenticatable
         
         foreach ($this->roles as $role) {
             foreach ($role->permissions as $permission) {
-                if (!in_array($permission->id, $permissionList)) {
-                    $permissionList[] = $permission->id;
+                if (!in_array($permission->name, $permissionList)) {
+                    $permissionList[] = $permission->name;
                 }
             }
         }

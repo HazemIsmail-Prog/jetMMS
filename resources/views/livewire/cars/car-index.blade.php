@@ -8,11 +8,14 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showCarFormModal')">
-            {{ __('messages.add_car') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Car::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showCarFormModal')">
+                {{ __('messages.add_car') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -77,24 +80,45 @@
                         <x-td>{{ $car->notes ?? '-' }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showCarFormModal',{car:{{ $car }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
-                                <x-badgeWithCounter counter="{{ $car->car_actions_count }}"
-                                    title="{{ __('messages.car_actions') }}"
-                                    wire:click="$dispatch('showCarActionsModal',{car:{{ $car }}})">
-                                    <x-svgs.list class="h-4 w-4" />
-                                </x-badgeWithCounter>
-                                <x-badgeWithCounter counter="{{ $car->car_services_count }}"
-                                    title="{{ __('messages.car_services') }}"
-                                    wire:click="$dispatch('showCarServicesModal',{car:{{ $car }}})">
-                                    <x-svgs.scissors class="h-4 w-4" />
-                                </x-badgeWithCounter>
-                                <x-badgeWithCounter :counter="$car->attachments_count" title="{{ __('messages.attachments') }}"
-                                    wire:click="$dispatch('showAttachmentModal',{model:'Car',id:{{ $car->id }}})">
-                                    <x-svgs.attachment class="w-4 h-4" />
-                                </x-badgeWithCounter>
+
+                                @can('update', $car)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showCarFormModal',{car:{{ $car }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $car)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $car }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('viewAny', App\Models\CarAction::class)
+                                    <x-badgeWithCounter counter="{{ $car->car_actions_count }}"
+                                        title="{{ __('messages.car_actions') }}"
+                                        wire:click="$dispatch('showCarActionsModal',{car:{{ $car }}})">
+                                        <x-svgs.list class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('viewAny', App\Models\CarService::class)
+                                    <x-badgeWithCounter counter="{{ $car->car_services_count }}"
+                                        title="{{ __('messages.car_services') }}"
+                                        wire:click="$dispatch('showCarServicesModal',{car:{{ $car }}})">
+                                        <x-svgs.scissors class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('viewAnyAttachment', $car)
+                                    <x-badgeWithCounter :counter="$car->attachments_count" title="{{ __('messages.attachments') }}"
+                                        wire:click="$dispatch('showAttachmentModal',{model:'Car',id:{{ $car->id }}})">
+                                        <x-svgs.attachment class="w-4 h-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
                             </div>
                         </x-td>
                     </x-tr>

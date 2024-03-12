@@ -5,8 +5,10 @@
         <h3 class="font-semibold text-gray-900 dark:text-white">
             {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
         </h3>
-        <x-svgs.trash wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
-            class=" w-4 h-4 text-red-600" />
+        @can('delete', $invoice)
+            <x-svgs.trash wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
+                class=" w-4 h-4 text-red-600" />
+        @endcan
     </div>
 
     {{-- Invoice Table --}}
@@ -44,7 +46,9 @@
         @endif
 
         {{-- Parts Section --}}
-        @if ($invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 || $invoice->invoice_part_details->count() > 0)
+        @if (
+            $invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 ||
+                $invoice->invoice_part_details->count() > 0)
             <tr>
                 <th scope="col" class="py-1 text-start">
                     {{ __('messages.parts') }}

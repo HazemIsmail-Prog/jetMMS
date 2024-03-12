@@ -10,11 +10,14 @@
 
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showAreaFormModal')">
-            {{ __('messages.add_area') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Area::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showAreaFormModal')">
+                {{ __('messages.add_area') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -48,10 +51,19 @@
                         <x-td>{{ $area->name }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                @can('update', $area)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+                                @can('delete', $area)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $area }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>
@@ -59,6 +71,4 @@
             </tbody>
         </x-table>
     </div>
-
-
 </div>

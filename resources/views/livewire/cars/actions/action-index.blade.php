@@ -3,8 +3,10 @@
         <x-slot name="title">
             <div class=" flex items-center justify-between">
                 <div>{{ __('messages.car_actions') }}</div>
-                <x-button type="button"
-                    wire:click="$dispatch('showActionFormModal',{car:{{ $car }}})">{{ __('messages.add_car_action') }}</x-button>
+                @can('create', App\Models\CarAction::class)
+                    <x-button type="button"
+                        wire:click="$dispatch('showActionFormModal',{car:{{ $car }}})">{{ __('messages.add_car_action') }}</x-button>
+                @endcan
             </div>
             <x-section-border />
         </x-slot>
@@ -41,15 +43,22 @@
                                     <x-td>{{ $action->notes }}</x-td>
                                     <x-td>
                                         <div class="flex items-center justify-end gap-2">
-                                            <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                                wire:click="$dispatch('showActionFormModal',{carAction:{{ $action }},car:{{ $car }}})">
-                                                <x-svgs.edit class="h-4 w-4" />
-                                            </x-badgeWithCounter>
-                                            <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                                wire:confirm="{{ __('messages.are_u_sure') }}"
-                                                wire:click="delete({{ $action }})">
-                                                <x-svgs.trash class="h-4 w-4" />
-                                            </x-badgeWithCounter>
+                                            
+                                            @can('update', $action)
+                                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                                    wire:click="$dispatch('showActionFormModal',{carAction:{{ $action }},car:{{ $car }}})">
+                                                    <x-svgs.edit class="h-4 w-4" />
+                                                </x-badgeWithCounter>
+                                            @endcan
+
+                                            @can('delete', $action)
+                                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                                    wire:click="delete({{ $action }})">
+                                                    <x-svgs.trash class="h-4 w-4" />
+                                                </x-badgeWithCounter>
+                                            @endcan
+
                                         </div>
                                     </x-td>
                                 </x-tr>

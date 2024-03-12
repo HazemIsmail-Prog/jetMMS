@@ -10,11 +10,14 @@
 
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showCostCenterFormModal')">
-            {{ __('messages.add_cost_center') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\CostCenter::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showCostCenterFormModal')">
+                {{ __('messages.add_cost_center') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -52,16 +55,21 @@
                         </x-td>
                         <x-td>
                             <div class="flex items-center justify-end w-full gap-2">
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showCostCenterFormModal',{cost_center:{{ $cost_center }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
 
-                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                    wire:confirm="{{ __('messages.are_u_sure') }}"
-                                    wire:click="delete({{ $cost_center }})">
-                                    <x-svgs.trash class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                @can('update', $cost_center)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showCostCenterFormModal',{cost_center:{{ $cost_center }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $cost_center)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $cost_center }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>

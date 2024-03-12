@@ -53,6 +53,10 @@ class ServiceIndex extends Component
             ->get();
     }
 
+    public function delete(Service $service) {
+        $service->delete();
+    }
+
     public function render()
     {
         return view('livewire.services.service-index');

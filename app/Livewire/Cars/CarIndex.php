@@ -39,6 +39,10 @@ class CarIndex extends Component
         $this->resetPage();
     }
 
+    public function delete(Car $car) {
+        $car->delete();
+    }
+
     public function render()
     {
         return view('livewire.cars.car-index');

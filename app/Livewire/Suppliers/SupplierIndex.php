@@ -22,6 +22,10 @@ class SupplierIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Supplier $supplier) {
+        $supplier->delete();
+    }
+
     public function render()
     {
         return view('livewire.suppliers.supplier-index');

@@ -10,11 +10,14 @@
 
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showShiftFormModal')">
-            {{ __('messages.add_shift') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Shift::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showShiftFormModal')">
+                {{ __('messages.add_shift') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -53,10 +56,21 @@
 
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter shift="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showShiftFormModal',{shift:{{ $shift }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+
+                                @can('update', $shift)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showShiftFormModal',{shift:{{ $shift }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $shift)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $shift }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>
@@ -64,6 +78,4 @@
             </tbody>
         </x-table>
     </div>
-
-
 </div>

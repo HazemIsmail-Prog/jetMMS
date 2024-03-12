@@ -22,6 +22,10 @@ class TitleIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Title $title) {
+        $title->delete();
+    }
+
     public function render()
     {
         return view('livewire.titles.title-index');

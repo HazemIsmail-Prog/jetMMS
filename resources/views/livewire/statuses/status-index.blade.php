@@ -7,6 +7,7 @@
             </h2>
         </div>
     </x-slot>
+
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
@@ -46,10 +47,12 @@
                         </x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
-                                <x-badgeWithCounter status="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showStatusFormModal',{status:{{ $status }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                @can('update', $status)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showStatusFormModal',{status:{{ $status }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>

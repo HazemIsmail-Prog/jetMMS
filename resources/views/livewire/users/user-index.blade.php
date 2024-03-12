@@ -8,11 +8,14 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showUserFormModal')">
-            {{ __('messages.add_user') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\User::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showUserFormModal')">
+                {{ __('messages.add_user') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -123,16 +126,26 @@
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
 
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showUserFormModal',{user:{{ $user }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                @can('update', $user)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showUserFormModal',{user:{{ $user }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $user)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $user }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
 
 
-                                <a href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
+                                {{-- <a href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
                                     class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <x-svgs.duplicate class="w-4 h-4" />
-                                </a>
+                                </a> --}}
                             </div>
                         </x-td>
                     </x-tr>

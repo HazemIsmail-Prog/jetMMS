@@ -64,6 +64,10 @@ class CustomerIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Customer $customer) {
+        $customer->delete();
+    }
+
     public function render()
     {
         return view('livewire.customers.customer-index');

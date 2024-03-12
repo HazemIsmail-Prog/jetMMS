@@ -3,8 +3,10 @@
         <x-slot name="title">
             <div class=" flex items-center justify-between">
                 <div>{{ __('messages.car_services') }}</div>
-                <x-button type="button"
-                    wire:click="$dispatch('showCarServiceFormModal',{car:{{ $car }}})">{{ __('messages.add_car_service') }}</x-button>
+                @can('create', App\Models\CarService::class)
+                    <x-button type="button"
+                        wire:click="$dispatch('showCarServiceFormModal',{car:{{ $car }}})">{{ __('messages.add_car_service') }}</x-button>
+                @endcan
             </div>
             <x-section-border />
         </x-slot>
@@ -30,15 +32,22 @@
                                     <x-td>{{ $service->cost }}</x-td>
                                     <x-td>
                                         <div class="flex items-center justify-end gap-2">
-                                            <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                                wire:click="$dispatch('showCarServiceFormModal',{carService:{{ $service }},car:{{ $car }}})">
-                                                <x-svgs.edit class="h-4 w-4" />
-                                            </x-badgeWithCounter>
-                                            <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                                wire:confirm="{{ __('messages.are_u_sure') }}"
-                                                wire:click="delete({{ $service }})">
-                                                <x-svgs.trash class="h-4 w-4" />
-                                            </x-badgeWithCounter>
+
+                                            @can('update', $service)
+                                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                                    wire:click="$dispatch('showCarServiceFormModal',{carService:{{ $service }},car:{{ $car }}})">
+                                                    <x-svgs.edit class="h-4 w-4" />
+                                                </x-badgeWithCounter>
+                                            @endcan
+
+                                            @can('delete', $service)
+                                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                                    wire:click="delete({{ $service }})">
+                                                    <x-svgs.trash class="h-4 w-4" />
+                                                </x-badgeWithCounter>
+                                            @endcan
+                                            
                                         </div>
                                     </x-td>
                                 </x-tr>

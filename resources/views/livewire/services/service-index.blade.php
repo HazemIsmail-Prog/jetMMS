@@ -10,11 +10,14 @@
 
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showServiceFormModal')">
-            {{ __('messages.add_service') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Service::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showServiceFormModal')">
+                {{ __('messages.add_service') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -81,10 +84,22 @@
                         <x-td>{{ __('messages.' . $service->type . 's') }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showServiceFormModal',{service:{{ $service }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+
+                                @can('update', $service)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showServiceFormModal',{service:{{ $service }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $service)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $service }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
                             </div>
                         </x-td>
                     </x-tr>

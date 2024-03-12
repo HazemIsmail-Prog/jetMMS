@@ -1,12 +1,12 @@
 <div>
-    @if ($showModal)
-        <x-dialog-modal maxWidth="md" wire:model.live="showModal">
-            <x-slot name="title">
-                <div>{{ $modalTitle }}</div>
-                <x-section-border />
-            </x-slot>
+    <x-dialog-modal maxWidth="md" wire:model.live="showModal">
+        <x-slot name="title">
+            <div>{{ $modalTitle }}</div>
+            <x-section-border />
+        </x-slot>
 
-            <x-slot name="content">
+        <x-slot name="content">
+            @if ($showModal)
                 <form wire:submit="save">
 
                     <div class=" space-y-3">
@@ -54,7 +54,7 @@
                     </div>
 
                 </form>
-            </x-slot>
-        </x-dialog-modal>
-    @endif
+            @endif
+        </x-slot>
+    </x-dialog-modal>
 </div>

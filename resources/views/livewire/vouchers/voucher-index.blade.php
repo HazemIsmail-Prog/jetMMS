@@ -10,11 +10,13 @@
             @endcan
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showVoucherFormModal')">
-            {{ $add_button_label }}
-        </x-button>
-    @endteleport
+    @can('create', App\Models\Voucher::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showVoucherFormModal')">
+                {{ $add_button_label }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -38,10 +40,10 @@
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         <div>
             <x-label for="date">{{ __('messages.date') }}</x-label>
-            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date" wire:model.live="filters.start_date"
-                class="w-full text-start py-0" />
-            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date" wire:model.live="filters.end_date"
-                class="w-full text-start py-0" />
+            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date"
+                wire:model.live="filters.start_date" class="w-full text-start py-0" />
+            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date"
+                wire:model.live="filters.end_date" class="w-full text-start py-0" />
         </div>
     </div>
 

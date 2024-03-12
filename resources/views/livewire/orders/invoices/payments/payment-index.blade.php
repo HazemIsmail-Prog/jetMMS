@@ -2,43 +2,38 @@
     <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.payments') }}</h3>
 
     @if ($this->payments->count() > 0)
-        <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <x-table>
+            <x-thead>
                 <tr>
-                    <th scope="col" class="px-1 py-1">{{ __('messages.receiver') }}</th>
-                    <th scope="col" class="px-1 py-1 text-start">
-                        <div>{{ __('messages.date') }}</div>
-                    </th>
-                    <th scope="col" class="px-1 py-1 text-right">
-                        {{ __('messages.amount') }}
-                    </th>
-                    <th scope="col" class="px-1 py-1 text-right"></th>
+                    <x-th>{{ __('messages.receiver') }}</x-th>
+                    <x-th>{{ __('messages.date') }}</x-th>
+                    <x-th>{{ __('messages.amount') }}</x-th>
+                    <x-th></x-th>
                 </tr>
-            </thead>
+            </x-thead>
             <tbody>
                 @foreach ($this->payments as $payment)
-                    <tr>
-                        <td>{{ $payment->user->name }}</td>
-                        <td class="px-1 py-1">
+                    <x-tr>
+                        <x-td>{{ $payment->user->name }}</x-td>
+                        <x-td>
                             <div class=" whitespace-nowrap">{{ $payment->created_at->format('d-m-Y') }}</div>
                             <div>{{ $payment->created_at->format('H:i') }}</div>
-                        </td>
-                        <td class="px-1 py-1 text-right">
+                        </x-td>
+                        <x-td>
                             <div>{{ number_format($payment->amount, 3) }}</div>
                             <div>{{ $payment->method }}</div>
-                        </td>
-                        <td class="px-1 py-1">
-                            <x-svgs.trash wire:click="delete({{ $payment }})"
-                                wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
-                        </td>
-                    </tr>
+                        </x-td>
+                        <x-td>
+                            @can('delete', $payment)
+                                <x-svgs.trash wire:click="delete({{ $payment }})"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
+                            @endcan
+                        </x-td>
+                    </x-tr>
                 @endforeach
                 <tr></tr>
             </tbody>
-
-
-
-        </table>
+        </x-table>
         <x-section-border />
     @else
         <div class="flex items-center justify-center font-bold text-red-600 p-2">
@@ -46,8 +41,10 @@
         </div>
     @endif
 
-    @if ($invoice->remaining_amount > 0)
-        <x-button type="button"
-            wire:click="$dispatch('showPaymentFormModal',{invoice:{{ $invoice }}})">{{ __('messages.create_payment') }}</x-button>
-    @endif
+    @can('create', App\Models\Payment::class)
+        @if ($invoice->remaining_amount > 0)
+            <x-button type="button"
+                wire:click="$dispatch('showPaymentFormModal',{invoice:{{ $invoice }}})">{{ __('messages.create_payment') }}</x-button>
+        @endif
+    @endcan
 </div>

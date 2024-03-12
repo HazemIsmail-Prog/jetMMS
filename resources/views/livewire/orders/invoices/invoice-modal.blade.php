@@ -3,8 +3,11 @@
         <x-slot name="title">
             <div class=" flex items-center justify-between">
                 <div>{{ $modalTitle }}</div>
+                @can('create',App\Models\Invoice::class)
                 <x-button type="button"
                     wire:click="$dispatch('showInvoiceFormModal',{order:{{ $order }}})">{{ __('messages.create_invoice') }}</x-button>
+                    
+                @endcan
             </div>
             <x-section-border />
         </x-slot>

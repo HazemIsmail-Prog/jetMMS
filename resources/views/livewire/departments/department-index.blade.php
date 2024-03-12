@@ -8,11 +8,14 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showDepartmentFormModal')">
-            {{ __('messages.add_department') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Department::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showDepartmentFormModal')">
+                {{ __('messages.add_department') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -46,10 +49,21 @@
                         <x-td>{{ $department->name }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter department="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showDepartmentFormModal',{department:{{ $department }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+
+                                @can('update', $department)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showDepartmentFormModal',{department:{{ $department }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $department)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $department }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>

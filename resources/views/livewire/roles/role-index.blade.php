@@ -8,11 +8,14 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showRoleFormModal')">
-            {{ __('messages.add_role') }}
-        </x-button>
-    @endteleport
+
+    @can('create', App\Models\Role::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showRoleFormModal')">
+                {{ __('messages.add_role') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -43,13 +46,26 @@
             <tbody>
                 @foreach ($this->roles as $role)
                     <x-tr>
-                        <x-td><div>{{ $role->name }}</div></x-td>
+                        <x-td>
+                            <div>{{ $role->name }}</div>
+                        </x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showRoleFormModal',{role:{{ $role }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+
+                                @can('update', $role)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showRoleFormModal',{role:{{ $role }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $role)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $role }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
                             </div>
                         </x-td>
                     </x-tr>

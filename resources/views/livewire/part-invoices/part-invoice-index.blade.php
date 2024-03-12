@@ -8,11 +8,13 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button wire:click="$dispatch('showPartInvoiceFormModal')">
-            {{ __('messages.add_part_invoice') }}
-        </x-button>
-    @endteleport
+    @can('create', App\Models\PartInvoice::class)
+        @teleport('#addNew')
+            <x-button wire:click="$dispatch('showPartInvoiceFormModal')">
+                {{ __('messages.add_part_invoice') }}
+            </x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -58,10 +60,20 @@
                         <x-td>{{ $part_invoice->formated_sales_amount }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <x-badgeWithCounter part_invoice="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showPartInvoiceFormModal',{part_invoice:{{ $part_invoice }}})">
-                                    <x-svgs.edit class="h-4 w-4" />
-                                </x-badgeWithCounter>
+                                @can('update', $part_invoice)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showPartInvoiceFormModal',{part_invoice:{{ $part_invoice }}})">
+                                        <x-svgs.edit class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+                                @can('delete', $part_invoice)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $part_invoice }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
                             </div>
                         </x-td>
                     </x-tr>

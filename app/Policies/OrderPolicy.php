@@ -13,7 +13,7 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasPermission('orders_menu');
     }
     
     /**
@@ -26,66 +26,37 @@ class OrderPolicy
     
     public function view_order_progress(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_progress');
     }
-
+    
     public function view_order_comments(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_comments');
     }
 
     public function view_order_invoices(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_invoices');
     }
-
+    
     public function hold_order(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_hold');
     }
-
+    
     public function cancel_order(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_cancel');
     }
     
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasPermission('orders_create');
     }
     
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Order $order): bool
     {
-        return true;
+        return $user->hasPermission('orders_edit');
     }
-    
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Order $order): bool
-    {
-        return true;
-    }
-    
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Order $order): bool
-    {
-        return true;
-    }
-    
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Order $order): bool
-    {
-        return true;
-    }
+
 }

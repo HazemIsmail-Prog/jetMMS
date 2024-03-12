@@ -20,9 +20,6 @@ class PermissionSeeder extends Seeder
             // Dashboard
             ['name' => 'dashboard_menu',            'section_name_ar' => 'لوحة التحكم',     'section_name_en' => 'dashboard',           'desc_ar' => 'عرض قائمة لوحة المعلومات',                'desc_en' => 'Dashboard Menu'],
 
-            // Operations
-            ['name' => 'operations_menu',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قسم العمليات',         'desc_en' => 'Create Customers'],
-
             // Customers
             ['name' => 'customers_menu',            'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة العملاء',         'desc_en' => 'Create Customers'],
             ['name' => 'customers_create',          'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'اضافة عملاء',               'desc_en' => 'Create Customers'],
@@ -33,6 +30,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'orders_menu',               'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة الطلبات',               'desc_en' => 'Orders Menu'],
             ['name' => 'orders_create',             'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'انشاء الطلبات',               'desc_en' => 'Create Orders'],
             ['name' => 'orders_edit',               'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'تعديل الطلبات',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_cancel',             'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'الغاء الطلبات',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_hold',               'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'توقف مؤقت للطلبات',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_invoices',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض فواتير الطلب',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_comments',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض تعليقات الطلب',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_progress',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض خطوات الطلب',               'desc_en' => 'Edit Orders'],
             
             // Marketing
             ['name' => 'marketing_menu',            'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التسويق',               'desc_en' => 'Marketing Menu'],
@@ -44,51 +46,64 @@ class PermissionSeeder extends Seeder
             ['name' => 'dispatching_menu',          'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التوزيع',               'desc_en' => 'Dispatching Menu'],
 
             // Cashier
-            ['name' => 'cashier_menu',              'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'عرض قسم التحصيل',               'desc_en' => 'Access Cashier Section'],
             ['name' => 'cash_collection_menu',      'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'عرض قائمة التحصيل النقدي',               'desc_en' => 'Access Cashier Section'],
+            
             ['name' => 'knet_collection_menu',      'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'عرض قائمة تحصيل الكي نت',               'desc_en' => 'Access Cashier Section'],
+            
             ['name' => 'part_invoices_menu',        'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'عرض قائمة فواتير بضاعة العهدة',               'desc_en' => 'Access Cashier Section'],
             ['name' => 'part_invoices_create',      'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'اضافة فاتورة بضاعة عهدة',               'desc_en' => 'Access Cashier Section'],
             ['name' => 'part_invoices_edit',        'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'تعديل فاتورة بضاعة عهدة',               'desc_en' => 'Access Cashier Section'],
             ['name' => 'part_invoices_delete',      'section_name_ar' => 'التحصيل',         'section_name_en' => 'cashier',             'desc_ar' => 'حذف فاتورة بضاعة عهدة',               'desc_en' => 'Access Cashier Section'],
 
             // Accounting
-            ['name' => 'accounting_menu',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قسم الحسابات',               'desc_en' => 'Accounts Menu'],
             ['name' => 'accounts_menu',             'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة الحسابات',               'desc_en' => 'Accounts Menu'],
             ['name' => 'accounts_create',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'اضافة حساب',               'desc_en' => 'Accounts Menu'],
             ['name' => 'accounts_edit',             'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'تعديل حساب',               'desc_en' => 'Accounts Menu'],
             ['name' => 'accounts_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف حساب',               'desc_en' => 'Accounts Menu'],
+            
             ['name' => 'invoices_menu',             'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة الفواتير','desc_en' => 'Invoices Menu'],
+            ['name' => 'invoices_create',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'انشاء فاتورة','desc_en' => 'Invoices Menu'],
+            ['name' => 'invoices_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف فاتورة','desc_en' => 'Invoices Menu'],
+            
+            ['name' => 'payments_create',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'انشاء دفعة','desc_en' => 'Invoices Menu'],
+            ['name' => 'payments_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف دفعة','desc_en' => 'Invoices Menu'],
+           
             ['name' => 'journal_vouchers_menu',     'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة القيود اليومية',        'desc_en' => 'Journal Vouchers Menu'],
             ['name' => 'journal_vouchers_create',   'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'اضافة قيود يومية',        'desc_en' => 'Journal Vouchers Menu'],
             ['name' => 'journal_vouchers_edit',     'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'تعديل قيود يومية',        'desc_en' => 'Journal Vouchers Menu'],
             ['name' => 'journal_vouchers_view',     'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قيود يومية',        'desc_en' => 'Journal Vouchers Menu'],
             ['name' => 'journal_vouchers_delete',   'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف قيود يومية',        'desc_en' => 'Journal Vouchers Menu'],
-            ['name' => 'accounting_report_menu',    'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة تقارير الحسابات',               'desc_en' => 'Accounts Menu'],
+            
             ['name' => 'account_statement_report',  'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض تقرير كشف الحساب',               'desc_en' => 'Accounts Menu'],
+            ['name' => 'balance_sheet_report',      'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض الميزانية العمومية',               'desc_en' => 'Accounts Menu'],
+            ['name' => 'trial_balance_report',      'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض ميزان المراجعة',               'desc_en' => 'Accounts Menu'],
+            ['name' => 'profit_loss_report',        'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض تقرير الارباح والخسائر',               'desc_en' => 'Accounts Menu'],
 
 
             //HR
-            ['name' => 'hr_menu',                   'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'عرض قسم شؤون الموظفين', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_menu',            'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'عرض قائمة الموظفين', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_create',          'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'اضافة موظف', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_edit',            'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'تعديل موظف', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_view',            'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'عرض موظف', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_delete',          'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'حذف موظف', 'desc_en' => 'Employees Menu'],
             ['name' => 'employees_attachment',      'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'مرفقات موظف', 'desc_en' => 'Employees Menu'],
-            ['name' => 'hr_report_menu',            'section_name_ar' => 'شؤون الموظفين',   'section_name_en' => 'HR',                  'desc_ar' => 'عرض تقارير قسم شؤون الموظفين', 'desc_en' => 'Employees Menu'],
             
             // Assets
-            ['name' => 'assets_menu',               'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'عرض قسم الاصول', 'desc_en' => 'Cars Menu'],
             ['name' => 'cars_menu',                 'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'عرض قائمة السيارات', 'desc_en' => 'Cars Menu'],
             ['name' => 'cars_create',               'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'اضافة سيارة', 'desc_en' => 'Cars Menu'],
             ['name' => 'cars_edit',                 'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'تعديل سيارة', 'desc_en' => 'Cars Menu'],
             ['name' => 'cars_delete',               'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'حذف سيارة', 'desc_en' => 'Cars Menu'],
             ['name' => 'cars_attachment',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'مرفقات سيارة', 'desc_en' => 'Cars Menu'],
-            ['name' => 'assets_report_menu',        'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'عرض تقارير قسم الاصول', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_actions_menu',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'عرض حركات السيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_actions_create',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'اضافة حركة سيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_actions_edit',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'تعديل حركة سيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_actions_delete',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'حذف حركة سيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_services_menu',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'عرض صيانات السيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_services_create',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'اضافة صيانة سيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_services_edit',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'تعديل صيانة سيارة', 'desc_en' => 'Cars Menu'],
+            ['name' => 'car_services_delete',           'section_name_ar' => 'الاصول',            'section_name_en' => 'assets',              'desc_ar' => 'حذف صيانة سيارة', 'desc_en' => 'Cars Menu'],
 
             // Admin
-            ['name' => 'admin_menu',                'section_name_ar' => 'مسؤول النظام',    'section_name_en' => 'admin',               'desc_ar' => 'عرض قسم مسؤول النظام','desc_en' => 'Roles Menu'],
             ['name' => 'suppliers_menu',            'section_name_ar' => 'مسؤول النظام',    'section_name_en' => 'admin',               'desc_ar' => 'عرض قائمة الموردين','desc_en' => 'Roles Menu'],
             ['name' => 'suppliers_create',          'section_name_ar' => 'مسؤول النظام',    'section_name_en' => 'admin',               'desc_ar' => 'اضافة مورد','desc_en' => 'Roles Menu'],
             ['name' => 'suppliers_edit',            'section_name_ar' => 'مسؤول النظام',    'section_name_en' => 'admin',               'desc_ar' => 'تعديل مورد','desc_en' => 'Roles Menu'],

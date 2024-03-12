@@ -22,6 +22,10 @@ class DepartmentIndex extends Component
             ->paginate(15);
     }
 
+    public function delete(Department $department) {
+        $department->delete();
+    }
+
     public function render()
     {
         return view('livewire.departments.department-index');

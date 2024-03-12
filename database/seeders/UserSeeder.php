@@ -154,6 +154,9 @@ class UserSeeder extends Seeder
         );
 
         User::insert($users);
+
+
+        User::find(1)->roles()->attach(1);
     
     }
 }

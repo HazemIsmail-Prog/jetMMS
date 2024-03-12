@@ -80,6 +80,11 @@ class MarketingIndex extends Component
 
             ->paginate(15);
     }
+
+    public function delete(Marketing $marketing) {
+        $marketing->delete();
+    }
+
     public function render()
     {
         return view('livewire.marketing.marketing-index');

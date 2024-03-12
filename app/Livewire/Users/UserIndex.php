@@ -83,6 +83,10 @@ class UserIndex extends Component
             ->paginate(1000);
     }
 
+    public function delete(User $user) {
+        $user->delete();
+    }
+
 
     public function render()
     {
