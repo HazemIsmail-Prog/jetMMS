@@ -15,7 +15,7 @@ class EmployeeForm extends Component
 
     public $showModal = false;
     public $modalTitle = '';
-    public $employee;
+    public Employee $employee;
     public $selectedUser;
     public FormsEmployeeForm $form;
 

@@ -118,4 +118,12 @@ class DummyModelPolicy
             // || Add More if Needed
         ;
     }
+
+    public function hr_title(User $user): bool
+    {
+        return
+            $user->hasPermission('employees_menu')
+            // || Add More if Needed
+        ;
+    }
 }

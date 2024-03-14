@@ -8,10 +8,12 @@
             <span id="addNew"></span>
         </div>
     </x-slot>
-    @teleport('#addNew')
-        <x-button class=" no-print"
-            wire:click="$dispatch('showEmployeeFormModal')">{{ __('messages.add_employee') }}</x-button>
-    @endteleport
+    @can('create', App\Models\Employee::class)
+        @teleport('#addNew')
+            <x-button class=" no-print"
+                wire:click="$dispatch('showEmployeeFormModal')">{{ __('messages.add_employee') }}</x-button>
+        @endteleport
+    @endcan
 
     @teleport('#counter')
         <span
@@ -29,10 +31,17 @@
         @endteleport
     @endif
 
-    @livewire('attachments.attachment-index')
-    @livewire('attachments.attachment-form')
 
     @livewire('employees.employee-form')
+    @livewire('employees.employee-view')
+
+    @livewire('employees.absences.absence-form')
+    @livewire('employees.increases.increase-form')
+    @livewire('employees.leaves.leave-form')
+    @livewire('employees.salary_actions.salary-action-form')
+
+    @livewire('attachments.attachment-index')
+    @livewire('attachments.attachment-form')
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
@@ -98,7 +107,7 @@
             <tbody>
                 @foreach ($this->employees as $employee)
                     <x-tr>
-                        <x-th>{{ $employee->user->name }}</x-th>
+                        <x-td>{{ $employee->user->name }}</x-td>
                         <x-td>{{ $employee->user->title->name }}</x-td>
                         <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
                         <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
@@ -114,18 +123,36 @@
                         <x-td>{{ number_format($employee->Indemnity, 3) }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('employee.view', $employee) }}"
-                                    class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <x-svgs.view class="w-4 h-4" />
-                                </a>
-                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                    wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee->id }}})">
-                                    <x-svgs.edit class="w-4 h-4" />
-                                </x-badgeWithCounter>
-                                <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
-                                    wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
-                                    <x-svgs.attachment class="w-4 h-4" />
-                                </x-badgeWithCounter>
+
+                                @can('view', $employee)
+                                    <x-badgeWithCounter title="{{ __('messages.view') }}"
+                                        wire:click="$dispatch('showEmployeeViewModal',{employee:{{ $employee }}})">
+                                        <x-svgs.view class="w-4 h-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('update', $employee)
+                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                        wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee }}})">
+                                        <x-svgs.edit class="w-4 h-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('viewAnyAttachment', $employee)
+                                    <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
+                                        wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
+                                        <x-svgs.attachment class="w-4 h-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
+                                @can('delete', $employee)
+                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}"
+                                        wire:click="delete({{ $employee }})">
+                                        <x-svgs.trash class="w-4 h-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
                             </div>
                         </x-td>
                     </x-tr>

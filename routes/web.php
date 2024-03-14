@@ -13,7 +13,6 @@ use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Departments\DepartmentIndex;
 use App\Livewire\Dispatching\DispatchingIndex;
 use App\Livewire\Employees\EmployeeIndex;
-use App\Livewire\Employees\EmployeeView;
 use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderIndex;
@@ -26,7 +25,6 @@ use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Suppliers\SupplierIndex;
 use App\Livewire\TechnicianPage;
 use App\Livewire\Titles\TitleIndex;
-use App\Livewire\Users\UserForm;
 use App\Livewire\Users\UserIndex;
 use App\Livewire\Vouchers\VoucherIndex;
 use App\Models\Account;
@@ -37,6 +35,7 @@ use App\Models\CostCenter;
 use App\Models\Customer;
 use App\Models\Department;
 use App\Models\DummyModel;
+use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\Marketing;
 use App\Models\Order;
@@ -51,7 +50,6 @@ use App\Models\Title;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Route;
-use ParagonIE\Sodium\Compat;
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
@@ -74,15 +72,34 @@ Route::middleware([
         })->name('dashboard')->can('dashboard_menu', DummyModel::class);
 
         // ========== Operations ==========
-        Route::get('customers', CustomerIndex::class)->name('customer.index')->can('viewAny', Customer::class);
-        Route::get('orders', OrderIndex::class)->name('order.index')->can('viewAny', Order::class);
-        Route::get('marketings', MarketingIndex::class)->name('marketing.index')->can('viewAny', Marketing::class);
-        Route::get('dispatch-panel/{department}', DispatchingIndex::class)->name('dispatch-panel.index')->can('canDispatch', DummyModel::class);
+        Route::get('customers', CustomerIndex::class)
+            ->name('customer.index')
+            ->can('viewAny', Customer::class);
+
+        Route::get('orders', OrderIndex::class)
+            ->name('order.index')
+            ->can('viewAny', Order::class);
+
+        Route::get('marketings', MarketingIndex::class)
+            ->name('marketing.index')
+            ->can('viewAny', Marketing::class);
+
+        Route::get('dispatch-panel/{department}', DispatchingIndex::class)
+            ->name('dispatch-panel.index')
+            ->can('canDispatch', DummyModel::class);
 
         // ========== Cashier ==========
-        Route::get('cash-collection', CashCollection::class)->name('cash_collection')->can('cash_collection_menu', DummyModel::class);
-        Route::get('knet-collection', KnetCollection::class)->name('knet_collection')->can('knet_collection_menu', DummyModel::class);
-        Route::get('part-invoices', PartInvoiceIndex::class)->name('part_invoice')->can('viewAny', PartInvoice::class);
+        Route::get('cash-collection', CashCollection::class)
+            ->name('cash_collection')
+            ->can('cash_collection_menu', DummyModel::class);
+
+        Route::get('knet-collection', KnetCollection::class)
+            ->name('knet_collection')
+            ->can('knet_collection_menu', DummyModel::class);
+
+        Route::get('part-invoices', PartInvoiceIndex::class)
+            ->name('part_invoice')
+            ->can('viewAny', PartInvoice::class);
 
         // ========== Accounting ==========
 
@@ -118,33 +135,65 @@ Route::middleware([
             ->can('viewAny', Voucher::class);
 
 
-
-
-
         // ========== HR ==========
 
         // Employees
-        Route::get('employees', EmployeeIndex::class)->name('employee.index');
-        Route::get('employee/view/{employee}', EmployeeView::class)->name('employee.view');
-
-
-
+        Route::get('employees', EmployeeIndex::class)
+            ->name('employee.index')
+            ->can('viewAny', Employee::class);
 
         // ========== Assets ==========
-        Route::get('cars', CarIndex::class)->name('car.index')->can('viewAny',Car::class);
+        Route::get('cars', CarIndex::class)
+            ->name('car.index')
+            ->can('viewAny', Car::class);
 
         // ========== Admin Settings ==========
-        Route::get('suppliers', SupplierIndex::class)->name('supplier.index')->can('viewAny', Supplier::class);
-        Route::get('cost_centers', CostCenterIndex::class)->name('cost_center.index')->can('viewAny', CostCenter::class);
-        Route::get('roles', RoleIndex::class)->name('role.index')->can('viewAny', Role::class);
-        Route::get('users', UserIndex::class)->name('user.index')->can('viewAny', User::class);
-        Route::get('titles', TitleIndex::class)->name('title.index')->can('viewAny', Title::class);
-        Route::get('statuses', StatusIndex::class)->name('status.index')->can('viewAny', Status::class);
-        Route::get('departments', DepartmentIndex::class)->name('department.index')->can('viewAny', Department::class);
-        Route::get('companies', CompanyIndex::class)->name('company.index')->can('viewAny', Company::class);
-        Route::get('shifts', ShiftIndex::class)->name('shift.index')->can('viewAny', Shift::class);
-        Route::get('areas', AreaIndex::class)->name('area.index')->can('viewAny', Area::class);
-        Route::get('services', ServiceIndex::class)->name('service.index')->can('viewAny', Service::class);
-        Route::get('settings', SettingsForm::class)->name('settings.form')->can('viewAny', Setting::class);
+        Route::get('suppliers', SupplierIndex::class)
+            ->name('supplier.index')
+            ->can('viewAny', Supplier::class);
+
+        Route::get('cost_centers', CostCenterIndex::class)
+            ->name('cost_center.index')
+            ->can('viewAny', CostCenter::class);
+
+        Route::get('roles', RoleIndex::class)
+            ->name('role.index')
+            ->can('viewAny', Role::class);
+
+        Route::get('users', UserIndex::class)
+            ->name('user.index')
+            ->can('viewAny', User::class);
+
+        Route::get('titles', TitleIndex::class)
+            ->name('title.index')
+            ->can('viewAny', Title::class);
+
+        Route::get('statuses', StatusIndex::class)
+            ->name('status.index')
+            ->can('viewAny', Status::class);
+
+        Route::get('departments', DepartmentIndex::class)
+            ->name('department.index')
+            ->can('viewAny', Department::class);
+
+        Route::get('companies', CompanyIndex::class)
+            ->name('company.index')
+            ->can('viewAny', Company::class);
+
+        Route::get('shifts', ShiftIndex::class)
+            ->name('shift.index')
+            ->can('viewAny', Shift::class);
+
+        Route::get('areas', AreaIndex::class)
+            ->name('area.index')
+            ->can('viewAny', Area::class);
+
+        Route::get('services', ServiceIndex::class)
+            ->name('service.index')
+            ->can('viewAny', Service::class);
+
+        Route::get('settings', SettingsForm::class)
+            ->name('settings.form')
+            ->can('viewAny', Setting::class);
     });
 });

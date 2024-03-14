@@ -4,10 +4,8 @@ namespace App\Livewire\Employees;
 
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Role;
 use App\Models\Shift;
 use App\Models\Title;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -75,6 +73,10 @@ class EmployeeIndex extends Component
                 $q->where('status', $this->filters["status"]);
             })
             ->paginate(15);
+    }
+
+    public function delete(Employee $employee) {
+        $employee->delete();
     }
 
     public function render()
