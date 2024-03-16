@@ -50,7 +50,7 @@
             <x-label for="title">{{ __('messages.title') }}</x-label>
             <x-select id="title" wire:model.live="filters.title_id" class=" w-full py-0">
                 <option value="">---</option>
-                @foreach ($titles as $title)
+                @foreach ($this->titles as $title)
                     <option value="{{ $title->id }}">{{ $title->name }}</option>
                 @endforeach
             </x-select>
@@ -59,7 +59,7 @@
             <x-label for="department">{{ __('messages.department') }}</x-label>
             <x-select id="department" wire:model.live="filters.department_id" class=" w-full py-0">
                 <option value="">---</option>
-                @foreach ($departments as $department)
+                @foreach ($this->departments as $department)
                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                 @endforeach
             </x-select>
@@ -68,7 +68,7 @@
             <x-label for="roles">{{ __('messages.roles') }}</x-label>
             <x-select id="roles" wire:model.live="filters.role_id" class=" w-full py-0">
                 <option value="">---</option>
-                @foreach ($roles as $role)
+                @foreach ($this->roles as $role)
                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                 @endforeach
             </x-select>
@@ -77,7 +77,7 @@
             <x-label for="shift">{{ __('messages.shift') }}</x-label>
             <x-select id="shift" wire:model.live="filters.shift_id" class=" w-full py-0">
                 <option value="">---</option>
-                @foreach ($shifts as $shift)
+                @foreach ($this->shifts as $shift)
                     <option value="{{ $shift->id }}">{{ $shift->name }}</option>
                 @endforeach
             </x-select>
@@ -133,6 +133,13 @@
                                     </x-badgeWithCounter>
                                 @endcan
 
+                                @can('create', App\Models\User::class)
+                                    <x-badgeWithCounter title="{{ __('messages.duplicate') }}"
+                                        wire:click="$dispatch('showUserFormModal',{copiedUser:{{ $user }}})">
+                                        <x-svgs.duplicate class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+
                                 @can('delete', $user)
                                     <x-badgeWithCounter title="{{ __('messages.delete') }}"
                                         wire:confirm="{{ __('messages.are_u_sure') }}"
@@ -141,11 +148,6 @@
                                     </x-badgeWithCounter>
                                 @endcan
 
-
-                                {{-- <a href="{{ route('user.form', ['user' => $user, 'is_duplicate' => 'true']) }}"
-                                    class="flex items-center gap-1 border dark:border-gray-700 rounded-lg p-1 justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <x-svgs.duplicate class="w-4 h-4" />
-                                </a> --}}
                             </div>
                         </x-td>
                     </x-tr>

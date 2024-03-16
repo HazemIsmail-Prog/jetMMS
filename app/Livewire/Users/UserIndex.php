@@ -17,10 +17,7 @@ class UserIndex extends Component
 {
     use WithPagination;
 
-    public $titles;
-    public $departments;
-    public $shifts;
-    public $roles;
+    public $perPage = 10;
     public $filters = [
         'name' => '',
         'username' => '',
@@ -35,16 +32,28 @@ class UserIndex extends Component
     {
         $this->resetPage();
     }
-
-    public function mount()
-    {
-        $this->titles = Title::select('id', 'name_en', 'name_ar')->get();
-        $this->departments = Department::select('id', 'name_en', 'name_ar')->get();
-        $this->shifts = Shift::select('id', 'name_en', 'name_ar')->get();
-        $this->roles = Role::select('id', 'name_en', 'name_ar')->get();
+    
+    #[Computed()]
+    public function roles() {
+        return Role::select('id', 'name_en', 'name_ar')->get();
     }
 
-    #[Computed]
+    #[Computed()]
+    public function shifts() {
+        return Shift::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function departments() {
+        return Department::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function titles() {
+        return Title::select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
     #[On('statusChanged')]
     #[On('usersUpdated')]
     public function users()
@@ -80,13 +89,12 @@ class UserIndex extends Component
             ->when($this->filters['status'] != 'all', function ($q) {
                 $q->where('active', $this->filters["status"]);
             })
-            ->paginate(1000);
+            ->paginate($this->perPage);
     }
 
     public function delete(User $user) {
         $user->delete();
     }
-
 
     public function render()
     {

@@ -23,13 +23,21 @@ class UserForm extends Component
     public FormsUserForm $form;
 
     #[On('showUserFormModal')]
-    public function show(User $user)
+    public function show(User $user ,User $copiedUser)
     {
         $this->form->reset();
         $this->showModal = true;
         $this->user = $user;
         $this->form->fill($this->user);
         $this->form->roles = $this->user->roles->pluck('id');
+
+        if($copiedUser->id){
+            $this->form->title_id = $copiedUser->title_id;
+            $this->form->department_id = $copiedUser->department_id;
+            $this->form->shift_id = $copiedUser->shift_id;
+            $this->form->roles = $copiedUser->roles->pluck('id');
+        }
+
         $this->getExpectedNewUsername();
     }
 
@@ -76,17 +84,6 @@ class UserForm extends Component
         $this->dispatch('usersUpdated');
         $this->showModal = false;
     }
-
-    // public function mount(User $user)
-    // {
-    //     if (request()->is_duplicate) {
-    //         $this->form->id = null;
-    //         $this->form->name_ar = '';
-    //         $this->form->name_en = '';
-    //         $this->form->username = '';
-    //         $this->form->password = '';
-    //     }
-    // }
 
     public function render()
     {
