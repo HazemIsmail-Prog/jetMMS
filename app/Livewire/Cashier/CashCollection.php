@@ -15,15 +15,16 @@ class CashCollection extends Component
     public function unCollectedPayments()
     {
         return Payment::query()
-        ->with('invoice')
-        ->with('user')
+            ->with('invoice.order.technician')
+            ->with('user')
             ->where('is_collected', false)
-            ->where('method','cash')
-            ->get()
-            ;
+            ->where('method', 'cash')
+            ->orderBy('created_at', 'desc')
+            ->paginate();
     }
 
-    public function collect_payment(Payment $payment) {
+    public function collect_payment(Payment $payment)
+    {
         DB::beginTransaction();
         try {
             $payment->update([

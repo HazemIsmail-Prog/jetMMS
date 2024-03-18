@@ -24,11 +24,6 @@ class DispatchingIndex extends Component
         ];
     }
 
-    function test($event)
-    {
-        $this->dispatch("refreshBoxForOrderNo.{$event['orderID']}");
-    }
-
     #[Computed()]
     public function orders()
     {

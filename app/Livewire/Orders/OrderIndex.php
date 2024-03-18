@@ -24,7 +24,26 @@ class OrderIndex extends Component
     ];
 
     #[Url()]
-    public $filters;
+    public $filters =
+    [
+        'customer_id' => '',
+        'customer_name' => '',
+        'customer_phone' => '',
+        'areas' => '',
+        'block' => '',
+        'street' => '',
+        'order_number' => '',
+        'creators' => '',
+        'statuses' => '',
+        'technicians' => '',
+        'departments' => '',
+        'tags' => '',
+        'start_created_at' => '',
+        'end_created_at' => '',
+        'start_completed_at' => '',
+        'end_completed_at' => '',
+        'customer_id' => '',
+    ];
 
     #[Computed()]
     public function areas()
@@ -81,26 +100,6 @@ class OrderIndex extends Component
 
     public function mount()
     {
-
-        $this->filters =
-            [
-                'customer_name' => '',
-                'customer_phone' => '',
-                'areas' => '',
-                'block' => '',
-                'street' => '',
-                'order_number' => '',
-                'creators' => '',
-                'statuses' => '',
-                'technicians' => '',
-                'departments' => '',
-                'tags' => '',
-                'start_created_at' => '',
-                'end_created_at' => '',
-                'start_completed_at' => '',
-                'end_completed_at' => '',
-                'customer_id' => '',
-            ];
     }
 
     public function updatedFilters()
@@ -127,6 +126,9 @@ class OrderIndex extends Component
             ->withCount('comments as all_comments')
             ->orderBy('id', 'desc')
 
+            ->when($this->filters['customer_id'], function (Builder $q) {
+                $q->whereRelation('customer', 'id', $this->filters['customer_id']);
+            })
             ->when($this->filters['customer_name'], function (Builder $q) {
                 $q->whereRelation('customer', 'name', 'like', '%' . $this->filters['customer_name'] . '%');
             })

@@ -106,9 +106,24 @@
                                 @foreach ($shift_technicians->sortBy('name') as $technician)
                                     <div class="flex flex-col flex-shrink-0 w-64 gap-2 rounded-md overflow-hidden ">
                                         <div
-                                            class="flex items-center justify-center rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
+                                            class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
                                             <span
                                                 class="block text-sm font-semibold uppercase">{{ $technician->name }}</span>
+                                            <div class=" flex">
+                                                <a href="{{ route('order.index', [
+                                                    'filters[technicians]' => $technician->id,
+                                                    'filters[statuses]' => App\Models\Status::COMPLETED,
+                                                    'filters[start_completed_at]' => today()->format('Y-m-d'),
+                                                    'filters[end_completed_at]' => today()->format('Y-m-d'),
+                                                ]) }}"
+                                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
+                                                    {{ $technician->todays_completed_orders_count }}
+                                                </a>
+                                                <span
+                                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-700 dark:text-red-300">
+                                                    {{ $technician->current_orders_count }}
+                                                </span>
+                                            </div>
                                         </div>
                                         <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-320px)] rounded-md  border border-gray-200 dark:border-gray-700"
                                             id="tech{{ $technician->id }}">

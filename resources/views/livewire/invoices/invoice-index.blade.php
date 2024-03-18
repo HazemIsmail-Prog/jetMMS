@@ -28,14 +28,18 @@
     @endteleport
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3"> <x-input
-            wire:model.live="filters.invoice_id" type="number" dir="ltr" class="w-36 min-w-full text-center py-0"
-            placeholder="{{ __('messages.invoice_number') }}" />
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+
+        <x-input wire:model.live="filters.invoice_id" type="number" dir="ltr"
+            class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.invoice_number') }}" />
+
         <x-input wire:model.live="filters.order_id" type="number" dir="ltr"
             class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.order_number') }}" />
+
         <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter" value=""
             data-start="filters.start_created_at" data-end="filters.end_created_at"
             placeholder="{{ __('messages.created_at') }}" />
+
         <x-select class="w-36 min-w-full text-center py-0" id="department_id" wire:ignore
             wire:model.live="filters.department_id">
             <option value="">{{ __('messages.department') }}</option>
@@ -44,6 +48,7 @@
                 </option>
             @endforeach
         </x-select>
+
         <x-select class="w-36 min-w-full text-center py-0" id="technician_id" wire:ignore
             wire:model.live="filters.technician_id">
             <option value="">{{ __('messages.technician') }}</option>
@@ -51,16 +56,20 @@
                 <option value="{{ $technician->id }}">{{ $technician->name }}</option>
             @endforeach
         </x-select>
+
         <x-input class="w-36 min-w-full text-center py-0" id="customer_name" wire:model.live="filters.customer_name"
             placeholder="{{ __('messages.customer_name') }}" />
+
         <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="customer_phone"
             wire:model.live="filters.customer_phone" placeholder="{{ __('messages.customer_phone') }}" />
+
         <x-select required wire:model.live="filters.payment_status" class=" w-full py-0">
             <option value="">{{ __('messages.payment_status') }}</option>
             @foreach (App\Enums\PaymentStatusEnum::cases() as $status)
                 <option value="{{ $status->value }}">{{ $status->title() }}</option>
             @endforeach
         </x-select>
+        
     </div>
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -132,7 +141,7 @@
                         <x-td>{{ $invoice->formated_knet_amount }}</x-td>
                         <x-td>{{ $invoice->formated_total_paid_amount }}</x-td>
                         <x-td>{{ $invoice->formated_remaining_amount }}</x-td>
-                        <x-td>{{ $invoice->payment_status->title() }}</x-td>
+                        <x-td class=" whitespace-nowrap">{{ $invoice->payment_status->title() }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
                                 @if ($this->invoices->where('order_id', $invoice->order_id)->count() > 1)

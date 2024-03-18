@@ -8,6 +8,15 @@ use Illuminate\Auth\Access\Response;
 
 class IncreasePolicy
 {
+
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
+
+        return null;
+    }
     
     public function viewAny(User $user): bool
     {

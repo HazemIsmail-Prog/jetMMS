@@ -53,6 +53,7 @@ class TechnicianPage extends Component
                 'index' => null,
             ]);
         }
+        $this->dispatch('order_updated');
     }
 
     #[Layout('layouts.technician')] 

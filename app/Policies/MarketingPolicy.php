@@ -7,6 +7,16 @@ use App\Models\User;
 
 class MarketingPolicy
 {
+
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
+
+        return null;
+    }
+    
     public function viewAny(User $user): bool
     {
         return $user->hasPermission('marketing_menu');

@@ -8,6 +8,15 @@ use Illuminate\Auth\Access\Response;
 class DummyModelPolicy
 {
 
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
+
+        return null;
+    }
+
     // Dashboard
     public function dashboard_menu(User $user): bool
     {

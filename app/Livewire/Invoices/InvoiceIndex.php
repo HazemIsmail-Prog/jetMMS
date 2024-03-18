@@ -70,8 +70,11 @@ class InvoiceIndex extends Component
             ->when($this->filters['customer_phone'], function (Builder $q) {
                 $q->whereRelation('order.phone', 'number', 'like', $this->filters['customer_phone'] . '%');
             })
+            ->when($this->filters['invoice_id'], function ($q) {
+                $q->where('id', $this->filters['invoice_id']);
+            })
             ->when($this->filters['order_id'], function ($q) {
-                $q->where('id', $this->filters['order_id']);
+                $q->where('order_id', $this->filters['order_id']);
             })
             ->when($this->filters['technician_id'], function (Builder $q) {
                 $q->whereRelation('order','technician_id', $this->filters['technician_id']);

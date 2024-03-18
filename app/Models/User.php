@@ -63,7 +63,8 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function employee() : HasOne {
+    public function employee(): HasOne
+    {
         return $this->hasOne(Employee::class);
     }
 
@@ -89,7 +90,7 @@ class User extends Authenticatable
 
     public function vouchers()
     {
-        return $this->hasMany(Voucher::class ,'created_by');
+        return $this->hasMany(Voucher::class, 'created_by');
     }
 
     public function orders_technician()
@@ -97,12 +98,38 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'technician_id');
     }
 
+    // this function to prevent eager loading for get attributes
+    // public function newQuery($excludeDeleted = true)
+    // {
+    //     return parent::newQuery($excludeDeleted)->with([
+    //         'orders_technician',
+    //     ]);
+    // }
+
+    public function getTodaysCompletedOrdersCountAttribute()
+    {
+
+        return Order::query()
+            ->where('technician_id', $this->id)
+            ->where('status_id', Status::COMPLETED)
+            ->whereDate('completed_at', today())
+            ->count();
+    }
+
+    public function getCurrentOrdersCountAttribute()
+    {
+        return Order::query()
+            ->where('technician_id', $this->id)
+            ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
+            ->count();
+    }
+
     public function orders_creator()
     {
         return $this->hasMany(Order::class, 'created_by');
     }
 
-    public function roles() : BelongsToMany
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
@@ -115,7 +142,7 @@ class User extends Authenticatable
     public function permissions()
     {
         $permissionList = [];
-        
+
         foreach ($this->roles as $role) {
             foreach ($role->permissions as $permission) {
                 if (!in_array($permission->name, $permissionList)) {
@@ -193,10 +220,9 @@ class User extends Authenticatable
     {
         $last_message =
             $this->messages()
-            ->where(function($q){
-                $q->
-                where('receiver_user_id',auth()->id())
-                ->orWhere('sender_user_id',auth()->id());
+            ->where(function ($q) {
+                $q->where('receiver_user_id', auth()->id())
+                    ->orWhere('sender_user_id', auth()->id());
             })
             ->latest()
             ->first();

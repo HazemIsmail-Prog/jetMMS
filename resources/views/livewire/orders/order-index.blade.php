@@ -69,7 +69,7 @@
         </div>
         <div>
             <x-label for="creator">{{ __('messages.creator') }}</x-label>
-            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creator" live />
+            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creators" live />
         </div>
         <div>
             <x-label for="status">{{ __('messages.status') }}</x-label>

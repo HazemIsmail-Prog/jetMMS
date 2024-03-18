@@ -8,6 +8,16 @@ use Illuminate\Auth\Access\Response;
 
 class CarServicePolicy
 {
+
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
+
+        return null;
+    }
+    
     public function viewAny(User $user): bool
     {
         return $user->hasPermission('car_services_menu');

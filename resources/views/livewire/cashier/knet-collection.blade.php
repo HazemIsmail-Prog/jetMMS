@@ -3,9 +3,27 @@
         <div class=" flex items-center justify-between">
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.knet_collection') }}
+                <span id="counter"></span>
             </h2>
+            <span id="addNew"></span>
         </div>
     </x-slot>
+
+    @teleport('#counter')
+        <span
+            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+            {{ $this->unCollectedPayments->total() }}
+        </span>
+    @endteleport
+
+    @if ($this->unCollectedPayments->hasPages())
+        <x-slot name="footer">
+            <span id="pagination"></span>
+        </x-slot>
+        @teleport('#pagination')
+            <div class="">{{ $this->unCollectedPayments->links() }}</div>
+        @endteleport
+    @endif
 
     @if ($this->unCollectedPayments->count() > 0)
 
@@ -47,7 +65,8 @@
             </tfoot>
         </x-table>
     @else
-        <h2 class="font-semibold text-xl flex gap-3 items-center justify-center text-green-600 dark:text-green-500 leading-tight">
+        <h2
+            class="font-semibold text-xl flex gap-3 items-center justify-center text-green-600 dark:text-green-500 leading-tight">
             {{ __('messages.no_uncollected_payments') }}
         </h2>
     @endif

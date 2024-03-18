@@ -108,7 +108,7 @@
                                     </x-badgeWithCounter>
                                 @endcan
                                 @can('viewAny', App\Models\Order::class)
-                                    <a href="{{ route('order.index', ['customer_id' => $customer->id]) }}">
+                                    <a href="{{ route('order.index', ['filters[customer_id]' => $customer->id]) }}">
                                         <x-badgeWithCounter counter="{{ $customer->orders->count() }}">
                                             <x-svgs.list class="h-4 w-4" />
                                         </x-badgeWithCounter>

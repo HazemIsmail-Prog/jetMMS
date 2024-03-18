@@ -8,20 +8,19 @@ use Illuminate\Auth\Access\Response;
 
 class OrderPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): bool
     {
         return $user->hasPermission('orders_menu');
-    }
-    
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Order $order): bool
-    {
-        return true;
     }
     
     public function view_order_progress(User $user, Order $order): bool

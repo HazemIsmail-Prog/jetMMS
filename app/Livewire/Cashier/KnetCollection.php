@@ -4,7 +4,6 @@ namespace App\Livewire\Cashier;
 
 use App\Models\Payment;
 use App\Services\CreateInvoicePaymentVoucher;
-use App\Services\CreatePaymentVoucher;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -15,11 +14,12 @@ class KnetCollection extends Component
     public function unCollectedPayments()
     {
         return Payment::query()
-        ->with('invoice')
-        ->with('user')
+            ->with('invoice.order.technician')
+            ->with('user')
             ->where('is_collected', false)
             ->where('method', 'knet')
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate();
     }
 
     public function collect_payment(Payment $payment)
