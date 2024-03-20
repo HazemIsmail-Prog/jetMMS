@@ -1,5 +1,5 @@
 <a href="/">
-    @if ($logo)
+    @if ($settings->logo)
     <div class=" w-full flex justify-center">
     
       <img class="w-60" src="https://miskalddartestbucket.s3.amazonaws.com/{{ $logo }}" alt="">

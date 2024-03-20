@@ -15,16 +15,10 @@ class InvoiceIndex extends Component
 {
     use WithPagination;
 
-    public $listeners = [];
-
-    public $technicians;
-    public $departments;
     public $filters;
 
     public function mount()
     {
-        $this->technicians = User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
-        $this->departments = Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
 
         $this->filters =
             [
@@ -48,6 +42,18 @@ class InvoiceIndex extends Component
     }
 
     #[Computed()]
+    public function technicians()
+    {
+        return User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
     #[On('invoicesUpdated')]
     #[On('paymentsUpdated')]
     public function invoices()
@@ -62,7 +68,7 @@ class InvoiceIndex extends Component
             ->with('payments')
 
             ->when($this->filters['payment_status'], function (Builder $q) {
-                $q->where('payment_status',$this->filters['payment_status'] );
+                $q->where('payment_status', $this->filters['payment_status']);
             })
             ->when($this->filters['customer_name'], function (Builder $q) {
                 $q->whereRelation('order.customer', 'name', 'like', '%' . $this->filters['customer_name'] . '%');
@@ -77,10 +83,10 @@ class InvoiceIndex extends Component
                 $q->where('order_id', $this->filters['order_id']);
             })
             ->when($this->filters['technician_id'], function (Builder $q) {
-                $q->whereRelation('order','technician_id', $this->filters['technician_id']);
+                $q->whereRelation('order', 'technician_id', $this->filters['technician_id']);
             })
             ->when($this->filters['department_id'], function (Builder $q) {
-                $q->whereRelation('order','department_id', $this->filters['department_id']);
+                $q->whereRelation('order', 'department_id', $this->filters['department_id']);
             })
             ->when($this->filters['start_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '>=', $this->filters['start_created_at']);
@@ -89,10 +95,11 @@ class InvoiceIndex extends Component
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
 
-            ->paginate(15);
+            ->paginate(10);
     }
 
-    public function delete(Invoice $invoice) {
+    public function delete(Invoice $invoice)
+    {
         $invoice->payments()->delete();
         $invoice->delete();
         $this->dispatch('invoicesUpdated');

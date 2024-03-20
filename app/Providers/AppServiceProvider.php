@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(!app()->isProduction());
 
         if (Schema::hasTable('settings')) {
-            View::share('logo', Setting::find(1)->logo);
+            View::share('settings', Setting::find(1));
         }
     }
 }

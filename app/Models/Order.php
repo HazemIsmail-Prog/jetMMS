@@ -190,6 +190,11 @@ class Order extends Model
     }
 
     // Formatters
+    public function getFormatedIdAttribute()
+    {
+        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
+    }
+
     public function getFormatedCreatedAtAttribute() {
         return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
     }

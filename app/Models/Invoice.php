@@ -159,6 +159,10 @@ class Invoice extends Model
 
     // Formaters
 
+    public function getFormatedIdAttribute() {
+        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
+    }
+
     public function getFormatedServicesAmountAttribute() {
         return $this->services_amount > 0 ? number_format($this->services_amount, 3) : '-';
     }

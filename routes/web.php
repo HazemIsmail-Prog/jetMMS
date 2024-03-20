@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
 use App\Livewire\Accounts\AccountIndex;
@@ -62,6 +63,10 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
+
+    Route::get('/invoice/pdf/{invoice}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
+    Route::get('/invoice/detailed_pdf/{invoice}', [InvoiceController::class, 'detailed_pdf'])->name('invoice.detailed_pdf');
+
 
 
     Route::group(['middleware' => 'no_technicians'], function () {

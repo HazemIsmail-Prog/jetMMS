@@ -28,48 +28,73 @@
     @endteleport
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
 
-        <x-input wire:model.live="filters.invoice_id" type="number" dir="ltr"
-            class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.invoice_number') }}" />
+        <div>
+            <x-label for="invoice_number">{{ __('messages.invoice_number') }}</x-label>
+            <x-input wire:model.live="filters.invoice_id" id="invoice_number" type="number" dir="ltr"
+                class="w-full text-center py-0" />
+        </div>
 
-        <x-input wire:model.live="filters.order_id" type="number" dir="ltr"
-            class="w-36 min-w-full text-center py-0" placeholder="{{ __('messages.order_number') }}" />
+        <div>
+            <x-label for="order_number">{{ __('messages.order_number') }}</x-label>
+            <x-input wire:model.live="filters.order_id" id="order_number" type="number" dir="ltr"
+                class="w-full text-center py-0" />
+        </div>
 
-        <x-input class="w-36 min-w-full text-center py-0" type="text" name="datefilter" value=""
-            data-start="filters.start_created_at" data-end="filters.end_created_at"
-            placeholder="{{ __('messages.created_at') }}" />
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-select class="w-full text-center py-0" id="department" wire:ignore
+                wire:model.live="filters.department_id">
+                <option value="">---</option>
+                @foreach ($this->departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->name }}
+                    </option>
+                @endforeach
+            </x-select>
+        </div>
 
-        <x-select class="w-36 min-w-full text-center py-0" id="department_id" wire:ignore
-            wire:model.live="filters.department_id">
-            <option value="">{{ __('messages.department') }}</option>
-            @foreach ($departments as $department)
-                <option value="{{ $department->id }}">{{ $department->name }}
-                </option>
-            @endforeach
-        </x-select>
+        <div>
+            <x-label for="technician">{{ __('messages.technician') }}</x-label>
+            <x-select class="w-full text-center py-0" id="technician" wire:ignore
+                wire:model.live="filters.technician_id">
+                <option value="">---</option>
+                @foreach ($this->technicians->sortBy('name') as $technician)
+                    <option value="{{ $technician->id }}">{{ $technician->name }}</option>
+                @endforeach
+            </x-select>
+        </div>
 
-        <x-select class="w-36 min-w-full text-center py-0" id="technician_id" wire:ignore
-            wire:model.live="filters.technician_id">
-            <option value="">{{ __('messages.technician') }}</option>
-            @foreach ($technicians->sortBy('name') as $technician)
-                <option value="{{ $technician->id }}">{{ $technician->name }}</option>
-            @endforeach
-        </x-select>
+        <div>
+            <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
+            <x-input class="w-full text-center py-0" id="customer_name" wire:model.live="filters.customer_name" />
+        </div>
 
-        <x-input class="w-36 min-w-full text-center py-0" id="customer_name" wire:model.live="filters.customer_name"
-            placeholder="{{ __('messages.customer_name') }}" />
+        <div>
+            <x-label for="customer_phone">{{ __('messages.customer_phone') }}</x-label>
+            <x-input dir="ltr" class="w-full text-center py-0" id="customer_phone"
+                wire:model.live="filters.customer_phone" />
+        </div>
 
-        <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="customer_phone"
-            wire:model.live="filters.customer_phone" placeholder="{{ __('messages.customer_phone') }}" />
+        <div>
+            <x-label for="payment_status">{{ __('messages.payment_status') }}</x-label>
+            <x-select id="payment_status" required wire:model.live="filters.payment_status" class=" w-full py-0">
+                <option value="">---</option>
+                @foreach (App\Enums\PaymentStatusEnum::cases() as $status)
+                    <option value="{{ $status->value }}">{{ $status->title() }}</option>
+                @endforeach
+            </x-select>
+        </div>
 
-        <x-select required wire:model.live="filters.payment_status" class=" w-full py-0">
-            <option value="">{{ __('messages.payment_status') }}</option>
-            @foreach (App\Enums\PaymentStatusEnum::cases() as $status)
-                <option value="{{ $status->value }}">{{ $status->title() }}</option>
-            @endforeach
-        </x-select>
-        
+        <div>
+            <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
+            <x-input class="w-full text-center py-0" type="date" id="start_created_at"
+                wire:model.live="filters.start_created_at" />
+            <x-input class="w-full text-center py-0" type="date" id="end_created_at"
+                wire:model.live="filters.end_created_at" />
+
+        </div>
+
     </div>
 
     <div class=" overflow-x-auto sm:rounded-lg">
@@ -101,13 +126,16 @@
             <tbody>
                 @foreach ($this->invoices as $invoice)
                     <x-tr>
-                        <x-td>{{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}</x-td>
+                        <x-td>
+                            <a target="_blank" class="btn"
+                                href="{{ route('invoice.detailed_pdf', $invoice) }}">{{ $invoice->formated_id }}</a>
+                        </x-td>
                         <x-td>
                             <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
                                 ? $this->invoices->where('order_id', $invoice->order_id)->count()
                                 : null" title="{{ __('messages.invoices') }}"
                                 wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
-                                {{ str_pad($invoice->order_id, 8, '0', STR_PAD_LEFT) }}
+                                {{ $invoice->order->formated_id }}
                             </x-badgeWithCounter>
                         </x-td>
                         <x-td class=" whitespace-nowrap">
