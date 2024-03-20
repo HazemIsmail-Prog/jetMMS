@@ -28,6 +28,7 @@ class InvoiceCard extends Component
 
     #[On('invoicesUpdated')]
     #[On('paymentsUpdated')]
+    #[On('discountUpdated')]
     #[On('echo:payments.{invoice.id},RefreshInvoicePaymentsScreenEvent')]
     public function render()
     {

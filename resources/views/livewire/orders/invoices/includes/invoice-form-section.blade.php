@@ -73,17 +73,11 @@
         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.delivery') }}</h3>
         <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0" />
     </div>
-    <div class=" p-2 border dark:border-gray-700 rounded-lg mt-4">
-        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.discount') }}</h3>
-        <x-input class="w-full" wire:model.live="discount" type="number" step="0.001" min="0"
-            max="{{ collect($selected_services)->where('service_type', 'service')->sum('service_total') }}" />
-        <p class=" text-xs">{{ __('messages.discount_must_be_less_than_or_equal_services') }}</p>
-    </div>
 
     {{-- Total Amount --}}
     <div class=" p-4 border dark:border-gray-700 rounded-lg mt-4 text-center">
         <h3 class="font-bold text-green-800 dark:text-green-400">
-            {{ number_format(collect($selected_services)->sum('service_total') + ($parts ? collect($parts)->sum('total') : 0) +($delivery == '' ? 0 : $delivery) - ($discount == '' ? 0 : $discount), 3) }}
+            {{ number_format(collect($selected_services)->sum('service_total') + ($parts ? collect($parts)->sum('total') : 0) +($delivery == '' ? 0 : $delivery), 3) }}
         </h3>
 
     </div>

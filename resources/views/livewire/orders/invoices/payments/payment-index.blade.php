@@ -34,7 +34,6 @@
                 <tr></tr>
             </tbody>
         </x-table>
-        <x-section-border />
     @else
         <div class="flex items-center justify-center font-bold text-red-600 p-2">
             {{ __('messages.no_payments_found') }}
@@ -43,6 +42,7 @@
 
     @can('create', App\Models\Payment::class)
         @if ($invoice->remaining_amount > 0)
+            <x-section-border />
             <x-button type="button"
                 wire:click="$dispatch('showPaymentFormModal',{invoice:{{ $invoice }}})">{{ __('messages.create_payment') }}</x-button>
         @endif

@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Orders\Invoices;
 
-use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Service;
@@ -19,12 +18,18 @@ class InvoiceForm extends Component
     public $showModal = false;
     public Order $order;
     public $search = '';
-    #[Rule('required')]
+    // #[Rule('required')]
     public $selected_services = [];
     public $select_service = [];
-    public $discount = 0;
     public $delivery = 0;
     public $parts = [];
+
+    public function rules() {
+        return [
+            'selected_services' => 'required_without_all:parts',
+            'parts' => 'required_without_all:selected_services',
+        ];
+    }
 
     #[On('showInvoiceFormModal')]
     public function show(Order $order) {
@@ -120,7 +125,6 @@ class InvoiceForm extends Component
             $invoice = Invoice::create([
                 'order_id' => $this->order->id,
                 'user_id' => auth()->id(),
-                'discount' => $this->discount,
                 'delivery' => $this->delivery,
                 'payment_status' => collect($this->selected_services)->sum('service_total') > 0 ? 'pending' : 'free',
             ]);  // Observer Applied

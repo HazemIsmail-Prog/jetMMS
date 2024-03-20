@@ -17,7 +17,6 @@ class InvoiceObserver
     {
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
-
     }
 
     /**
@@ -25,7 +24,9 @@ class InvoiceObserver
      */
     public function updated(Invoice $invoice): void
     {
-        //
+        if ($invoice->isDirty('discount')) {
+            broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
+        }
     }
 
     /**
@@ -39,7 +40,6 @@ class InvoiceObserver
 
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
-
     }
 
     /**

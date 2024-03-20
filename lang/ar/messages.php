@@ -526,4 +526,10 @@ return [
     'sales_amount' => 'سعر البيع',
     'edit_part_invoice' => 'تعديل فاتورة بضاعة العهدة رقم ',
 
+
+
+    'edit_discount' => 'تعديل الخصم ',
+
+
+
 ];

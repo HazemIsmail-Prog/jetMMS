@@ -29,6 +29,7 @@
     @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
+    @livewire('orders.invoices.discount.discount-form')
 
 
 

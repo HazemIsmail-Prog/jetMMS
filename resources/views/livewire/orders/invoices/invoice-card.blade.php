@@ -80,13 +80,15 @@
             <th class=" text-right">{{ number_format($invoice->delivery, 3) }}
             </th>
         </tr>
-        <tr>
-            <th>{{ __('messages.discount') }}</th>
-            <th></th>
-            <th></th>
-            <th class=" text-right text-red-500 line-through">{{ number_format($invoice->discount, 3) }}
-            </th>
-        </tr>
+        @if ($invoice->discount > 0)
+            <tr>
+                <th>{{ __('messages.discount') }}</th>
+                <th></th>
+                <th></th>
+                <th class=" text-right text-red-500 line-through">{{ number_format($invoice->discount, 3) }}
+                </th>
+            </tr>
+        @endif
         <tr>
             <th>{{ __('messages.total') }}</th>
             <th></th>
@@ -110,6 +112,14 @@
         </tr>
     </table>
     <x-section-border />
+
+    @if ($invoice->payments->count() == 0 && !in_array(auth()->user()->title_id, [10, 11]))
+        <div class=" text-center">
+            <x-button type="button"
+                wire:click="$dispatch('showDiscountFormModal',{invoice:{{ $invoice }}})">{{ __('messages.edit_discount') }}</x-button>
+            <x-section-border />
+        </div>
+    @endif
 
     @livewire('orders.invoices.payments.payment-index', ['invoice' => $invoice], key($invoice->id . rand()))
 
