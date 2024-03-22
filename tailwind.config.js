@@ -18,6 +18,7 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 cairo: ["Cairo", ...defaultTheme.fontFamily.sans],
+                lateef: ["Lateef", ...defaultTheme.fontFamily.sans],
 
             },
 

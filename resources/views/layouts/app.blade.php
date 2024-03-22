@@ -23,7 +23,7 @@
 
 </head>
 
-<body class="{{ app()->getLocale() == 'ar' ? 'font-cairo' : ' font-Nunito' }}  antialiased h-screen overflow-hidden"
+<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden"
     :class="{ 'sidebar-expanded': sidebarExpanded }" x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }" x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
     <x-banner />
 

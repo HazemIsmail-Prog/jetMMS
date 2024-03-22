@@ -5,10 +5,38 @@
         <h3 class="font-semibold text-gray-900 dark:text-white">
             {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
         </h3>
-        @can('delete', $invoice)
-            <x-svgs.trash wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
-                class=" w-4 h-4 text-red-600" />
-        @endcan
+
+
+        <div class=" flex items-center gap-2">
+            <!-- Print Dropdown -->
+            <div class="relative">
+                <x-dropdown width="48">
+                    <x-slot name="trigger">
+                        <x-badgeWithCounter title="{{ __('messages.print_invoice') }}">
+                            <x-svgs.printer class="h-4 w-4" />
+                        </x-badgeWithCounter>
+                    </x-slot>
+                    <x-slot name="content">
+                        <!-- Account Management -->
+                        <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{ __('messages.print_invoice') }}
+                        </div>
+                        <x-dropdown-link target="_blank" href="{{ route('invoice.detailed_pdf', $invoice) }}">
+                            {{ __('messages.print_detailed_invoice') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link target="_blank" href="{{ route('invoice.pdf', $invoice) }}">
+                            {{ __('messages.print_non_detailed_invoice') }}
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+            </div>
+            @can('delete', $invoice)
+                <x-badgeWithCounter wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
+                    title="{{ __('messages.print_invoice') }}">
+                    <x-svgs.trash class="h-4 w-4 text-red-600" />
+                </x-badgeWithCounter>
+            @endcan
+        </div>
     </div>
 
     {{-- Invoice Table --}}

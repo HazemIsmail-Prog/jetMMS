@@ -71,8 +71,7 @@
         <div class=" flex gap-2 items-center">
 
             @can('view_order_progress', $order)
-                <x-badgeWithCounter
-                    wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
+                <x-badgeWithCounter wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
@@ -84,12 +83,15 @@
                 </x-badgeWithCounter>
             @endcan
 
-            @can('view_order_invoices',$order)
-                <x-badgeWithCounter :counter="$invoices_count"
-                    wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
-                    <x-svgs.invoice class="h-4 w-4" />
-                </x-badgeWithCounter>
-            @endcan
+            @if (in_array($order->status_id, [App\Models\Status::ARRIVED,App\Models\Status::RECEIVED]))
+                @can('view_order_invoices', $order)
+                    <x-badgeWithCounter :counter="$invoices_count"
+                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
+                        <x-svgs.invoice class="h-4 w-4" />
+                    </x-badgeWithCounter>
+                @endcan
+            @endif
+
 
         </div>
         <div class=" flex gap-2 items-center">

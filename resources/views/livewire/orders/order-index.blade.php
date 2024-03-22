@@ -162,12 +162,14 @@
                                     </x-badgeWithCounter>
                                 @endcan
 
-                                @can('view_order_invoices', $order)
-                                    <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
-                                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
-                                        <x-svgs.invoice class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                                @if (in_array($order->status_id, [App\Models\Status::ARRIVED, App\Models\Status::RECEIVED, App\Models\Status::COMPLETED]))
+                                    @can('view_order_invoices', $order)
+                                        <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
+                                            wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
+                                            <x-svgs.invoice class="h-4 w-4" />
+                                        </x-badgeWithCounter>
+                                    @endcan
+                                @endif
                             </div>
                         </x-td>
                     </x-tr>
