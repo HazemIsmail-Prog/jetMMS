@@ -20,6 +20,12 @@ class CommentModal extends Component
         $this->modalTitle = __('messages.comments_for_order_number') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
         $this->showModal = true;
 
+        $this->js("
+        setTimeout(function() { 
+            document.getElementById('comment').focus();
+         }, 100);
+        ");
+
         $this->setCurrentCommentAsRead($this->order);
     }
 

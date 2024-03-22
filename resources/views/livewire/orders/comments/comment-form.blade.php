@@ -35,7 +35,7 @@
                 </div>
                 <div class=" pt-0.5 ">
                     <div class="relative flex">
-                        <x-input wire:model="comment" type="text" placeholder="{{ __('messages.write_your_message') }}"
+                        <x-input wire:model="comment" id="comment" type="text" placeholder="{{ __('messages.write_your_message') }}"
                             class="w-full text-start text-gray-900 dark:text-gray-100 pe-16 bg-transparent rounded-md py-3"/>
                         <div class="absolute end-0 items-center inset-y-0 flex">
                             <button type="submit"

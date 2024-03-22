@@ -36,7 +36,8 @@ class CommentForm extends Component
     }
 
     // #[On('echo:comments.{order.id},RefreshOrderCommentsScreenEvent')] // Alternative working way
-    public function listenToDispatch() {
+    public function listenToDispatch()
+    {
         $this->comments();
         $this->scrollToBottom();
     }
@@ -67,7 +68,6 @@ class CommentForm extends Component
             const el = document.getElementById('messages');
             el.scrollTop = el.scrollHeight - el.clientHeight;
          }, 100);
-
         ");
     }
 
