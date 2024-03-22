@@ -1,3 +1,12 @@
+{{-- <div>
+    <pre>
+
+        {{ $order }}
+    </pre>
+</div> --}}
+
+
+
 <div x-data={showBox:@entangle('showBox')} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
@@ -9,27 +18,27 @@
     cursor-pointer
         rounded-lg
     "
-    style="border-color: {{ $status_color }}">
+    style="border-color: {{ $order->status->color }}">
 
     <div class="flex justify-between items-center">
-        <div class="text-md font-semibold">{{ $customer_name }}</div>
-        <div class="text-xs">{{ $phone_number }}</div>
+        <div class="text-md font-semibold">{{ $order->customer->name }}</div>
+        <div class="text-xs">{{ $order->phone->number }}</div>
     </div>
 
-    <h4 class="mt-2 text-xs">{{ $address->full_address }}</h4>
+    <h4 class="mt-2 text-xs">{{ $order->address->full_address }}</h4>
 
     <div class="mt-2">
 
         <div
             class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             <i class="mgc_user_3_line text-base me-1"></i>
-            {{ $order_creator }}
+            {{ $order->creator->name }}
         </div>
 
         <div
             class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             <i class="mgc_hashtag_line text-base me-1"></i>
-            {{ str_pad($order->id, 8, '0', STR_PAD_LEFT) }}
+            {{ $order->formated_id }}
         </div>
 
         @if (!in_array($order->status_id, [3, 7]))
@@ -77,15 +86,15 @@
             @endcan
 
             @can('view_order_comments', $order)
-                <x-badgeWithCounter :counter="$comments_count"
+                <x-badgeWithCounter :counter="$order->comments_count"
                     wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
                     <x-svgs.comment class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
-            @if (in_array($order->status_id, [App\Models\Status::ARRIVED,App\Models\Status::RECEIVED]))
+            @if (in_array($order->status_id, [App\Models\Status::ARRIVED]))
                 @can('view_order_invoices', $order)
-                    <x-badgeWithCounter :counter="$invoices_count"
+                    <x-badgeWithCounter :counter="$order->invoices_count"
                         wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
                         <x-svgs.invoice class="h-4 w-4" />
                     </x-badgeWithCounter>

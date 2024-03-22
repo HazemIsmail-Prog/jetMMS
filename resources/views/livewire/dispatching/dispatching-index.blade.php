@@ -26,7 +26,8 @@
             <div class="flex overflow-x-auto  gap-2">
                 {{-- unassgined --}}
                 <div class="flex flex-col flex-shrink-0 gap-2 w-64 transition-all overflow-hidden">
-                    <div class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
+                    <div
+                        class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
                         <span class="block text-sm font-semibold uppercase">{{ __('messages.unassigned') }}</span>
                         <span
                             class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
@@ -36,7 +37,8 @@
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="tech0">
                         @foreach ($this->orders->where('status_id', 1) as $i => $order)
-                            @livewire(
+                            @livewire('dispatching.order-box', ['order' => $order, 'technicians' => $this->technicians], key($order->id . rand()))
+                            {{-- @livewire(
                                 'dispatching.order-box',
                                 [
                                     'order' => $order,
@@ -52,7 +54,7 @@
                                     'unread_comments_count' => $order->unread_comments_count,
                                 ],
                                 key($order->id . rand())
-                            )
+                            ) --}}
                         @endforeach
                     </div>
                 </div>
@@ -70,7 +72,9 @@
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="techhold">
                         @foreach ($this->orders->where('status_id', 5) as $i => $order)
-                            @livewire(
+                            @livewire('dispatching.order-box', ['order' => $order, 'technicians' => $this->technicians], key($order->id . rand()))
+
+                            {{-- @livewire(
                                 'dispatching.order-box',
                                 [
                                     'order' => $order,
@@ -86,7 +90,7 @@
                                     'unread_comments_count' => $order->unread_comments_count,
                                 ],
                                 key($order->id . rand())
-                            )
+                            ) --}}
                         @endforeach
                     </div>
                 </div>
@@ -138,7 +142,9 @@
                                         <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-320px)] rounded-md  border border-gray-200 dark:border-gray-700"
                                             id="tech{{ $technician->id }}">
                                             @foreach ($this->orders->where('technician_id', $technician->id) as $i => $order)
-                                                @livewire(
+                                                @livewire('dispatching.order-box', ['order' => $order, 'technicians' => $this->technicians], key($order->id . rand()))
+
+                                                {{-- @livewire(
                                                     'dispatching.order-box',
                                                     [
                                                         'order' => $order,
@@ -154,7 +160,7 @@
                                                         'unread_comments_count' => $order->unread_comments_count,
                                                     ],
                                                     key($order->id . rand())
-                                                )
+                                                ) --}}
                                             @endforeach
                                         </div>
                                     </div>

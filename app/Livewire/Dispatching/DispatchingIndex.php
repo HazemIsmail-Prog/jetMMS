@@ -30,16 +30,16 @@ class DispatchingIndex extends Component
         return Order::query()
             ->where('department_id', $this->department->id)
             ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
-            ->addSelect(['customer_name' => Customer::select('name')->whereColumn('id', 'orders.customer_id')])
-            ->addSelect(['phone_number' => Phone::select('number')->whereColumn('id', 'orders.phone_id')])
-            ->addSelect(['status_color' => Status::select('color')->whereColumn('id', 'orders.status_id')])
-            ->addSelect(['order_creator' => User::select('name_' . app()->getLocale())->whereColumn('id', 'orders.created_by')])
-            ->with('address.area')
+            ->with('status:id,color')
+            ->with('customer:id,name')
+            ->with('phone:id,number')
+            ->with('address.area:id,name_' . app()->getLocale())
+            ->with('creator:id,name_' . app()->getLocale())
             ->withCount('invoices')
             ->withCount('comments')
             ->withCount(['comments as unread_comments_count' => function ($q) {
                 $q->where('is_read', false);
-                $q->where('user_id','!=', auth()->id());
+                $q->where('user_id', '!=', auth()->id());
             }])
             ->orderBy('index')
             ->get();
