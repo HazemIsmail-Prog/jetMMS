@@ -62,7 +62,7 @@
             @endcan
 
             @can('viewAny', App\Models\Customer::class)
-                <x-sidebar-item icon="diversity_3" route="customer.index" :title="__('messages.customers')" />
+                <x-sidebar-item icon="users" route="customer.index" :title="__('messages.customers')" />
             @endcan
 
             @can('viewAny', App\Models\Order::class)
@@ -74,7 +74,25 @@
             @endcan
 
             @can('canDispatch', App\Models\DummyModel::class)
-                <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'bg-slate-900' }} @endif"
+
+                <x-sidebar-dropdown title="{{ __('messages.dispatching') }}" icon="truck">
+                    @foreach ($this->departments as $department)
+                        <x-nested-sidebar-item route="dispatch-panel.index" :param="$department->id" :title="$department->name" />
+                    @endforeach
+                </x-sidebar-dropdown>
+
+
+
+
+
+
+
+
+
+
+
+
+                {{-- <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'bg-slate-900' }} @endif"
                     x-data="{ open: {{ in_array(Route::current()->getName(), ['dispatch-panel.index']) ? 1 : 0 }} }">
                     <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['dispatch-panel.index'])) {{ 'hover:text-slate-200' }} @endif"
                         href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
@@ -93,7 +111,7 @@
                         @endforeach
 
                     </ul>
-                </li>
+                </li> --}}
             @endcan
 
             @can('operations_reports')
@@ -126,7 +144,7 @@
             @endcan
 
             @can('cash_collection_menu', App\Models\DummyModel::class)
-                <x-sidebar-item icon="diversity_3" route="cash_collection" :title="__('messages.cash_collection')" />
+                <x-sidebar-item icon="dashboard" route="cash_collection" :title="__('messages.cash_collection')" />
             @endcan
 
             @can('knet_collection_menu', App\Models\DummyModel::class)
@@ -156,34 +174,20 @@
             @endcan
 
             @can('accounting_reports', App\Models\DummyModel::class)
-                <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                    x-data="{ open: {{ in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                    <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                        href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <x-svgs.settings />
-                                <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                            </div>
-                            <x-svgs.chevron />
-                        </div>
-                    </a>
-                    <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['account_statement', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                        :class="open ? '!block' : 'hidden'">
-                        @can('account_statement_report', App\Models\DummyModel::class)
-                            <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
-                        @endcan
-                        @can('balance_sheet_report', App\Models\DummyModel::class)
-                            <x-nested-sidebar-item route="balance_sheet" :title="__('messages.balance_sheet')" />
-                        @endcan
-                        @can('trial_balance_report', App\Models\DummyModel::class)
-                            <x-nested-sidebar-item route="trial_balance" :title="__('messages.trial_balance')" />
-                        @endcan
-                        @can('profit_loss_report', App\Models\DummyModel::class)
-                            <x-nested-sidebar-item route="profit_loss" :title="__('messages.profit_loss')" />
-                        @endcan
-                    </ul>
-                </li>
+                <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="settings">
+                    @can('account_statement_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
+                    @endcan
+                    @can('balance_sheet_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="balance_sheet" :title="__('messages.balance_sheet')" />
+                    @endcan
+                    @can('trial_balance_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="trial_balance" :title="__('messages.trial_balance')" />
+                    @endcan
+                    @can('profit_loss_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="profit_loss" :title="__('messages.profit_loss')" />
+                    @endcan
+                </x-sidebar-dropdown>
             @endcan
 
 
@@ -194,30 +198,19 @@
             @endcan
 
             @can('viewAny', App\Models\Employee::class)
-                <x-sidebar-item icon="dashboard" route="employee.index" :title="__('messages.employees')" />
+                <x-sidebar-item icon="users" route="employee.index" :title="__('messages.employees')" />
             @endcan
 
             @can('hr_reports')
-                <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                    x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                    <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                        href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <x-svgs.settings />
-                                <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                            </div>
-                            <x-svgs.chevron />
-                        </div>
-                    </a>
-                    <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                        :class="open ? '!block' : 'hidden'">
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                    </ul>
-                </li>
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
             @endcan
 
 
@@ -232,26 +225,16 @@
             @endcan
 
             @can('assets_reports')
-                <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                    x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                    <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                        href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <x-svgs.settings />
-                                <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                            </div>
-                            <x-svgs.chevron />
-                        </div>
-                    </a>
-                    <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                        :class="open ? '!block' : 'hidden'">
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                        <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                    </ul>
-                </li>
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
+                {{--  --}}
             @endcan
 
 
@@ -273,7 +256,7 @@
             @endcan
 
             @can('viewAny', App\Models\User::class)
-                <x-sidebar-item icon="dashboard" route="user.index" :title="__('messages.users')" />
+                <x-sidebar-item icon="users" route="user.index" :title="__('messages.users')" />
             @endcan
 
             @can('viewAny', App\Models\Title::class)
@@ -305,7 +288,7 @@
             @endcan
 
             @can('viewAny', App\Models\Setting::class)
-                <x-sidebar-item icon="dashboard" route="settings.form" :title="__('messages.settings')" />
+                <x-sidebar-item icon="settings" route="settings.form" :title="__('messages.settings')" />
             @endcan
 
         </ul>
