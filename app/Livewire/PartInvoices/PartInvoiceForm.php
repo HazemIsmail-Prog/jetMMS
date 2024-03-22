@@ -5,6 +5,7 @@ namespace App\Livewire\PartInvoices;
 use App\Livewire\Forms\PartInvoiceForm as FormsPartInvoiceForm;
 use App\Models\PartInvoice;
 use App\Models\Supplier;
+use App\Models\Title;
 use App\Models\User;
 use App\Services\CreatePartInvoiceVoucher;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class PartInvoiceForm extends Component
     {
         return User::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->whereIn('title_id',Title::TECHNICIANS_GROUP)
             ->orderBy('name')
             ->get();
     }

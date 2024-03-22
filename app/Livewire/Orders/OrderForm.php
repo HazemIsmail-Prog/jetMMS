@@ -35,12 +35,16 @@ class OrderForm extends Component
     #[Computed()]
     public function technicians()
     {
-        return User::query()
-            ->select('name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->where('department_id', $this->form->department_id)
-            ->where('active', true)
-            ->orderBy('name')
-            ->get();
+        if ($this->form->department_id == '') {
+            return [];
+        } else {
+            return User::query()
+                ->select('name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+                ->where('department_id', $this->form->department_id)
+                ->where('active', true)
+                ->orderBy('name')
+                ->get();
+        }
     }
 
     #[On('showOrderFormModal')]

@@ -26,8 +26,12 @@
             <div class="flex overflow-x-auto  gap-2">
                 {{-- unassgined --}}
                 <div class="flex flex-col flex-shrink-0 gap-2 w-64 transition-all overflow-hidden">
-                    <div class="flex items-center flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
+                    <div class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
                         <span class="block text-sm font-semibold uppercase">{{ __('messages.unassigned') }}</span>
+                        <span
+                            class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
+                            {{ $this->orders->where('status_id', 1)->count() }}
+                        </span>
                     </div>
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="tech0">
@@ -55,8 +59,13 @@
 
                 {{-- On Hold --}}
                 <div class="flex flex-col flex-shrink-0 gap-2 w-64 overflow-hidden">
-                    <div class="flex items-center flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
+                    <div
+                        class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
                         <span class="block text-sm font-semibold uppercase">{{ __('messages.on_hold') }}</span>
+                        <span
+                            class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
+                            {{ $this->orders->where('status_id', 5)->count() }}
+                        </span>
                     </div>
                     <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
                         id="techhold">
@@ -121,7 +130,7 @@
                                                     {{ $technician->todays_completed_orders_count }}
                                                 </a>
                                                 <span
-                                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-700 dark:text-red-300">
+                                                    class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
                                                     {{ $technician->current_orders_count }}
                                                 </span>
                                             </div>

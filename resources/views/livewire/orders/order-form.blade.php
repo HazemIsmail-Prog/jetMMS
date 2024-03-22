@@ -73,18 +73,20 @@
                             @endif
                             <x-input-error for="form.department_id" />
                         </div>
-                        @if (!$order->id)
-                            <div>
-                                <x-label for="technician_id">{{ __('messages.technician') }}</x-label>
-                                <x-select class="w-full py-0" id="technician_id" wire:model="form.technician_id">
-                                    <option value="">---</option>
-                                    @foreach ($this->technicians as $technician)
-                                        <option value="{{ $technician->id }}">{{ $technician->name }}</option>
-                                    @endforeach
-                                </x-select>
-                                <x-input-error for="form.technician_id" />
-                            </div>
-                        @endif
+                        @can('canDispatch', App\Models\DummyModel::class)
+                            @if (!$order->id)
+                                <div>
+                                    <x-label for="technician_id">{{ __('messages.technician') }}</x-label>
+                                    <x-select class="w-full py-0" id="technician_id" wire:model="form.technician_id">
+                                        <option value="">---</option>
+                                        @foreach ($this->technicians as $technician)
+                                            <option value="{{ $technician->id }}">{{ $technician->name }}</option>
+                                        @endforeach
+                                    </x-select>
+                                    <x-input-error for="form.technician_id" />
+                                </div>
+                            @endif
+                        @endcan
 
                         <div>
                             <x-label for="estimated_start_date">{{ __('messages.estimated_start_date') }}</x-label>

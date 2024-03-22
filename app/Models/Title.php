@@ -13,6 +13,8 @@ class Title extends Model
 
     protected $guarded = [];
 
+    const TECHNICIANS_GROUP = [10,11];
+
     public function getNameAttribute($value)
     {
         if (App::getLocale() == 'ar') {

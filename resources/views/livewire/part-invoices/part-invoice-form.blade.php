@@ -13,7 +13,7 @@
 
                         <div>
                             <x-label for="manual_id">{{ __('messages.manual_id') }}</x-label>
-                            <x-input required class="w-full py-0" wire:model="form.manual_id" autocomplete="off"
+                            <x-input class="w-full py-0" wire:model="form.manual_id" autocomplete="off"
                                 type="number" id="manual_id" />
                             <x-input-error for="form.manual_id" />
                         </div>
