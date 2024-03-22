@@ -36,6 +36,12 @@ class CustomerForm extends Component
             $this->add_row('phone');
             $this->add_row('address');
         }
+
+        $this->js("
+        setTimeout(function() { 
+            document.getElementById('name').focus();
+         }, 100);
+        ");
     }
 
     #[Computed()]
@@ -120,6 +126,8 @@ class CustomerForm extends Component
                 $this->customer = $customer;
                 DB::commit();
                 $this->form->reset();
+                $this->showModal = false;
+                $this->dispatch('customersUpdated');
             } catch (\Exception $e) {
                 DB::rollback();
                 dd($e);
