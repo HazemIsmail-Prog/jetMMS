@@ -1,4 +1,4 @@
-<div>
+<div class="h-full">
     @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
@@ -7,7 +7,7 @@
             <div class=" px-2 border dark:border-gray-700 dark:text-gray-300 rounded-lg">
                 <div class=" flex items-center gap-2 border-b dark:border-gray-700 py-2">
                     <x-svgs.hash class="w-4 h-4 shrink-0" />
-                    <p>{{ str_pad($this->order->id, 8, '0', STR_PAD_LEFT) }}</p>
+                    <p>{{ $this->order->formated_id }}</p>
                 </div>
                 <div class=" flex items-center gap-2 border-b dark:border-gray-700 py-2">
                     <x-svgs.user class="w-4 h-4 shrink-0" />
@@ -19,6 +19,13 @@
                         <p>{{ $this->order->phone->number }}</p>
                         <a class=" ms-5" target="_blank" href="https://wa.me/+965{{ $this->order->phone->number }}">
                             <x-svgs.whatsapp class="w-4 h-4 shrink-0" />
+                        </a>
+                    </div>
+                    <div class=" flex items-center gap-2 border-b dark:border-gray-700 py-2">
+                        <x-svgs.map-pen class="w-4 h-4 shrink-0" />
+                        <p>{{ $this->order->address->full_address }}</p>
+                        <a class=" ms-5" target="_blank" href="{{ $this->order->address->maps_search() }}">
+                            <x-svgs.map-pen class="w-4 h-4 shrink-0" />
                         </a>
                     </div>
                 @endif
@@ -67,7 +74,10 @@
             @endif
         </div>
     @else
-        <p class="text-center">{{ __('messages.no_orders') }}</p>
+    <div class="flex items-center justify-center min-h-full">
+
+        <p class="text-gray-700 dark:text-gray-300">{{ __('messages.no_orders') }}</p>
+    </div>
     @endif
 
 </div>

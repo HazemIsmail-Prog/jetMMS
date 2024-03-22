@@ -71,7 +71,7 @@
     {{-- Delivery Form Section --}}
     <div class=" p-2 border dark:border-gray-700 rounded-lg mt-4">
         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.delivery') }}</h3>
-        <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0" />
+        <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0" dir="ltr" />
     </div>
 
     {{-- Total Amount --}}

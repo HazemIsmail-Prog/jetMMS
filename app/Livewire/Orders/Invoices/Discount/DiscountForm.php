@@ -18,6 +18,12 @@ class DiscountForm extends Component
         $this->invoice = $invoice;
         $this->discount = $this->invoice->discount;
         $this->showModal = true;
+
+        $this->js("
+        setTimeout(function() { 
+            document.getElementById('discount').focus();
+         }, 100);
+        ");
     }
 
     public function save()

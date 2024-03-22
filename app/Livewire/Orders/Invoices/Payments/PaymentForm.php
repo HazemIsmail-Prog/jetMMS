@@ -22,6 +22,12 @@ class PaymentForm extends Component
         $this->invoice = $invoice;
         $this->form->setData($this->invoice);
         $this->showModal = true;
+
+        $this->js("
+        setTimeout(function() { 
+            document.getElementById('amount').focus();
+         }, 100);
+        ");
     }
 
     public function updated($key, $val)

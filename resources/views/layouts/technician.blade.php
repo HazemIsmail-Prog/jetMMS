@@ -25,14 +25,14 @@
 
 <body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden">
 
-    <div class="flex h-screen max-w-sm  mx-auto dark:bg-gray-900">
+    <div class="flex h-screen mx-auto dark:bg-gray-900">
 
         <!-- Content area -->
         <div class="flex flex-col flex-1 h-screen">
             @livewire('navigation-menu')
             <!-- Page Content -->
             <main class=" flex-1 overflow-y-auto p-2 ">
-                <div class="max-w-full mx-auto ">
+                <div class="max-w-full h-full mx-auto ">
                     <x-alert />
                     {{ $slot }}
                 </div>
