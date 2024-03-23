@@ -106,23 +106,23 @@ class User extends Authenticatable
     //     ]);
     // }
 
-    public function getTodaysCompletedOrdersCountAttribute()
-    {
+    // public function getTodaysCompletedOrdersCountAttribute()
+    // {
 
-        return Order::query()
-            ->where('technician_id', $this->id)
-            ->where('status_id', Status::COMPLETED)
-            ->whereDate('completed_at', today())
-            ->count();
-    }
+    //     return Order::query()
+    //         ->where('technician_id', $this->id)
+    //         ->where('status_id', Status::COMPLETED)
+    //         ->whereDate('completed_at', today())
+    //         ->count();
+    // }
 
-    public function getCurrentOrdersCountAttribute()
-    {
-        return Order::query()
-            ->where('technician_id', $this->id)
-            ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
-            ->count();
-    }
+    // public function getCurrentOrdersCountAttribute()
+    // {
+    //     return Order::query()
+    //         ->where('technician_id', $this->id)
+    //         ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
+    //         ->count();
+    // }
 
     public function orders_creator()
     {

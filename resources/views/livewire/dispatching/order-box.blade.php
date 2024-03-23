@@ -1,16 +1,7 @@
-{{-- <div>
-    <pre>
-
-        {{ $order }}
-    </pre>
-</div> --}}
-
-
-
-<div x-data={showBox:@entangle('showBox')} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
+<div x-data={showBox:true} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
-    {{ $animate ? ' animate-wiggle hover:animate-none' : '' }}
+    {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }}
     order
     card
     border-2
@@ -42,15 +33,15 @@
         </div>
 
         @if (!in_array($order->status_id, [3, 7]))
-            <div
+            <div x-data={}
                 class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400">
-                <x-select wire:model.live="technician_id"
+                <x-select @change="$wire.changeTechnician($event.target.value,{{ $order['id'] }})" 
                     class="!h-auto border-none w-full focus:ring-0 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400 ">
                     @if ($order->status_id != 2)
                         <option value="">---</option>
                     @endif
-                    @foreach ($technicians->sortBy('name') as $technician)
-                        <option value="{{ $technician->id }}">{{ $technician->name }}</option>
+                    @foreach ($this->technicians->sortBy('name') as $technician)
+                        <option @if ($order->technician_id == $technician->id) selected @endif value="{{ $technician->id }}">{{ $technician->name }}</option>
                     @endforeach
                 </x-select>
             </div>
@@ -107,14 +98,14 @@
 
             @if ($order->status_id != 5)
                 @can('hold_order', $order)
-                    <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="holdOrder">
+                    <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="dragEnd({{ $order->id }},'hold',null,{{ $order->index }})">
                         <x-svgs.clock class="h-4 w-4" />
                     </x-badgeWithCounter>
                 @endcan
             @endif
 
             @can('cancel_order', $order)
-                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="cancelOrder">
+                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="dragEnd({{ $order->id }},'cancel',null,{{ $order->index }})">
                     <x-svgs.trash class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan

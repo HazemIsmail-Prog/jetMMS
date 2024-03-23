@@ -52,6 +52,14 @@ class DispatchingIndex extends Component
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->activeTechniciansPerDepartment($this->department->id)
+            ->withCount(['orders_technician as todays_completed_orders_count' => function ($q) {
+                $q->where('status_id', Status::COMPLETED);
+                $q->whereDate('completed_at', today());
+            }])
+
+            ->withCount(['orders_technician as current_orders_count' => function ($q) {
+                $q->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED]);
+            }])
             ->with('shift')
             ->get();
     }
@@ -83,6 +91,18 @@ class DispatchingIndex extends Component
                 $current_order->status_id = Status::DESTRIBUTED;
         }
         $current_order->save();
+    }
+
+    public function changeTechnician($technician_id, $order_id)
+    {
+        $order = Order::find($order_id);
+        $order->index =
+            Order::where('technician_id', $technician_id)
+            ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
+            ->max('index') + 10;
+        $order->technician_id = $technician_id;
+        $order->status_id = Status::DESTRIBUTED;
+        $order->save();
     }
 
     public function render()
