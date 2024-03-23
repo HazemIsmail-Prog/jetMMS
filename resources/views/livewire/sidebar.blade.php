@@ -73,6 +73,10 @@
                 <x-sidebar-item icon="dashboard" route="marketing.index" :title="__('messages.marketing')" />
             @endcan
 
+            @can('viewAny', App\Models\Rating::class)
+                <x-sidebar-item icon="dashboard" route="rating.index" :title="__('messages.ratings')" />
+            @endcan
+
             @can('canDispatch', App\Models\DummyModel::class)
 
                 <x-sidebar-dropdown title="{{ __('messages.dispatching') }}" icon="truck">

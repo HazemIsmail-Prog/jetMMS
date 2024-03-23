@@ -530,6 +530,9 @@ return [
 
 
     'edit_discount' => 'تعديل الخصم ',
+    'ratings' => 'التقييمات ',
+    'rating' => 'التقييم ',
+    'rate_order_no' => 'تقييم الطلب رقم ',
 
 
 

@@ -42,6 +42,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'marketing_edit',            'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'تعديل تسويق',               'desc_en' => 'Marketing Menu'],
             ['name' => 'marketing_delete',          'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'حذف تسويق',               'desc_en' => 'Marketing Menu'],
             
+            // Rating
+            ['name' => 'rating_menu',               'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التقييمات',               'desc_en' => 'Rating Menu'],
+            ['name' => 'rating_create',             'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'اضافة تقييم',               'desc_en' => 'Create Rating'],
+
             // Dispatching
             ['name' => 'dispatching_menu',          'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التوزيع',               'desc_en' => 'Dispatching Menu'],
 

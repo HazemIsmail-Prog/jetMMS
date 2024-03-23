@@ -18,6 +18,7 @@ use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\PartInvoices\PartInvoiceIndex;
+use App\Livewire\Ratings\RatingIndex;
 use App\Livewire\Roles\RoleIndex;
 use App\Livewire\Services\ServiceIndex;
 use App\Livewire\Settings\SettingsForm;
@@ -41,6 +42,7 @@ use App\Models\Invoice;
 use App\Models\Marketing;
 use App\Models\Order;
 use App\Models\PartInvoice;
+use App\Models\Rating;
 use App\Models\Role;
 use App\Models\Service;
 use App\Models\Setting;
@@ -88,6 +90,10 @@ Route::middleware([
         Route::get('marketings', MarketingIndex::class)
             ->name('marketing.index')
             ->can('viewAny', Marketing::class);
+
+        Route::get('ratings', RatingIndex::class)
+            ->name('rating.index')
+            ->can('viewAny', Rating::class);
 
         Route::get('dispatch-panel/{department}', DispatchingIndex::class)
             ->name('dispatch-panel.index')
