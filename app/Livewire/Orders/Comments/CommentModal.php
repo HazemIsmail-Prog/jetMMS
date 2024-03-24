@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Orders\Comments;
 
-use App\Models\Comment;
+use App\Jobs\SetCurrentCommentAsReadJob;
 use App\Models\Order;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -17,7 +17,7 @@ class CommentModal extends Component
     public function show(Order $order)
     {
         $this->order = $order;
-        $this->modalTitle = __('messages.comments_for_order_number') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
+        $this->modalTitle = __('messages.comments_for_order_number') . $this->order->fomated_id;
         $this->showModal = true;
 
         $this->js("
@@ -26,19 +26,10 @@ class CommentModal extends Component
          }, 100);
         ");
 
-        $this->setCurrentCommentAsRead($this->order);
+        SetCurrentCommentAsReadJob::dispatch($this->order)
+            ->afterResponse($this->dispatch('commentsUpdated'));
     }
 
-    public function setCurrentCommentAsRead(Order $order)
-    {
-        Comment::query()
-            ->where('order_id', $order->id)
-            ->where('is_read', false)
-            ->where('user_id', '!=', auth()->id())
-            ->update(['is_read' => true]);
-
-        $this->dispatch('commentsUpdated');
-    }
 
     public function render()
     {

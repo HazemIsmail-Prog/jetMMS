@@ -1,4 +1,4 @@
-<div x-data={showBox:true} x-show="showBox" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
+<div id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
     {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }}
