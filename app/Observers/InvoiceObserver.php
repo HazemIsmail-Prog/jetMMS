@@ -5,8 +5,7 @@ namespace App\Observers;
 use App\Events\RefreshDepartmentScreenEvent;
 use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Models\Invoice;
-use App\Models\Voucher;
-use Illuminate\Support\Facades\DB;
+use App\Services\CreateInvoiceVoucher;
 
 class InvoiceObserver
 {
@@ -25,6 +24,8 @@ class InvoiceObserver
     public function updated(Invoice $invoice): void
     {
         if ($invoice->isDirty('discount')) {
+            $invoice->voucher->voucherDetails()->forceDelete();
+            CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
             broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         }
     }

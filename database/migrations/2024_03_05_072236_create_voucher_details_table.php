@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('debit',10,3);
             $table->float('credit',10,3);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

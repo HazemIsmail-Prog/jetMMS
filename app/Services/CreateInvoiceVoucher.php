@@ -22,66 +22,72 @@ class CreateInvoiceVoucher
                 'notes' => 'الفاتورة رقم ' . $invoice->id,
             ]);
 
-            // Create Voucher Details For Created Voucher for Created Invoice
-            $details = [];
+        CreateInvoiceVoucher::createVoucherDetails($invoice, $voucher);
+        });
+    }
+
+    public static function createVoucherDetails(Invoice $invoice, Voucher $voucher)
+    {
+
+        // Create Voucher Details For Created Voucher for Created Invoice
+        $details = [];
+        $details[] =
+            [
+                'account_id' => Setting::find(1)->receivables_account_id, // ذمم موظفين - فواتير مؤجلة
+                'narration' => 'الفاتورة رقم ' . $invoice->id,
+                'user_id' => $invoice->order->technician_id,
+                'debit' => $invoice->amount,
+                'credit' => 0,
+            ];
+
+        if ($invoice->services_amount_after_discount > 0) {
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->receivables_account_id, // ذمم موظفين - فواتير مؤجلة
+                    'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
+                    'cost_center_id' => CostCenter::SERVICES,
                     'narration' => 'الفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
-                    'debit' => $invoice->amount,
-                    'credit' => 0,
+                    'debit' => 0,
+                    'credit' => $invoice->services_amount_after_discount,
                 ];
+        }
 
-            if ($invoice->services_amount_after_discount > 0) {
-                $details[] =
-                    [
-                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
-                        'cost_center_id' => CostCenter::SERVICES,
-                        'narration' => 'الفاتورة رقم ' . $invoice->id,
-                        'user_id' => $invoice->order->technician_id,
-                        'debit' => 0,
-                        'credit' => $invoice->services_amount_after_discount,
-                    ];
-            }
+        if ($invoice->external_parts_amount > 0) {
+            $details[] =
+                [
+                    'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
+                    'cost_center_id' => CostCenter::PARTS,
+                    'narration' => 'الفاتورة رقم ' . $invoice->id,
+                    'user_id' => $invoice->order->technician_id,
+                    'debit' => 0,
+                    'credit' => $invoice->external_parts_amount,
+                ];
+        }
 
-            if ($invoice->external_parts_amount > 0) {
-                $details[] =
-                    [
-                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
-                        'cost_center_id' => CostCenter::PARTS,
-                        'narration' => 'الفاتورة رقم ' . $invoice->id,
-                        'user_id' => $invoice->order->technician_id,
-                        'debit' => 0,
-                        'credit' => $invoice->external_parts_amount,
-                    ];
-            }
+        if ($invoice->internal_parts_amount > 0) {
+            $details[] =
+                [
+                    'account_id' => Setting::find(1)->internal_parts_account_id, // ذمم موظفين - بضاعة
+                    'cost_center_id' => CostCenter::PARTS,
+                    'narration' => 'الفاتورة رقم ' . $invoice->id,
+                    'user_id' => $invoice->order->technician_id,
+                    'debit' => 0,
+                    'credit' => $invoice->internal_parts_amount,
+                ];
+        }
 
-            if ($invoice->internal_parts_amount > 0) {
-                $details[] =
-                    [
-                        'account_id' => Setting::find(1)->internal_parts_account_id, // ذمم موظفين - بضاعة
-                        'cost_center_id' => CostCenter::PARTS,
-                        'narration' => 'الفاتورة رقم ' . $invoice->id,
-                        'user_id' => $invoice->order->technician_id,
-                        'debit' => 0,
-                        'credit' => $invoice->internal_parts_amount,
-                    ];
-            }
+        if ($invoice->delivery > 0) {
+            $details[] =
+                [
+                    'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
+                    'cost_center_id' => CostCenter::DELIVERY,
+                    'narration' => 'الفاتورة رقم ' . $invoice->id,
+                    'user_id' => $invoice->order->technician_id,
+                    'debit' => 0,
+                    'credit' => $invoice->delivery,
+                ];
+        }
 
-            if ($invoice->delivery > 0) {
-                $details[] =
-                    [
-                        'account_id' => $invoice->order->department->income_account_id, // ايراد القسم
-                        'cost_center_id' => CostCenter::DELIVERY,
-                        'narration' => 'الفاتورة رقم ' . $invoice->id,
-                        'user_id' => $invoice->order->technician_id,
-                        'debit' => 0,
-                        'credit' => $invoice->delivery,
-                    ];
-            }
-
-            $voucher->voucherDetails()->createMany($details);
-        });
+        $voucher->voucherDetails()->createMany($details);
     }
 }

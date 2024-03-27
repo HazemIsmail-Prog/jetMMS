@@ -41,7 +41,7 @@
         .invoice-header h1 {
             margin: 0;
             color: #00a4e0;
-    }
+        }
 
         .invoice-info-table {
             width: 100%;
@@ -107,11 +107,11 @@
         }
 
         .text-start {
-            text-align: {{  app()->getLocale() == 'ar' ? 'right' : 'left' }};
+            text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }};
         }
 
         .text-end {
-            text-align: {{  app()->getLocale() == 'ar' ? 'left' : 'right' }};
+            text-align: {{ app()->getLocale() == 'ar' ? 'left' : 'right' }};
         }
     </style>
 </head>
@@ -131,20 +131,23 @@
     <table class="invoice-table">
         <thead>
             <tr>
-                <th>{{ __('messages.invoice_number') }}</th>
-                <th>{{ __('messages.order_number') }}</th>
-                <th>{{ __('messages.date') }}</th>
-                <th>{{ __('messages.department') }}</th>
-                <th>{{ __('messages.technician') }}</th>
+                <th style="width: 20%;">{{ __('messages.invoice_number') }}</th>
+                <th style="width: 20%;">{{ __('messages.order_number') }}</th>
+                <th style="width: 20%;">{{ __('messages.date') }}</th>
+                <th style="width: 20%;">{{ __('messages.department') }}</th>
+                <th style="width: 20%;">{{ __('messages.technician') }}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->formated_id }}</td>
                 <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->order->formated_id }}</td>
-                <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->created_at->format('d-m-Y') }}</td>
-                <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->order->department->name }}</td>
-                <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->order->technician->name }}</td>
+                <td style="border: none; font-weight:bold;" class="text-center">
+                    {{ $invoice->created_at->format('d-m-Y') }}</td>
+                <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->order->department->name }}
+                </td>
+                <td style="border: none; font-weight:bold;" class="text-center">{{ $invoice->order->technician->name }}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -154,22 +157,23 @@
     <table class="invoice-table">
         <thead>
             <tr>
-                <th colspan="2" class="text-start">{{ __('messages.service') }}</th>
-                <th class="text-center">{{ __('messages.quantity') }}</th>
-                <th class="text-right">{{ __('messages.unit_price') }}</th>
-                <th class="text-right">{{ __('messages.total') }}</th>
+                <th class="text-start" style="width: 70%;">{{ __('messages.service') }}</th>
+                <th class="text-center" style="width: 10%;">{{ __('messages.quantity') }}</th>
+                <th class="text-right" style="width: 10%;">{{ __('messages.unit_price') }}</th>
+                <th class="text-right" style="width: 10%;">{{ __('messages.total') }}</th>
             </tr>
         </thead>
         <tbody>
 
             {{-- Services Section --}}
             @if ($invoice->invoice_details->where('service.type', 'service')->count() > 0)
+                <tr>
+                    <td colspan="4" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
+                        {{ __('messages.services') }}
+                    </td>
+                </tr>
                 @foreach ($invoice->invoice_details->where('service.type', 'service') as $row)
                     <tr>
-                        @if ($loop->index == 0)
-                            <td rowspan="{{ $invoice->invoice_details->where('service.type', 'service')->count() }}">
-                                {{ __('messages.services') }}</td>
-                        @endif
                         <td>{{ $row->service->name }}</td>
                         <td class=" text-center">{{ $row->quantity }}</td>
                         <td class="text-right">{{ number_format($row->price, 3) }}</td>
@@ -179,17 +183,28 @@
             @endif
 
             {{-- Parts Section --}}
-            @if ($invoice->invoice_details->where('service.type', 'part')->count() > 0)
+            @if (
+                $invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 ||
+                    $invoice->invoice_part_details->count() > 0)
+                <tr>
+                    <td colspan="4" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
+                        {{ __('messages.parts') }}
+                        </th>
+                </tr>
                 @foreach ($invoice->invoice_details->where('service.type', 'part') as $row)
                     <tr>
-                        @if ($loop->index == 0)
-                            <td rowspan="{{ $invoice->invoice_details->where('service.type', 'part')->count() }}">
-                                {{ __('messages.parts') }}</td>
-                        @endif
-                        <td>{{ $row->service->name }}</td>
-                        <td class=" text-center">{{ $row->quantity }}</td>
-                        <td class="text-right">{{ number_format($row->price, 3) }}</td>
-                        <td class="text-right">{{ number_format($row->quantity * $row->price, 3) }}</td>
+                        <td class=" px-1 text-start">{{ $row->service->name }}</td>
+                        <td class=" px-1 text-center">{{ $row->quantity }}</td>
+                        <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
+                        <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
+                    </tr>
+                @endforeach
+                @foreach ($invoice->invoice_part_details as $row)
+                    <tr>
+                        <td class=" px-1 text-start">{{ $row->name }}</td>
+                        <td class=" px-1 text-center">{{ $row->quantity }}</td>
+                        <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
+                        <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -197,7 +212,7 @@
             {{-- Totals --}}
             @if ($invoice->discount > 0)
                 <tr>
-                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                         {{ __('messages.discount') }}</td>
                     <td style="border: none; background:transparent; font-weight:bold;" class="text-right">
                         {{ number_format($invoice->discount, 3) }}
@@ -205,7 +220,7 @@
                 </tr>
             @endif
             <tr>
-                <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                     {{ __('messages.total') }}</td>
                 <td style="border: none; background:transparent; font-weight:bold" class="text-right">
                     {{ number_format($invoice->amount, 3) }}
@@ -213,7 +228,7 @@
             </tr>
             @if ($invoice->cash_amount > 0)
                 <tr>
-                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                         {{ __('messages.cash') }}</td>
                     <td style="border: none; background:transparent; font-weight:bold" class="text-right">
                         {{ number_format($invoice->cash_amount, 3) }}</td>
@@ -221,21 +236,21 @@
             @endif
             @if ($invoice->knet_amount > 0)
                 <tr>
-                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                         {{ __('messages.knet') }}</td>
                     <td style="border: none; background:transparent; font-weight:bold" class="text-right">
                         {{ number_format($invoice->knet_amount, 3) }}</td>
                 </tr>
             @endif
             <tr>
-                <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                     {{ __('messages.paid_amount') }}</td>
                 <td style="border: none; background:transparent; font-weight:bold" class="text-right">
                     {{ number_format($invoice->payments->sum('amount'), 3) }}</td>
             </tr>
             @if ($invoice->remaining_amount > 0)
                 <tr>
-                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="4">
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
                         {{ __('messages.remaining_amount') }}</td>
                     <td style="border: none; background:transparent; font-weight:bold" class="text-right">
                         {{ number_format($invoice->remaining_amount, 3) }}</td>

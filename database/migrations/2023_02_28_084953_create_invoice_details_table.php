@@ -22,6 +22,7 @@ class CreateInvoiceDetailsTable extends Migration
             $table->float('quantity');
             $table->float('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
