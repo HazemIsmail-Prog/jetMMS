@@ -64,6 +64,7 @@
                     <x-th>{{ __('messages.management_no') }}/{{ __('messages.plate_no') }}</x-th>
                     <x-th>{{ __('messages.insurance_expiration_date') }}</x-th>
                     <x-th>{{ __('messages.notes') }}</x-th>
+                    <x-th>{{ __('messages.total_car_services_cost') }}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>
@@ -78,6 +79,7 @@
                         <x-td>{{ $car->management_no }}/{{ $car->plate_no }}</x-td>
                         <x-td>{{ $car->insurance_expiration_date->format('d-m-Y') }}</x-td>
                         <x-td>{{ $car->notes ?? '-' }}</x-td>
+                        <x-td>{{ $car->car_services_sum_cost > 0 ? number_format($car->car_services_sum_cost,3) : '-' }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
 

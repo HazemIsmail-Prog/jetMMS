@@ -28,6 +28,7 @@ class CarIndex extends Component
             ->withCount('attachments')
             ->withCount('car_actions')
             ->withCount('car_services')
+            ->withSum('car_services','cost')
             ->when($this->filters['car_code'], function ($q) {
                 $q->where('code', $this->filters['car_code']);
             })
