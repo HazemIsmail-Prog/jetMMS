@@ -10,7 +10,6 @@ use App\Services\CreateInvoiceVoucher;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class InvoiceForm extends Component
@@ -73,6 +72,7 @@ class InvoiceForm extends Component
     {
         return
             Service::query()
+            ->where('active',true)
             ->where('department_id', $this->order->department_id)
             ->when($this->search, function ($q) {
                 $q->where('name_en', 'like', '%' . $this->search . '%');
