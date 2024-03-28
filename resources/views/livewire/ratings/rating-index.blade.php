@@ -73,7 +73,6 @@
                     <x-th>{{ __('messages.completed_date') }}</x-th>
                     <x-th>{{ __('messages.notes') }}</x-th>
                     <x-th>{{ __('messages.rating') }}</x-th>
-                    <x-th></x-th>
                 </tr>
             </x-thead>
             <tbody>

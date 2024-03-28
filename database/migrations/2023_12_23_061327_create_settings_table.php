@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('bank_charges_account_id')->nullable()->constrained('accounts');
             $table->foreignId('receivables_account_id')->nullable()->constrained('accounts');
             $table->foreignId('internal_parts_account_id')->nullable()->constrained('accounts');
+            $table->boolean('invoice_required')->default(true);
             $table->timestamps();
         });
 

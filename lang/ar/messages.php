@@ -533,6 +533,7 @@ return [
     'ratings' => 'التقييمات ',
     'rating' => 'التقييم ',
     'rate_order_no' => 'تقييم الطلب رقم ',
+    'invoice_required' => 'الفاتورة اجبارية ',
 
 
 

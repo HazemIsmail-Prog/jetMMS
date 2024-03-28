@@ -19,6 +19,7 @@ class SettingForm extends Form
     public $bank_charges_account_id;
     public $receivables_account_id;
     public $internal_parts_account_id;
+    public bool $invoice_required;
 
     public function rules()
     {
@@ -35,6 +36,7 @@ class SettingForm extends Form
             'bank_charges_account_id' => 'required',
             'receivables_account_id' => 'required',
             'internal_parts_account_id' => 'required',
+            'invoice_required' => 'nullable',
         ];
     }
 }

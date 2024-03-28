@@ -53,7 +53,7 @@
 
             <!-- Dashboard -->
             @can('dashboard_menu', App\Models\DummyModel::class)
-                <x-sidebar-item icon="dashboard" route="dashboard" :title="__('messages.dashboard')" />
+                <x-sidebar-item icon="chart-pie" route="dashboard" :title="__('messages.dashboard')" />
             @endcan
 
             {{-- Operations --}}
@@ -66,15 +66,15 @@
             @endcan
 
             @can('viewAny', App\Models\Order::class)
-                <x-sidebar-item icon="dashboard" route="order.index" :title="__('messages.orders')" />
+                <x-sidebar-item icon="list-bullet" route="order.index" :title="__('messages.orders')" />
             @endcan
 
             @can('viewAny', App\Models\Marketing::class)
-                <x-sidebar-item icon="dashboard" route="marketing.index" :title="__('messages.marketing')" />
+                <x-sidebar-item icon="arrow-trending-up" route="marketing.index" :title="__('messages.marketing')" />
             @endcan
 
             @can('viewAny', App\Models\Rating::class)
-                <x-sidebar-item icon="dashboard" route="rating.index" :title="__('messages.ratings')" />
+                <x-sidebar-item icon="star" route="rating.index" :title="__('messages.ratings')" />
             @endcan
 
             @can('canDispatch', App\Models\DummyModel::class)
@@ -148,15 +148,15 @@
             @endcan
 
             @can('cash_collection_menu', App\Models\DummyModel::class)
-                <x-sidebar-item icon="dashboard" route="cash_collection" :title="__('messages.cash_collection')" />
+                <x-sidebar-item icon="banknotes" route="cash_collection" :title="__('messages.cash_collection')" />
             @endcan
 
             @can('knet_collection_menu', App\Models\DummyModel::class)
-                <x-sidebar-item icon="dashboard" route="knet_collection" :title="__('messages.knet_collection')" />
+                <x-sidebar-item icon="credit-card" route="knet_collection" :title="__('messages.knet_collection')" />
             @endcan
 
             @can('viewAny', App\Models\PartInvoice::class)
-                <x-sidebar-item icon="dashboard" route="part_invoice" :title="__('messages.part_invoices')" />
+                <x-sidebar-item icon="document-text" route="part_invoice" :title="__('messages.part_invoices')" />
             @endcan
 
 
@@ -166,19 +166,19 @@
             @endcan
 
             @can('viewAny', App\Models\Account::class)
-                <x-sidebar-item icon="dashboard" route="account.index" :title="__('messages.accounts')" />
+                <x-sidebar-item icon="bars-3-bottom-left" route="account.index" :title="__('messages.accounts')" />
             @endcan
 
             @can('viewAny', App\Models\Invoice::class)
-                <x-sidebar-item icon="dashboard" route="invoice.index" :title="__('messages.invoices')" />
+                <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
             @endcan
 
             @can('viewAny', App\Models\Voucher::class)
-                <x-sidebar-item icon="dashboard" route="voucher.index" :title="__('messages.journal_vouchers')" />
+                <x-sidebar-item icon="document-text" route="voucher.index" :title="__('messages.journal_vouchers')" />
             @endcan
 
             @can('accounting_reports', App\Models\DummyModel::class)
-                <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="settings">
+                <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
                     @can('account_statement_report', App\Models\DummyModel::class)
                         <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                     @endcan
@@ -225,7 +225,7 @@
 
 
             @can('viewAny', App\Models\Car::class)
-                <x-sidebar-item icon="dashboard" route="car.index" :title="__('messages.cars')" />
+                <x-sidebar-item icon="truck" route="car.index" :title="__('messages.cars')" />
             @endcan
 
             @can('assets_reports')
@@ -248,15 +248,15 @@
             @endcan
 
             @can('viewAny', App\Models\Supplier::class)
-                <x-sidebar-item icon="dashboard" route="supplier.index" :title="__('messages.suppliers')" />
+                <x-sidebar-item icon="chart-pie" route="supplier.index" :title="__('messages.suppliers')" />
             @endcan
 
             @can('viewAny', App\Models\CostCenter::class)
-                <x-sidebar-item icon="dashboard" route="cost_center.index" :title="__('messages.cost_centers')" />
+                <x-sidebar-item icon="chart-pie" route="cost_center.index" :title="__('messages.cost_centers')" />
             @endcan
 
             @can('viewAny', App\Models\Role::class)
-                <x-sidebar-item icon="dashboard" route="role.index" :title="__('messages.roles')" />
+                <x-sidebar-item icon="chart-pie" route="role.index" :title="__('messages.roles')" />
             @endcan
 
             @can('viewAny', App\Models\User::class)
@@ -264,31 +264,31 @@
             @endcan
 
             @can('viewAny', App\Models\Title::class)
-                <x-sidebar-item icon="dashboard" route="title.index" :title="__('messages.titles')" />
+                <x-sidebar-item icon="chart-pie" route="title.index" :title="__('messages.titles')" />
             @endcan
 
             @can('viewAny', App\Models\Status::class)
-                <x-sidebar-item icon="dashboard" route="status.index" :title="__('messages.statuses')" />
+                <x-sidebar-item icon="chart-pie" route="status.index" :title="__('messages.statuses')" />
             @endcan
 
             @can('viewAny', App\Models\Department::class)
-                <x-sidebar-item icon="dashboard" route="department.index" :title="__('messages.departments')" />
+                <x-sidebar-item icon="chart-pie" route="department.index" :title="__('messages.departments')" />
             @endcan
 
             @can('viewAny', App\Models\Company::class)
-                <x-sidebar-item icon="dashboard" route="company.index" :title="__('messages.companies')" />
+                <x-sidebar-item icon="chart-pie" route="company.index" :title="__('messages.companies')" />
             @endcan
 
             @can('viewAny', App\Models\Shift::class)
-                <x-sidebar-item icon="dashboard" route="shift.index" :title="__('messages.shifts')" />
+                <x-sidebar-item icon="chart-pie" route="shift.index" :title="__('messages.shifts')" />
             @endcan
 
             @can('viewAny', App\Models\Area::class)
-                <x-sidebar-item icon="dashboard" route="area.index" :title="__('messages.areas')" />
+                <x-sidebar-item icon="chart-pie" route="area.index" :title="__('messages.areas')" />
             @endcan
 
             @can('viewAny', App\Models\Service::class)
-                <x-sidebar-item icon="dashboard" route="service.index" :title="__('messages.services')" />
+                <x-sidebar-item icon="chart-pie" route="service.index" :title="__('messages.services')" />
             @endcan
 
             @can('viewAny', App\Models\Setting::class)

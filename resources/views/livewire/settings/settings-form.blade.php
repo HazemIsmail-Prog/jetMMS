@@ -71,6 +71,13 @@
             <x-input-error for="form.internal_parts_account_id" />
         </div>
 
+        <div>
+            <x-label for="invoice_required" class="flex items-center">
+                <x-checkbox wire:model="form.invoice_required" id="invoice_required" />
+                <span class="ms-2 ">{{ __('messages.invoice_required') }}</span>
+            </x-label>
+        </div>
+
         <div class="text-end">
             <x-button>{{ __('messages.save') }}</x-button>
         </div>

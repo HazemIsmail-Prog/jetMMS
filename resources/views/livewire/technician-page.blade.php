@@ -56,7 +56,7 @@
                         @break
 
                         @case(7)
-                            <x-button :disabled="$this->order->invoices->count() == 0 && config('global.invoice_required')" {{-- {{ $this->order->invoices->count() == 0 && config('global.invoice_required') ? 'disabled' : '' }}  --}} wire:click="complete_order"
+                            <x-button x-data :disabled="$this->order->invoices->count() == 0 && $settings->invoice_required" wire:click="complete_order"
                                 wire:confirm="{{ __('messages.are_u_sure') }}" wire:loading.attr="disabled"
                                 class="">{{ __('messages.done') }}</x-button>
                         @break
