@@ -167,6 +167,10 @@ class Invoice extends Model
         return $this->services_amount > 0 ? number_format($this->services_amount, 3) : '-';
     }
 
+    public function getFormatedPartsAmountAttribute() {
+        return $this->internal_parts_amount + $this->external_parts_amount > 0 ? number_format($this->internal_parts_amount + $this->external_parts_amount, 3) : '-';
+    }
+
     public function getFormatedDiscountAmountAttribute() {
         return $this->discount > 0 ? number_format($this->discount, 3) : '-';
     }

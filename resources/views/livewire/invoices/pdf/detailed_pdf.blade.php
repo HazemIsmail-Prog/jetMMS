@@ -168,9 +168,11 @@
             {{-- Services Section --}}
             @if ($invoice->invoice_details->where('service.type', 'service')->count() > 0)
                 <tr>
-                    <td colspan="4" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
+                    <td colspan="3" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
                         {{ __('messages.services') }}
                     </td>
+                    <td class="py-1 text-right" style=" font-weight:bold;background-color:#f2f2f2">
+                        {{ $invoice->formated_services_amount }}</td>
                 </tr>
                 @foreach ($invoice->invoice_details->where('service.type', 'service') as $row)
                     <tr>
@@ -187,9 +189,12 @@
                 $invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 ||
                     $invoice->invoice_part_details->count() > 0)
                 <tr>
-                    <td colspan="4" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
+                    <td colspan="3" class="py-1 text-start" style=" font-weight:bold;background-color:#f2f2f2">
                         {{ __('messages.parts') }}
                         </th>
+                    <td class="py-1 text-right" style=" font-weight:bold;background-color:#f2f2f2">
+                        {{ $invoice->formated_parts_amount }}</td>
+
                 </tr>
                 @foreach ($invoice->invoice_details->where('service.type', 'part') as $row)
                     <tr>
@@ -216,6 +221,15 @@
                         {{ __('messages.discount') }}</td>
                     <td style="border: none; background:transparent; font-weight:bold;" class="text-right">
                         {{ number_format($invoice->discount, 3) }}
+                    </td>
+                </tr>
+            @endif
+            @if ($invoice->delivery > 0)
+                <tr>
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end" colspan="3">
+                        {{ __('messages.delivery') }}</td>
+                    <td style="border: none; background:transparent; font-weight:bold;" class="text-right">
+                        {{ number_format($invoice->delivery, 3) }}
                     </td>
                 </tr>
             @endif

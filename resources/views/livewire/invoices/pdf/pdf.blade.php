@@ -211,6 +211,15 @@
                     </td>
                 </tr>
             @endif
+            @if ($invoice->delivery > 0)
+                <tr>
+                    <td style="border: none; background:transparent; font-weight:bold" class="text-end">
+                        {{ __('messages.delivery') }}</td>
+                    <td style="border: none; background:transparent; font-weight:bold;" class="text-right">
+                        {{ number_format($invoice->delivery, 3) }}
+                    </td>
+                </tr>
+            @endif
             <tr>
                 <td style="border: none; background:transparent; font-weight:bold" class="text-end">
                     {{ __('messages.total') }}</td>
