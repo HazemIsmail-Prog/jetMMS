@@ -139,25 +139,25 @@
                                 {{ $invoice->order->formated_id }}
                             </x-badgeWithCounter>
                         </x-td>
-                        <x-td class=" whitespace-nowrap">
+                        <x-td>
                             <span dir="ltr" class=" cursor-pointer"
                                 wire:click="dateClicked('{{ $invoice->created_at->format('Y-m-d') }}')">
-                                {{ $invoice->formated_created_at }}
+                                {!! $invoice->formated_created_at !!}
                             </span>
                         </x-td>
-                        <x-td class=" whitespace-nowrap">
+                        <x-td>
                             <span class=" cursor-pointer"
                                 wire:click="$set('filters.department_id',{{ $invoice->order->department_id }})">
                                 {{ $invoice->order->department->name }}
                             </span>
                         </x-td>
-                        <x-td class=" whitespace-nowrap">
+                        <x-td>
                             <span class=" cursor-pointer"
                                 wire:click="$set('filters.technician_id',{{ $invoice->order->technician_id }})">
                                 {{ $invoice->order->technician->name }}
                             </span>
                         </x-td>
-                        <x-td class=" whitespace-nowrap">{{ $invoice->order->customer->name }}</x-td>
+                        <x-td>{{ $invoice->order->customer->name }}</x-td>
                         <x-td>{{ $invoice->order->phone->number }}</x-td>
                         <x-td>{{ $invoice->formated_services_amount }}</x-td>
                         <x-td>{{ $invoice->formated_discount_amount }}</x-td>
@@ -170,7 +170,7 @@
                         <x-td>{{ $invoice->formated_knet_amount }}</x-td>
                         <x-td>{{ $invoice->formated_total_paid_amount }}</x-td>
                         <x-td>{{ $invoice->formated_remaining_amount }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $invoice->payment_status->title() }}</x-td>
+                        <x-td>{{ $invoice->payment_status->title() }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
                                 @if ($this->invoices->where('order_id', $invoice->order_id)->count() > 1)

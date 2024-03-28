@@ -29,4 +29,16 @@ class Voucher extends Model
     public function getAmountAttribute() {
         return $this->voucherDetails()->sum('credit');
     }
+
+    // Formatters
+
+    public function getFormatedDateAttribute()
+    {
+        return '<span dir="ltr">' . ($this->date->format('d-m-Y')) . '</span>';
+    }
+
+    public function getFormatedAmountAttribute()
+    {
+        return $this->amount > 0 ? number_format($this->amount, 3) : '-';
+    }
 }

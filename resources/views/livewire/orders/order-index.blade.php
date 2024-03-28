@@ -125,19 +125,19 @@
                 @foreach ($this->orders as $order)
                     <x-tr>
                         <x-td>{{ $order->formated_order_id }}</x-td>
-                        <x-td class=" whitespace-nowrap">{!! $order->formated_created_at !!}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->creator->name }}</x-td>
-                        <x-td class=" whitespace-nowrap">{!! $order->formated_estimated_start_date !!}</x-td>
-                        <x-td class=" whitespace-nowrap" style="color: {{ $order->status->color }}">
+                        <x-td>{!! $order->formated_created_at !!}</x-td>
+                        <x-td>{{ $order->creator->name }}</x-td>
+                        <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
+                        <x-td style="color: {{ $order->status->color }}">
                             {{ $order->status->name }}
                         </x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->department->name }}</x-td>
-                        <x-td class=" whitespace-nowrap">{!! $order->formated_completed_at !!}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->technician->name ?? '-' }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->customer->name }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->phone->number }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->address->full_address }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->formated_remaining_amount }}</x-td>
+                        <x-td>{{ $order->department->name }}</x-td>
+                        <x-td>{!! $order->formated_completed_at !!}</x-td>
+                        <x-td>{{ $order->technician->name ?? '-' }}</x-td>
+                        <x-td>{{ $order->customer->name }}</x-td>
+                        <x-td>{{ $order->phone->number }}</x-td>
+                        <x-td>{{ $order->address->full_address }}</x-td>
+                        <x-td>{{ $order->formated_remaining_amount }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
 

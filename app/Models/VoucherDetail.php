@@ -26,4 +26,16 @@ class VoucherDetail extends Model
         return $this->belongsTo(CostCenter::class);
     }
 
+    // Formatters
+
+    public function getFormatedDebitAttribute()
+    {
+        return $this->debit == 0 ? '-' : number_format($this->debit, 3);
+    }
+
+    public function getFormatedCreditAttribute()
+    {
+        return $this->credit == 0 ? '-' : number_format($this->credit, 3);
+    }
+
 }

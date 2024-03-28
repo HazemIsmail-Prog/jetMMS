@@ -111,16 +111,15 @@
                         <x-td>{{ $employee->user->title->name }}</x-td>
                         <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
                         <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
-                        <x-td
-                            class="text-{{ $employee->status->color() }}-400">{{ $employee->status->title() }}</x-td>
-                        <x-td>{{ $employee->joinDate->format('d-m-Y') }}</x-td>
-                        <x-td>{{ number_format($employee->salary, 3) }}</x-td>
+                        <x-td>{!! $employee->formated_status !!}</x-td>
+                        <x-td>{!! $employee->formated_join_date !!}</x-td>
+                        <x-td>{{ $employee->formated_salary }}</x-td>
                         <x-td>
-                            <div>{{ number_format($employee->LeaveDaysBalance, 2) }}</div>
-                            <div>{{ number_format($employee->LeaveBalanceAmount, 3) }}</div>
+                            <div>{{ $employee->formated_leave_days_balance }}</div>
+                            <div>{{ $employee->formated_leave_balance_amount }}</div>
                         </x-td>
                         <x-td>{{ $employee->NetWorkingDays }}</x-td>
-                        <x-td>{{ number_format($employee->Indemnity, 3) }}</x-td>
+                        <x-td>{{ $employee->formated_indemnity }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
 

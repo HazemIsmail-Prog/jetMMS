@@ -83,15 +83,13 @@
             <tbody>
                 @foreach ($this->marketings as $marketing)
                     <x-tr>
-                        <x-td class="whitespace-nowrap">
-                            <span dir="ltr">{{ $marketing->created_at->format('d-m-Y | H:i') }}</span>
-                        </x-td>
-                        <x-td class="whitespace-nowrap">{{ $marketing->user->name }}</x-td>
-                        <x-td class="whitespace-nowrap">{{ $marketing->name }}</x-td>
-                        <x-td class="whitespace-nowrap">{{ $marketing->phone }}</x-td>
-                        <x-td class="whitespace-nowrap">{{ $marketing->address }}</x-td>
-                        <x-td class="whitespace-nowrap">{{ $marketing->notes }}</x-td>
-                        <x-td class="whitespace-nowrap">{{ __('messages.' . $marketing->type) }}</x-td>
+                        <x-td>{!! $marketing->formated_created_at !!}</x-td>
+                        <x-td>{{ $marketing->user->name }}</x-td>
+                        <x-td>{{ $marketing->name }}</x-td>
+                        <x-td>{{ $marketing->phone }}</x-td>
+                        <x-td>{{ $marketing->address }}</x-td>
+                        <x-td>{{ $marketing->notes }}</x-td>
+                        <x-td>{{ __('messages.' . $marketing->type) }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
                                 @can('update', $marketing)

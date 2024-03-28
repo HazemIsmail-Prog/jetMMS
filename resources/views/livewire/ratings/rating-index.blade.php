@@ -79,12 +79,12 @@
                 @foreach ($this->orders as $order)
                     <x-tr>
                         <x-td>{{ $order->formated_order_id }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->department->name }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->technician->name ?? '-' }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->customer->name }}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ $order->phone->number }}</x-td>
-                        <x-td class=" whitespace-nowrap">{!! $order->formated_completed_at !!}</x-td>
-                        <x-td class=" whitespace-nowrap">{{ @$order->rating->notes }}</x-td>
+                        <x-td>{{ $order->department->name }}</x-td>
+                        <x-td>{{ $order->technician->name ?? '-' }}</x-td>
+                        <x-td>{{ $order->customer->name }}</x-td>
+                        <x-td>{{ $order->phone->number }}</x-td>
+                        <x-td>{!! $order->formated_completed_at !!}</x-td>
+                        <x-td>{{ @$order->rating->notes }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-start gap-2">
 

@@ -77,7 +77,7 @@
                         <x-td>{{ $car->latest_car_action->to->name ?? '-' }}</x-td>
                         <x-td>{{ $car->latest_car_action->to->department->name ?? '-' }}</x-td>
                         <x-td>{{ $car->management_no }}/{{ $car->plate_no }}</x-td>
-                        <x-td>{{ $car->insurance_expiration_date->format('d-m-Y') }}</x-td>
+                        <x-td>{!! $car->formated_insurance_expiration_date !!}</x-td>
                         <x-td>{{ $car->notes ?? '-' }}</x-td>
                         <x-td>{{ $car->car_services_sum_cost > 0 ? number_format($car->car_services_sum_cost,3) : '-' }}</x-td>
                         <x-td>

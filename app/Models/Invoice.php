@@ -210,7 +210,8 @@ class Invoice extends Model
         return $this->remaining_amount > 0 ? number_format($this->remaining_amount, 3) : '-';
     }
 
-    public function getFormatedCreatedAtAttribute() {
-        return $this->created_at->format('d-m-Y | H:i');
+    public function getFormatedCreatedAtAttribute()
+    {
+        return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
     }
 }

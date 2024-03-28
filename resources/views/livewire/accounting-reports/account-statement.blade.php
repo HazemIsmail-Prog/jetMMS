@@ -39,39 +39,38 @@
                 class="pb-5 font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ $account->name }}</h3>
             <div class="overflow-x-auto sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <x-table>
+                    <x-thead>
                         <tr>
-                            <th class="px-6 py-1 text-start">{{ __('messages.voucher_number') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.type') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.date') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.cost_center') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.contact') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.narration') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.debit') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.credit') }}</th>
-                            <th class="px-6 py-1 text-start">{{ __('messages.balance') }}</th>
+                            <x-th>{{ __('messages.voucher_number') }}</x-th>
+                            <x-th>{{ __('messages.type') }}</x-th>
+                            <x-th>{{ __('messages.date') }}</x-th>
+                            <x-th>{{ __('messages.cost_center') }}</x-th>
+                            <x-th>{{ __('messages.contact') }}</x-th>
+                            <x-th>{{ __('messages.narration') }}</x-th>
+                            <x-th>{{ __('messages.debit') }}</x-th>
+                            <x-th>{{ __('messages.credit') }}</x-th>
+                            <x-th>{{ __('messages.balance') }}</x-th>
                         </tr>
-                    </thead>
+                    </x-thead>
                     <tbody>
                         @php
                             $balance = $this->openning['balance'];
                         @endphp
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="px-6 py-1 text-start">{{ __('messages.opening_balance') }}</td>
-                            <td class="px-6 py-1 text-start">
+                        <x-tr>
+                            <x-td></x-td>
+                            <x-td></x-td>
+                            <x-td></x-td>
+                            <x-td></x-td>
+                            <x-td></x-td>
+                            <x-td>{{ __('messages.opening_balance') }}</x-td>
+                            <x-td>
                                 {{ $this->openning['debit'] == 0 ? '-' : number_format($this->openning['debit'], 3) }}
-                            </td>
-                            <td class="px-6 py-1 text-start">
+                            </x-td>
+                            <x-td>
                                 {{ $this->openning['credit'] == 0 ? '-' : number_format($this->openning['credit'], 3) }}
-                            </td>
-                            <td @class([
+                            </x-td>
+                            <x-td @class([
                                 'px-6 py-1 text-start',
                                 'text-red-500' => $this->openning['balance'] < 0,
                             ])>
@@ -87,8 +86,8 @@
                                     @default
                                         {{ number_format($this->openning['balance'], 3) }}
                                 @endswitch
-                            </td>
-                        </tr>
+                            </x-td>
+                        </x-tr>
 
                         @foreach ($account->voucher_details as $row)
                             @php
@@ -97,23 +96,17 @@
                                         ? $row->debit - $row->credit
                                         : $row->credit - $row->debit;
                             @endphp
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-1 text-start whitespace-nowrap">{{ $row->voucher->id }}</td>
-                                <td class="px-6 py-1 text-start">{{ $row->voucher->type }}</td>
-                                <td class="px-6 py-1 text-start whitespace-nowrap">
-                                    {{ $row->voucher->date->format('d-m-Y') }}
-                                </td>
-                                <td class="px-6 py-1 text-start">{{ $row->cost_center->name ?? '-' }}</td>
-                                <td class="px-6 py-1 text-start">{{ $row->contact->name ?? '-' }}
-                                </td>
-                                <td class="px-6 py-1 text-start">{{ $row->narration }}</td>
-                                <td class="px-6 py-1 text-start whitespace-nowrap">
-                                    {{ $row->debit == 0 ? '-' : number_format($row->debit, 3) }}</td>
-                                <td class="px-6 py-1 text-start whitespace-nowrap">
-                                    {{ $row->credit == 0 ? '-' : number_format($row->credit, 3) }}</td>
-                                <td @class([
-                                    'px-6 py-1 text-start whitespace-nowrap',
+                            <x-tr>
+                                <x-td>{{ $row->voucher->id }}</x-td>
+                                <x-td>{{ $row->voucher->type }}</x-td>
+                                <x-td>{!! $row->voucher->formated_date !!}</x-td>
+                                <x-td>{{ $row->cost_center->name ?? '-' }}</x-td>
+                                <x-td>{{ $row->contact->name ?? '-' }}</x-td>
+                                <x-td>{{ $row->narration }}</x-td>
+                                <x-td>{{ $row->formated_debit }}</x-td>
+                                <x-td>{{ $row->formated_credit }}</x-td>
+                                <x-td @class([
+                                    '',
                                     'text-red-500' => $balance < 0,
                                 ])>
                                     @switch($balance)
@@ -128,21 +121,16 @@
                                         @default
                                             {{ number_format($balance, 3) }}
                                     @endswitch
-                                </td>
-                            </tr>
+                                </x-td>
+                            </x-tr>
                         @endforeach
                     </tbody>
                     <tfoot class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th class="px-6 py-1 text-start" colspan="6"></th>
-                            <th class="px-6 py-1 text-start">
-                                {{ $account->voucher_details->sum('debit') == 0 ? '-' : number_format($account->voucher_details->sum('debit'), 3) }}
-                            </th>
-                            <th class="px-6 py-1 text-start">
-                                {{ $account->voucher_details->sum('credit') == 0 ? '-' : number_format($account->voucher_details->sum('credit'), 3) }}
-                            </th>
-                            <th @class([
-                                'px-6 py-1 text-start whitespace-nowrap',
+                        <x-tr>
+                            <x-th colspan="6"></x-th>
+                            <x-th>{{ $account->formated_debit_sum }}</x-th>
+                            <x-th>{{ $account->formated_credit_sum }}</x-th>
+                            <x-th @class([
                                 'text-red-500' => $balance < 0,
                             ])>
                                 @switch($balance)
@@ -157,10 +145,10 @@
                                     @default
                                         {{ number_format($balance, 3) }}
                                 @endswitch
-                            </th>
-                        </tr>
+                            </x-th>
+                        </x-tr>
                     </tfoot>
-                </table>
+                </x-table>
             </div>
         @endforeach
     </div>

@@ -40,105 +40,85 @@
     </div>
 
     {{-- Invoice Table --}}
-    <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-1 py-1"></th>
-                <th scope="col" class="px-1 py-1 text-center">
-                    {{ __('messages.quantity') }}
-                </th>
-                <th scope="col" class="px-1 py-1 text-right">
-                    {{ __('messages.unit_price') }}
-                </th>
-                <th scope="col" class="px-1 py-1 text-right">
-                    {{ __('messages.total') }}
-                </th>
-            </tr>
-        </thead>
-
-        {{-- Services Section --}}
-        @if ($invoice->invoice_details->load('service')->where('service.type', 'service')->count() > 0)
-            <tr>
-                <th scope="col" class="py-1 text-start">
-                    {{ __('messages.services') }}
-                </th>
-            </tr>
-            @foreach ($invoice->invoice_details->where('service.type', 'service') as $row)
+    <div class=" overflow-x-auto sm:rounded-lg">
+        <x-table class=" table-auto">
+            <x-thead>
                 <tr>
-                    <td class=" px-1 text-start">{{ $row->service->name }}</td>
-                    <td class=" px-1 text-center">{{ $row->quantity }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
+                    <x-th></x-th>
+                    <x-th>{{ __('messages.quantity') }}</x-th>
+                    <x-th>{{ __('messages.unit_price') }}</x-th>
+                    <x-th>{{ __('messages.total') }}</x-th>
                 </tr>
-            @endforeach
-        @endif
+            </x-thead>
 
-        {{-- Parts Section --}}
-        @if (
-            $invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 ||
-                $invoice->invoice_part_details->count() > 0)
-            <tr>
-                <th scope="col" class="py-1 text-start">
-                    {{ __('messages.parts') }}
-                </th>
-            </tr>
-            @foreach ($invoice->invoice_details->where('service.type', 'part') as $row)
-                <tr>
-                    <td class=" px-1 text-start">{{ $row->service->name }}</td>
-                    <td class=" px-1 text-center">{{ $row->quantity }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
-                </tr>
-            @endforeach
-            @foreach ($invoice->invoice_part_details as $row)
-                <tr>
-                    <td class=" px-1 text-start">{{ $row->name }}</td>
-                    <td class=" px-1 text-center">{{ $row->quantity }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->price, 3) }}</td>
-                    <td class=" px-1 text-right">{{ number_format($row->total, 3) }}</td>
-                </tr>
-            @endforeach
-        @endif
+            {{-- Services Section --}}
+            @if ($invoice->invoice_details->load('service')->where('service.type', 'service')->count() > 0)
+                <x-tr>
+                    <x-th colspan="4">{{ __('messages.services') }}</x-th>
+                </x-tr>
+                @foreach ($invoice->invoice_details->where('service.type', 'service') as $row)
+                    <x-tr>
+                        <x-td class=" !whitespace-normal">{{ $row->service->name }}</x-td>
+                        <x-td>{{ $row->quantity }}</x-td>
+                        <x-td>{{ number_format($row->price, 3) }}</x-td>
+                        <x-td>{{ number_format($row->total, 3) }}</x-td>
+                    </x-tr>
+                @endforeach
+            @endif
 
-        {{-- Totals Section --}}
-        <tr class=" border-t dark:border-gray-700">
-            <th>{{ __('messages.delivery') }}</th>
-            <th></th>
-            <th></th>
-            <th class=" text-right">{{ number_format($invoice->delivery, 3) }}
-            </th>
-        </tr>
-        @if ($invoice->discount > 0)
+            {{-- Parts Section --}}
+            @if (
+                $invoice->invoice_details->load('service')->where('service.type', 'part')->count() > 0 ||
+                    $invoice->invoice_part_details->count() > 0)
+                <x-tr>
+                    <x-th colspan="4">{{ __('messages.parts') }}</x-th>
+                </x-tr>
+                @foreach ($invoice->invoice_details->where('service.type', 'part') as $row)
+                    <x-tr>
+                        <x-td class=" !whitespace-normal">{{ $row->service->name }}</x-td>
+                        <x-td>{{ $row->quantity }}</x-td>
+                        <x-td>{{ number_format($row->price, 3) }}</x-td>
+                        <x-td>{{ number_format($row->total, 3) }}</x-td>
+                    </x-tr>
+                @endforeach
+                @foreach ($invoice->invoice_part_details as $row)
+                    <x-tr>
+                        <x-td class=" !whitespace-normal">{{ $row->name }}</x-td>
+                        <x-td>{{ $row->quantity }}</x-td>
+                        <x-td>{{ number_format($row->price, 3) }}</x-td>
+                        <x-td>{{ number_format($row->total, 3) }}</x-td>
+                    </x-tr>
+                @endforeach
+            @endif
+
+            {{-- Totals Section --}}
+            @if ($invoice->delivery > 0)
+                <tr>
+                    <x-th colspan="3" class=" text-end">{{ __('messages.delivery') }}</x-th>
+                    <x-th>{{ number_format($invoice->delivery, 3) }}</x-th>
+                </tr>
+            @endif
+
+            @if ($invoice->discount > 0)
+                <tr>
+                    <x-th colspan="3" class=" text-end">{{ __('messages.discount') }}</x-th>
+                    <x-th class="text-red-500 line-through">{{ number_format($invoice->discount, 3) }}</x-th>
+                </tr>
+            @endif
             <tr>
-                <th>{{ __('messages.discount') }}</th>
-                <th></th>
-                <th></th>
-                <th class=" text-right text-red-500 line-through">{{ number_format($invoice->discount, 3) }}
-                </th>
+                <x-th colspan="3" class=" text-end">{{ __('messages.total') }}</x-th>
+                <x-th>{{ number_format($invoice->amount, 3) }}</x-th>
             </tr>
-        @endif
-        <tr>
-            <th>{{ __('messages.total') }}</th>
-            <th></th>
-            <th></th>
-            <th class=" text-right">{{ number_format($invoice->amount, 3) }}
-            </th>
-        </tr>
-        <tr>
-            <th>{{ __('messages.paid_amount') }}</th>
-            <th></th>
-            <th></th>
-            <th class=" text-right">
-                {{ number_format($invoice->payments->sum('amount'), 3) }}</th>
-        </tr>
-        <tr>
-            <th>{{ __('messages.remaining_amount') }}</th>
-            <th></th>
-            <th></th>
-            <th class=" text-right">
-                {{ number_format($invoice->remaining_amount, 3) }}</th>
-        </tr>
-    </table>
+            <tr>
+                <x-th colspan="3" class=" text-end">{{ __('messages.paid_amount') }}</x-th>
+                <x-th>{{ $invoice->payments->sum('amount') > 0 ? number_format($invoice->payments->sum('amount'), 3) : '-' }}</x-th>
+            </tr>
+            <tr>
+                <x-th colspan="3" class=" text-end">{{ __('messages.remaining_amount') }}</x-th>
+                <x-th>{{ $invoice->remaining_amount > 0 ? number_format($invoice->remaining_amount, 3) : '-' }}</x-th>
+            </tr>
+        </x-table>
+    </div>
     <x-section-border />
 
     @if ($invoice->payments->count() == 0 && !in_array(auth()->user()->title_id, [10, 11]))

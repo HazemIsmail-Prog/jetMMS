@@ -42,4 +42,11 @@ class Marketing extends Model
                 $q->whereDate('created_at', '<=', $filter['end_created_at']);
             });
     }
+
+    // Formatters
+
+    public function getFormatedCreatedAtAttribute()
+    {
+        return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
+    }
 }

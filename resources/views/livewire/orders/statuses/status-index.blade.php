@@ -9,45 +9,30 @@
         <x-slot name="content">
 
             @if ($order)
-                <div class="border rounded-lg overflow-hidden dark:border-gray-700">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-50 dark:bg-gray-700">
+                <div class=" overflow-x-auto sm:rounded-lg">
+                    <x-table>
+                        <x-thead>
                             <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-                                    {{ __('messages.status') }}</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-                                    {{ __('messages.technician') }}</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-                                    {{ __('messages.date') }}/{{ __('messages.time') }}</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-                                    {{ __('messages.creator') }}</th>
+                                <x-th>{{ __('messages.status') }}</x-th>
+                                <x-th>{{ __('messages.technician') }}</x-th>
+                                <x-th>{{ __('messages.date') }}/{{ __('messages.time') }}</x-th>
+                                <x-th>{{ __('messages.creator') }}</x-th>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        </x-thead>
+                        <tbody>
                             @foreach ($this->statuses as $status)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"
-                                        style="color: {{ $status->status->color }}">
-                                        {{ $status->status->name }}</td>
-                                    <td
-                                        class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                        {{ @$status->technician->name ?? '-' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                                <x-tr>
+                                    <x-td style="color: {{ $status->status->color }}">{{ $status->status->name }}</x-td>
+                                    <x-td>{{ @$status->technician->name ?? '-' }}</x-td>
+                                    <x-td>
                                         <div>{{ $status->created_at->format('d-m-Y') }}</div>
-                                        <div class=" text-xs">{{ $status->created_at->format('H:i') }}
-                                        </div>
-                                    </td>
-                                    <td
-                                        class="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                        {{ @$status->creator->name }}</td>
-                                </tr>
+                                        <div class=" text-xs">{{ $status->created_at->format('H:i') }}</div>
+                                    </x-td>
+                                    <x-td>{{ @$status->creator->name }}</x-td>
+                                </x-tr>
                             @endforeach
                         </tbody>
-                    </table>
+                    </x-table>
                 </div>
             @endif
         </x-slot>

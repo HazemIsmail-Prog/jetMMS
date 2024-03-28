@@ -53,7 +53,7 @@
                     <x-tr>
                         <x-td>{{ $part_invoice->id }}</x-td>
                         <x-td>{{ $part_invoice->manual_id }}</x-td>
-                        <x-td>{{ $part_invoice->date->format('d-m-Y') }}</x-td>
+                        <x-td>{!! $part_invoice->formated_date !!}</x-td>
                         <x-td>{{ $part_invoice->supplier->name }}</x-td>
                         <x-td>{{ $part_invoice->contact->name }}</x-td>
                         <x-td>{{ $part_invoice->formated_cost_amount }}</x-td>

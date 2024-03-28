@@ -87,7 +87,7 @@
                         </x-td>
                         <x-td>
                             @foreach ($customer->addresses as $address)
-                                <div class=" whitespace-nowrap">{{ $address->full_address }}</div>
+                                <div>{{ $address->full_address }}</div>
                             @endforeach
                         </x-td>
                         <x-td>{{ $customer->fromated_created_at }}</x-td>

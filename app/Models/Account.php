@@ -33,4 +33,16 @@ class Account extends Model
             return $this->name_en ?? $this->name_ar;
         }
     }
+
+    // Formatters
+
+    public function getFormatedDebitSumAttribute()
+    {
+        return $this->voucher_details->sum('debit') == 0 ? '-' : number_format($this->voucher_details->sum('debit'), 3);
+    }
+
+    public function getFormatedCreditSumAttribute()
+    {
+        return $this->voucher_details->sum('credit') == 0 ? '-' : number_format($this->voucher_details->sum('credit'), 3);
+    }
 }

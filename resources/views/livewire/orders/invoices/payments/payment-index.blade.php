@@ -18,7 +18,7 @@
                         <x-tr>
                             <x-td>{{ $payment->user->name }}</x-td>
                             <x-td>
-                                <div class=" whitespace-nowrap">{{ $payment->created_at->format('d-m-Y') }}</div>
+                                <div>{{ $payment->created_at->format('d-m-Y') }}</div>
                                 <div>{{ $payment->created_at->format('H:i') }}</div>
                             </x-td>
                             <x-td>
@@ -33,7 +33,6 @@
                             </x-td>
                         </x-tr>
                     @endforeach
-                    <tr></tr>
                 </tbody>
             </x-table>
         </div>

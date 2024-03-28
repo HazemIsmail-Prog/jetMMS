@@ -24,4 +24,16 @@ class Payment extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+
+    // Formatters
+
+    public function getFormatedCreatedAtAttribute()
+    {
+        return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
+    }
+
+    public function getFormatedAmountAttribute()
+    {
+        return $this->amount > 0 ? number_format($this->amount, 3) : '-';
+    }
 }

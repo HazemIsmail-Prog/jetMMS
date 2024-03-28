@@ -53,4 +53,11 @@ class Car extends Model
     {
         return $this->hasOne(CarAction::class, 'car_id')->orderBy('date', 'desc')->orderBy('time', 'desc');
     }
+
+    // Formatters
+
+    public function getFormatedInsuranceExpirationDateAttribute() {
+        return '<span dir="ltr">' . $this->insurance_expiration_date->format('d-m-Y') . '</span>';
+    }
+
 }

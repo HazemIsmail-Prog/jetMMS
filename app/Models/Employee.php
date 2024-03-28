@@ -147,4 +147,27 @@ class Employee extends Model
         return $indemnity;
     }
 
+
+    // Formatters
+
+    public function getFormatedJoinDateAttribute() {
+        return '<span dir="ltr">' . ($this->joinDate->format('d-m-Y')) . '</span>';
+    }
+    public function getFormatedStatusAttribute() {
+        return '<div class="text-'. $this->status->color().'-400">'. $this->status->title() . '</div>';
+    }
+
+    public function getFormatedLeaveDaysBalanceAttribute() {
+        return number_format($this->LeaveDaysBalance, 2);
+    }
+    public function getFormatedLeaveBalanceAmountAttribute() {
+        return number_format($this->LeaveBalanceAmount, 3);
+    }
+    public function getFormatedIndemnityAttribute() {
+        return number_format($this->Indemnity, 3);
+    }
+    public function getFormatedSalaryAttribute() {
+        return number_format($this->salary, 3);
+    }
+
 }

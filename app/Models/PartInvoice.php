@@ -38,4 +38,9 @@ class PartInvoice extends Model
     {
         return $this->sales_amount > 0 ? number_format($this->sales_amount, 3) : '-';
     }
+
+    public function getFormatedDateAttribute()
+    {
+        return '<span dir="ltr">' . ($this->date->format('d-m-Y')) . '</span>';
+    }
 }
