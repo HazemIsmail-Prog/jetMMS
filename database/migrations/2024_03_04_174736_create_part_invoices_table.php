@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('cost_amount',8,3);
             $table->float('sales_amount',8,3);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

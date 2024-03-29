@@ -1,14 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('messages.dashboard') }}
         </h2>
     </x-slot>
 
+    <div class=" grid grid-cols-1 lg:grid-cols-4 gap-3">
+        <div class=" col-span-2">
+            @livewire('operations-reports.orders-chart', key('orders-chart'.rand()))
+        </div>
+        <div class=" col-span-2">
+            @livewire('operations-reports.customers-chart', key('customers-chart'.rand()))
+        </div>
+    </div>
 
 
-
-
-    <x-welcome />
+    {{-- <x-welcome /> --}}
 
 </x-app-layout>

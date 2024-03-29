@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\PartInvoice;
+use App\Services\CreatePartInvoiceVoucher;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -26,5 +29,17 @@ class PartInvoiceForm extends Form
             'cost_amount' => 'required',
             'sales_amount' => 'required',
         ];
+    }
+
+    public function updateOrCreate() {
+        $this->validate();
+        DB::beginTransaction();
+        try {
+            PartInvoice::updateOrCreate(['id' => $this->id], $this->all()); // Observer Applied
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+        }
     }
 }

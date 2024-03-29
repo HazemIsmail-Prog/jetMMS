@@ -7,8 +7,6 @@ use App\Models\PartInvoice;
 use App\Models\Supplier;
 use App\Models\Title;
 use App\Models\User;
-use App\Services\CreatePartInvoiceVoucher;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -52,23 +50,9 @@ class PartInvoiceForm extends Component
 
     public function save()
     {
-        $validated = $this->form->validate();
-
-        DB::beginTransaction();
-        try {
-            $part_invoice = PartInvoice::updateOrCreate(['id' => $validated['id']], $validated);
-            if (!$validated['id']) {
-                // create
-                CreatePartInvoiceVoucher::createVoucher($part_invoice);
-            }
-            // TODO: Edit
-            DB::commit();
-            $this->dispatch('partInvoicesUpdated');
-            $this->showModal = false;
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
-        }
+        $this->form->updateOrCreate();
+        $this->dispatch('partInvoicesUpdated');
+        $this->showModal = false;
     }
 
     public function render()

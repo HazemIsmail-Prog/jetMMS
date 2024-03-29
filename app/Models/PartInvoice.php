@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\PartInvoiceObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(PartInvoiceObserver::class)]
 class PartInvoice extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $guarded = [];
 
@@ -25,6 +30,11 @@ class PartInvoice extends Model
     public function contact(): BelongsTo
     {
         return $this->belongsTo(User::class, 'contact_id');
+    }
+
+    public function voucher(): HasOne
+    {
+        return $this->hasOne(Voucher::class, 'part_invoice_id');
     }
 
     // Formatters

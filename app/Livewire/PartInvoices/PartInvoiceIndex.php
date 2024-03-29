@@ -3,6 +3,7 @@
 namespace App\Livewire\PartInvoices;
 
 use App\Models\PartInvoice;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -12,22 +13,27 @@ class PartInvoiceIndex extends Component
 {
     use WithPagination;
 
-    public $listeners = [];
-
     #[Computed()]
     #[On('partInvoicesUpdated')]
     public function part_invoices()
     {
         return PartInvoice::query()
-        ->with('supplier')
-        ->with('contact')
+            ->with('supplier')
+            ->with('contact')
             ->paginate(15);
     }
 
-    public function delete(PartInvoice $partInvoice) {
-        // TODO: transaction
-        // TODO: delete ralated voucher
-        $partInvoice->delete();
+    public function delete(PartInvoice $partInvoice)
+    {
+        DB::beginTransaction();
+        try {
+            $partInvoice->delete();
+            DB::commit();
+            $this->dispatch('partInvoicesUpdated');
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+        }
     }
 
     public function render()
