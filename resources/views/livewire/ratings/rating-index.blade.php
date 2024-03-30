@@ -104,8 +104,8 @@
                         </x-td>
                         <x-td>
 
-                            {{-- <a href="https://api.whatsapp.com/send?phone=96567654617&text=Message%0awith%0anewlines"> send</a> --}}
-                            <p>{{ $order->whatsapp_message }}</p>
+                            <a href="{{ $order->whatsapp_message }}"> send</a>
+                            {{-- <p>{{ $order->whatsapp_message }}</p> --}}
                         </x-td>
                     </x-tr>
                 @endforeach
