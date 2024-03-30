@@ -7,7 +7,7 @@
 
         <x-slot name="content">
             @if ($showModal)
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
                     <div class=" space-y-3">
                         <div class=" flex items-start gap-2">
                             <div class="flex flex-col">
@@ -103,7 +103,7 @@
                     <div class="mt-3">
                         <x-button>{{ __('messages.save') }}</x-button>
                     </div>
-                    
+
                 </form>
             @endif
         </x-slot>

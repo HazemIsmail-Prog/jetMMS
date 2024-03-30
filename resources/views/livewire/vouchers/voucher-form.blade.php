@@ -7,7 +7,7 @@
 
         <x-slot name="content">
             @if ($showModal)
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
                     <div class=" space-y-3">
                         <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-3">

@@ -4,7 +4,6 @@ namespace App\Livewire\Attachments;
 
 use App\Livewire\Forms\AttachmentForm as FormsAttachmentForm;
 use App\Models\Attachment;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;

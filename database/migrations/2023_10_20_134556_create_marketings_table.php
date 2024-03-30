@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address')->nullable();
             $table->string('type');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

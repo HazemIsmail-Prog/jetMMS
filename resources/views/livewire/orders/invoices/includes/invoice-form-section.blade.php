@@ -1,4 +1,4 @@
-<form wire:submit="save">
+<form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
     {{-- Services Form Section --}}
     <div class=" p-2 border dark:border-gray-700 rounded-lg mt-4">
@@ -9,18 +9,21 @@
                     <div class=" w-2/6 text-xs">{{ $service['name'] }}</div>
                     <div class=" w-3/6">
                         <x-input step="0.01" required class="w-full p-1 text-xs" type="number"
-                            wire:model.live="selected_services.{{ $service['service_id'] }}.quantity" dir="ltr"
-                            placeholder="{{ __('messages.quantity') }}" />
-                        <x-input step="0.001" min="{{ $service['min_price'] }}" max="{{ $service['max_price'] }}"
-                            required class="w-full p-1 text-xs" type="number"
-                            wire:model.live="selected_services.{{ $service['service_id'] }}.price" dir="ltr"
+                            wire:model.live="selected_services.{{ $service['service_id'] }}.quantity"
+                            dir="ltr" placeholder="{{ __('messages.quantity') }}" />
+                        <x-input step="0.001" min="{{ $service['min_price'] }}"
+                            max="{{ $service['max_price'] }}" required class="w-full p-1 text-xs"
+                            type="number"
+                            wire:model.live="selected_services.{{ $service['service_id'] }}.price"
+                            dir="ltr"
                             placeholder="{{ $service['min_price'] }} - {{ $service['max_price'] }}" />
                         <div class=" text-center px-2">
                             {{ number_format($service['service_total'], 3) }}
                         </div>
                     </div>
                     <div class=" w-1/6 flex justify-end text-red-600">
-                        <x-svgs.trash wire:click="delete_service({{ $service['service_id'] }})" class="w-4 h-4" />
+                        <x-svgs.trash wire:click="delete_service({{ $service['service_id'] }})"
+                            class="w-4 h-4" />
                     </div>
                 </div>
 
@@ -38,17 +41,22 @@
         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.parts') }}</h3>
 
         @forelse ($parts as $index => $part)
-            <div wire:key="part-{{ $index }}" class="flex items-start gap-2 border dark:border-gray-700 rounded-lg p-2 mb-2">
-                <x-input required class="w-full p-1 text-xs" type="text" wire:model="parts.{{ $index }}.name"
+            <div wire:key="part-{{ $index }}"
+                class="flex items-start gap-2 border dark:border-gray-700 rounded-lg p-2 mb-2">
+                <x-input required class="w-full p-1 text-xs" type="text"
+                    wire:model="parts.{{ $index }}.name"
                     placeholder="{{ __('messages.name') }}" />
                 <div class="flex flex-col gap-1 items-center w-full">
-                    <x-input required class="w-full p-1 text-xs" type="number" wire:model.live="parts.{{ $index }}.quantity" dir="ltr"
+                    <x-input required class="w-full p-1 text-xs" type="number"
+                        wire:model.live="parts.{{ $index }}.quantity" dir="ltr"
                         placeholder="{{ __('messages.quantity') }}" />
-                    <x-input required class="w-full p-1 text-xs" type="number" wire:model.live="parts.{{ $index }}.price" dir="ltr"
+                    <x-input required class="w-full p-1 text-xs" type="number"
+                        wire:model.live="parts.{{ $index }}.price" dir="ltr"
                         placeholder="{{ __('messages.amount') }}" />
-                    <p>{{ number_format($parts[$index]['total'],3) }}</p>
+                    <p>{{ number_format($parts[$index]['total'], 3) }}</p>
                 </div>
-                <x-select required class="w-full p-1 text-xs" wire:model="parts.{{ $index }}.type">
+                <x-select required class="w-full p-1 text-xs"
+                    wire:model="parts.{{ $index }}.type">
                     <option value="">{{ __('messages.part_source') }}</option>
                     <option value="internal">{{ __('messages.internal') }}</option>
                     <option value="external">{{ __('messages.external') }}</option>
@@ -64,20 +72,22 @@
         @endforelse
 
         <div class="flex justify-center">
-            <x-button type="button" class="py-1" wire:click="addPartRow">{{ __('messages.add_part') }}</x-button>
+            <x-button type="button" class="py-1"
+                wire:click="addPartRow">{{ __('messages.add_part') }}</x-button>
         </div>
     </div>
 
     {{-- Delivery Form Section --}}
     <div class=" p-2 border dark:border-gray-700 rounded-lg mt-4">
         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.delivery') }}</h3>
-        <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0" dir="ltr" />
+        <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0"
+            dir="ltr" />
     </div>
 
     {{-- Total Amount --}}
     <div class=" p-4 border dark:border-gray-700 rounded-lg mt-4 text-center">
         <h3 class="font-bold text-green-800 dark:text-green-400">
-            {{ number_format(collect($selected_services)->sum('service_total') + ($parts ? collect($parts)->sum('total') : 0) +($delivery == '' ? 0 : $delivery), 3) }}
+            {{ number_format(collect($selected_services)->sum('service_total') + ($parts ? collect($parts)->sum('total') : 0) + ($delivery == '' ? 0 : $delivery), 3) }}
         </h3>
 
     </div>
@@ -85,66 +95,8 @@
 
 
         <x-button>{{ __('messages.save') }}</x-button>
-        <x-secondary-button type="button" wire:click="hideInvoiceForm">{{ __('messages.cancel') }}</x-button>
+        <x-secondary-button type="button"
+            wire:click="hideInvoiceForm">{{ __('messages.cancel') }}</x-button>
     </div>
 
 </form>
-
-
-{{-- Parts Form Section --}}
-{{-- <div class="p-2 border dark:border-gray-700 rounded-lg mt-4" x-data="{
-        parts: @entangle('parts'),
-        name: @entangle('name'),
-        updateTotal: function(index) {
-            this.parts[index].total = (this.parts[index].quantity || 0) * (this.parts[index].price || 0);
-            this.calculateGrandTotal();
-        },
-        deleteRow: function(index) {
-            this.parts.splice(index, 1);
-            this.calculateGrandTotal();
-        },
-        formatTotal: function(total) {
-            return total.toFixed(3);
-        },
-        calculateGrandTotal: function() {
-            let total = this.parts.reduce((acc, part) => acc + (part.total || 0), 0);
-            document.getElementById('grand-total').innerText = total.toFixed(3);
-        }
-    }">
-        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.parts') }}</h3>
-
-        <input type="text" x-model="name">
-
-        <template x-if="parts.length === 0">
-            <div class="flex items-center justify-center font-bold text-red-600 p-2">
-                {{ __('messages.no_parts_selected') }}
-            </div>
-        </template>
-
-        <template x-for="(part, index) in parts" :key="index">
-            <div class="flex items-start gap-2 border dark:border-gray-700 rounded-lg p-2 mb-2">
-                <x-input required class="w-full p-1 text-xs" type="text" x-model="part.name"
-                    placeholder="{{ __('messages.name') }}" />
-                <div class="flex flex-col gap-1 items-center w-full">
-                    <x-input required class="w-full p-1 text-xs" type="number" x-model="part.quantity" dir="ltr"
-                        placeholder="{{ __('messages.quantity') }}" @input="updateTotal(index)" />
-                    <x-input required class="w-full p-1 text-xs" type="number" x-model="part.price" dir="ltr"
-                        placeholder="{{ __('messages.price') }}" @input="updateTotal(index)" />
-                    <p x-text="formatTotal(part.total)"></p>
-                </div>
-                <x-select required class="w-full p-1 text-xs" x-model="part.type">
-                    <option value="">{{ __('messages.part_source') }}</option>
-                    <option value="internal">{{ __('messages.internal') }}</option>
-                    <option value="external">{{ __('messages.external') }}</option>
-                </x-select>
-                <button type="button" class="p-1" @click="deleteRow(index)">
-                    <x-svgs.trash class="w-4 h-4 text-red-600" />
-                </button>
-            </div>
-        </template>
-
-        <div class="flex justify-center">
-            <x-button type="button" class="py-1"
-                @click="parts.push({name: '', quantity: '', price: '', type: '', total: 0})">{{ __('messages.add_part') }}</x-button>
-        </div>
-    </div> --}}

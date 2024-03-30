@@ -7,7 +7,7 @@
 
         <x-slot name="content">
             @if ($showModal)
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
                     <div 
                         x-data="{
                             has_installment : @entangle('form.has_installment'),

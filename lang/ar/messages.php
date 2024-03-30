@@ -535,6 +535,7 @@ return [
     'rate_order_no' => 'تقييم الطلب رقم ',
     'invoice_required' => 'الفاتورة اجبارية ',
     'total_car_services_cost' => 'اجمالي تكاليف الصيانة ',
+    'uploading' => 'جاري رفع الملف ',
 
 
 

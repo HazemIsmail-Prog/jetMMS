@@ -8,9 +8,7 @@
         <x-slot name="content">
             @if ($showModal)
 
-
-                <form wire:submit="save" class=" space-y-4">
-
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50" class=" space-y-4">
                     <div class="flex gap-3">
                         {{-- User --}}
 

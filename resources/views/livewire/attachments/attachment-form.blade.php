@@ -15,7 +15,8 @@
                     </div>
                 @enderror
 
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
+
                     <div class=" space-y-3">
 
                         <div>
@@ -54,6 +55,8 @@
                             <x-input-error for="form.file" />
                         </div>
 
+
+
                         <div>
                             <x-label for="expirationDate">{{ __('messages.expirationDate') }}</x-label>
                             <x-input class="w-full" type="date" wire:model="form.expirationDate"
@@ -75,9 +78,16 @@
                             </div>
                         @endif
 
-                        <div class="mt-3">
-                            <x-button>{{ __('messages.save') }}</x-button>
-                        </div>
+                        @if ($form->file)
+                            <div class="mt-3">
+                                <x-button>
+                                    <span class="hidden" wire:loading.remove.class=" hidden"
+                                        wire:target="save">{{ __('messages.uploading') }}</span>
+                                    <span wire:loading.remove>{{ __('messages.save') }}</span>
+                                </x-button>
+                            </div>
+                        @endif
+
 
                     </div>
                 </form>

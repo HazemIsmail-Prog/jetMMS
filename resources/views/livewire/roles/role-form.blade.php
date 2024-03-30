@@ -6,7 +6,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <form wire:submit="save">
+            <form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
                 <div class=" space-y-3">
                     <div>

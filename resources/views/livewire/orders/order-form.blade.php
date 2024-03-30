@@ -16,7 +16,7 @@
                 <x-section-border />
 
 
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
                     {{-- Customer Data --}}
                     <div class=" space-y-3">

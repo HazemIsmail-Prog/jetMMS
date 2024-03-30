@@ -8,7 +8,7 @@
 
         <x-slot name="content">
             @if ($showModal)
-                <form wire:submit="save">
+                <form wire:submit.prevent="save" wire:loading.class="opacity-50">
                     <div class=" space-y-3">
                         <div>
                             <x-label for="amount">{{ __('messages.amount') }}</x-label>
