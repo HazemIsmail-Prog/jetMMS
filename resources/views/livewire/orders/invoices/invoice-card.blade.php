@@ -3,10 +3,10 @@
     {{-- Header Section --}}
     <div class=" flex items-center justify-between mb-3">
         <h3 class="font-semibold text-gray-900 dark:text-white">
-            {{ str_pad($invoice->id, 8, '0', STR_PAD_LEFT) }}
+            {{ $invoice->formated_id }}
         </h3>
 
-
+        {{-- Print and Delete Section --}}
         <div class=" flex items-center gap-2">
             <!-- Print Dropdown -->
             <div class="relative">
@@ -17,7 +17,7 @@
                         </x-badgeWithCounter>
                     </x-slot>
                     <x-slot name="content">
-                        <!-- Account Management -->
+                        <!-- PDF Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400">
                             {{ __('messages.print_invoice') }}
                         </div>
@@ -30,13 +30,16 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-            @can('delete', $invoice)
-                <x-badgeWithCounter wire:click="delete({{ $invoice }})" wire:confirm="{{ __('messages.are_u_sure') }}"
-                    title="{{ __('messages.print_invoice') }}">
-                    <x-svgs.trash class="h-4 w-4 text-red-600" />
-                </x-badgeWithCounter>
-            @endcan
+            @if ($invoice->payments->where('is_collected', true)->count() == 0)
+                @can('delete', $invoice)
+                    <x-badgeWithCounter wire:click="deleteInvoice({{ $invoice }})"
+                        wire:confirm="{{ __('messages.are_u_sure') }}" title="{{ __('messages.print_invoice') }}">
+                        <x-svgs.trash class="h-4 w-4 text-red-600" />
+                    </x-badgeWithCounter>
+                @endcan
+            @endif
         </div>
+
     </div>
 
     {{-- Invoice Table --}}
@@ -121,6 +124,7 @@
     </div>
     <x-section-border />
 
+    {{-- Discount Button --}}
     @if ($invoice->payments->count() == 0 && !in_array(auth()->user()->title_id, [10, 11]))
         <div class=" text-center">
             <x-button type="button"
@@ -129,9 +133,7 @@
         </div>
     @endif
 
-    @livewire('orders.invoices.payments.payment-index', ['invoice' => $invoice], key($invoice->id . rand()))
-
-
-
+    {{-- Payments Index --}}
+    @include('livewire.orders.invoices.payments.__payment-index')
 
 </div>

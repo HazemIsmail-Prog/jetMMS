@@ -24,8 +24,12 @@ class InvoiceObserver
     public function updated(Invoice $invoice): void
     {
         if ($invoice->isDirty('discount')) {
-            $invoice->voucher->voucherDetails()->forceDelete();
-            CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
+
+            // This chek for old invoices which not have vouchers
+            if($invoice->voucher?->voucherDetails){
+                $invoice->voucher->voucherDetails()->forceDelete();
+                CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
+            }
             broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         }
     }

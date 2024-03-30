@@ -26,10 +26,12 @@
                                 <div>{{ $payment->method }}</div>
                             </x-td>
                             <x-td>
-                                @can('delete', $payment)
-                                    <x-svgs.trash wire:click="delete({{ $payment }})"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
-                                @endcan
+                                @if (!$payment->is_collected)
+                                    @can('delete', $payment)
+                                        <x-svgs.trash wire:click="deletePayment({{ $payment }})"
+                                            wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
+                                    @endcan
+                                @endif
                             </x-td>
                         </x-tr>
                     @endforeach
@@ -45,8 +47,10 @@
     @can('create', App\Models\Payment::class)
         @if ($invoice->remaining_amount > 0)
             <x-section-border />
-            <x-button type="button"
-                wire:click="$dispatch('showPaymentFormModal',{invoice:{{ $invoice }}})">{{ __('messages.create_payment') }}</x-button>
+            @if ($invoice)
+                <x-button type="button"
+                    wire:click="$dispatch('showPaymentFormModal',{invoice:{{ $invoice }}})">{{ __('messages.create_payment') }}</x-button>
+            @endif
         @endif
     @endcan
 </div>
