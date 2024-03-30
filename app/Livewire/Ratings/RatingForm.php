@@ -39,7 +39,7 @@ class RatingForm extends Component
         Rating::updateOrCreate(['order_id' => $this->order->id], [
             'rating' => $this->rating,
             'notes' => $this->notes,
-            'created_by' => auth()->id(),
+            'created_by' => 1,
         ]);
         $this->dispatch('ratingsUpdated');
         $this->showModal = false;
