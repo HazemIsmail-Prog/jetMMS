@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 #[ObservedBy(OrderObserver::class)]
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $guarded = [];
-    
+
     protected $casts = [
         'estimated_start_date' => 'date:Y-m-d',
         'created_at' => 'datetime',
@@ -25,7 +26,8 @@ class Order extends Model
         'cancelled_at' => 'datetime',
     ];
 
-    public function rating() : HasOne {
+    public function rating(): HasOne
+    {
         return $this->hasOne(Rating::class);
     }
 
@@ -88,7 +90,8 @@ class Order extends Model
         return $this->hasMany(OrderStatus::class);
     }
 
-    public function getRemainingAmountAttribute() {
+    public function getRemainingAmountAttribute()
+    {
         return $this->invoices->sum('remaining_amount');
     }
 
@@ -121,6 +124,17 @@ class Order extends Model
         return $this->completed_at->diff($this->latest_received->created_at)->format('%H:%I');
     }
 
+    public function getWhatsappMessageAttribute()
+    {
+
+        // 'https://api.whatsapp.com/send?phone=447777333333&text=Message%0awith%0anewlines'
+        // 'https://api.whatsapp.com/send?phone=96567654617&text=Message%0awith%0anewlines%0http://127.0.0.1:8000/customer-page/eyJpdiI6IndYbEpvWFd1OGVKNzJPdDFKTStEU1E9PSIsInZhbHVlIjoicnJRUUdTSDlzcGZLWHpzSndYbkNUQT09IiwibWFjIjoiNGIwZDIzNzk0MjMxYWE2OGM4ZGMyN2IzNzE4MDc4ZmY2ODYyNTU4MjI0NTcwZjFiOWJiNjlmYjUyOTdkMDkxMyIsInRhZyI6IiJ9'
+        $welcomeMessage = 'Message%0awith%0anewlines';
+        $number = '96567654617';
+        $encryptedOrderId = '%0a%0a' . route('customer.page', encrypt($this->id));
+        return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
+    }
+
 
 
 
@@ -141,12 +155,12 @@ class Order extends Model
             })
             ->when($filter['customer_name'], function ($q) use ($filter) {
                 $q->whereHas('customer', function ($q2) use ($filter) {
-                    $q2->where('name', 'like', '%'.$filter['customer_name'].'%');
+                    $q2->where('name', 'like', '%' . $filter['customer_name'] . '%');
                 });
             })
             ->when($filter['customer_phone'], function ($q) use ($filter) {
                 $q->whereHas('phone', function ($q2) use ($filter) {
-                    $q2->where('number', 'like', '%'.$filter['customer_phone'].'%');
+                    $q2->where('number', 'like', '%' . $filter['customer_phone'] . '%');
                 });
             })
             ->when($filter['areas'], function ($q) use ($filter) {
@@ -190,8 +204,7 @@ class Order extends Model
             })
             ->when($filter['end_completed_at'], function ($q) use ($filter) {
                 $q->whereDate('completed_at', '<=', $filter['end_completed_at']);
-            })
-            ;
+            });
     }
 
     // Formatters
@@ -200,23 +213,28 @@ class Order extends Model
         return str_pad($this->id, 8, '0', STR_PAD_LEFT);
     }
 
-    public function getFormatedCreatedAtAttribute() {
+    public function getFormatedCreatedAtAttribute()
+    {
         return '<span dir="ltr">' . ($this->created_at->format('d-m-Y | H:i')) . '</span>';
     }
 
-    public function getFormatedCompletedAtAttribute() {
+    public function getFormatedCompletedAtAttribute()
+    {
         return '<span dir="ltr">' . ($this->completed_at ? $this->completed_at->format('d-m-Y | H:i') : '-') . '</span>';
     }
-    
-    public function getFormatedEstimatedStartDateAttribute() {
+
+    public function getFormatedEstimatedStartDateAttribute()
+    {
         return '<span dir="ltr">' . ($this->estimated_start_date->format('d-m-Y')) . '</span>';
     }
 
-    public function getFormatedRemainingAmountAttribute() {
+    public function getFormatedRemainingAmountAttribute()
+    {
         return $this->remaining_amount > 0 ? number_format($this->remaining_amount, 3) : '-';
     }
 
-    public function getFormatedOrderIdAttribute() {
+    public function getFormatedOrderIdAttribute()
+    {
         return str_pad($this->id, 8, '0', STR_PAD_LEFT);
     }
 }

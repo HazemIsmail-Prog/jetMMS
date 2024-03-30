@@ -1,8 +1,7 @@
 @if ($settings->logo)
-<div class=" w-full flex justify-center">
-
-  <img src="https://miskalddartestbucket.s3.amazonaws.com/{{ $logo }}" alt="">
-</div>
+    <div class=" w-full flex justify-center">
+        <img src="{{ $settings->full_logo_path }}" alt="">
+    </div>
 @else
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
         <path

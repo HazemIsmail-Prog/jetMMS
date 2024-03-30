@@ -7,8 +7,9 @@ use Mpdf\Mpdf;
 
 class InvoiceController extends Controller
 {
-    public function pdf(Invoice $invoice)
+    public function pdf($encryptedOrderId)
     {
+        $invoice = Invoice::find(decrypt($encryptedOrderId));
         $invoice->load('invoice_details.service');
         $page_title = 'MD Invoice No.' . $invoice->id;
         $file_name = $page_title . '.pdf';
@@ -21,8 +22,9 @@ class InvoiceController extends Controller
         $mpdf->WriteHTML($body); //should be before output directly
         $mpdf->Output($file_name, 'I');
     }
-    public function detailed_pdf(Invoice $invoice)
+    public function detailed_pdf($encryptedOrderId)
     {
+        $invoice = Invoice::find(decrypt($encryptedOrderId));
         $invoice->load('invoice_details.service');
         $page_title = 'MD Detailed Invoice No.' . $invoice->id;
         $file_name = $page_title . '.pdf';

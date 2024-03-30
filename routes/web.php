@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerRatingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
@@ -10,6 +11,7 @@ use App\Livewire\Cashier\CashCollection;
 use App\Livewire\Cashier\KnetCollection;
 use App\Livewire\Companies\CompanyIndex;
 use App\Livewire\CostCenters\CostCenterIndex;
+use App\Livewire\CustomerPage;
 use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Departments\DepartmentIndex;
 use App\Livewire\Dispatching\DispatchingIndex;
@@ -56,6 +58,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
+Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
+
+Route::get('/invoice/pdf/{encryptedInvoiceId}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
+Route::get('/invoice/detailed_pdf/{encryptedInvoiceId}', [InvoiceController::class, 'detailed_pdf'])->name('invoice.detailed_pdf');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -66,8 +73,6 @@ Route::middleware([
 
     Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
 
-    Route::get('/invoice/pdf/{invoice}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
-    Route::get('/invoice/detailed_pdf/{invoice}', [InvoiceController::class, 'detailed_pdf'])->name('invoice.detailed_pdf');
 
 
 
