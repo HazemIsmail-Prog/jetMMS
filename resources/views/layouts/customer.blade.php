@@ -61,15 +61,13 @@
 
             <!-- Page Content -->
             <main class=" flex-1 overflow-y-auto p-5 ">
-                <div class="max-w-full h-full mx-auto ">
-                    @if ($settings->logo)
-                        <div class=" w-full flex justify-center">
-                            <img src="{{ $settings->full_logo_path }}" alt="">
-                        </div>
-                    @endif
+                @if ($settings->logo)
+                    <div class=" w-full flex justify-center">
+                        <img src="{{ $settings->full_logo_path }}" alt="">
+                    </div>
+                @endif
 
-                    {{ $slot }}
-                </div>
+                {{ $slot }}
             </main>
         </div>
     </div>
