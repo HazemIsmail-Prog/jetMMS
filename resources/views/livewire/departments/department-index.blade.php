@@ -40,6 +40,8 @@
             <x-thead>
                 <tr>
                     <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th>{{ __('messages.income_account_id') }}</x-th>
+                    <x-th>{{ __('messages.cost_account_id') }}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>
@@ -47,6 +49,8 @@
                 @foreach ($this->departments as $department)
                     <x-tr>
                         <x-td>{{ $department->name }}</x-td>
+                        <x-td>{{ $department->incomeAccount->name ?? '-' }}</x-td>
+                        <x-td>{{ $department->costAccount->name ?? '-' }}</x-td>
                         <x-td>
                             <div class="flex items-center justify-end gap-2">
 

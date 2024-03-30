@@ -19,6 +19,8 @@ class DepartmentIndex extends Component
     public function departments()
     {
         return Department::query()
+        ->with('incomeAccount')
+        ->with('costAccount')
             ->paginate(15);
     }
 

@@ -8,6 +8,13 @@
 
         <x-slot name="content">
             @if ($showModal)
+                @error('form.successUpload')
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        {{ $message }}
+                    </div>
+                @enderror
+
                 <form wire:submit="save">
                     <div class=" space-y-3">
 
@@ -62,8 +69,8 @@
                         @if ($form->alertable)
                             <div>
                                 <x-label for="alertBefore">{{ __('messages.alertBefore') }}</x-label>
-                                <x-input class="w-full" type="date" type="number" min="1"
-                                    dir="ltr" wire:model="form.alertBefore" id="alertBefore" />
+                                <x-input class="w-full" type="date" type="number" min="1" dir="ltr"
+                                    wire:model="form.alertBefore" id="alertBefore" />
                                 <x-input-error for="form.alertBefore" />
                             </div>
                         @endif

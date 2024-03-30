@@ -32,6 +32,6 @@ class Attachment extends Model
 
     public function getFullPathAttribute()
     {
-        return 'https://miskalddartestbucket.s3.amazonaws.com/' . $this->file;
+        return 'https://'. config('filesystems.disks.s3.bucket') .'.s3.amazonaws.com/' . $this->file;
     }
 }

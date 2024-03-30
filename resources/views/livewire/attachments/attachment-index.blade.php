@@ -2,12 +2,12 @@
     <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
 
         <x-slot name="title">
-                <div class=" flex items-center justify-between">
-                    <div>{{ $modalTitle }}</div>
-                    <x-button type="button"
-                        wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord?->id }}})">{{ __('messages.add_attachment') }}</x-button>
-                </div>
-                <x-section-border />
+            <div class=" flex items-center justify-between">
+                <div>{{ $modalTitle }}</div>
+                <x-button type="button"
+                    wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord?->id }}})">{{ __('messages.add_attachment') }}</x-button>
+            </div>
+            <x-section-border />
         </x-slot>
 
 
@@ -15,6 +15,12 @@
             @if ($showModal)
                 @if ($currentRecord)
                     @if ($this->attachments->count() > 0)
+                        @if ($showS3Error)
+                            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                                role="alert">
+                                {{ __('messages.something went wrong') }}
+                            </div>
+                        @endif
                         <x-table>
                             <x-thead>
                                 <tr>
@@ -35,7 +41,8 @@
                                                         <x-svgs.view class="w-4 h-4" />
                                                     </x-badgeWithCounter>
                                                 </a>
-                                                <x-badgeWithCounter wire:click="$dispatch('showAttachmentFormModal',{attachment:{{ $attachment }}})"
+                                                <x-badgeWithCounter
+                                                    wire:click="$dispatch('showAttachmentFormModal',{attachment:{{ $attachment }}})"
                                                     title="{{ __('messages.edit') }}">
                                                     <x-svgs.edit class="w-4 h-4" />
                                                 </x-badgeWithCounter>
@@ -58,9 +65,3 @@
         </x-slot>
     </x-dialog-modal>
 </div>
-
-
-
-
-
-

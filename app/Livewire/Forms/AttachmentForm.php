@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Attachment;
+use App\Services\S3;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Form;
 
@@ -18,6 +19,7 @@ class AttachmentForm extends Form
     public bool $alertable = false;
     public $alertBefore;
     public $currentRecord;
+    public bool $successUpload = true;
 
     public function rules()
     {
@@ -30,35 +32,42 @@ class AttachmentForm extends Form
             'expirationDate' => 'required_if:alertable,=,"true"',
             'alertable' => 'nullable',
             'alertBefore' => 'required_if:alertable,=,"true"',
+            'successUpload' => ['required', 'in:1'], // Using the 'in' validation rule
+        ];
+    }
+
+    public function messages() {
+        return [
+            'successUpload.in' => __('messages.something went wrong'),
         ];
     }
 
     public function updateOrCreate()
     {
+        $this->successUpload = true;
         $this->validate();
         $this->currentRecord = $this->attachable_type::find($this->attachable_id);
         if ($this->id) {
             // edit
             $currentAttachment = Attachment::find($this->id);
-            if ($this->file !== $currentAttachment->file) {
-                //remove old file from s3 and save the new one
-                Storage::disk('s3')->delete($currentAttachment->file);
-                $this->file = $this->saveToS3($this->file);
+            $path = S3::saveToS3($this->file, $this->currentRecord, $currentAttachment->file);
+            if (!$path) {
+                $this->successUpload = false;
+                $this->validateOnly('successUpload');
             }
-            $currentAttachment->update($this->except('currentRecord'));
+            $this->file = $path;
+            $currentAttachment->update($this->except('currentRecord','successUpload'));
         } else {
 
             // create
-            $this->file = $this->saveToS3($this->file);
-            $this->currentRecord->attachments()->create($this->except('currentRecord'));
+            $path = S3::saveToS3($this->file, $this->currentRecord);
+            if (!$path) {
+                $this->successUpload = false;
+                $this->validateOnly('successUpload');
+            }
+            $this->file = $path;
+            $this->currentRecord->attachments()->create($this->except('currentRecord','successUpload'));
         }
         $this->reset();
-    }
-
-    public function saveToS3($file)
-    {
-        $storeFolder = 'Attachments/' . class_basename($this->currentRecord) . '/' . $this->currentRecord->id;
-        $path = $file->storePublicly($storeFolder, 's3');
-        return $path;
     }
 }
