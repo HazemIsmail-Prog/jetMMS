@@ -128,10 +128,18 @@ class Order extends Model
     {
 
         // 'https://api.whatsapp.com/send?phone=447777333333&text=Message%0awith%0anewlines'
-        // 'https://api.whatsapp.com/send?phone=96567654617&text=Message%0awith%0anewlines%0http://127.0.0.1:8000/customer-page/eyJpdiI6IndYbEpvWFd1OGVKNzJPdDFKTStEU1E9PSIsInZhbHVlIjoicnJRUUdTSDlzcGZLWHpzSndYbkNUQT09IiwibWFjIjoiNGIwZDIzNzk0MjMxYWE2OGM4ZGMyN2IzNzE4MDc4ZmY2ODYyNTU4MjI0NTcwZjFiOWJiNjlmYjUyOTdkMDkxMyIsInRhZyI6IiJ9'
-        $welcomeMessage = 'Message%0awith%0anewlines';
+
+        $line1 = 'مسك الدار للمقاولات العامة للمباني';
+        $line2 = '%0a';
+        $line3 = 'تم تنفيذ طلبكم رقم 00000001';
+        $line4 = '%0a';
+        $line5 = 'يمكنك تقييم الطلب وتحميل الفواتير من خلال الرابط التالي';
+        $line6 = '%0a';
+        $line7 = '%0a';
+        $welcomeMessage = $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . $line7;
+        // $welcomeMessage = 'Message%0awith%0anewlines';
         $number = '96567654617';
-        $encryptedOrderId = '%0a%0a' . route('customer.page', encrypt($this->id));
+        $encryptedOrderId = route('customer.page', encrypt($this->id));
         return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
     }
 
