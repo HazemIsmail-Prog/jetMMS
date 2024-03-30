@@ -21,10 +21,10 @@
                         <div class="block px-4 py-2 text-xs text-gray-400">
                             {{ __('messages.print_invoice') }}
                         </div>
-                        <x-dropdown-link target="_blank" href="{{ route('invoice.detailed_pdf', $invoice) }}">
+                        <x-dropdown-link target="_blank" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">
                             {{ __('messages.print_detailed_invoice') }}
                         </x-dropdown-link>
-                        <x-dropdown-link target="_blank" href="{{ route('invoice.pdf', $invoice) }}">
+                        <x-dropdown-link target="_blank" href="{{ route('invoice.pdf', encrypt($invoice->id)) }}">
                             {{ __('messages.print_non_detailed_invoice') }}
                         </x-dropdown-link>
                     </x-slot>
