@@ -138,7 +138,7 @@ class Order extends Model
         $line7 = '%0a';
         $welcomeMessage = $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . $line7;
         // $welcomeMessage = 'Message%0awith%0anewlines';
-        $number = '96567654617';
+        $number = '965' . $this->phone->number;
         $encryptedOrderId = route('customer.page', encrypt($this->id));
         return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
     }
