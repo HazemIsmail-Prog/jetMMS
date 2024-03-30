@@ -129,7 +129,7 @@ class Order extends Model
 
         // 'https://api.whatsapp.com/send?phone=447777333333&text=Message%0awith%0anewlines'
 
-        $line1 = 'مسك الدار للمقاولات العامة للمباني';
+        $line1 = '*مسك الدار للمقاولات العامة للمباني*';
         $line2 = '%0a';
         $line3 = 'تم تنفيذ طلبكم رقم 00000001';
         $line4 = '%0a';
