@@ -104,7 +104,7 @@
                         </x-td>
                         <x-td>
 
-                            <a href="{{ $order->whatsapp_message }}"> send</a>
+                            <a target="__blank" href="{{ $order->whatsapp_message }}"> send</a>
                             {{-- <p>{{ $order->whatsapp_message }}</p> --}}
                         </x-td>
                     </x-tr>
