@@ -36,7 +36,7 @@
                         <x-td>{{ $invoice->formated_id }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end">
-                                <a target="__blank" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">View</a>
+                                <a target="__blank" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{ __('messages.view') }}</a>
                             </div>
                         </x-td>
                     </x-tr>

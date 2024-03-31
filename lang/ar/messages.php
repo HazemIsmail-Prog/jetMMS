@@ -537,6 +537,7 @@ return [
     'total_car_services_cost' => 'اجمالي تكاليف الصيانة ',
     'uploading' => 'جاري رفع الملف ',
     'press_here_to_rate' => 'تقييم الخدمة ',
+    'view' => 'عرض ',
 
 
 
