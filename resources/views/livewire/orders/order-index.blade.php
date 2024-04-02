@@ -143,7 +143,7 @@
 
                                 @if ($order->status_id == App\Models\Status::COMPLETED)
                                     @can('send_survey', $order)
-                                        <a class=" border rounded-lg p-1" target="__blank"
+                                        <a class=" border dark:border-gray-700 rounded-lg p-1" target="__blank"
                                             href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
                                     @endcan
                                 @endif
