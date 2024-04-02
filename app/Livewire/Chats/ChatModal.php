@@ -19,7 +19,7 @@ class ChatModal extends Component
     #[Rule('required')]
     public $message = '';
     #[Rule('required')]
-    public User $selectedUser;
+    public ?User $selectedUser;
 
 
     #[On('showChatModal')]
