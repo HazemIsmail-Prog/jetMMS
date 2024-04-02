@@ -32,6 +32,7 @@ class DummyModelPolicy
             || $user->hasPermission('orders_menu')
             || $user->hasPermission('marketing_menu')
             || $user->hasPermission('dispatching_menu')
+            || $user->hasPermission('invoices_menu')
             // || Add More if Needed
         ;
     }
@@ -70,7 +71,6 @@ class DummyModelPolicy
     {
         return
             $user->hasPermission('accounts_menu')
-            || $user->hasPermission('invoices_menu')
             || $user->hasPermission('journal_vouchers_menu')
             || $this->accounting_reports($user);
             // || Add More if Needed
