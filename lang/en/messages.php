@@ -506,6 +506,17 @@ return [
     'edit_part_invoice' => 'Edit Part Invoice No. ',
 
 
-
+    'edit_discount' => 'Edit Discount',
+    'ratings' => 'Ratings',
+    'rating' => 'Rating',
+    'rate_order_no' => 'Rate Order No.',
+    'invoice_required' => 'Invoice Required',
+    'total_car_services_cost' => 'Toltal Car Services Cost',
+    'uploading' => 'Uploading',
+    'press_here_to_rate' => 'Rate Service',
+    'view' => 'View',
+    'send_survey' => 'Send Survey',
+    'orders_per_month' => 'Orders per Month',
+    'completed_orders_per_month' => 'Completed Orders per Month',
 
 ];
