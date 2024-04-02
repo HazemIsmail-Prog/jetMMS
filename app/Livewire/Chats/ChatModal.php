@@ -25,6 +25,7 @@ class ChatModal extends Component
     #[On('showChatModal')]
     public function show()
     {
+        $this->selectedUser = null;
         $this->modalTitle = __('messages.invoices_for_order_number');
         $this->showModal = true;
     }
