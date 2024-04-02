@@ -144,7 +144,7 @@ class User extends Authenticatable
         $permissionList = [];
 
         foreach ($this->roles as $role) {
-            foreach ($role->permissions as $permission) {
+            foreach ($role->load('permissions')->permissions as $permission) {
                 if (!in_array($permission->name, $permissionList)) {
                     $permissionList[] = $permission->name;
                 }
