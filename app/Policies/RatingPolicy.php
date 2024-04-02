@@ -9,22 +9,18 @@ use Illuminate\Auth\Access\Response;
 class RatingPolicy
 {
 
-    // public function before(User $user, string $ability): bool|null
-    // {
-    //     if ($user->id === 1) {
-    //         return true;
-    //     }
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->id === 1) {
+            return true;
+        }
 
-    //     return null;
-    // }
+        return null;
+    }
 
     public function viewAny(User $user): bool
     {
         return $user->hasPermission('rating_menu');
     }
 
-    public function create(User $user): bool
-    {
-        return $user->hasPermission('rating_create');
-    }
 }

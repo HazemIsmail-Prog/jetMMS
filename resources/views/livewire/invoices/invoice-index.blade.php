@@ -129,7 +129,7 @@
                     <x-tr>
                         <x-td>
                             <a target="_blank" class="btn"
-                                href="{{ route('invoice.detailed_pdf', $invoice) }}">{{ $invoice->formated_id }}</a>
+                                href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{ $invoice->formated_id }}</a>
                         </x-td>
                         <x-td>
                             <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
@@ -173,7 +173,7 @@
                         <x-td>{{ $invoice->payment_status->title() }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
-                                @if ($this->invoices->where('order_id', $invoice->order_id)->count() > 1)
+                                @if ($invoice->can_deleted)
                                     <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
                                         wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
                                         wire:click="delete({{ $invoice->id }})">

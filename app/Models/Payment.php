@@ -6,7 +6,7 @@ use App\Observers\PaymentObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Gate;
 
 #[ObservedBy(PaymentObserver::class)]
 class Payment extends Model
@@ -23,6 +23,13 @@ class Payment extends Model
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
+    }
+
+    public function getCanDeleteAttribute()
+    {
+        return
+            Gate::allows('delete', $this)
+            && !$this->is_collected;
     }
 
     // Formatters

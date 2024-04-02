@@ -21,7 +21,8 @@
                         <div class="block px-4 py-2 text-xs text-gray-400">
                             {{ __('messages.print_invoice') }}
                         </div>
-                        <x-dropdown-link target="_blank" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">
+                        <x-dropdown-link target="_blank"
+                            href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">
                             {{ __('messages.print_detailed_invoice') }}
                         </x-dropdown-link>
                         <x-dropdown-link target="_blank" href="{{ route('invoice.pdf', encrypt($invoice->id)) }}">
@@ -30,13 +31,11 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-            @if ($invoice->payments->where('is_collected', true)->count() == 0)
-                @can('delete', $invoice)
-                    <x-badgeWithCounter wire:click="deleteInvoice({{ $invoice }})"
-                        wire:confirm="{{ __('messages.are_u_sure') }}" title="{{ __('messages.print_invoice') }}">
-                        <x-svgs.trash class="h-4 w-4 text-red-600" />
-                    </x-badgeWithCounter>
-                @endcan
+            @if ($invoice->can_deleted)
+                <x-badgeWithCounter wire:click="deleteInvoice({{ $invoice }})"
+                    wire:confirm="{{ __('messages.are_u_sure') }}" title="{{ __('messages.print_invoice') }}">
+                    <x-svgs.trash class="h-4 w-4 text-red-600" />
+                </x-badgeWithCounter>
             @endif
         </div>
 
@@ -125,7 +124,7 @@
     <x-section-border />
 
     {{-- Discount Button --}}
-    @if ($invoice->payments->count() == 0 && !in_array(auth()->user()->title_id, [10, 11]))
+    @if ($invoice->can_apply_discount)
         <div class=" text-center">
             <x-button type="button"
                 wire:click="$dispatch('showDiscountFormModal',{invoice:{{ $invoice }}})">{{ __('messages.edit_discount') }}</x-button>

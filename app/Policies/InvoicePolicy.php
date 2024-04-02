@@ -32,12 +32,17 @@ class InvoicePolicy
     {
         return $user->hasPermission('invoices_delete');
     }
-
+    
+    public function discount(User $user, Invoice $invoice): bool
+    {
+        return $user->hasPermission('invoices_discount');
+    }
+ 
     public function restore(User $user, Invoice $invoice): bool
     {
         return true;
     }
-
+    
     public function forceDelete(User $user, Invoice $invoice): bool
     {
         return true;

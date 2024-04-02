@@ -40,6 +40,7 @@
             <x-thead>
                 <tr>
                     <x-th>{{ __('messages.name') }}</x-th>
+                    <x-th>{{ __('messages.permissions') }}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>
@@ -48,6 +49,15 @@
                     <x-tr>
                         <x-td>
                             <div>{{ $role->name }}</div>
+                        </x-td>
+                        <x-td class=" !whitespace-normal">
+                            <div class="flex flex-wrap gap-1 ">
+
+                                @foreach ($role->permissions as $permission)
+                                    <span
+                                        class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500 whitespace-nowrap">{{ $permission->description }}</span>
+                                @endforeach
+                            </div>
                         </x-td>
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
 
 #[ObservedBy(InvoiceObserver::class)]
 class Invoice extends Model
@@ -117,7 +118,7 @@ class Invoice extends Model
                 $amount += $row->total;
             }
         }
-        foreach ($this->invoice_part_details->where('type','internal') as $row) {
+        foreach ($this->invoice_part_details->where('type', 'internal') as $row) {
             $amount += $row->total;
         }
         return $amount;
@@ -126,7 +127,7 @@ class Invoice extends Model
     public function getExternalPartsAmountAttribute()
     {
         $amount = 0;
-        foreach ($this->invoice_part_details->where('type','external') as $row) {
+        foreach ($this->invoice_part_details->where('type', 'external') as $row) {
             $amount += $row->total;
         }
         return $amount;
@@ -156,57 +157,88 @@ class Invoice extends Model
         }
     }
 
+    public function getCanApplyDiscountAttribute()
+    {
+        return
+            Gate::allows('discount', $this)
+            && $this->payments->count() == 0
+            && !in_array(auth()->user()->title_id, Title::TECHNICIANS_GROUP);
+    }
+
+    public function getCanDeletedAttribute()
+    {
+        return
+            Gate::allows('delete', $this)
+            &&
+            $this->payments->where('is_collected', true)->count() == 0
+            &&
+            $this->load('order:id')->order->invoices->count() > 1;
+    }
+
 
     // Formaters
 
-    public function getFormatedIdAttribute() {
+    public function getFormatedIdAttribute()
+    {
         return str_pad($this->id, 8, '0', STR_PAD_LEFT);
     }
 
-    public function getFormatedServicesAmountAttribute() {
+    public function getFormatedServicesAmountAttribute()
+    {
         return $this->services_amount > 0 ? number_format($this->services_amount, 3) : '-';
     }
 
-    public function getFormatedPartsAmountAttribute() {
+    public function getFormatedPartsAmountAttribute()
+    {
         return $this->internal_parts_amount + $this->external_parts_amount > 0 ? number_format($this->internal_parts_amount + $this->external_parts_amount, 3) : '-';
     }
 
-    public function getFormatedDiscountAmountAttribute() {
+    public function getFormatedDiscountAmountAttribute()
+    {
         return $this->discount > 0 ? number_format($this->discount, 3) : '-';
     }
-    public function getFormatedServiceAmountAfterDiscountAttribute() {
+    public function getFormatedServiceAmountAfterDiscountAttribute()
+    {
         return $this->services_amount_after_discount > 0 ? number_format($this->services_amount_after_discount, 3) : '-';
     }
 
-    public function getFormatedInternalPartsAmountAttribute() {
+    public function getFormatedInternalPartsAmountAttribute()
+    {
         return $this->internal_parts_amount > 0 ? number_format($this->internal_parts_amount, 3) : '-';
     }
 
-    public function getFormatedExternalPartsAmountAttribute() {
+    public function getFormatedExternalPartsAmountAttribute()
+    {
         return $this->external_parts_amount > 0 ? number_format($this->external_parts_amount, 3) : '-';
     }
 
-    public function getFormatedDeliveryAmountAttribute() {
+    public function getFormatedDeliveryAmountAttribute()
+    {
         return $this->delivery > 0 ? number_format($this->delivery, 3) : '-';
     }
 
-    public function getFormatedAmountAttribute() {
+    public function getFormatedAmountAttribute()
+    {
         return $this->amount > 0 ? number_format($this->amount, 3) : '-';
     }
 
-    public function getFormatedCashAmountAttribute() {
+    public function getFormatedCashAmountAttribute()
+    {
         return $this->cash_amount > 0 ? number_format($this->cash_amount, 3) : '-';
     }
 
-    public function getFormatedKnetAmountAttribute() {
+    public function getFormatedKnetAmountAttribute()
+    {
         return $this->knet_amount > 0 ? number_format($this->knet_amount, 3) : '-';
     }
 
-    public function getFormatedTotalPaidAmountAttribute() {
+    public function getFormatedTotalPaidAmountAttribute()
+    {
         return $this->total_paid_amount > 0 ? number_format($this->total_paid_amount, 3) : '-';
     }
 
-    public function getFormatedRemainingAmountAttribute() {
+    public function getFormatedRemainingAmountAttribute()
+    {
         return $this->remaining_amount > 0 ? number_format($this->remaining_amount, 3) : '-';
     }
 

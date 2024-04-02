@@ -77,6 +77,10 @@
                 <x-sidebar-item icon="star" route="rating.index" :title="__('messages.ratings')" />
             @endcan
 
+            @can('viewAny', App\Models\Invoice::class)
+                <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
+            @endcan
+
             @can('canDispatch', App\Models\DummyModel::class)
 
                 <x-sidebar-dropdown title="{{ __('messages.dispatching') }}" icon="truck">
@@ -167,10 +171,6 @@
 
             @can('viewAny', App\Models\Account::class)
                 <x-sidebar-item icon="bars-3-bottom-left" route="account.index" :title="__('messages.accounts')" />
-            @endcan
-
-            @can('viewAny', App\Models\Invoice::class)
-                <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
             @endcan
 
             @can('viewAny', App\Models\Voucher::class)

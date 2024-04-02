@@ -19,13 +19,15 @@ class RoleIndex extends Component
     public function roles()
     {
         return Role::query()
+            ->with('permissions')
             ->paginate(15);
     }
 
-    public function delete(Role $role) {
+    public function delete(Role $role)
+    {
         $role->delete();
     }
-    
+
     public function render()
     {
         return view('livewire.roles.role-index');

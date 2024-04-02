@@ -45,7 +45,16 @@ class PermissionSeeder extends Seeder
             
             // Rating
             ['name' => 'rating_menu',               'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التقييمات',               'desc_en' => 'Rating Menu'],
-            ['name' => 'rating_create',             'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'اضافة تقييم',               'desc_en' => 'Create Rating'],
+
+            // Invoices
+            ['name' => 'invoices_menu',             'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'عرض قائمة الفواتير','desc_en' => 'Invoices Menu'],
+            ['name' => 'invoices_create',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'انشاء فاتورة','desc_en' => 'Invoices Menu'],
+            ['name' => 'invoices_delete',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'حذف فاتورة','desc_en' => 'Invoices Menu'],
+            ['name' => 'invoices_discount',         'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'تطبيق خصم','desc_en' => 'Applu Discount'],
+            
+            // Payments
+            ['name' => 'payments_create',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'انشاء دفعة','desc_en' => 'Invoices Menu'],
+            ['name' => 'payments_delete',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',            'desc_ar' => 'حذف دفعة','desc_en' => 'Invoices Menu'],
 
             // Dispatching
             ['name' => 'dispatching_menu',          'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التوزيع',               'desc_en' => 'Dispatching Menu'],
@@ -66,12 +75,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'accounts_edit',             'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'تعديل حساب',               'desc_en' => 'Accounts Menu'],
             ['name' => 'accounts_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف حساب',               'desc_en' => 'Accounts Menu'],
             
-            ['name' => 'invoices_menu',             'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة الفواتير','desc_en' => 'Invoices Menu'],
-            ['name' => 'invoices_create',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'انشاء فاتورة','desc_en' => 'Invoices Menu'],
-            ['name' => 'invoices_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف فاتورة','desc_en' => 'Invoices Menu'],
-            
-            ['name' => 'payments_create',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'انشاء دفعة','desc_en' => 'Invoices Menu'],
-            ['name' => 'payments_delete',           'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'حذف دفعة','desc_en' => 'Invoices Menu'],
            
             ['name' => 'journal_vouchers_menu',     'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'عرض قائمة القيود اليومية',        'desc_en' => 'Journal Vouchers Menu'],
             ['name' => 'journal_vouchers_create',   'section_name_ar' => 'الحسابات',        'section_name_en' => 'accounts',            'desc_ar' => 'اضافة قيود يومية',        'desc_en' => 'Journal Vouchers Menu'],

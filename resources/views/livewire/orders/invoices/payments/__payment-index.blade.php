@@ -26,11 +26,9 @@
                                 <div>{{ $payment->method }}</div>
                             </x-td>
                             <x-td>
-                                @if (!$payment->is_collected)
-                                    @can('delete', $payment)
-                                        <x-svgs.trash wire:click="deletePayment({{ $payment }})"
-                                            wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
-                                    @endcan
+                                @if ($payment->can_delete)
+                                    <x-svgs.trash wire:click="deletePayment({{ $payment }})"
+                                        wire:confirm="{{ __('messages.are_u_sure') }}" class=" w-4 h-4 text-red-600" />
                                 @endif
                             </x-td>
                         </x-tr>
