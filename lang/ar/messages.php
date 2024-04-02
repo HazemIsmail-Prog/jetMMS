@@ -539,6 +539,8 @@ return [
     'press_here_to_rate' => 'تقييم الخدمة ',
     'view' => 'عرض ',
     'send_survey' => 'ارسال استبيان',
+    'orders_per_month' => 'عدد الطلبات لكل شهر',
+    'completed_orders_per_month' => 'عدد الطلبات المنفذة لكل شهر',
 
 
 
