@@ -23,8 +23,6 @@
         @endteleport
     @endif
 
-    @livewire('ratings.rating-form')
-
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
         <div>
@@ -87,25 +85,11 @@
                         <x-td>{{ @$order->rating->notes }}</x-td>
                         <x-td>
                             <div class=" flex items-center justify-start gap-2">
-
-                                @can('create', App\Models\Rating::class)
-                                    <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}"
-                                        wire:click="$dispatch('showRatingFormModal',{order:{{ $order }}})">
-                                        <x-svgs.star
-                                            class="h-4 w-4 text-yellow-400 {{ $order->rating ? 'fill-yellow-400' : ' fill-none' }}" />
-                                    </x-badgeWithCounter>
-                                @else
-                                    <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}">
-                                        <x-svgs.star
-                                            class="h-4 w-4 text-yellow-400 {{ $order->rating ? 'fill-yellow-400' : ' fill-none' }}" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                                <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}">
+                                    <x-svgs.star
+                                        class="h-4 w-4 text-yellow-400 {{ $order->rating ? 'fill-yellow-400' : ' fill-none' }}" />
+                                </x-badgeWithCounter>
                             </div>
-                        </x-td>
-                        <x-td>
-
-                            <a target="__blank" href="{{ $order->whatsapp_message }}"> send</a>
-                            {{-- <p>{{ $order->whatsapp_message }}</p> --}}
                         </x-td>
                     </x-tr>
                 @endforeach

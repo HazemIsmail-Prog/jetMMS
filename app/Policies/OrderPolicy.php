@@ -22,6 +22,16 @@ class OrderPolicy
     {
         return $user->hasPermission('orders_menu');
     }
+
+    public function create(User $user): bool
+    {
+        return $user->hasPermission('orders_create');
+    }
+
+    public function update(User $user, Order $order): bool
+    {
+        return $user->hasPermission('orders_edit');
+    }
     
     public function view_order_progress(User $user, Order $order): bool
     {
@@ -47,15 +57,12 @@ class OrderPolicy
     {
         return $user->hasPermission('orders_cancel');
     }
-    
-    public function create(User $user): bool
+
+    public function send_survey(User $user, Order $order): bool
     {
-        return $user->hasPermission('orders_create');
+        return $user->hasPermission('orders_send_survey');
     }
     
-    public function update(User $user, Order $order): bool
-    {
-        return $user->hasPermission('orders_edit');
-    }
+
 
 }

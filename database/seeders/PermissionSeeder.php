@@ -35,6 +35,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'orders_invoices',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض فواتير الطلب',               'desc_en' => 'Edit Orders'],
             ['name' => 'orders_comments',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض تعليقات الطلب',               'desc_en' => 'Edit Orders'],
             ['name' => 'orders_progress',           'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض خطوات الطلب',               'desc_en' => 'Edit Orders'],
+            ['name' => 'orders_send_survey',        'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'ارسال استبيان',               'desc_en' => 'Send Survey'],
             
             // Marketing
             ['name' => 'marketing_menu',            'section_name_ar' => 'العمليات',        'section_name_en' => 'operations',          'desc_ar' => 'عرض قائمة التسويق',               'desc_en' => 'Marketing Menu'],

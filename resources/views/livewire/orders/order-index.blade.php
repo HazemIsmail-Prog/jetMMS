@@ -141,6 +141,13 @@
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
 
+                                @if ($order->status_id == App\Models\Status::COMPLETED)
+                                    @can('send_survey', $order)
+                                        <a class=" border rounded-lg p-1" target="__blank"
+                                            href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
+                                    @endcan
+                                @endif
+
                                 @can('update', $order)
                                     <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                         wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
@@ -170,6 +177,7 @@
                                         </x-badgeWithCounter>
                                     @endcan
                                 @endif
+                                
                             </div>
                         </x-td>
                     </x-tr>

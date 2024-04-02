@@ -538,6 +538,7 @@ return [
     'uploading' => 'جاري رفع الملف ',
     'press_here_to_rate' => 'تقييم الخدمة ',
     'view' => 'عرض ',
+    'send_survey' => 'ارسال استبيان',
 
 
 
