@@ -53,21 +53,21 @@
                         </x-slot>
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('messages.manage_account') }}
-                            </div>
+                            </div> --}}
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            {{-- <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('messages.profile') }}
-                            </x-dropdown-link>
+                            </x-dropdown-link> --}}
 
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
-                            @endif
+                            @endif --}}
 
-                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                            {{-- <div class="border-t border-gray-200 dark:border-gray-600"></div> --}}
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
