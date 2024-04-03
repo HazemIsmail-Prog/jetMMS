@@ -9,12 +9,12 @@
                     <div class=" w-2/6 text-xs">{{ $service['name'] }}</div>
                     <div class=" w-3/6">
                         <x-input step="0.01" required class="w-full p-1 text-xs" type="number"
-                            wire:model.live="selected_services.{{ $service['service_id'] }}.quantity"
+                            wire:model.live.debounce.500ms="selected_services.{{ $service['service_id'] }}.quantity"
                             dir="ltr" placeholder="{{ __('messages.quantity') }}" />
                         <x-input step="0.001" min="{{ $service['min_price'] }}"
                             max="{{ $service['max_price'] }}" required class="w-full p-1 text-xs"
                             type="number"
-                            wire:model.live="selected_services.{{ $service['service_id'] }}.price"
+                            wire:model.live.debounce.500ms="selected_services.{{ $service['service_id'] }}.price"
                             dir="ltr"
                             placeholder="{{ $service['min_price'] }} - {{ $service['max_price'] }}" />
                         <div class=" text-center px-2">
@@ -48,10 +48,10 @@
                     placeholder="{{ __('messages.name') }}" />
                 <div class="flex flex-col gap-1 items-center w-full">
                     <x-input required class="w-full p-1 text-xs" type="number"
-                        wire:model.live="parts.{{ $index }}.quantity" dir="ltr"
+                        wire:model.live.debounce.500ms="parts.{{ $index }}.quantity" dir="ltr"
                         placeholder="{{ __('messages.quantity') }}" />
                     <x-input required class="w-full p-1 text-xs" type="number"
-                        wire:model.live="parts.{{ $index }}.price" dir="ltr"
+                        wire:model.live.debounce.500ms="parts.{{ $index }}.price" dir="ltr"
                         placeholder="{{ __('messages.amount') }}" />
                     <p>{{ number_format($parts[$index]['total'], 3) }}</p>
                 </div>
@@ -80,7 +80,7 @@
     {{-- Delivery Form Section --}}
     <div class=" p-2 border dark:border-gray-700 rounded-lg mt-4">
         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">{{ __('messages.delivery') }}</h3>
-        <x-input class="w-full" wire:model.live="delivery" type="number" step="0.001" min="0"
+        <x-input class="w-full" wire:model.live.debounce.500ms="delivery" type="number" step="0.001" min="0"
             dir="ltr" />
     </div>
 
