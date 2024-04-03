@@ -54,7 +54,12 @@ use App\Models\Supplier;
 use App\Models\Title;
 use App\Models\User;
 use App\Models\Voucher;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/queue-work', function () {
+    Artisan::call('nohup php artisan queue:work --daemon &');
+});
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
