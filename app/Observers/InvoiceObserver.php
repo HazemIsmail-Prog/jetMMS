@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Events\RefreshDepartmentScreenEvent;
 use App\Events\RefreshOrderInvoicesScreenEvent;
+use App\Events\RefreshTechnicianScreenEvent;
 use App\Models\Invoice;
 use App\Services\CreateInvoiceVoucher;
 
@@ -16,6 +17,7 @@ class InvoiceObserver
     {
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+        broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
     }
 
     /**
@@ -31,6 +33,8 @@ class InvoiceObserver
                 CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
             }
             broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
+            broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
+
         }
     }
 
@@ -45,6 +49,8 @@ class InvoiceObserver
 
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+        broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
+
     }
 
     /**
