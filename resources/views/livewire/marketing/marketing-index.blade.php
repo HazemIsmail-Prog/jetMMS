@@ -5,8 +5,10 @@
                 {{ __('messages.marketings') }}
                 <span id="counter"></span>
             </h2>
-            <span id="excel"></span>
-            <span id="addNew"></span>
+            <div class=" flex items-center gap-1">
+                <span id="excel"></span>
+                <span id="addNew"></span>
+            </div>
         </div>
     </x-slot>
     @can('create', App\Models\Marketing::class)
