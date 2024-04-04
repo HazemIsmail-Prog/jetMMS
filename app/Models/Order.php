@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
 
 #[ObservedBy(OrderObserver::class)]
 class Order extends Model
@@ -141,6 +142,17 @@ class Order extends Model
         // $number = '965' . $this->phone->number;
         $encryptedOrderId = route('customer.page', encrypt($this->id));
         return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
+    }
+
+
+    public function getCanViewOrderInvoicesAttribute()
+    {
+        return  Gate::allows('view_order_invoices', $this) && in_array($this->status_id, [Status::ARRIVED, Status::COMPLETED]);
+    }
+
+    public function getCanSendSurveyAttribute()
+    {
+        return  Gate::allows('send_survey', $this) && $this->status_id == Status::COMPLETED;
     }
 
 

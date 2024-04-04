@@ -5,13 +5,31 @@
                 {{ __('messages.orders') }}
                 <span id="counter"></span>
             </h2>
+            <span id="excel"></span>
         </div>
     </x-slot>
+
     @teleport('#counter')
         <span
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
             {{ $this->orders->total() }}
         </span>
+    @endteleport
+
+    @teleport('#excel')
+        <div>
+            @if ($this->orders->total() <= $maxExportSize)
+                <x-button wire:confirm="{{ __('messages.are_u_sure') }}" wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel" wire:loading.attr="disabled">
+                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden" wire:target="excel">
+                        {{ __('messages.exporting') }}
+                    </span>
+                    <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+                </x-button>
+            @else
+                <x-button disabled class=" cursor-not-allowed"
+                    title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{ __('messages.export_to_excel') }}</x-button>
+            @endif
+        </div>
     @endteleport
 
     @if ($this->orders->hasPages())
@@ -30,8 +48,6 @@
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
     @livewire('orders.invoices.discount.discount-form')
-
-
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
@@ -60,7 +76,6 @@
                 wire:model.live="filters.street" />
         </div>
     </div>
-
 
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
         <div>
@@ -98,7 +113,6 @@
             <x-input id="end_completed_at" class="w-36 min-w-full text-center py-0" type="date"
                 wire:model.live="filters.end_completed_at" />
         </div>
-
 
     </div>
 
@@ -141,11 +155,9 @@
                         <x-td>
                             <div class=" flex items-center justify-end gap-2">
 
-                                @if ($order->status_id == App\Models\Status::COMPLETED)
-                                    @can('send_survey', $order)
-                                        <a class=" border dark:border-gray-700 rounded-lg p-1" target="__blank"
-                                            href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
-                                    @endcan
+                                @if ($order->can_send_survey)
+                                    <a class=" border dark:border-gray-700 rounded-lg p-1" target="__blank"
+                                        href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
                                 @endif
 
                                 @can('update', $order)
@@ -169,15 +181,13 @@
                                     </x-badgeWithCounter>
                                 @endcan
 
-                                @if (in_array($order->status_id, [App\Models\Status::ARRIVED, App\Models\Status::COMPLETED]))
-                                    @can('view_order_invoices', $order)
-                                        <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
-                                            wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
-                                            <x-svgs.banknotes class="h-4 w-4" />
-                                        </x-badgeWithCounter>
-                                    @endcan
+                                @if ($order->can_view_order_invoices)
+                                    <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
+                                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
+                                        <x-svgs.banknotes class="h-4 w-4" />
+                                    </x-badgeWithCounter>
                                 @endif
-                                
+
                             </div>
                         </x-td>
                     </x-tr>

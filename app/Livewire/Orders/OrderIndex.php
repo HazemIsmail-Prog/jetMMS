@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Orders;
 
+use App\Exports\OrdersExport;
 use App\Models\Area;
 use App\Models\Department;
 use App\Models\Order;
@@ -13,6 +14,8 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class OrderIndex extends Component
 {
@@ -22,6 +25,8 @@ class OrderIndex extends Component
         'commentsUpdated' => '$refresh',
         'invoicesUpdated' => '$refresh',
     ];
+
+    public int $maxExportSize = 5000;
 
     #[Url()]
     public $filters =
@@ -98,22 +103,24 @@ class OrderIndex extends Component
     //     return Order::whereNotNull('tag')->groupBy('tag')->pluck('tag');
     // }
 
-    public function mount()
+    public function excel()
     {
+        if ($this->getData()->count() > $this->maxExportSize) {
+            return;
+        } else {
+            return Excel::download(new OrdersExport('livewire.orders.excel.excel', 'Orders', $this->getData()->get()), 'Orders.xlsx');  //Excel
+        }
     }
+
 
     public function updatedFilters()
     {
         $this->resetPage();
     }
 
-    #[Computed]
-    #[On('ordersUpdated')]
-    #[On('customersUpdated')]
-    public function orders()
+    public function getData()
     {
         return Order::query()
-
             ->with('creator')
             ->with('status')
             ->with('department')
@@ -173,8 +180,15 @@ class OrderIndex extends Component
             })
             ->when($this->filters['end_completed_at'], function (Builder $q) {
                 $q->whereDate('completed_at', '<=', $this->filters['end_completed_at']);
-            })
+            });
+    }
 
+    #[Computed]
+    #[On('ordersUpdated')]
+    #[On('customersUpdated')]
+    public function orders()
+    {
+        return $this->getData()
             ->paginate(10);
     }
 
