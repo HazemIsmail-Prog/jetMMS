@@ -4,8 +4,10 @@ namespace App\Livewire\Dispatching;
 
 use App\Models\Department;
 use App\Models\Order;
+use App\Models\Shift;
 use App\Models\Status;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -54,12 +56,16 @@ class DispatchingIndex extends Component
                 $q->where('status_id', Status::COMPLETED);
                 $q->whereDate('completed_at', today());
             }])
-
             ->withCount(['orders_technician as current_orders_count' => function ($q) {
                 $q->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED]);
             }])
-            ->with('shift')
             ->get();
+    }
+
+    #[Computed()]
+    public function shifts()
+    {
+        return Shift::all();
     }
 
     public function dragEnd($order_id, $destenation_id, $source_id, $new_index)
@@ -105,6 +111,7 @@ class DispatchingIndex extends Component
 
     public function render()
     {
+        // dd($this->shifts());
         return view('livewire.dispatching.dispatching-index');
     }
 }

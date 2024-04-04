@@ -1,3 +1,5 @@
+@props(['order'])
+
 <div id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
     {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}

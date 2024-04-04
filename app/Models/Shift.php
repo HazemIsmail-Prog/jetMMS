@@ -14,7 +14,7 @@ class Shift extends Model
 
     protected $guarded = [];
 
-    public function users()
+    public function technicians()
     {
         return $this->hasMany(User::class);
     }
@@ -28,4 +28,8 @@ class Shift extends Model
         }
     }
 
+    public function getFullNameAttribute()
+    {
+        return  $this->name . ' ' . __('messages.from') . ' ' . date('h:i', strtotime($this->start_time)) . ' ' . __('messages.to') . ' ' . date('h:i', strtotime($this->end_time));
+    }
 }

@@ -1,9 +1,12 @@
 <div>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ $department->name }}
-            <span id="counter"></span>
-        </h2>
+        <div class=" flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ $department->name }}
+                <span id="counter"></span>
+            </h2>
+            <span id="shifts"></span>
+        </div>
     </x-slot>
 
     @livewire('orders.comments.comment-modal')
@@ -20,107 +23,72 @@
         </span>
     @endteleport
 
-    <div class="grid h-full">
-        <div class=" overflow-x-auto text-gray-700 dark:text-slate-400">
-
-            <div class="flex overflow-x-auto  gap-2">
-                {{-- unassgined --}}
-                <div class="flex flex-col flex-shrink-0 gap-2 w-64 transition-all overflow-hidden">
-                    <div
-                        class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
-                        <span class="block text-sm font-semibold uppercase">{{ __('messages.unassigned') }}</span>
-                        <span
-                            class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
-                            {{ $this->orders->where('status_id', 1)->count() }}
+    @teleport('#shifts')
+        <div class=" flex items-center gap-1">
+            @if ($this->technicians->where('shift_id', null)->count() > 1)
+                <x-button onclick="location.href='#shift-';">
+                    <span class="text-sm font-semibold uppercase">
+                        {{ __('messages.undefined_shift') }}
+                    </span>
+                </x-button>
+            @endif
+            @foreach ($this->shifts as $shift)
+                @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
+                    <x-button onclick="location.href='#shift-{{ $shift->id }}';">
+                        <span class="text-sm font-semibold uppercase">
+                            {{ $shift->name }}
                         </span>
-                    </div>
-                    <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
-                        id="tech0">
-                        @foreach ($this->orders->where('status_id', 1) as $i => $order)
-                            @include('livewire.dispatching.order-box')
+                    </x-button>
+                @endif
+            @endforeach
+        </div>
+    @endteleport
+
+    <div class="flex gap-1 h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
+
+        {{-- Unassigned --}}
+        <x-orders-container title="{{ __('messages.unassigned') }}"
+            total="{{ $this->orders->where('status_id', 1)->count() }}" :list="$this->orders->where('status_id', 1)" box_id="tech0" />
+
+        {{-- On Hold --}}
+        <x-orders-container title="{{ __('messages.on_hold') }}"
+            total="{{ $this->orders->where('status_id', 5)->count() }}" :list="$this->orders->where('status_id', 5)" box_id="techhold" />
+
+        {{-- Shifts --}}
+        <div class="rounded-lg flex-1 h-full overflow-clip overflow-y-auto hidden-scrollbar">
+
+            {{-- Null Shift --}}
+            @if ($this->technicians->where('shift_id', null)->count() > 1)
+                <div id="shift-" class="flex flex-col h-full gap-1">
+                    <x-orders-container-header id="shift-" title="{{ __('messages.undefined_shift') }}" />
+                    <div class="flex-1 flex gap-1 overflow-x-auto hidden-scrollbar">
+                        @foreach ($this->technicians->where('shift_id', null) as $technician)
+                            <x-orders-container title="{{ $technician->name }}" :technician="$technician"
+                                total="{{ $technician->current_orders_count }}" :list="$this->orders->where('technician_id', $technician->id)"
+                                box_id="tech{{ $technician->id }}" />
                         @endforeach
                     </div>
                 </div>
+            @endif
 
-                {{-- On Hold --}}
-                <div class="flex flex-col flex-shrink-0 gap-2 w-64 overflow-hidden">
-                    <div
-                        class="flex items-center justify-between flex-shrink-0 rounded-md h-10 p-4 bg-gray-50 dark:bg-gray-700">
-                        <span class="block text-sm font-semibold uppercase">{{ __('messages.on_hold') }}</span>
-                        <span
-                            class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
-                            {{ $this->orders->where('status_id', 5)->count() }}
-                        </span>
-                    </div>
-                    <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-240px)] rounded-md  border border-gray-200 dark:border-gray-700"
-                        id="techhold">
-                        @foreach ($this->orders->where('status_id', 5) as $i => $order)
-                            @include('livewire.dispatching.order-box')
-                        @endforeach
-                    </div>
-                </div>
-
-                {{-- Shifts --}}
-                <div
-                    class=" hidden-scrollbar flex flex-col items-start h-[calc(100vh-186px)] pb-10 overflow-x-auto gap-2 ">
-                    @foreach ($this->technicians->sortBy('shift.start_time')->groupBy('shift_id') as $shift_technicians)
-                        <div class=" flex flex-col gap-2">
-                            <a href="#shift-{{ $shift_technicians->first()->shift_id }}"
-                                id="shift-{{ $shift_technicians->first()->shift_id }}"
-                                class=" scroll-smooth flex items-center flex-shrink-0 h-10 p-4 cursor-pointer rounded-md bg-gray-50 dark:bg-gray-700">
-                                <span class="block text-sm font-semibold uppercase">
-                                    @if ($shift_technicians->first()->shift_id)
-                                        {{ $shift_technicians->first()->shift->name }}
-                                        {{ __('messages.from') }}
-                                        {{ date('h:i', strtotime($shift_technicians->first()->shift->start_time)) }}
-                                        {{ __('messages.to') }}
-                                        {{ date('h:i', strtotime($shift_technicians->first()->shift->end_time)) }}
-                                    @else
-                                        {{ __('messages.undefined_shift') }}
-                                    @endif
-                                </span>
-                            </a>
-
-                            <div class=" flex gap-2 flex-1">
-                                @foreach ($shift_technicians->sortBy('name') as $technician)
-                                    <div class="flex flex-col flex-shrink-0 w-64 gap-2 rounded-md overflow-hidden ">
-                                        <div
-                                            class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
-                                            <span
-                                                class="block text-sm font-semibold uppercase">{{ $technician->name }}</span>
-                                            <div class=" flex">
-                                                <a href="{{ route('order.index', [
-                                                    'filters[technicians]' => $technician->id,
-                                                    'filters[statuses]' => App\Models\Status::COMPLETED,
-                                                    'filters[start_completed_at]' => today()->format('Y-m-d'),
-                                                    'filters[end_completed_at]' => today()->format('Y-m-d'),
-                                                ]) }}"
-                                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
-                                                    {{ $technician->todays_completed_orders_count }}
-                                                </a>
-                                                <span
-                                                    class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
-                                                    {{ $technician->current_orders_count }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="box hidden-scrollbar flex flex-col gap-4 overflow-auto p-4 h-[calc(100vh-320px)] rounded-md  border border-gray-200 dark:border-gray-700"
-                                            id="tech{{ $technician->id }}">
-                                            @foreach ($this->orders->where('technician_id', $technician->id) as $i => $order)
-                                                @include('livewire.dispatching.order-box')
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+            {{-- Existing Shifts --}}
+            @foreach ($this->shifts as $shift)
+                @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
+                    <div id="shift-{{ $shift->id }}" class="flex flex-col h-full gap-1">
+                        <x-orders-container-header id="shift-{{ $shift->id }}" title="{{ $shift->full_name }}" />
+                        <div class="flex-1 flex gap-1 overflow-x-auto hidden-scrollbar">
+                            @foreach ($this->technicians->where('shift_id', $shift->id) as $technician)
+                                <x-orders-container title="{{ $technician->name }}" :technician="$technician"
+                                    total="{{ $technician->current_orders_count }}" :list="$this->orders->where('technician_id', $technician->id)"
+                                    box_id="tech{{ $technician->id }}" />
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endif
+            @endforeach
 
-            </div>
         </div>
     </div>
-
 </div>
 
 @assets
