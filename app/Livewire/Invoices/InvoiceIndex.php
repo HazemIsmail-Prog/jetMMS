@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Invoices;
 
+use App\Exports\InvoicesExport;
 use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\User;
@@ -10,12 +11,15 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceIndex extends Component
 {
     use WithPagination;
 
+    public int $maxExportSize = 5000;
     public $filters;
+
 
     public function mount()
     {
@@ -41,22 +45,7 @@ class InvoiceIndex extends Component
         $this->resetPage();
     }
 
-    #[Computed()]
-    public function technicians()
-    {
-        return User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
-    }
-
-    #[Computed()]
-    public function departments()
-    {
-        return Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
-    }
-
-    #[Computed()]
-    #[On('invoicesUpdated')]
-    #[On('paymentsUpdated')]
-    public function invoices()
+    public function getData()
     {
         return Invoice::query()
             ->orderBy('id', 'desc')
@@ -93,9 +82,37 @@ class InvoiceIndex extends Component
             })
             ->when($this->filters['end_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
-            })
+            });
+    }
 
+    #[Computed()]
+    public function technicians()
+    {
+        return User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
+    }
+
+    #[Computed()]
+    #[On('invoicesUpdated')]
+    #[On('paymentsUpdated')]
+    public function invoices()
+    {
+        return $this->getData()
             ->paginate(10);
+    }
+
+    public function excel()
+    {
+        if ($this->getData()->count() > $this->maxExportSize) {
+            return;
+        } else {
+            return Excel::download(new InvoicesExport('livewire.invoices.excel.excel', 'Invoices', $this->getData()->get()), 'Invoices.xlsx');  //Excel
+        }
     }
 
     public function delete(Invoice $invoice)
@@ -105,7 +122,8 @@ class InvoiceIndex extends Component
         $this->dispatch('invoicesUpdated');
     }
 
-    public function dateClicked($date) {
+    public function dateClicked($date)
+    {
         $this->filters['start_created_at'] = $date;
         $this->filters['end_created_at'] = $date;
     }
