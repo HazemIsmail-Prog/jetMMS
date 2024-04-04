@@ -69,6 +69,7 @@ class RatingIndex extends Component
     public function orders()
     {
         return Order::query()
+            ->whereHas('rating')
             ->where('status_id', Status::COMPLETED)
             ->with('rating')
             ->with('department')
