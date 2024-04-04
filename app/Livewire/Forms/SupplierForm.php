@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Supplier;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class SupplierForm extends Form

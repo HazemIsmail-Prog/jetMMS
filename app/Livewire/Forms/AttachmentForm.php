@@ -4,7 +4,6 @@ namespace App\Livewire\Forms;
 
 use App\Models\Attachment;
 use App\Services\S3;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Form;
 
 class AttachmentForm extends Form

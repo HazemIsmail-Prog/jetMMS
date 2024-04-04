@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Ratings;
 
-use App\Models\Area;
 use App\Models\Department;
 use App\Models\Order;
-use App\Models\Rating;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;

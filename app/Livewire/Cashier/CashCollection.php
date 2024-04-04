@@ -4,7 +4,6 @@ namespace App\Livewire\Cashier;
 
 use App\Models\Payment;
 use App\Services\CreateInvoicePaymentVoucher;
-use App\Services\CreatePaymentVoucher;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;

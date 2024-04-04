@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Title;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TitleForm extends Form

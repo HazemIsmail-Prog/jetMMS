@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Status;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class StatusForm extends Form

@@ -4,8 +4,6 @@ namespace App\Livewire\Orders\Invoices\Payments;
 
 use App\Livewire\Forms\PaymentForm as FormsPaymentForm;
 use App\Models\Invoice;
-use App\Models\Payment;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 

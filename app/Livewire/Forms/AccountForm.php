@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Account;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class AccountForm extends Form

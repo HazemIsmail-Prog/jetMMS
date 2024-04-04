@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Dispatching;
 
-use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Order;
-use App\Models\Phone;
 use App\Models\Status;
 use App\Models\User;
 use Livewire\Attributes\Computed;

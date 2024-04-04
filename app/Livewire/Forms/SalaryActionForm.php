@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Enums\SalaryActionStatusEnum;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class SalaryActionForm extends Form

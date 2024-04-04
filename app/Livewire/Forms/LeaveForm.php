@@ -4,7 +4,6 @@ namespace App\Livewire\Forms;
 
 use App\Enums\LeaveStatusEnum;
 use App\Rules\OverlappingLeavePeriods;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class LeaveForm extends Form

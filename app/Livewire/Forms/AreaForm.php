@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Area;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class AreaForm extends Form

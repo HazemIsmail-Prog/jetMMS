@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Marketing;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class MarketingForm extends Form

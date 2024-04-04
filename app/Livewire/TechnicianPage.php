@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Events\RefreshDepartmentScreenEvent;
 use App\Models\Order;
 use App\Models\Setting;
 use Livewire\Attributes\Computed;

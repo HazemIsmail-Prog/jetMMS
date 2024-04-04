@@ -3,7 +3,6 @@
 namespace App\Livewire\OperationsReports;
 
 use App\Models\Customer;
-use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 

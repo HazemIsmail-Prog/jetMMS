@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Rules\OverlappingAbsencePeriods;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class AbsenceForm extends Form

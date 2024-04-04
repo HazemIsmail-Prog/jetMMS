@@ -5,7 +5,6 @@ namespace App\Livewire\Forms;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class PaymentForm extends Form

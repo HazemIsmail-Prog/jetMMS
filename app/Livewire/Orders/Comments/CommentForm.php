@@ -2,13 +2,9 @@
 
 namespace App\Livewire\Orders\Comments;
 
-use App\Events\RefreshDepartmentScreenEvent;
-use App\Events\RefreshOrderCommentsScreenEvent;
-use App\Events\RefreshTechnicianScreenEvent;
 use App\Models\Comment;
 use App\Models\Order;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 

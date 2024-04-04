@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class CustomerForm extends Form

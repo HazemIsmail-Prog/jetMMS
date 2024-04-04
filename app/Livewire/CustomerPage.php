@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Order;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
