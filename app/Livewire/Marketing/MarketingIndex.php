@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Marketing;
 
+use App\Exports\MarketingsExport;
 use App\Models\Marketing;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,12 +11,15 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MarketingIndex extends Component
 {
     use WithPagination;
 
     public $listeners = [];
+    public int $maxExportSize = 5000;
+
     #[Url()]
     public $filters;
 
@@ -43,17 +47,10 @@ class MarketingIndex extends Component
             ];
     }
 
-    public function updatedFilters()
-    {
-        $this->resetPage();
-    }
-
-    #[Computed()]
-    #[On('marketingsUpdated')]
-    public function marketings()
+    public function getData()
     {
         return Marketing::query()
-            ->with('user')
+            ->with('creator')
             ->orderBy('id', 'desc')
 
             ->when($this->filters['name'], function (Builder $q) {
@@ -76,12 +73,33 @@ class MarketingIndex extends Component
             })
             ->when($this->filters['end_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
-            })
+            });
+    }
 
+    public function excel()
+    {
+        if ($this->getData()->count() > $this->maxExportSize) {
+            return;
+        } else {
+            return Excel::download(new MarketingsExport('livewire.marketing.excel.excel', 'Marketings', $this->getData()->get()), 'Marketings.xlsx');  //Excel
+        }
+    }
+
+    public function updatedFilters()
+    {
+        $this->resetPage();
+    }
+
+    #[Computed()]
+    #[On('marketingsUpdated')]
+    public function marketings()
+    {
+        return $this->getData()
             ->paginate(15);
     }
 
-    public function delete(Marketing $marketing) {
+    public function delete(Marketing $marketing)
+    {
         $marketing->delete();
     }
 

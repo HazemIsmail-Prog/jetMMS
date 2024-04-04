@@ -5,6 +5,7 @@
                 {{ __('messages.marketings') }}
                 <span id="counter"></span>
             </h2>
+            <span id="excel"></span>
             <span id="addNew"></span>
         </div>
     </x-slot>
@@ -21,6 +22,25 @@
             class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
             {{ $this->marketings->total() }}
         </span>
+    @endteleport
+
+    @teleport('#excel')
+        <div>
+            @if ($this->marketings->total() <= $maxExportSize)
+                <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                    wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+                    wire:loading.attr="disabled">
+                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden"
+                        wire:target="excel">
+                        {{ __('messages.exporting') }}
+                    </span>
+                    <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+                </x-button>
+            @else
+                <x-button disabled class=" cursor-not-allowed"
+                    title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{ __('messages.export_to_excel') }}</x-button>
+            @endif
+        </div>
     @endteleport
 
     @if ($this->marketings->hasPages())
@@ -84,7 +104,7 @@
                 @foreach ($this->marketings as $marketing)
                     <x-tr>
                         <x-td>{!! $marketing->formated_created_at !!}</x-td>
-                        <x-td>{{ $marketing->user->name }}</x-td>
+                        <x-td>{{ $marketing->creator->name }}</x-td>
                         <x-td>{{ $marketing->name }}</x-td>
                         <x-td>{{ $marketing->phone }}</x-td>
                         <x-td>{{ $marketing->address }}</x-td>

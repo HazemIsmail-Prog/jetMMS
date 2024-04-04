@@ -15,9 +15,9 @@ class Marketing extends Model
         'created_at' => 'datetime',
     ];
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function scopeFilterWhenRequest($query, $filter)
