@@ -74,7 +74,7 @@
         <div class=" flex gap-2 items-center">
 
             @can('view_order_progress', $order)
-                <x-badgeWithCounter wire:click="$dispatch('showStatusHistoryModal',{order:{!! $order !!}})">
+                <x-badgeWithCounter wire:click="$dispatch('showStatusesModal',{order:{!! $order !!}})">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan

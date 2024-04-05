@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Events\RefreshDepartmentScreenEvent;
+use App\Events\RefreshOrderStatusesScreenEvent;
 use App\Events\RefreshTechnicianScreenEvent;
 use App\Models\Order;
 use App\Models\OrderStatus;
@@ -31,6 +32,8 @@ class OrderObserver
             'technician_id' => $order->technician_id,
             'user_id' => auth()->id() ?? 1,
         ]);
+
+        RefreshOrderStatusesScreenEvent::dispatch($order->id);
     }
 
     /**
@@ -48,6 +51,8 @@ class OrderObserver
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            
+            RefreshOrderStatusesScreenEvent::dispatch($order->id);
         }
 
         RefreshDepartmentScreenEvent::dispatch($order->department_id);

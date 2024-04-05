@@ -10,19 +10,10 @@ use Livewire\Component;
 
 class StatusIndex extends Component
 {
-    public $showModal = false;
-    public $modalTitle = '';
     public Order $order;
 
-    #[On('showStatusHistoryModal')]
-    public function show(Order $order)
-    {
-        $this->order = $order;
-        $this->modalTitle = __('messages.statuses_for_order_number') . str_pad($this->order->id, 8, '0', STR_PAD_LEFT);
-        $this->showModal = true;
-    }
-
     #[Computed]
+    #[On('echo:statuses.{order.id},RefreshOrderStatusesScreenEvent')]
     public function statuses()
     {
         return OrderStatus::query()

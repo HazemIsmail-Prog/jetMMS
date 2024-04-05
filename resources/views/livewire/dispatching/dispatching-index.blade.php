@@ -10,7 +10,7 @@
     </x-slot>
 
     @livewire('orders.comments.comment-modal')
-    @livewire('orders.statuses.status-index')
+    @livewire('orders.statuses.status-modal')
     @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
