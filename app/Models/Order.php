@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\OrderStatusEnum;
 use App\Observers\OrderObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -153,6 +152,16 @@ class Order extends Model
     public function getCanSendSurveyAttribute()
     {
         return  Gate::allows('send_survey', $this) && $this->status_id == Status::COMPLETED;
+    }
+
+    public function getCanHoldOrderAttribute()
+    {
+        return  Gate::allows('hold_order', $this) && $this->status_id != Status::ON_HOLD;
+    }
+
+    public function getInProgressAttribute()
+    {
+        return in_array($this->status_id, [Status::RECEIVED, Status::ARRIVED]);
     }
 
 

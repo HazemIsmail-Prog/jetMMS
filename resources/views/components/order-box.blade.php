@@ -1,8 +1,8 @@
 @props(['order'])
 
-<div id="order-{{ $order->id }}" data-index="{{ $order->index }}"
+<div wire:key="order-{{ $order->id }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}"
     class="
-    {{ in_array($order->status_id, [3, 7]) ? '' : 'draggable' }}
+    {{ $order->in_progress ? '' : 'draggable' }}
     {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }}
     order
     card
@@ -34,16 +34,17 @@
             {{ $order->formated_id }}
         </div>
 
-        @if (!in_array($order->status_id, [3, 7]))
+        @if (!$order->in_progress)
             <div x-data={}
                 class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400">
-                <x-select @change="$wire.changeTechnician($event.target.value,{{ $order['id'] }})" 
+                <x-select @change="$wire.changeTechnician($event.target.value,{{ $order['id'] }})"
                     class="!h-auto border-none w-full focus:ring-0 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400 ">
                     @if ($order->status_id != 2)
                         <option value="">---</option>
                     @endif
                     @foreach ($this->technicians->sortBy('name') as $technician)
-                        <option @if ($order->technician_id == $technician->id) selected @endif value="{{ $technician->id }}">{{ $technician->name }}</option>
+                        <option @if ($order->technician_id == $technician->id) selected @endif value="{{ $technician->id }}">
+                            {{ $technician->name }}</option>
                     @endforeach
                 </x-select>
             </div>
@@ -73,41 +74,39 @@
         <div class=" flex gap-2 items-center">
 
             @can('view_order_progress', $order)
-                <x-badgeWithCounter wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
+                <x-badgeWithCounter wire:click="$dispatch('showStatusHistoryModal',{order:{!! $order !!}})">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
             @can('view_order_comments', $order)
                 <x-badgeWithCounter :counter="$order->comments_count"
-                    wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
+                    wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})">
                     <x-svgs.comment class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
 
-            @if (in_array($order->status_id, [App\Models\Status::ARRIVED]))
-                @can('view_order_invoices', $order)
-                    <x-badgeWithCounter :counter="$order->invoices_count"
-                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
-                        <x-svgs.banknotes class="h-4 w-4" />
-                    </x-badgeWithCounter>
-                @endcan
+            @if ($order->can_view_order_invoices)
+                <x-badgeWithCounter :counter="$order->invoices_count"
+                    wire:click="$dispatch('showInvoicesModal',{order:{!! $order !!}})">
+                    <x-svgs.banknotes class="h-4 w-4" />
+                </x-badgeWithCounter>
             @endif
 
 
         </div>
         <div class=" flex gap-2 items-center">
 
-            @if ($order->status_id != 5)
-                @can('hold_order', $order)
-                    <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="dragEnd({{ $order->id }},'hold',null,{{ $order->index }})">
-                        <x-svgs.clock class="h-4 w-4" />
-                    </x-badgeWithCounter>
-                @endcan
+            @if ($order->can_hold_order)
+                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
+                    wire:click="dragEnd({{ $order->id }},'hold',null,{{ $order->index }})">
+                    <x-svgs.clock class="h-4 w-4" />
+                </x-badgeWithCounter>
             @endif
 
             @can('cancel_order', $order)
-                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}" wire:click="dragEnd({{ $order->id }},'cancel',null,{{ $order->index }})">
+                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
+                    wire:click="dragEnd({{ $order->id }},'cancel',null,{{ $order->index }})">
                     <x-svgs.trash class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan
