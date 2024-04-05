@@ -17,7 +17,7 @@ class CommentModal extends Component
     public function show(Order $order)
     {
         $this->order = $order;
-        $this->modalTitle = __('messages.comments_for_order_number') . $this->order->fomated_id;
+        $this->modalTitle = __('messages.comments_for_order_number') . $this->order->formated_id;
         $this->showModal = true;
 
         $this->js("
