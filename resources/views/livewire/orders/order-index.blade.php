@@ -43,7 +43,7 @@
 
     @livewire('orders.order-form')
     @livewire('orders.comments.comment-modal')
-    @livewire('orders.statuses.status-index')
+    @livewire('orders.statuses.status-modal')
     @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
@@ -169,7 +169,7 @@
 
                                 @can('view_order_progress', $order)
                                     <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
-                                        wire:click="$dispatch('showStatusHistoryModal',{order:{{ $order }}})">
+                                        wire:click="$dispatch('showStatusesModal',{order:{{ $order }}})">
                                         <x-svgs.list class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 @endcan
