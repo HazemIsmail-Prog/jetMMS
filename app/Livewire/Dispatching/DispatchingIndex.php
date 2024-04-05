@@ -46,20 +46,29 @@ class DispatchingIndex extends Component
     }
 
     #[Computed()]
+    public function unAssaignedOrders()
+    {
+        return $this->orders->where('status_id', Status::CREATED);
+    }
+
+    #[Computed()]
+    public function onHoldOrders()
+    {
+        return $this->orders->where('status_id', Status::ON_HOLD);
+    }
+
+    #[Computed()]
     public function technicians()
     {
         return User::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name')
             ->activeTechniciansPerDepartment($this->department->id)
             ->withCount(['orders_technician as todays_completed_orders_count' => function ($q) {
                 $q->where('status_id', Status::COMPLETED);
                 $q->whereDate('completed_at', today());
             }])
-            ->withCount(['orders_technician as current_orders_count' => function ($q) {
-                $q->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED]);
-            }])
-            ->get();
+            ->get()
+            ->sortBy('name');
     }
 
     #[Computed()]
@@ -111,7 +120,6 @@ class DispatchingIndex extends Component
 
     public function render()
     {
-        // dd($this->shifts());
         return view('livewire.dispatching.dispatching-index');
     }
 }

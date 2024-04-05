@@ -47,43 +47,23 @@
     <div class="flex gap-1 h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
 
         {{-- Unassigned --}}
-        <x-orders-container title="{{ __('messages.unassigned') }}"
-            total="{{ $this->orders->where('status_id', 1)->count() }}" :list="$this->orders->where('status_id', 1)" box_id="tech0" />
+        <x-orders-container title="{{ __('messages.unassigned') }}" :list="$this->unAssaignedOrders" box_id="tech0" />
 
         {{-- On Hold --}}
-        <x-orders-container title="{{ __('messages.on_hold') }}"
-            total="{{ $this->orders->where('status_id', 5)->count() }}" :list="$this->orders->where('status_id', 5)" box_id="techhold" />
+        <x-orders-container title="{{ __('messages.on_hold') }}" :list="$this->onHoldOrders" box_id="techhold" />
 
         {{-- Shifts --}}
-        <div class="rounded-lg flex-1 h-full overflow-clip overflow-y-auto hidden-scrollbar">
+        <div class="flex-1 h-full overflow-y-auto hidden-scrollbar">
 
             {{-- Null Shift --}}
             @if ($this->technicians->where('shift_id', null)->count() > 1)
-                <div id="shift-" class="flex flex-col h-full gap-1">
-                    <x-orders-container-header id="shift-" title="{{ __('messages.undefined_shift') }}" />
-                    <div class="flex-1 flex gap-1 overflow-x-auto hidden-scrollbar">
-                        @foreach ($this->technicians->where('shift_id', null) as $technician)
-                            <x-orders-container title="{{ $technician->name }}" :technician="$technician"
-                                total="{{ $technician->current_orders_count }}" :list="$this->orders->where('technician_id', $technician->id)"
-                                box_id="tech{{ $technician->id }}" />
-                        @endforeach
-                    </div>
-                </div>
+                <x-shift-container title="{{ __('messages.undefined_shift') }}" :list="$this->technicians->where('shift_id', null)" :shift_id="null" />
             @endif
 
             {{-- Existing Shifts --}}
             @foreach ($this->shifts as $shift)
                 @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
-                    <div id="shift-{{ $shift->id }}" class="flex flex-col h-full gap-1">
-                        <x-orders-container-header id="shift-{{ $shift->id }}" title="{{ $shift->full_name }}" />
-                        <div class="flex-1 flex gap-1 overflow-x-auto hidden-scrollbar">
-                            @foreach ($this->technicians->where('shift_id', $shift->id) as $technician)
-                                <x-orders-container title="{{ $technician->name }}" :technician="$technician"
-                                    total="{{ $technician->current_orders_count }}" :list="$this->orders->where('technician_id', $technician->id)"
-                                    box_id="tech{{ $technician->id }}" />
-                            @endforeach
-                        </div>
-                    </div>
+                    <x-shift-container title="{{ $shift->full_name }}" :list="$this->technicians->where('shift_id', $shift->id)" :shift_id="$shift->id" />
                 @endif
             @endforeach
 
