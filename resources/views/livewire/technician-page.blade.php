@@ -65,19 +65,22 @@
 
             </div>
 
-            @livewire('orders.comments.comment-form', ['order' => $this->order], key('order-comments-' . $this->order->id))
+            @if ($this->order->status_id != 2)
+                @livewire('orders.comments.comment-form', ['order' => $this->order], key('order-comments-' . $this->order->id))
+            @endif
 
 
-            @if (in_array($this->order->status_id, [4, 7]))
+
+            @if ($this->order->can_view_order_invoices)
                 <x-button type="button" class=" flex justify-center"
                     wire:click="$dispatch('showInvoicesModal',{order:{{ $this->order }}})">{{ __('messages.invoices') }}</x-button>
             @endif
         </div>
     @else
-    <div class="flex items-center justify-center min-h-full">
+        <div class="flex items-center justify-center min-h-full">
 
-        <p class="text-gray-700 dark:text-gray-300">{{ __('messages.no_orders') }}</p>
-    </div>
+            <p class="text-gray-700 dark:text-gray-300">{{ __('messages.no_orders') }}</p>
+        </div>
     @endif
 
 </div>
