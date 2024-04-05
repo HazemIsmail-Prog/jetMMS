@@ -53,7 +53,7 @@
         <x-orders-container title="{{ __('messages.on_hold') }}" :list="$this->onHoldOrders" box_id="techhold" />
 
         {{-- Shifts --}}
-        <div class="flex-1 h-full overflow-y-auto hidden-scrollbar">
+        <div class="flex-1 h-full overflow-y-auto hidden-scrollbar scroll-smooth">
 
             {{-- Null Shift --}}
             @if ($this->technicians->where('shift_id', null)->count() > 1)
