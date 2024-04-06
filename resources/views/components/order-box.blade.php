@@ -14,7 +14,7 @@
     style="border-color: {{ $order->status->color }}">
 
     <div wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})"
-        class="block lg:hidden text-center text-xs font-medium">
+        class="block lg:hidden text-center text-xs font-medium select-none">
         {{ $order->formated_id }}
     </div>
 
