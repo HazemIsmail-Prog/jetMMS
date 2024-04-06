@@ -51,8 +51,8 @@
     }"
         class="flex gap-1 h-[calc(100vh-120px)] lg:h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
 
-        {{-- Hidden --}}
-        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-32 flex flex-col gap-1 flex-shrink-0">
+        {{-- Hidden Container --}}
+        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 flex flex-col gap-1 flex-shrink-0">
             <div @click="hiddenContainers= []"
                 class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-300 dark:bg-gray-700">
                 <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
@@ -104,7 +104,7 @@
         box.forEach(element => {
             const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body
                 .clientWidth;
-            const delay = screenWidth < 865 ? 500 : 0; // If less than 865 pixels, set delay to 500, otherwise set to 0
+            const delay = screenWidth < 1024 ? 500 : 0; // If less than 1024 pixels, set delay to 500, otherwise set to 0
 
             sortable = new Sortable.create(element, {
                 group: 'box', // set both lists to same group

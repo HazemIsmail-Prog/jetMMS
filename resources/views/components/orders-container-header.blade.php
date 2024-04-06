@@ -1,8 +1,8 @@
 @props(['title', 'total' => null, 'technician' => null,'id'])
 
-<div @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });"
+<div 
     class="flex items-center justify-between rounded-md cursor-pointer select-none flex-shrink-0 h-10 p-4 bg-gray-300 dark:bg-gray-700">
-    <span class="block text-sm font-semibold uppercase truncate">{{ $title }}</span>
+    <div @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });" class="flex-1 text-sm font-semibold uppercase truncate">{{ $title }}</div>
     <div class="hidden lg:flex">
         @if ($technician)
             @if ($technician->todays_completed_orders_count > 0)
@@ -18,10 +18,10 @@
             @endif
         @endif
         @if ($total)
-            <span
+            <div @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });"
                 class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
                 {{ $total }}
-            </span>
+            </div>
         @endif
     </div>
 </div>
