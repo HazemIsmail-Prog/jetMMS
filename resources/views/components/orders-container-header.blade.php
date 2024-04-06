@@ -6,7 +6,7 @@
     <div class="hidden lg:flex">
         @if ($technician)
             @if ($technician->todays_completed_orders_count > 0)
-                <a href="{{ route('order.index', [
+                <a target="__blank" href="{{ route('order.index', [
                     'filters[technicians]' => $technician->id,
                     'filters[statuses]' => App\Models\Status::COMPLETED,
                     'filters[start_completed_at]' => today()->format('Y-m-d'),
