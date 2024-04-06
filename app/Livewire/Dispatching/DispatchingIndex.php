@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Models\Shift;
 use App\Models\Status;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
