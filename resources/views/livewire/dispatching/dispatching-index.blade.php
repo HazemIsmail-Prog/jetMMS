@@ -68,7 +68,7 @@
                 <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
             </div>
             <div
-                class="border dark:border-gray-700 rounded-lg flex-1 p-2 flex flex-col overflow-y-auto gap-2 hidden-scrollbar">
+                class="border border-gray-400 dark:border-gray-700 rounded-lg flex-1 p-2 flex flex-col overflow-y-auto gap-2 hidden-scrollbar">
                 <template x-for="(item) in hiddenContainers" :key="item.id">
                     <div class=" select-none rounded-md cursor-pointer text-xs text-center font-semibold p-2 bg-gray-300 dark:bg-gray-700"
                         @click="hiddenContainers = hiddenContainers.filter(obj => obj.id !== item.id);"
