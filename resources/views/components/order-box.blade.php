@@ -33,7 +33,7 @@
         </div>
 
         <div
-            class="text-center items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
+            class="items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             {{ $order->formated_id }}
         </div>
 
@@ -41,7 +41,7 @@
             <div x-data={}
                 class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400">
                 <x-select @change="$wire.changeTechnician($event.target.value,{{ $order['id'] }})"
-                    class="!h-auto border-none w-full focus:ring-0 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400 ">
+                    class="!h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-gray-800 text-xs font-medium p-0 rounded dark:bg-gray-700 dark:text-gray-400 ">
                     @if ($order->status_id != 2)
                         <option value="">---</option>
                     @endif
