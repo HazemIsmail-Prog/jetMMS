@@ -72,8 +72,8 @@
     <div x-data="{ hiddenContainers: [] }" class="flex gap-1 h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
 
         {{-- Hidden --}}
-        <div x-show="hiddenContainers.length > 0" class="h-full w-32 flex flex-col gap-1 flex-shrink-0">
-            <div class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
+        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-32 flex flex-col gap-1 flex-shrink-0">
+            <div @click="hiddenContainers= []" class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
                     <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
             </div>
             <div class="border dark:border-gray-700 rounded-lg flex-1 p-2 flex flex-col overflow-y-auto gap-2 hidden-scrollbar">
