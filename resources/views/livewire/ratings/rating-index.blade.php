@@ -59,41 +59,39 @@
 
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.order_number') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.technician') }}</x-th>
-                    <x-th>{{ __('messages.customer_name') }}</x-th>
-                    <x-th>{{ __('messages.customer_phone') }}</x-th>
-                    <x-th>{{ __('messages.completed_date') }}</x-th>
-                    <x-th>{{ __('messages.notes') }}</x-th>
-                    <x-th>{{ __('messages.rating') }}</x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->orders as $order)
-                    <x-tr>
-                        <x-td>{{ $order->formated_order_id }}</x-td>
-                        <x-td>{{ $order->department->name }}</x-td>
-                        <x-td>{{ $order->technician->name ?? '-' }}</x-td>
-                        <x-td>{{ $order->customer->name }}</x-td>
-                        <x-td>{{ $order->phone->number }}</x-td>
-                        <x-td>{!! $order->formated_completed_at !!}</x-td>
-                        <x-td>{{ @$order->rating->notes }}</x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-start gap-2">
-                                <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}">
-                                    <x-svgs.star
-                                        class="h-4 w-4 text-yellow-400 {{ $order->rating ? 'fill-yellow-400' : ' fill-none' }}" />
-                                </x-badgeWithCounter>
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.order_number') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.technician') }}</x-th>
+                <x-th>{{ __('messages.customer_name') }}</x-th>
+                <x-th>{{ __('messages.customer_phone') }}</x-th>
+                <x-th>{{ __('messages.completed_date') }}</x-th>
+                <x-th>{{ __('messages.notes') }}</x-th>
+                <x-th>{{ __('messages.rating') }}</x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->orders as $order)
+                <x-tr>
+                    <x-td>{{ $order->formated_order_id }}</x-td>
+                    <x-td>{{ $order->department->name }}</x-td>
+                    <x-td>{{ $order->technician->name ?? '-' }}</x-td>
+                    <x-td>{{ $order->customer->name }}</x-td>
+                    <x-td>{{ $order->phone->number }}</x-td>
+                    <x-td>{!! $order->formated_completed_at !!}</x-td>
+                    <x-td>{{ @$order->rating->notes }}</x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-start gap-2">
+                            <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}">
+                                <x-svgs.star
+                                    class="h-4 w-4 text-yellow-400 {{ $order->rating ? 'fill-yellow-400' : ' fill-none' }}" />
+                            </x-badgeWithCounter>
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

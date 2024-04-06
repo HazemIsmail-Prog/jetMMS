@@ -37,42 +37,40 @@
 
     @livewire('companies.company-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->companies as $company)
-                    <x-tr>
-                        <x-td>
-                            <div>{{ $company->name }}</div>
-                        </x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->companies as $company)
+                <x-tr>
+                    <x-td>
+                        <div>{{ $company->name }}</div>
+                    </x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
 
-                                @can('update', $company)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showCompanyFormModal',{company:{{ $company }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $company)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showCompanyFormModal',{company:{{ $company }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $company)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $company }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                            @can('delete', $company)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $company }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

@@ -35,44 +35,42 @@
 
     @livewire('departments.department-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.income_account_id') }}</x-th>
-                    <x-th>{{ __('messages.cost_account_id') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->departments as $department)
-                    <x-tr>
-                        <x-td>{{ $department->name }}</x-td>
-                        <x-td>{{ $department->incomeAccount->name ?? '-' }}</x-td>
-                        <x-td>{{ $department->costAccount->name ?? '-' }}</x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.income_account_id') }}</x-th>
+                <x-th>{{ __('messages.cost_account_id') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->departments as $department)
+                <x-tr>
+                    <x-td>{{ $department->name }}</x-td>
+                    <x-td>{{ $department->incomeAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->costAccount->name ?? '-' }}</x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
 
-                                @can('update', $department)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showDepartmentFormModal',{department:{{ $department }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $department)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showDepartmentFormModal',{department:{{ $department }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $department)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $department }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                            @can('delete', $department)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $department }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

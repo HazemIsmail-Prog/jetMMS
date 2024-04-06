@@ -37,38 +37,36 @@
 
     @livewire('areas.area-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->areas as $area)
-                    <x-tr>
-                        <x-td>{{ $area->name }}</x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
-                                @can('update', $area)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                                @can('delete', $area)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $area }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->areas as $area)
+                <x-tr>
+                    <x-td>{{ $area->name }}</x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
+                            @can('update', $area)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showAreaFormModal',{area:{{ $area }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('delete', $area)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $area }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

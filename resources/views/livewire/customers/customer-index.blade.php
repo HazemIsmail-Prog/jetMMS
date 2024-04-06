@@ -64,67 +64,65 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.phone') }}</x-th>
-                    <x-th>{{ __('messages.address') }}</x-th>
-                    <x-th>{{ __('messages.created_at') }}</x-th>
-                    <x-th>{{ __('messages.remaining_amount') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->customers as $customer)
-                    <x-tr>
-                        <x-th>{{ $customer->name }}</x-th>
-                        <x-td>
-                            @foreach ($customer->phones as $phone)
-                                <div>{{ $phone->number }}</div>
-                            @endforeach
-                        </x-td>
-                        <x-td>
-                            @foreach ($customer->addresses as $address)
-                                <div>{{ $address->full_address }}</div>
-                            @endforeach
-                        </x-td>
-                        <x-td>{{ $customer->fromated_created_at }}</x-td>
-                        <x-td>{{ $customer->fromated_balance }}</x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
-                                @can('create', App\Models\Order::class)
-                                    <x-badgeWithCounter title="{{ __('messages.add_order') }}"
-                                        wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
-                                        <x-svgs.plus class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.phone') }}</x-th>
+                <x-th>{{ __('messages.address') }}</x-th>
+                <x-th>{{ __('messages.created_at') }}</x-th>
+                <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->customers as $customer)
+                <x-tr>
+                    <x-th>{{ $customer->name }}</x-th>
+                    <x-td>
+                        @foreach ($customer->phones as $phone)
+                            <div>{{ $phone->number }}</div>
+                        @endforeach
+                    </x-td>
+                    <x-td>
+                        @foreach ($customer->addresses as $address)
+                            <div>{{ $address->full_address }}</div>
+                        @endforeach
+                    </x-td>
+                    <x-td>{{ $customer->fromated_created_at }}</x-td>
+                    <x-td>{{ $customer->fromated_balance }}</x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
+                            @can('create', App\Models\Order::class)
+                                <x-badgeWithCounter title="{{ __('messages.add_order') }}"
+                                    wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
+                                    <x-svgs.plus class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('update', $customer)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showCustomerFormModal',{customer:{{ $customer }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
+                            @can('update', $customer)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showCustomerFormModal',{customer:{{ $customer }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('viewAny', App\Models\Order::class)
+                                <a href="{{ route('order.index', ['filters[customer_id]' => $customer->id]) }}">
+                                    <x-badgeWithCounter counter="{{ $customer->orders->count() }}">
+                                        <x-svgs.list class="h-4 w-4" />
                                     </x-badgeWithCounter>
-                                @endcan
-                                @can('viewAny', App\Models\Order::class)
-                                    <a href="{{ route('order.index', ['filters[customer_id]' => $customer->id]) }}">
-                                        <x-badgeWithCounter counter="{{ $customer->orders->count() }}">
-                                            <x-svgs.list class="h-4 w-4" />
-                                        </x-badgeWithCounter>
-                                    </a>
-                                @endcan
-                                @can('delete', $customer)
-                                    <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $customer }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                                </a>
+                            @endcan
+                            @can('delete', $customer)
+                                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $customer }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

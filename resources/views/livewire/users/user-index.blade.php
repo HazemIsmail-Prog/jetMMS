@@ -92,67 +92,65 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.username') }}</x-th>
-                    <x-th>{{ __('messages.title') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.roles') }}</x-th>
-                    <x-th>{{ __('messages.shift') }}</x-th>
-                    <x-th>{{ __('messages.status') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->users as $user)
-                    <x-tr>
-                        <x-td>{{ $user->name }}</x-td>
-                        <x-td>{{ $user->username }}</x-td>
-                        <x-td>{{ $user->title->name }}</x-td>
-                        <x-td>{{ $user->department->name ?? '-' }}</x-td>
-                        <x-td>
-                            @foreach ($user->roles as $role)
-                                <span
-                                    class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ $role->name }}</span>
-                            @endforeach
-                        </x-td>
-                        <x-td>{{ $user->shift->name ?? '-' }}</x-td>
-                        <x-td>
-                            <livewire:users.status-switcher :$user :key="'switcher-' . $user->id . '-' . rand()">
-                        </x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.username') }}</x-th>
+                <x-th>{{ __('messages.title') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.roles') }}</x-th>
+                <x-th>{{ __('messages.shift') }}</x-th>
+                <x-th>{{ __('messages.status') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->users as $user)
+                <x-tr>
+                    <x-td>{{ $user->name }}</x-td>
+                    <x-td>{{ $user->username }}</x-td>
+                    <x-td>{{ $user->title->name }}</x-td>
+                    <x-td>{{ $user->department->name ?? '-' }}</x-td>
+                    <x-td>
+                        @foreach ($user->roles as $role)
+                            <span
+                                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">{{ $role->name }}</span>
+                        @endforeach
+                    </x-td>
+                    <x-td>{{ $user->shift->name ?? '-' }}</x-td>
+                    <x-td>
+                        <livewire:users.status-switcher :$user :key="'switcher-' . $user->id . '-' . rand()">
+                    </x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
 
-                                @can('update', $user)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showUserFormModal',{user:{{ $user }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $user)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showUserFormModal',{user:{{ $user }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('create', App\Models\User::class)
-                                    <x-badgeWithCounter title="{{ __('messages.duplicate') }}"
-                                        wire:click="$dispatch('showUserFormModal',{copiedUser:{{ $user }}})">
-                                        <x-svgs.duplicate class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('create', App\Models\User::class)
+                                <x-badgeWithCounter title="{{ __('messages.duplicate') }}"
+                                    wire:click="$dispatch('showUserFormModal',{copiedUser:{{ $user }}})">
+                                    <x-svgs.duplicate class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $user)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $user }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('delete', $user)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $user }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

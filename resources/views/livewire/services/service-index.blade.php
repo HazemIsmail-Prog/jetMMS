@@ -62,49 +62,47 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.min_price') }}</x-th>
-                    <x-th>{{ __('messages.max_price') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.type') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->services as $service)
-                    <x-tr>
-                        <x-td>{{ $service->name }}</x-td>
-                        <x-td>{{ number_format($service->min_price, 3) }}</x-td>
-                        <x-td>{{ number_format($service->max_price, 3) }}</x-td>
-                        <x-td>{{ $service->department->name }}</x-td>
-                        <x-td>{{ __('messages.' . $service->type . 's') }}</x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.min_price') }}</x-th>
+                <x-th>{{ __('messages.max_price') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.type') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->services as $service)
+                <x-tr>
+                    <x-td>{{ $service->name }}</x-td>
+                    <x-td>{{ number_format($service->min_price, 3) }}</x-td>
+                    <x-td>{{ number_format($service->max_price, 3) }}</x-td>
+                    <x-td>{{ $service->department->name }}</x-td>
+                    <x-td>{{ __('messages.' . $service->type . 's') }}</x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
 
-                                @can('update', $service)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showServiceFormModal',{service:{{ $service }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $service)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showServiceFormModal',{service:{{ $service }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $service)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $service }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('delete', $service)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $service }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

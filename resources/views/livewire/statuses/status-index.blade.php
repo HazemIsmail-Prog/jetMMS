@@ -26,40 +26,37 @@
 
     @livewire('statuses.status-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.color') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->statuses as $status)
-                    <x-tr>
-                        <x-td>{{ $status->name }}</x-td>
-                        <x-td>
-                            <div class="w-40 rounded-lg text-center text-white"
-                                style="background-color: {{ $status->color }};">
-                                {{ $status->color }}
-                            </div>
-                        </x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
-                                @can('update', $status)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showStatusFormModal',{status:{{ $status }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
-
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.color') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->statuses as $status)
+                <x-tr>
+                    <x-td>{{ $status->name }}</x-td>
+                    <x-td>
+                        <div class="w-40 rounded-lg text-center text-white"
+                            style="background-color: {{ $status->color }};">
+                            {{ $status->color }}
+                        </div>
+                    </x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
+                            @can('update', $status)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showStatusFormModal',{status:{{ $status }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 
 </div>

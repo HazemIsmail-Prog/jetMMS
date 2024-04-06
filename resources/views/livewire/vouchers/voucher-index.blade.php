@@ -47,44 +47,42 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.voucher_number') }}</x-th>
-                    <x-th>{{ __('messages.date') }}</x-th>
-                    <x-th>{{ __('messages.notes') }}</x-th>
-                    <x-th>{{ __('messages.amount') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->vouchers as $voucher)
-                    <x-tr>
-                        <x-td>{{ $voucher->id }}</x-td>
-                        <x-td>{!! $voucher->formated_date !!}</x-td>
-                        <x-td>{{ $voucher->notes }}</x-td>
-                        <x-td>{{ $voucher->formated_amount }}</x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
-                                @can('update', $voucher)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                                @can('delete', $voucher)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $voucher }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.voucher_number') }}</x-th>
+                <x-th>{{ __('messages.date') }}</x-th>
+                <x-th>{{ __('messages.notes') }}</x-th>
+                <x-th>{{ __('messages.amount') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->vouchers as $voucher)
+                <x-tr>
+                    <x-td>{{ $voucher->id }}</x-td>
+                    <x-td>{!! $voucher->formated_date !!}</x-td>
+                    <x-td>{{ $voucher->notes }}</x-td>
+                    <x-td>{{ $voucher->formated_amount }}</x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
+                            @can('update', $voucher)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('delete', $voucher)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $voucher }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

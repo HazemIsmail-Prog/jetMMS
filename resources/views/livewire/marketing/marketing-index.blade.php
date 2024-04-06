@@ -88,50 +88,48 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.created_at') }}</x-th>
-                    <x-th>{{ __('messages.creator') }}</x-th>
-                    <x-th>{{ __('messages.customer_name') }}</x-th>
-                    <x-th>{{ __('messages.phone') }}</x-th>
-                    <x-th>{{ __('messages.address') }}</x-th>
-                    <x-th>{{ __('messages.notes') }}</x-th>
-                    <x-th>{{ __('messages.type') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->marketings as $marketing)
-                    <x-tr>
-                        <x-td>{!! $marketing->formated_created_at !!}</x-td>
-                        <x-td>{{ $marketing->creator->name }}</x-td>
-                        <x-td>{{ $marketing->name }}</x-td>
-                        <x-td>{{ $marketing->phone }}</x-td>
-                        <x-td>{{ $marketing->address }}</x-td>
-                        <x-td>{{ $marketing->notes }}</x-td>
-                        <x-td>{{ __('messages.' . $marketing->type) }}</x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
-                                @can('update', $marketing)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showMarketingFormModal',{marketing:{{ $marketing }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                                @can('delete', $marketing)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $marketing }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.created_at') }}</x-th>
+                <x-th>{{ __('messages.creator') }}</x-th>
+                <x-th>{{ __('messages.customer_name') }}</x-th>
+                <x-th>{{ __('messages.phone') }}</x-th>
+                <x-th>{{ __('messages.address') }}</x-th>
+                <x-th>{{ __('messages.notes') }}</x-th>
+                <x-th>{{ __('messages.type') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->marketings as $marketing)
+                <x-tr>
+                    <x-td>{!! $marketing->formated_created_at !!}</x-td>
+                    <x-td>{{ $marketing->creator->name }}</x-td>
+                    <x-td>{{ $marketing->name }}</x-td>
+                    <x-td>{{ $marketing->phone }}</x-td>
+                    <x-td>{{ $marketing->address }}</x-td>
+                    <x-td>{{ $marketing->notes }}</x-td>
+                    <x-td>{{ __('messages.' . $marketing->type) }}</x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
+                            @can('update', $marketing)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showMarketingFormModal',{marketing:{{ $marketing }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('delete', $marketing)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $marketing }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

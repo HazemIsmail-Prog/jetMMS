@@ -19,8 +19,11 @@
     @teleport('#excel')
         <div>
             @if ($this->orders->total() <= $maxExportSize)
-                <x-button wire:confirm="{{ __('messages.are_u_sure') }}" wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel" wire:loading.attr="disabled">
-                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden" wire:target="excel">
+                <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                    wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+                    wire:loading.attr="disabled">
+                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden"
+                        wire:target="excel">
                         {{ __('messages.exporting') }}
                     </span>
                     <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
@@ -116,83 +119,81 @@
 
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.order_number') }}</x-th>
-                    <x-th>{{ __('messages.created_at') }}</x-th>
-                    <x-th>{{ __('messages.creator') }}</x-th>
-                    <x-th>{{ __('messages.estimated_start_date') }}</x-th>
-                    <x-th>{{ __('messages.status') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.completed_date') }}</x-th>
-                    <x-th>{{ __('messages.technician') }}</x-th>
-                    <x-th>{{ __('messages.customer_name') }}</x-th>
-                    <x-th>{{ __('messages.customer_phone') }}</x-th>
-                    <x-th>{{ __('messages.address') }}</x-th>
-                    <x-th>{{ __('messages.remaining_amount') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->orders as $order)
-                    <x-tr>
-                        <x-td>{{ $order->formated_order_id }}</x-td>
-                        <x-td>{!! $order->formated_created_at !!}</x-td>
-                        <x-td>{{ $order->creator->name }}</x-td>
-                        <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
-                        <x-td style="color: {{ $order->status->color }}">
-                            {{ $order->status->name }}
-                        </x-td>
-                        <x-td>{{ $order->department->name }}</x-td>
-                        <x-td>{!! $order->formated_completed_at !!}</x-td>
-                        <x-td>{{ $order->technician->name ?? '-' }}</x-td>
-                        <x-td>{{ $order->customer->name }}</x-td>
-                        <x-td>{{ $order->phone->number }}</x-td>
-                        <x-td>{{ $order->address->full_address }}</x-td>
-                        <x-td>{{ $order->formated_remaining_amount }}</x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.order_number') }}</x-th>
+                <x-th>{{ __('messages.created_at') }}</x-th>
+                <x-th>{{ __('messages.creator') }}</x-th>
+                <x-th>{{ __('messages.estimated_start_date') }}</x-th>
+                <x-th>{{ __('messages.status') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.completed_date') }}</x-th>
+                <x-th>{{ __('messages.technician') }}</x-th>
+                <x-th>{{ __('messages.customer_name') }}</x-th>
+                <x-th>{{ __('messages.customer_phone') }}</x-th>
+                <x-th>{{ __('messages.address') }}</x-th>
+                <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->orders as $order)
+                <x-tr>
+                    <x-td>{{ $order->formated_order_id }}</x-td>
+                    <x-td>{!! $order->formated_created_at !!}</x-td>
+                    <x-td>{{ $order->creator->name }}</x-td>
+                    <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
+                    <x-td style="color: {{ $order->status->color }}">
+                        {{ $order->status->name }}
+                    </x-td>
+                    <x-td>{{ $order->department->name }}</x-td>
+                    <x-td>{!! $order->formated_completed_at !!}</x-td>
+                    <x-td>{{ $order->technician->name ?? '-' }}</x-td>
+                    <x-td>{{ $order->customer->name }}</x-td>
+                    <x-td>{{ $order->phone->number }}</x-td>
+                    <x-td>{{ $order->address->full_address }}</x-td>
+                    <x-td>{{ $order->formated_remaining_amount }}</x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
 
-                                @if ($order->can_send_survey)
-                                    <a class=" border dark:border-gray-700 rounded-lg p-1" target="__blank"
-                                        href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
-                                @endif
+                            @if ($order->can_send_survey)
+                                <a class=" border dark:border-gray-700 rounded-lg p-1" target="__blank"
+                                    href="{{ $order->whatsapp_message }}">{{ __('messages.send_survey') }}</a>
+                            @endif
 
-                                @can('update', $order)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $order)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('view_order_progress', $order)
-                                    <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
-                                        wire:click="$dispatch('showStatusesModal',{order:{{ $order }}})">
-                                        <x-svgs.list class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('view_order_progress', $order)
+                                <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
+                                    wire:click="$dispatch('showStatusesModal',{order:{{ $order }}})">
+                                    <x-svgs.list class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('view_order_comments', $order)
-                                    <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}"
-                                        wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
-                                        <x-svgs.comment class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('view_order_comments', $order)
+                                <x-badgeWithCounter :counter="$order->all_comments" title="{{ __('messages.comments') }}"
+                                    wire:click="$dispatch('showCommentsModal',{order:{{ $order }}})">
+                                    <x-svgs.comment class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @if ($order->can_view_order_invoices)
-                                    <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
-                                        wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
-                                        <x-svgs.banknotes class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endif
+                            @if ($order->can_view_order_invoices)
+                                <x-badgeWithCounter :counter="$order->custom_invoices_count" title="{{ __('messages.invoices') }}"
+                                    wire:click="$dispatch('showInvoicesModal',{order:{{ $order }}})">
+                                    <x-svgs.banknotes class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endif
 
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

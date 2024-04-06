@@ -118,93 +118,91 @@
 
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.invoice_number') }}</x-th>
-                    <x-th>{{ __('messages.order_number') }}</x-th>
-                    <x-th>{{ __('messages.created_at') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.technician') }}</x-th>
-                    <x-th>{{ __('messages.customer_name') }}</x-th>
-                    <x-th>{{ __('messages.customer_phone') }}</x-th>
-                    <x-th>{{ __('messages.services') }}</x-th>
-                    <x-th>{{ __('messages.discount') }}</x-th>
-                    <x-th>{{ __('messages.services_after_discount') }}</x-th>
-                    <x-th>{{ __('messages.internal_parts') }}</x-th>
-                    <x-th>{{ __('messages.external_parts') }}</x-th>
-                    <x-th>{{ __('messages.delivery') }}</x-th>
-                    <x-th>{{ __('messages.amount') }}</x-th>
-                    <x-th>{{ __('messages.cash') }}</x-th>
-                    <x-th>{{ __('messages.knet') }}</x-th>
-                    <x-th>{{ __('messages.paid_amount') }}</x-th>
-                    <x-th>{{ __('messages.remaining_amount') }}</x-th>
-                    <x-th>{{ __('messages.payment_status') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->invoices as $invoice)
-                    <x-tr>
-                        <x-td>
-                            <a target="_blank" class="btn"
-                                href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{ $invoice->formated_id }}</a>
-                        </x-td>
-                        <x-td>
-                            <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
-                                ? $this->invoices->where('order_id', $invoice->order_id)->count()
-                                : null" title="{{ __('messages.invoices') }}"
-                                wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
-                                {{ $invoice->order->formated_id }}
-                            </x-badgeWithCounter>
-                        </x-td>
-                        <x-td>
-                            <span dir="ltr" class=" cursor-pointer"
-                                wire:click="dateClicked('{{ $invoice->created_at->format('Y-m-d') }}')">
-                                {!! $invoice->formated_created_at !!}
-                            </span>
-                        </x-td>
-                        <x-td>
-                            <span class=" cursor-pointer"
-                                wire:click="$set('filters.department_id',{{ $invoice->order->department_id }})">
-                                {{ $invoice->order->department->name }}
-                            </span>
-                        </x-td>
-                        <x-td>
-                            <span class=" cursor-pointer"
-                                wire:click="$set('filters.technician_id',{{ $invoice->order->technician_id }})">
-                                {{ $invoice->order->technician->name }}
-                            </span>
-                        </x-td>
-                        <x-td>{{ $invoice->order->customer->name }}</x-td>
-                        <x-td>{{ $invoice->order->phone->number }}</x-td>
-                        <x-td>{{ $invoice->formated_services_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_discount_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_service_amount_after_discount }}</x-td>
-                        <x-td>{{ $invoice->formated_internal_parts_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_external_parts_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_delivery_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_cash_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_knet_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_total_paid_amount }}</x-td>
-                        <x-td>{{ $invoice->formated_remaining_amount }}</x-td>
-                        <x-td>{{ $invoice->payment_status->title() }}</x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
-                                @if ($invoice->can_deleted)
-                                    <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
-                                        wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
-                                        wire:click="delete({{ $invoice->id }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endif
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.invoice_number') }}</x-th>
+                <x-th>{{ __('messages.order_number') }}</x-th>
+                <x-th>{{ __('messages.created_at') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.technician') }}</x-th>
+                <x-th>{{ __('messages.customer_name') }}</x-th>
+                <x-th>{{ __('messages.customer_phone') }}</x-th>
+                <x-th>{{ __('messages.services') }}</x-th>
+                <x-th>{{ __('messages.discount') }}</x-th>
+                <x-th>{{ __('messages.services_after_discount') }}</x-th>
+                <x-th>{{ __('messages.internal_parts') }}</x-th>
+                <x-th>{{ __('messages.external_parts') }}</x-th>
+                <x-th>{{ __('messages.delivery') }}</x-th>
+                <x-th>{{ __('messages.amount') }}</x-th>
+                <x-th>{{ __('messages.cash') }}</x-th>
+                <x-th>{{ __('messages.knet') }}</x-th>
+                <x-th>{{ __('messages.paid_amount') }}</x-th>
+                <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                <x-th>{{ __('messages.payment_status') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->invoices as $invoice)
+                <x-tr>
+                    <x-td>
+                        <a target="_blank" class="btn"
+                            href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{ $invoice->formated_id }}</a>
+                    </x-td>
+                    <x-td>
+                        <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
+                            ? $this->invoices->where('order_id', $invoice->order_id)->count()
+                            : null" title="{{ __('messages.invoices') }}"
+                            wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
+                            {{ $invoice->order->formated_id }}
+                        </x-badgeWithCounter>
+                    </x-td>
+                    <x-td>
+                        <span dir="ltr" class=" cursor-pointer"
+                            wire:click="dateClicked('{{ $invoice->created_at->format('Y-m-d') }}')">
+                            {!! $invoice->formated_created_at !!}
+                        </span>
+                    </x-td>
+                    <x-td>
+                        <span class=" cursor-pointer"
+                            wire:click="$set('filters.department_id',{{ $invoice->order->department_id }})">
+                            {{ $invoice->order->department->name }}
+                        </span>
+                    </x-td>
+                    <x-td>
+                        <span class=" cursor-pointer"
+                            wire:click="$set('filters.technician_id',{{ $invoice->order->technician_id }})">
+                            {{ $invoice->order->technician->name }}
+                        </span>
+                    </x-td>
+                    <x-td>{{ $invoice->order->customer->name }}</x-td>
+                    <x-td>{{ $invoice->order->phone->number }}</x-td>
+                    <x-td>{{ $invoice->formated_services_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_discount_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_service_amount_after_discount }}</x-td>
+                    <x-td>{{ $invoice->formated_internal_parts_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_external_parts_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_delivery_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_cash_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_knet_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_total_paid_amount }}</x-td>
+                    <x-td>{{ $invoice->formated_remaining_amount }}</x-td>
+                    <x-td>{{ $invoice->payment_status->title() }}</x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
+                            @if ($invoice->can_deleted)
+                                <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
+                                    wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
+                                    wire:click="delete({{ $invoice->id }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endif
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

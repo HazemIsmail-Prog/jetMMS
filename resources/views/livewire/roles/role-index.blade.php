@@ -35,52 +35,50 @@
 
     @livewire('roles.role-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.permissions') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->roles as $role)
-                    <x-tr>
-                        <x-td>
-                            <div>{{ $role->name }}</div>
-                        </x-td>
-                        <x-td class=" !whitespace-normal">
-                            <div class="flex flex-wrap gap-1 ">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.permissions') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->roles as $role)
+                <x-tr>
+                    <x-td>
+                        <div>{{ $role->name }}</div>
+                    </x-td>
+                    <x-td class=" !whitespace-normal">
+                        <div class="flex flex-wrap gap-1 ">
 
-                                @foreach ($role->permissions as $permission)
-                                    <span
-                                        class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500 whitespace-nowrap">{{ $permission->description }}</span>
-                                @endforeach
-                            </div>
-                        </x-td>
-                        <x-td>
-                            <div class=" flex items-center justify-end gap-2">
+                            @foreach ($role->permissions as $permission)
+                                <span
+                                    class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500 whitespace-nowrap">{{ $permission->description }}</span>
+                            @endforeach
+                        </div>
+                    </x-td>
+                    <x-td>
+                        <div class=" flex items-center justify-end gap-2">
 
-                                @can('update', $role)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showRoleFormModal',{role:{{ $role }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $role)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showRoleFormModal',{role:{{ $role }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $role)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $role }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                            @can('delete', $role)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $role }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

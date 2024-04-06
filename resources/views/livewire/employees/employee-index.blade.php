@@ -87,76 +87,74 @@
         </div>
     </div>
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{ __('messages.name') }}</x-th>
-                    <x-th>{{ __('messages.title') }}</x-th>
-                    <x-th>{{ __('messages.department') }}</x-th>
-                    <x-th>{{ __('messages.shift') }}</x-th>
-                    <x-th>{{ __('messages.status') }}</x-th>
-                    <x-th>{{ __('messages.joinDate') }}</x-th>
-                    <x-th>{{ __('messages.salary') }}</x-th>
-                    <x-th>{{ __('messages.leave_balance') }}</x-th>
-                    <x-th>{{ __('messages.net_working_days') }}</x-th>
-                    <x-th>{{ __('messages.indemnity') }}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->employees as $employee)
-                    <x-tr>
-                        <x-td>{{ $employee->user->name }}</x-td>
-                        <x-td>{{ $employee->user->title->name }}</x-td>
-                        <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
-                        <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
-                        <x-td>{!! $employee->formated_status !!}</x-td>
-                        <x-td>{!! $employee->formated_join_date !!}</x-td>
-                        <x-td>{{ $employee->formated_salary }}</x-td>
-                        <x-td>
-                            <div>{{ $employee->formated_leave_days_balance }}</div>
-                            <div>{{ $employee->formated_leave_balance_amount }}</div>
-                        </x-td>
-                        <x-td>{{ $employee->NetWorkingDays }}</x-td>
-                        <x-td>{{ $employee->formated_indemnity }}</x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.title') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.shift') }}</x-th>
+                <x-th>{{ __('messages.status') }}</x-th>
+                <x-th>{{ __('messages.joinDate') }}</x-th>
+                <x-th>{{ __('messages.salary') }}</x-th>
+                <x-th>{{ __('messages.leave_balance') }}</x-th>
+                <x-th>{{ __('messages.net_working_days') }}</x-th>
+                <x-th>{{ __('messages.indemnity') }}</x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->employees as $employee)
+                <x-tr>
+                    <x-td>{{ $employee->user->name }}</x-td>
+                    <x-td>{{ $employee->user->title->name }}</x-td>
+                    <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
+                    <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
+                    <x-td>{!! $employee->formated_status !!}</x-td>
+                    <x-td>{!! $employee->formated_join_date !!}</x-td>
+                    <x-td>{{ $employee->formated_salary }}</x-td>
+                    <x-td>
+                        <div>{{ $employee->formated_leave_days_balance }}</div>
+                        <div>{{ $employee->formated_leave_balance_amount }}</div>
+                    </x-td>
+                    <x-td>{{ $employee->NetWorkingDays }}</x-td>
+                    <x-td>{{ $employee->formated_indemnity }}</x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end gap-2">
 
-                                @can('view', $employee)
-                                    <x-badgeWithCounter title="{{ __('messages.view') }}"
-                                        wire:click="$dispatch('showEmployeeViewModal',{employee:{{ $employee }}})">
-                                        <x-svgs.view class="w-4 h-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('view', $employee)
+                                <x-badgeWithCounter title="{{ __('messages.view') }}"
+                                    wire:click="$dispatch('showEmployeeViewModal',{employee:{{ $employee }}})">
+                                    <x-svgs.view class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('update', $employee)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee }}})">
-                                        <x-svgs.edit class="w-4 h-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $employee)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showEmployeeFormModal',{employee:{{ $employee }}})">
+                                    <x-svgs.edit class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('viewAnyAttachment', $employee)
-                                    <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
-                                        wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
-                                        <x-svgs.attachment class="w-4 h-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('viewAnyAttachment', $employee)
+                                <x-badgeWithCounter :counter="$employee->attachments_count" title="{{ __('messages.attachments') }}"
+                                    wire:click="$dispatch('showAttachmentModal',{model:'Employee',id:{{ $employee->id }}})">
+                                    <x-svgs.attachment class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $employee)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $employee }})">
-                                        <x-svgs.trash class="w-4 h-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('delete', $employee)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $employee }})">
+                                    <x-svgs.trash class="w-4 h-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 </div>

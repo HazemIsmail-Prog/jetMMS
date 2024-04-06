@@ -21,6 +21,7 @@
                                 {{ __('messages.something went wrong') }}
                             </div>
                         @endif
+
                         <x-table>
                             <x-thead>
                                 <tr>
@@ -57,6 +58,7 @@
                                 @endforeach
                             </tbody>
                         </x-table>
+                        
                     @else
                         <x-label class=" text-center">{{ __('messages.no_attachments_found') }}</x-label>
                     @endif

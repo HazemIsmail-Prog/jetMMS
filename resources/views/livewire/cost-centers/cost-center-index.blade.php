@@ -37,46 +37,43 @@
 
     @livewire('cost_centers.cost_center-form')
 
-    <div class=" overflow-x-auto sm:rounded-lg">
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>
-                        {{ __('messages.name') }}
-                    </x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-            <tbody>
-                @foreach ($this->cost_centers as $cost_center)
-                    <x-tr>
-                        <x-td>
-                            <div>{{ $cost_center->name }}</div>
-                        </x-td>
-                        <x-td>
-                            <div class="flex items-center justify-end w-full gap-2">
+    <x-table>
+        <x-thead>
+            <tr>
+                <x-th>
+                    {{ __('messages.name') }}
+                </x-th>
+                <x-th></x-th>
+            </tr>
+        </x-thead>
+        <tbody>
+            @foreach ($this->cost_centers as $cost_center)
+                <x-tr>
+                    <x-td>
+                        <div>{{ $cost_center->name }}</div>
+                    </x-td>
+                    <x-td>
+                        <div class="flex items-center justify-end w-full gap-2">
 
-                                @can('update', $cost_center)
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        wire:click="$dispatch('showCostCenterFormModal',{cost_center:{{ $cost_center }}})">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
+                            @can('update', $cost_center)
+                                <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                    wire:click="$dispatch('showCostCenterFormModal',{cost_center:{{ $cost_center }}})">
+                                    <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
 
-                                @can('delete', $cost_center)
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        wire:confirm="{{ __('messages.are_u_sure') }}"
-                                        wire:click="delete({{ $cost_center }})">
-                                        <x-svgs.trash class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                @endcan
-                            </div>
-                        </x-td>
-                    </x-tr>
-                @endforeach
-            </tbody>
-        </x-table>
-    </div>
-
+                            @can('delete', $cost_center)
+                                <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                    wire:confirm="{{ __('messages.are_u_sure') }}"
+                                    wire:click="delete({{ $cost_center }})">
+                                    <x-svgs.trash class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                        </div>
+                    </x-td>
+                </x-tr>
+            @endforeach
+        </tbody>
+    </x-table>
 
 </div>

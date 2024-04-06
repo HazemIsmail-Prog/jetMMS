@@ -43,5 +43,6 @@
                 @endforeach
             </tbody>
         </x-table>
+        
     </div>
 </div>
