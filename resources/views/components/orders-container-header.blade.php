@@ -1,7 +1,7 @@
-@props(['title', 'total' => null, 'technician' => null])
+@props(['title', 'total' => null, 'technician' => null,'id'])
 
-<div
-    class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
+<div @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' }); console.log(hiddenContainers)"
+    class="flex items-center justify-between rounded-md cursor-pointer select-none flex-shrink-0 h-10 p-4 bg-gray-50 dark:bg-gray-700">
     <span class="block text-sm font-semibold uppercase truncate">{{ $title }}</span>
     <div class="flex">
         @if ($technician)

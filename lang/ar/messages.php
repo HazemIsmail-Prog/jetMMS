@@ -543,6 +543,7 @@ return [
     'completed_orders_per_month' => 'عدد الطلبات المنفذة لكل شهر',
     'max_export_size' => 'لا يمكن تصدير اكثر من :maxExportSize سجل',
     'exporting' => 'جاري التصدير .. يرجى الانتظار',
+    'hidden' => 'مخفي',
 
 
 
