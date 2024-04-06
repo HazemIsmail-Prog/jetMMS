@@ -62,9 +62,12 @@
 
 
         {{-- Hidden Container --}}
-        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 flex flex-col gap-1 flex-shrink-0">
+        <div 
+            x-cloak 
+            x-show="hiddenContainers.length > 0" 
+            class="h-full w-24 shrink-0 flex flex-col gap-1 ">
             <div @click="hiddenContainers= []"
-                class="flex items-center justify-between rounded-md cursor-pointer flex-shrink-0 h-10 p-4 bg-gray-300 dark:bg-gray-700">
+                class="flex items-center justify-between rounded-md cursor-pointer h-10 p-4 bg-gray-300 dark:bg-gray-700">
                 <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
             </div>
             <div
