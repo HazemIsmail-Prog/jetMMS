@@ -50,9 +50,9 @@
             @endif
             <!-- Page Content -->
             <main class=" flex-1 overflow-y-auto ">
-                <div class="py-6 ">
-                    <div class="max-w-full mx-auto sm:px-6 lg:px-6 ">
-                        <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg p-4">
+                <div class="py-2 lg:py-6 ">
+                    <div class="max-w-full mx-auto px-2 lg:px-6 ">
+                        <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg p-0 lg:p-4">
                             <x-alert />
                             {{ $slot }}
                         </div>

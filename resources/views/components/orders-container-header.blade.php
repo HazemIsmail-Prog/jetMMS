@@ -3,7 +3,7 @@
 <div @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });"
     class="flex items-center justify-between rounded-md cursor-pointer select-none flex-shrink-0 h-10 p-4 bg-gray-300 dark:bg-gray-700">
     <span class="block text-sm font-semibold uppercase truncate">{{ $title }}</span>
-    <div class="flex">
+    <div class="hidden lg:flex">
         @if ($technician)
             @if ($technician->todays_completed_orders_count > 0)
                 <a href="{{ route('order.index', [

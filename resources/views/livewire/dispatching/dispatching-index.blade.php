@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight truncate">
                 {{ $department->name }}
                 <span id="counter"></span>
             </h2>
@@ -27,7 +27,7 @@
         <div class=" flex items-center gap-1">
             @if ($this->technicians->where('shift_id', null)->count() > 1)
                 <x-button onclick="location.href='#shift-';">
-                    <span class="text-sm font-semibold uppercase">
+                    <span class="text-sm font-semibold uppercase truncate">
                         {{ __('messages.undefined_shift') }}
                     </span>
                 </x-button>
@@ -35,7 +35,7 @@
             @foreach ($this->shifts as $shift)
                 @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
                     <x-button onclick="location.href='#shift-{{ $shift->id }}';">
-                        <span class="text-sm font-semibold uppercase">
+                        <span class="text-sm font-semibold uppercase truncate">
                             {{ $shift->name }}
                         </span>
                     </x-button>
@@ -44,14 +44,12 @@
         </div>
     @endteleport
 
-    <div 
-        x-data="{ hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]') }" 
-        x-init="() => {
-            $watch('hiddenContainers', value => {
-                localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
-            });
-        }"
-        class="flex gap-1 h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
+    <div x-data="{ hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]') }" x-init="() => {
+        $watch('hiddenContainers', value => {
+            localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
+        });
+    }"
+        class="flex gap-1 h-[calc(100vh-120px)] lg:h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
 
         {{-- Hidden --}}
         <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-32 flex flex-col gap-1 flex-shrink-0">
@@ -104,12 +102,16 @@
     <script>
         box = document.querySelectorAll('.box')
         box.forEach(element => {
+            const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body
+                .clientWidth;
+            const delay = screenWidth < 865 ? 500 : 0; // If less than 865 pixels, set delay to 500, otherwise set to 0
+
             sortable = new Sortable.create(element, {
                 group: 'box', // set both lists to same group
                 draggable: ".draggable", // Specifies which items inside the element should be draggable
                 swapThreshold: 1,
                 animation: 150,
-                // delay: 500, // to avoid dragging for touch screen
+                delay: delay, // to avoid dragging for touch screen
                 direction: 'vertical',
                 onEnd: function( /**Event*/ evt) {
                     //Apply code only if order change its box or index otherwise do nothing

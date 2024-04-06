@@ -5,32 +5,35 @@
     {{ $order->in_progress ? '' : 'draggable' }}
     {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }}
     order
-    card
-    border-2
-    p-4
+    border-4
+    py-2 lg:py-4
+    p-0 lg:p-4
     cursor-pointer
-        rounded-lg
+    rounded-lg
     "
     style="border-color: {{ $order->status->color }}">
 
-    <div class="flex justify-between items-center">
+    <div wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})"
+        class="block lg:hidden text-center text-xs font-medium">
+        {{ $order->formated_id }}
+    </div>
+
+    <div class="hidden lg:flex justify-between items-center">
         <div class="text-md font-semibold">{{ $order->customer->name }}</div>
         <div class="text-xs">{{ $order->phone->number }}</div>
     </div>
 
-    <h4 class="mt-2 text-xs">{{ $order->address->full_address }}</h4>
+    <h4 class="hidden lg:block mt-2 text-xs">{{ $order->address->full_address }}</h4>
 
-    <div class="mt-2">
+    <div class="hidden lg:block mt-0 lg:mt-2">
 
         <div
-            class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
-            <i class="mgc_user_3_line text-base me-1"></i>
+            class="items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             {{ $order->creator->name }}
         </div>
 
         <div
-            class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
-            <i class="mgc_hashtag_line text-base me-1"></i>
+            class="text-center items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
             {{ $order->formated_id }}
         </div>
 
@@ -54,7 +57,6 @@
         @if ($order->order_description)
             <div
                 class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
-                <i class="mgc_align_center_line text-base me-1"></i>
                 {{ $order->order_description }}
             </div>
         @endif
@@ -62,14 +64,13 @@
         @if ($order->notes)
             <div
                 class="flex items-center my-1 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400">
-                <i class="mgc_attachment_line text-base me-1"></i>
                 {{ $order->notes }}
             </div>
         @endif
 
     </div>
 
-    <div class="flex items-center justify-between w-full mt-3 text-xs font-medium text-gray-400">
+    <div class="hidden lg:flex items-center justify-between w-full mt-3 text-xs font-medium text-gray-400">
 
         <div class=" flex gap-2 items-center">
 
