@@ -44,12 +44,22 @@
         </div>
     @endteleport
 
-    <div x-data="{ hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]') }" x-init="() => {
-        $watch('hiddenContainers', value => {
-            localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
-        });
-    }"
-        class="flex gap-1 h-[calc(100vh-120px)] lg:h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
+    <div x-data="{
+                    hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]'),
+                    alpineLoaded: false
+                }"
+            x-init="() => {
+                alpineLoaded = true;
+                $watch('hiddenContainers', value => {
+                    localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
+                });
+            }"
+        class="relative flex gap-1 h-[calc(100vh-120px)] lg:h-[calc(100vh-184px)] text-gray-700 dark:text-slate-400">
+
+        <div x-show="!alpineLoaded">
+            <x-loading-spinner class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+        </div>
+
 
         {{-- Hidden Container --}}
         <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 flex flex-col gap-1 flex-shrink-0">
@@ -104,7 +114,8 @@
         box.forEach(element => {
             const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body
                 .clientWidth;
-            const delay = screenWidth < 1024 ? 500 : 0; // If less than 1024 pixels, set delay to 500, otherwise set to 0
+            const delay = screenWidth < 1024 ? 500 :
+                0; // If less than 1024 pixels, set delay to 500, otherwise set to 0
 
             sortable = new Sortable.create(element, {
                 group: 'box', // set both lists to same group
