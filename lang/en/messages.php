@@ -518,5 +518,8 @@ return [
     'send_survey' => 'Send Survey',
     'orders_per_month' => 'Orders per Month',
     'completed_orders_per_month' => 'Completed Orders per Month',
-
+    'max_export_size' => 'Cannot export more than :maxExportSize records',
+    'exporting' => 'Exporting, Please wait ...',
+    'hidden' => 'Hidden',
+    'edit_marketing' => 'Edit Marketing',
 ];

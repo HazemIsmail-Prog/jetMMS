@@ -544,6 +544,7 @@ return [
     'max_export_size' => 'لا يمكن تصدير اكثر من :maxExportSize سجل',
     'exporting' => 'جاري التصدير .. يرجى الانتظار',
     'hidden' => 'مخفي',
+    'edit_marketing' => 'تعديل تسويق',
 
 
 

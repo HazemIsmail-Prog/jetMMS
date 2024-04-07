@@ -21,7 +21,7 @@ class MarketingForm extends Component
         $this->form->reset();
         $this->showModal = true;
         $this->marketing = $marketing;
-        $this->modalTitle = $this->marketing->id ? __('messages.edit_marketing') . $this->marketing->id : __('messages.add_marketing');
+        $this->modalTitle = $this->marketing->id ? __('messages.edit_marketing') : __('messages.add_marketing');
         $this->form->fill($this->marketing);
     }
 
