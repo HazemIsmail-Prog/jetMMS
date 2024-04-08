@@ -1,11 +1,9 @@
 <nav class="no-print bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between lg:justify-end h-11">
+        <div class="flex justify-between h-11">
             <!-- Hamburger button -->
-            <button class="text-slate-500 hover:text-slate-600 lg:hidden" @click.stop="sidebarOpen = !sidebarOpen"
-                aria-controls="sidebar" :aria-expanded="sidebarOpen">
-                <span class="sr-only">Open sidebar</span>
+            <button class="text-slate-500 hover:text-slate-600" @click="sidebarExpanded=!sidebarExpanded">
                 <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <rect x="4" y="5" width="16" height="2" />
                     <rect x="4" y="11" width="16" height="2" />
@@ -14,11 +12,7 @@
             </button>
             <div class="flex items-center">
 
-
-
-
                 <x-language-selector />
-
 
                 {{-- Dark Theme Toggler --}}
                 <button id="theme-toggle" type="button"
@@ -72,7 +66,6 @@
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
-
                                 <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
                                     {{ __('messages.logout') }}
                                 </x-dropdown-link>

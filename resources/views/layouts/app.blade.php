@@ -23,10 +23,19 @@
 
 </head>
 
-<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden"
-    :class="{ 'sidebar-expanded': sidebarExpanded }" x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }" x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
-    <x-banner />
-
+<body x-data="{
+    sidebarExpanded: localStorage.getItem('sidebarExpanded') !== null ? JSON.parse(localStorage.getItem('sidebarExpanded')) : true,
+    isLTR: document.documentElement.dir === 'ltr',
+    isRTL: document.documentElement.dir === 'rtl',
+}" x-init="() => {
+    if (window.innerWidth < 786) {
+        sidebarExpanded = false;
+    }
+    $watch('sidebarExpanded', value => {
+        localStorage.setItem('sidebarExpanded', JSON.stringify(value));
+    });
+}"
+    class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
 
     {{-- Chatting --}}
     {{-- @persist('chats') --}}
@@ -34,43 +43,43 @@
     @livewire('chats.chat-modal')
     {{-- @endpersist --}}
 
-    <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
-        @livewire('sidebar')
+    
+    @livewire('sidebar')
 
-        <!-- Content area -->
-        <div class="flex flex-col flex-1 h-screen w-64 relative">
-            @livewire('navigation-menu')
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-full mx-auto p-3 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-            <!-- Page Content -->
-            <main class=" flex-1 overflow-y-auto ">
-                <div class="py-2 lg:py-6 ">
-                    <div class="max-w-full mx-auto px-2 lg:px-6 ">
-                        <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg p-0 lg:p-4">
-                            <x-alert />
-                            {{ $slot }}
-                        </div>
+    {{-- Main --}}
+    <div x-cloak class=" h-full flex flex-col min-h-screen transition-all"
+        :class="{ ' ms-0 md:ms-64 ': sidebarExpanded }">
+        {{-- Topbar --}}
+
+        @livewire('navigation-menu')
+        {{-- Header --}}
+        @if (isset($header))
+            <header class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-full mx-auto p-3 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endif
+        {{-- Content --}}
+        <main class=" flex-1 overflow-y-auto ">
+            <div class="py-2 lg:py-6 ">
+                <div class="max-w-full mx-auto px-2 lg:px-6 ">
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg p-0 lg:p-4">
+                        <x-alert />
+                        {{ $slot }}
                     </div>
                 </div>
-            </main>
-            <!-- Page Footer -->
-            @if (isset($footer))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-full mx-auto p-2 sm:px-6 lg:px-10">
-                        {{ $footer }}
-                    </div>
-                </header>
-            @endif
-        </div>
+            </div>
+        </main>
+        <!-- Page Footer -->
+        @if (isset($footer))
+            <header class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-full mx-auto p-2 sm:px-6 lg:px-10">
+                    {{ $footer }}
+                </div>
+            </header>
+        @endif
     </div>
-
-    @stack('modals')
 
 
 

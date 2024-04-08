@@ -39,33 +39,25 @@
 @script
     <script>
         $wire.on('customersFetched', () => {
-            var ctx = document.getElementById('customerChart').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: @json(
-                        $customers->map(function ($customer) {
-                            return $customer->month . '-' . $customer->year;
-                        })),
-                    datasets: [{
+            setTimeout(function() {
+                var ctx = document.getElementById('customerChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: @json(
+                            $customers->map(function ($customer) {
+                                return $customer->month . '-' . $customer->year;
+                            })),
+                        datasets: [{
                             label: @json($title),
                             data: @json($customers->pluck('total')),
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 4
-                        },
-                    ]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
+                        }, ]
+                    },
+                });
+            }, 10)
         });
     </script>
 @endscript
