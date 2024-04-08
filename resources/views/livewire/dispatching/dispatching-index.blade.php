@@ -92,13 +92,13 @@
         <div class="flex-1 h-full overflow-y-auto hidden-scrollbar scroll-smooth">
 
             {{-- Null Shift --}}
-            @if ($this->technicians->where('shift_id', null)->count() > 1)
+            @if ($this->technicians->where('shift_id', null)->count() >= 1)
                 <x-shift-container title="{{ __('messages.undefined_shift') }}" :list="$this->technicians->where('shift_id', null)" :shift_id="null" />
             @endif
 
             {{-- Existing Shifts --}}
             @foreach ($this->shifts as $shift)
-                @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
+                @if ($this->technicians->where('shift_id', $shift->id)->count() >= 1)
                     <x-shift-container title="{{ $shift->full_name }}" :list="$this->technicians->where('shift_id', $shift->id)" :shift_id="$shift->id" />
                 @endif
             @endforeach
