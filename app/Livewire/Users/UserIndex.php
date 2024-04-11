@@ -21,10 +21,10 @@ class UserIndex extends Component
     public $filters = [
         'name' => '',
         'username' => '',
-        'title_id' => '',
-        'department_id' => '',
-        'shift_id' => '',
-        'role_id' => '',
+        'title_id' => [],
+        'department_id' => [],
+        'shift_id' => [],
+        'role_id' => [],
         'status' => 'all',
     ];
 
@@ -35,22 +35,35 @@ class UserIndex extends Component
     
     #[Computed()]
     public function roles() {
-        return Role::select('id', 'name_en', 'name_ar')->get();
+        return Role::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
     public function shifts() {
-        return Shift::select('id', 'name_en', 'name_ar')->get();
+        return Shift::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
-    public function departments() {
-        return Department::select('id', 'name_en', 'name_ar')->get();
+    public function departments()
+    {
+        return Department::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
     public function titles() {
-        return Title::select('id', 'name_en', 'name_ar')->get();
+        return Title::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
@@ -75,16 +88,18 @@ class UserIndex extends Component
                 $q->where('username', $this->filters["username"]);
             })
             ->when($this->filters['title_id'], function ($q) {
-                $q->where('title_id', $this->filters["title_id"]);
+                $q->whereIn('title_id', $this->filters["title_id"]);
             })
             ->when($this->filters['department_id'], function ($q) {
-                $q->where('department_id', $this->filters["department_id"]);
+                $q->whereIn('department_id', $this->filters["department_id"]);
             })
             ->when($this->filters['shift_id'], function ($q) {
-                $q->where('shift_id', $this->filters["shift_id"]);
+                $q->whereIn('shift_id', $this->filters["shift_id"]);
             })
             ->when($this->filters['role_id'], function (Builder $q) {
-                $q->whereRelation('roles', 'role_id', $this->filters['role_id']);
+                $q->whereHas('roles', function(Builder $q){
+                    $q->whereIn('role_id', $this->filters['role_id']);
+                });
             })
             ->when($this->filters['status'] != 'all', function ($q) {
                 $q->where('active', $this->filters["status"]);

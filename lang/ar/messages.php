@@ -545,6 +545,7 @@ return [
     'exporting' => 'جاري التصدير .. يرجى الانتظار',
     'hidden' => 'مخفي',
     'edit_marketing' => 'تعديل تسويق',
+    'wrong_voucher' => 'قيد خطأ',
 
 
 

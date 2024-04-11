@@ -51,30 +51,15 @@
         </div>
         <div>
             <x-label for="title">{{ __('messages.title') }}</x-label>
-            <x-select wire:model.live="filters.title_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($titles as $title)
-                    <option value="{{ $title->id }}">{{ $title->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="title" :list="$this->titles" wire:model.live="filters.title_id" multipule />
         </div>
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-select wire:model.live="filters.department_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($departments as $department)
-                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.department_id" multipule />
         </div>
         <div>
             <x-label for="shift">{{ __('messages.shift') }}</x-label>
-            <x-select wire:model.live="filters.shift_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($shifts as $shift)
-                    <option value="{{ $shift->id }}">{{ $shift->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="shift" :list="$this->shifts" wire:model.live="filters.shift_id" multipule />
         </div>
         <div>
             <x-label for="status">{{ __('messages.status') }}</x-label>

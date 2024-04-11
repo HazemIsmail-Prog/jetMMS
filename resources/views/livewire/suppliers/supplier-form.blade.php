@@ -24,7 +24,7 @@
 
                         <div>
                             <x-label for="account_id">{{ __('messages.account') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->accounts" model="form.account_id" />
+                            <x-searchable-select id="account_id" :list="$this->accounts" wire:model="form.account_id" />
                             <x-input-error for="form.account_id" />
                         </div>
                     </div>

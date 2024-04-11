@@ -21,8 +21,8 @@ class RatingIndex extends Component
         'customer_name' => '',
         'customer_phone' => '',
         'order_number' => '',
-        'technicians' => '',
-        'departments' => '',
+        'technicians' => [],
+        'departments' => [],
         'start_completed_at' => '',
         'end_completed_at' => '',
     ];
@@ -86,10 +86,10 @@ class RatingIndex extends Component
                 $q->where('id', $this->filters['order_number']);
             })
             ->when($this->filters['technicians'], function (Builder $q) {
-                $q->where('technician_id', $this->filters['technicians']);
+                $q->whereIn('technician_id', $this->filters['technicians']);
             })
             ->when($this->filters['departments'], function (Builder $q) {
-                $q->where('department_id', $this->filters['departments']);
+                $q->whereIn('department_id', $this->filters['departments']);
             })
             ->when($this->filters['start_completed_at'], function (Builder $q) {
                 $q->whereDate('completed_at', '>=', $this->filters['start_completed_at']);

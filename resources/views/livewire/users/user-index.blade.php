@@ -48,39 +48,19 @@
         </div>
         <div>
             <x-label for="title">{{ __('messages.title') }}</x-label>
-            <x-select id="title" wire:model.live="filters.title_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($this->titles as $title)
-                    <option value="{{ $title->id }}">{{ $title->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="title" :list="$this->titles" wire:model.live="filters.title_id" multipule />
         </div>
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-select id="department" wire:model.live="filters.department_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($this->departments as $department)
-                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.department_id" multipule />
         </div>
         <div>
             <x-label for="roles">{{ __('messages.roles') }}</x-label>
-            <x-select id="roles" wire:model.live="filters.role_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($this->roles as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="roles" :list="$this->roles" wire:model.live="filters.role_id" multipule />
         </div>
         <div>
             <x-label for="shift">{{ __('messages.shift') }}</x-label>
-            <x-select id="shift" wire:model.live="filters.shift_id" class=" w-full py-0">
-                <option value="">---</option>
-                @foreach ($this->shifts as $shift)
-                    <option value="{{ $shift->id }}">{{ $shift->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="shift" :list="$this->shifts" wire:model.live="filters.shift_id" multipule />
         </div>
         <div>
             <x-label for="status">{{ __('messages.status') }}</x-label>

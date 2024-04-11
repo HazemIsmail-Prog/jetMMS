@@ -1,6 +1,6 @@
-@props(['id' => null, 'maxWidth' => null])
+@props(['id' => null, 'maxWidth' => null,'dismissible' => true])
 
-<x-modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
+<x-modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }} :dismissible="$dismissible">
     <div class="px-6 py-4">
         @if (isset($title))
             <div class="text-lg font-medium text-gray-900 dark:text-gray-100">

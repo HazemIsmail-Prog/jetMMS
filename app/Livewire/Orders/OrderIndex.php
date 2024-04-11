@@ -34,14 +34,14 @@ class OrderIndex extends Component
         'customer_id' => '',
         'customer_name' => '',
         'customer_phone' => '',
-        'areas' => '',
+        'areas' => [],
         'block' => '',
         'street' => '',
         'order_number' => '',
-        'creators' => '',
-        'statuses' => '',
-        'technicians' => '',
-        'departments' => '',
+        'creators' => [],
+        'statuses' => [],
+        'technicians' => [],
+        'departments' => [],
         'tags' => '',
         'start_created_at' => '',
         'end_created_at' => '',
@@ -143,7 +143,9 @@ class OrderIndex extends Component
                 $q->whereRelation('phone', 'number', 'like', $this->filters['customer_phone'] . '%');
             })
             ->when($this->filters['areas'], function (Builder $q) {
-                $q->whereRelation('address', 'area_id', $this->filters['areas']);
+                $q->whereHas('address', function(Builder $q){
+                    $q->whereIn('area_id', $this->filters['areas']);
+                });
             })
             ->when($this->filters['block'], function (Builder $q) {
                 $q->whereRelation('address', 'block', $this->filters['block']);
@@ -155,16 +157,16 @@ class OrderIndex extends Component
                 $q->where('id', $this->filters['order_number']);
             })
             ->when($this->filters['creators'], function (Builder $q) {
-                $q->where('created_by', $this->filters['creators']);
+                $q->whereIn('created_by', $this->filters['creators']);
             })
             ->when($this->filters['statuses'], function (Builder $q) {
-                $q->where('status_id', $this->filters['statuses']);
+                $q->whereIn('status_id', $this->filters['statuses']);
             })
             ->when($this->filters['technicians'], function (Builder $q) {
-                $q->where('technician_id', $this->filters['technicians']);
+                $q->whereIn('technician_id', $this->filters['technicians']);
             })
             ->when($this->filters['departments'], function (Builder $q) {
-                $q->where('department_id', $this->filters['departments']);
+                $q->whereIn('department_id', $this->filters['departments']);
             })
             ->when($this->filters['tags'], function (Builder $q) {
                 $q->where('tag', $this->filters['tags']);

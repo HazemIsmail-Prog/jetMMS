@@ -20,7 +20,7 @@ class ServiceIndex extends Component
     {
         $this->filters = [
             'name' => '',
-            'department_id' => '',
+            'department_id' => [],
             'type' => '',
         ];
     }
@@ -36,7 +36,7 @@ class ServiceIndex extends Component
                 $q->orWhere('name_en', 'like', '%' . $this->filters['name'] . '%');
             })
             ->when($this->filters['department_id'], function ($q) {
-                $q->where('department_id', $this->filters['department_id']);
+                $q->whereIn('department_id', $this->filters['department_id']);
             })
             ->when($this->filters['type'], function ($q) {
                 $q->where('type', $this->filters['type']);
@@ -48,8 +48,9 @@ class ServiceIndex extends Component
     public function departments()
     {
         return Department::query()
-            ->select('id', 'name_ar', 'name_en')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->where('is_service', true)
+            ->orderBy('name')
             ->get();
     }
 

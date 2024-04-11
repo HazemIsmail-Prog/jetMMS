@@ -36,7 +36,7 @@
                         </div>
                         <div>
                             <x-label for="department_id">{{ __('messages.department') }}</x-label>
-                            <x-searchable-select model="form.department_id" :list="$this->departments" position="relative" />
+                            <x-searchable-select id="department_id" wire:model="form.department_id" :list="$this->departments" />
                             <x-input-error for="form.department_id" />
                         </div>
                         <div>

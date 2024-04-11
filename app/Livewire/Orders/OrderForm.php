@@ -28,23 +28,20 @@ class OrderForm extends Component
     {
         return Department::query()
             ->where('is_service', true)
-            ->select('id', 'name_en', 'name_ar')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->get();
     }
 
     #[Computed()]
+    #[On('departmentSelected')]
     public function technicians()
     {
-        if ($this->form->department_id == '') {
-            return [];
-        } else {
-            return User::query()
-                ->select('name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-                ->where('department_id', $this->form->department_id)
-                ->where('active', true)
-                ->orderBy('name')
-                ->get();
-        }
+        return User::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->where('department_id', $this->form->department_id)
+            ->where('active', true)
+            ->orderBy('name')
+            ->get();
     }
 
     #[On('showOrderFormModal')]
@@ -71,6 +68,9 @@ class OrderForm extends Component
 
     public function updated($key)
     {
+        if ($key == 'form.department_id') {
+            $this->dispatch('departmentSelected');
+        }
         if (in_array($key, ['form.department_id', 'form.estimated_start_date', 'form.address_id'])) {
             $this->dup_orders_count = Order::query()
                 ->where([

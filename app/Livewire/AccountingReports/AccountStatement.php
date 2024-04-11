@@ -12,9 +12,9 @@ use Livewire\Component;
 class AccountStatement extends Component
 {
 
-    public $account_id = '';
-    public $cost_center_id = '';
-    public $contact_id = '';
+    public $account_id = [];
+    public $cost_center_id = [];
+    public $contact_id = [];
     public $start_date = '';
     public $end_date = '';
 
@@ -47,7 +47,7 @@ class AccountStatement extends Component
     {
         return Account::query()
             ->where('level', 3)
-            ->where('id', $this->account_id)
+            ->whereIn('id', $this->account_id)
 
             //Get openining sum of Debit before start Date
             ->withSum(['voucher_details' => function ($q) {
@@ -70,10 +70,10 @@ class AccountStatement extends Component
                 $q->with('contact');
                 $q->with('cost_center');
                 $q->when($this->cost_center_id, function ($q) {
-                    $q->where('cost_center_id', $this->cost_center_id);
+                    $q->whereIn('cost_center_id', $this->cost_center_id);
                 });
                 $q->when($this->contact_id, function ($q) {
-                    $q->where('user_id', $this->contact_id);
+                    $q->whereIn('user_id', $this->contact_id);
                 });
             })
             ->get();

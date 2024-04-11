@@ -41,7 +41,7 @@ class MarketingIndex extends Component
                 'phone' => '',
                 'address' => '',
                 'type' => '',
-                'creators' => '',
+                'creators' => [],
                 'start_created_at' => '',
                 'end_created_at' => '',
             ];
@@ -63,7 +63,7 @@ class MarketingIndex extends Component
                 $q->where('address', 'like', $this->filters['address'] . '%');
             })
             ->when($this->filters['creators'], function (Builder $q) {
-                $q->where('user_id', $this->filters['creators']);
+                $q->whereIn('user_id', $this->filters['creators']);
             })
             ->when($this->filters['type'], function (Builder $q) {
                 $q->where('type', $this->filters['type']);

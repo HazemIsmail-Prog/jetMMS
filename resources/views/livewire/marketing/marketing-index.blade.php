@@ -68,7 +68,7 @@
         </div>
         <div>
             <x-label for="creator">{{ __('messages.creator') }}</x-label>
-            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creators" live />
+            <x-searchable-select class=" !py-[5px]" id="creator" :list="$this->creators" wire:model.live="filters.creators" multipule />
         </div>
         <div>
             <x-label for="type">{{ __('messages.type') }}</x-label>

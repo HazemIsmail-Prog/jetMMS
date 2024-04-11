@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="pb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 no-print">
+    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 no-print">
 
         <div class=" col-span-1 md:col-span-2 xl:col-span-3">
             <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
@@ -21,20 +21,20 @@
         </div>
         <div class=" col-span-1 sm:col-span-2 xl:col-span-2">
             <x-label for="account_id">{{ __('messages.account') }}</x-label>
-            <x-searchable-select :list="$this->accounts" model="account_id" live />
+            <x-searchable-select :list="$this->accounts" wire:model.live="account_id" multipule />
         </div>
         <div class=" col-span-1 xl:col-span-2">
             <x-label for="cost_center">{{ __('messages.cost_center') }}</x-label>
-            <x-searchable-select :list="$this->cost_centers" model="cost_center_id" live />
+            <x-searchable-select :list="$this->cost_centers" wire:model.live="cost_center_id" multipule />
         </div>
         <div class=" col-span-1 xl:col-span-2">
             <x-label for="contact">{{ __('messages.contact') }}</x-label>
-            <x-searchable-select :list="$this->contacts" model="contact_id" live />
+            <x-searchable-select :list="$this->contacts" wire:model.live="contact_id" multipule />
         </div>
     </div>
 
-    <div>
-        @foreach ($this->accountsVoucherDetails as $account)
+    @foreach ($this->accountsVoucherDetails as $account)
+        <div class="my-5">
             <h3
                 class="pb-5 font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ $account->name }}
@@ -145,8 +145,8 @@
                     </x-tr>
                 </tfoot>
             </x-table>
-            
-        @endforeach
-    </div>
+
+        </div>
+    @endforeach
 
 </div>

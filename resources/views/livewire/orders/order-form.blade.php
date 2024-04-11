@@ -56,17 +56,10 @@
                             </div>
                         @endif
 
-                        <div class="">
+                        <div>
                             <x-label for="department_id">{{ __('messages.service_type') }}</x-label>
-                            <x-select :disabled="$order->technician_id" class="w-full py-0" id="department_id"
-                                wire:model.live="form.department_id">
-                                @if (!$order->id)
-                                    <option value="">---</option>
-                                @endif
-                                @foreach ($this->departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                @endforeach
-                            </x-select>
+                            <x-searchable-select id="department_id" :list="$this->departments"
+                                wire:model.live="form.department_id" :disabled="$order->technician_id" canClear="{{ !$order->id }}" />
                             @if ($order->technician_id)
                                 <p class = "text-sm text-red-600 dark:text-red-400">
                                     {{ __('messages.order assigned cannot change department') }}</p>
@@ -77,12 +70,8 @@
                             @if (!$order->id)
                                 <div>
                                     <x-label for="technician_id">{{ __('messages.technician') }}</x-label>
-                                    <x-select class="w-full py-0" id="technician_id" wire:model="form.technician_id">
-                                        <option value="">---</option>
-                                        @foreach ($this->technicians as $technician)
-                                            <option value="{{ $technician->id }}">{{ $technician->name }}</option>
-                                        @endforeach
-                                    </x-select>
+                                    <x-searchable-select id="technician_id" :list="$this->technicians"
+                                        wire:model="form.technician_id" />
                                     <x-input-error for="form.technician_id" />
                                 </div>
                             @endif

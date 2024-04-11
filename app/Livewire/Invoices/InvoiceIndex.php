@@ -30,8 +30,8 @@ class InvoiceIndex extends Component
                 'order_id' => '',
                 'start_created_at' => '',
                 'end_created_at' => '',
-                'department_id' => '',
-                'technician_id' => '',
+                'department_id' => [],
+                'technician_id' => [],
                 'customer_name' => '',
                 'customer_phone' => '',
                 'payment_status' => '',
@@ -72,10 +72,14 @@ class InvoiceIndex extends Component
                 $q->where('order_id', $this->filters['order_id']);
             })
             ->when($this->filters['technician_id'], function (Builder $q) {
-                $q->whereRelation('order', 'technician_id', $this->filters['technician_id']);
+                $q->whereHas('order', function (Builder $q) {
+                    $q->whereIn('technician_id', $this->filters['technician_id']);
+                });
             })
             ->when($this->filters['department_id'], function (Builder $q) {
-                $q->whereRelation('order', 'department_id', $this->filters['department_id']);
+                $q->whereHas('order', function (Builder $q) {
+                    $q->whereIn('department_id', $this->filters['department_id']);
+                });
             })
             ->when($this->filters['start_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '>=', $this->filters['start_created_at']);
@@ -88,13 +92,19 @@ class InvoiceIndex extends Component
     #[Computed()]
     public function technicians()
     {
-        return User::whereHas('orders_technician')->select('id', 'name_en', 'name_ar')->get();
+        return User::whereHas('orders_technician')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
     public function departments()
     {
-        return Department::whereHas('orders')->select('id', 'name_en', 'name_ar')->get();
+        return Department::whereHas('orders')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]

@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\CostCenter;
 use App\Models\User;
 use App\Models\Voucher;
+use Illuminate\Support\Arr;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -15,36 +16,9 @@ class VoucherForm extends Component
 {
     public $showModal = false;
     public $modalTitle = '';
-    public $select_account = [];
-    public $search = '';
     public $copy_from = '';
-    public $balance = 0;
-    public $total_debit = 0;
-    public $total_credit = 0;
     public Voucher $voucher;
     public FormsVoucherForm $form;
-
-    public function copy()
-    {
-        $voucher = Voucher::find($this->copy_from)->load('voucherDetails.cost_center');
-        if ($voucher) {
-            $this->form->details = [];
-            foreach ($voucher->voucherDetails as $row) {
-                $this->form->details[] = [
-                    'account_id' => $row['account_id'],
-                    'cost_center_id' => $row['cost_center_id'],
-                    'user_id' => $row['user_id'],
-                    'narration' => $row['narration'],
-                    'debit' => $row['debit'],
-                    'credit' => $row['credit'],
-                ];
-            }
-            $this->getBalance();
-            $this->resetErrorBag();
-        } else {
-            $this->addError('copy_from', __('messages.invalid_voucher_number'));
-        }
-    }
 
     #[On('showVoucherFormModal')]
     public function show(Voucher $voucher)
@@ -59,26 +33,33 @@ class VoucherForm extends Component
         $this->form->fill($this->voucher);
         $this->form->details = $this->voucher->voucherDetails->toArray();
         if (!$this->voucher->id) {
-            //Create
-            $this->form->created_by = auth()->id();
+            //Add 2 Starting rows on Create
             $this->addRow();
             $this->addRow();
         }
-        $this->getBalance();
+        $this->form->getBalance();
     }
-
+    
     #[On('debit')]
     #[On('credit')]
-    public function getBalance()
+    public function getBalance() {
+        $this->form->getBalance();
+    }
+
+    public function copy()
     {
-        $this->balance = 0;
-        $this->total_debit = 0;
-        $this->total_credit = 0;
-        foreach ($this->form->details as $row) {
-            $this->total_debit += $row['debit'] != '' ? $row['debit'] : 0;
-            $this->total_credit += $row['credit'] != '' ? $row['credit'] : 0;
+        $copiedVoucher = Voucher::where('type', 'jv')->find($this->copy_from);
+        if ($copiedVoucher) {
+            $copiedVoucher->load('voucherDetails');
+            $copiedVoucherDetailsWithoutId = $copiedVoucher->voucherDetails->map(function ($detail) {
+                return Arr::except($detail, ['id']);
+            });
+            $this->form->details = $copiedVoucherDetailsWithoutId->toArray();
+            $this->form->getBalance();
+            $this->resetErrorBag();
+        } else {
+            $this->addError('copy_from', __('messages.invalid_voucher_number'));
         }
-        $this->balance = $this->total_debit - $this->total_credit;
     }
 
     public function addRow()
@@ -96,6 +77,7 @@ class VoucherForm extends Component
     public function deleteRow($index)
     {
         unset($this->form->details[$index]);
+        $this->form->getBalance();
     }
 
     #[Computed()]
@@ -130,8 +112,14 @@ class VoucherForm extends Component
     {
         $this->form->updateOrCreate();
         $this->dispatch('vouchersUpdated');
-        $this->form->reset();
         $this->showModal = false;
+    }
+
+    public function updatedShowModal($val)
+    {
+        if ($val == false) {
+            $this->reset('voucher');
+        }
     }
 
     public function render()

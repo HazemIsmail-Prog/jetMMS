@@ -42,11 +42,11 @@
         </div>
         <div>
             <x-label for="technician">{{ __('messages.technician') }}</x-label>
-            <x-searchable-select class=" !py-1" id="technician" :list="$this->technicians" model="filters.technicians" live />
+            <x-searchable-select class=" !py-[5px]" id="technician" :list="$this->technicians" wire:model.live="filters.technicians" multipule />
         </div>
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-searchable-select class=" !py-1" id="department" :list="$this->departments" model="filters.departments" live />
+            <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.departments" multipule />
         </div>
         <div>
             <x-label for="start_completed_at">{{ __('messages.completed_at') }}</x-label>

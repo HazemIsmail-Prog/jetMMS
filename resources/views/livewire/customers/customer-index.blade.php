@@ -40,26 +40,26 @@
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         <div>
             <x-label for="name">{{ __('messages.name') }}</x-label>
-            <x-input id="name" placeholder="{{ __('messages.name') }}" wire:model.live="filters.name"
+            <x-input id="name" wire:model.live="filters.name"
                 class="w-full text-start py-0" />
         </div>
         <div>
             <x-label for="phone">{{ __('messages.phone') }}</x-label>
-            <x-input id="phone" placeholder="{{ __('messages.phone') }}" wire:model.live="filters.phone"
+            <x-input id="phone" wire:model.live="filters.phone"
                 class="w-full py-0" dir="ltr" />
         </div>
         <div>
             <x-label for="area">{{ __('messages.area') }}</x-label>
-            <x-searchable-select class=" !py-1" id="area" :list="$this->areas" model="filters.area_id" live />
+            <x-searchable-select class="!py-[5px]" id="area" :list="$this->areas" wire:model.live="filters.area_id" multipule />
         </div>
         <div>
             <x-label for="block">{{ __('messages.block') }}</x-label>
-            <x-input id="block" placeholder="{{ __('messages.block') }}" wire:model.live="filters.block"
+            <x-input id="block" wire:model.live="filters.block"
                 class="w-full py-0" dir="ltr" />
         </div>
         <div>
             <x-label for="street">{{ __('messages.street') }}</x-label>
-            <x-input id="street" placeholder="{{ __('messages.street') }}" wire:model.live="filters.street"
+            <x-input id="street" wire:model.live="filters.street"
                 class="w-full py-0" dir="ltr" />
         </div>
     </div>

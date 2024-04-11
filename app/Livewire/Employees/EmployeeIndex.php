@@ -17,17 +17,12 @@ class EmployeeIndex extends Component
 {
     use WithPagination;
 
-    public $titles;
-    public $departments;
-    public $shifts;
-    public $roles;
-
     #[Url()]
     public $filters = [
         'name' => null,
-        'title_id' => '',
-        'department_id' => '',
-        'shift_id' => '',
+        'title_id' => [],
+        'department_id' => [],
+        'shift_id' => [],
         'status' => '',
     ];
 
@@ -36,11 +31,31 @@ class EmployeeIndex extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    #[Computed()]
+    public function titles()
     {
-        $this->titles = Title::select('id', 'name_en', 'name_ar')->get();
-        $this->departments = Department::select('id', 'name_en', 'name_ar')->get();
-        $this->shifts = Shift::select('id', 'name_en', 'name_ar')->get();
+        return Title::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed()]
+    public function shifts()
+    {
+        return Shift::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     #[Computed()]
@@ -60,13 +75,19 @@ class EmployeeIndex extends Component
             })
 
             ->when($this->filters['title_id'], function (Builder $q) {
-                $q->whereRelation('user', 'title_id', $this->filters["title_id"]);
+                $q->whereHas('user', function (Builder $q) {
+                    $q->whereIn('title_id', $this->filters["title_id"]);
+                });
             })
             ->when($this->filters['department_id'], function (Builder $q) {
-                $q->whereRelation('user', 'department_id', $this->filters["department_id"]);
+                $q->whereHas('user', function (Builder $q) {
+                    $q->whereIn('department_id', $this->filters["department_id"]);
+                });
             })
             ->when($this->filters['shift_id'], function (Builder $q) {
-                $q->whereRelation('user', 'shift_id', $this->filters["shift_id"]);
+                $q->whereHas('user', function (Builder $q) {
+                    $q->whereIn('shift_id', $this->filters["shift_id"]);
+                });
             })
 
             ->when($this->filters['status'], function ($q) {
@@ -75,7 +96,8 @@ class EmployeeIndex extends Component
             ->paginate(15);
     }
 
-    public function delete(Employee $employee) {
+    public function delete(Employee $employee)
+    {
         $employee->delete();
     }
 

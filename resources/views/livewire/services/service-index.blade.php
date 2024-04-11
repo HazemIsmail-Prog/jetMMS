@@ -45,12 +45,7 @@
         </div>
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-select id="department" wire:model.live="filters.department_id" class="w-full py-0">
-                <option value="">---</option>
-                @foreach ($this->departments as $department)
-                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.department_id" multipule />
         </div>
         <div>
             <x-label for="type">{{ __('messages.type') }}</x-label>

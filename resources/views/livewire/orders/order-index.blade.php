@@ -66,7 +66,7 @@
         </div>
         <div>
             <x-label for="area">{{ __('messages.area') }}</x-label>
-            <x-searchable-select class=" !py-1" id="area" :list="$this->areas" model="filters.areas" live />
+            <x-searchable-select class="!py-[5px]" id="area" :list="$this->areas" wire:model.live="filters.areas" multipule />
         </div>
         <div>
             <x-label for="block">{{ __('messages.block') }}</x-label>
@@ -88,19 +88,19 @@
         </div>
         <div>
             <x-label for="creator">{{ __('messages.creator') }}</x-label>
-            <x-searchable-select class=" !py-1" id="creator" :list="$this->creators" model="filters.creators" live />
+            <x-searchable-select class="!py-[5px]" id="creator" :list="$this->creators" wire:model.live="filters.creators" multipule />
         </div>
         <div>
             <x-label for="status">{{ __('messages.status') }}</x-label>
-            <x-searchable-select class=" !py-1" id="status" :list="$this->statuses" model="filters.statuses" live />
+            <x-searchable-select class="!py-[5px]" id="status" :list="$this->statuses" wire:model.live="filters.statuses" multipule />
         </div>
         <div>
             <x-label for="technician">{{ __('messages.technician') }}</x-label>
-            <x-searchable-select class=" !py-1" id="technician" :list="$this->technicians" model="filters.technicians" live />
+            <x-searchable-select class="!py-[5px]" id="technician" :list="$this->technicians" wire:model.live="filters.technicians" multipule />
         </div>
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-searchable-select class=" !py-1" id="department" :list="$this->departments" model="filters.departments" live />
+            <x-searchable-select class="!py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.departments" multipule />
         </div>
         <div>
             <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>

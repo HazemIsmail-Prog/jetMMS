@@ -24,12 +24,12 @@
 
                         <div>
                             <x-label for="income_account_id">{{ __('messages.income_account_id') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->accounts" model="form.income_account_id" />
+                            <x-searchable-select id="income_account_id" :list="$this->accounts" wire:model="form.income_account_id" />
                             <x-input-error for="form.income_account_id" />
                         </div>
                         <div>
                             <x-label for="cost_account_id">{{ __('messages.cost_account_id') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->accounts" model="form.cost_account_id" />
+                            <x-searchable-select id="cost_account_id" :list="$this->accounts" wire:model="form.cost_account_id" />
                             <x-input-error for="form.cost_account_id" />
                         </div>
                     </div>

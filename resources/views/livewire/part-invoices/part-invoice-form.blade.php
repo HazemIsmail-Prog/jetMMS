@@ -26,13 +26,13 @@
 
                         <div>
                             <x-label for="supplier_id">{{ __('messages.supplier') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->suppliers" model="form.supplier_id" />
+                            <x-searchable-select id=supplier_id :list="$this->suppliers" wire:model="form.supplier_id" />
                             <x-input-error for="form.supplier_id" />
                         </div>
 
                         <div>
                             <x-label for="contact_id">{{ __('messages.contact') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->contacts" model="form.contact_id" />
+                            <x-searchable-select id=contact_id :list="$this->contacts" wire:model="form.contact_id" />
                             <x-input-error for="form.contact_id" />
                         </div>
 

@@ -65,25 +65,14 @@
 
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-select class="w-full text-center py-0" id="department" wire:ignore
-                wire:model.live="filters.department_id">
-                <option value="">---</option>
-                @foreach ($this->departments as $department)
-                    <option value="{{ $department->id }}">{{ $department->name }}
-                    </option>
-                @endforeach
-            </x-select>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="filters.department_id" multipule />
         </div>
 
         <div>
             <x-label for="technician">{{ __('messages.technician') }}</x-label>
-            <x-select class="w-full text-center py-0" id="technician" wire:ignore
-                wire:model.live="filters.technician_id">
-                <option value="">---</option>
-                @foreach ($this->technicians->sortBy('name') as $technician)
-                    <option value="{{ $technician->id }}">{{ $technician->name }}</option>
-                @endforeach
-            </x-select>
+            <x-searchable-select id="technician" class="!py-[5px]" :list="$this->technicians"
+                wire:model.live="filters.technician_id" multipule />
         </div>
 
         <div>
@@ -166,13 +155,13 @@
                     </x-td>
                     <x-td>
                         <span class=" cursor-pointer"
-                            wire:click="$set('filters.department_id',{{ $invoice->order->department_id }})">
+                            wire:click="$set('filters.department_id',[{{ $invoice->order->department_id }}])">
                             {{ $invoice->order->department->name }}
                         </span>
                     </x-td>
                     <x-td>
                         <span class=" cursor-pointer"
-                            wire:click="$set('filters.technician_id',{{ $invoice->order->technician_id }})">
+                            wire:click="$set('filters.technician_id',[{{ $invoice->order->technician_id }}])">
                             {{ $invoice->order->technician->name }}
                         </span>
                     </x-td>

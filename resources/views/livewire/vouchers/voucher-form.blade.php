@@ -1,5 +1,5 @@
 <div>
-    <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
+    <x-dialog-modal maxWidth="7xl" wire:model.live="showModal" :dismissible="false">
         <x-slot name="title">
             <div>{{ $modalTitle }}</div>
             <x-section-border />
@@ -7,6 +7,13 @@
 
         <x-slot name="content">
             @if ($showModal)
+
+                {{-- @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div>{{$error}}</div>
+                    @endforeach
+                @endif --}}
+
                 <form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
                     <div class=" space-y-3">
@@ -43,130 +50,116 @@
                         </div>
 
                         @if ($form->details)
+
                             <x-section-border />
-                            <div class=" overflow-x-auto">
-                                <div class="min-w-max">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr>
-                                                <th class="min-w-[250px]">{{ __('messages.account') }}</th>
-                                                <th class="min-w-[130px]">{{ __('messages.cost_center') }}</th>
-                                                <th class="min-w-[130px]">{{ __('messages.contact') }}</th>
-                                                <th class="min-w-[320px]">{{ __('messages.narration') }}</th>
-                                                <th class="min-w-[50px]">{{ __('messages.debit') }}</th>
-                                                <th class="min-w-[50px]">{{ __('messages.credit') }}</th>
-                                                <th class="min-w-[10px] "></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody x-data="{ form: @entangle('form') }">
-                                            @foreach ($form->details as $index => $row)
-                                                <tr>
-                                                    <td class=" align-top">
-                                                        <x-searchable-select position="relative" :list="$this->accounts"
-                                                            model="form.details.{{ $index }}.account_id" />
 
-                                                        {{-- <x-select @class([
-                                                            'w-full',
-                                                            'border-red-500' => $errors->has('form.details.' . $index . '.account_id'),
-                                                        ])
-                                                            wire:model="form.details.{{ $index }}.account_id">
-                                                            <option value="">---</option>
-                                                            @foreach ($this->accounts->sortBy('name') as $account)
-                                                                <option value="{{ $account->id }}">{{ $account->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </x-select> --}}
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <x-searchable-select position="relative" :list="$this->cost_centers"
-                                                            model="form.details.{{ $index }}.cost_center_id" />
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <x-searchable-select position="relative" :list="$this->users"
-                                                            model="form.details.{{ $index }}.user_id" />
-                                                        {{-- <x-select @class([
-                                                            'w-full',
-                                                            'border-red-500' => $errors->has('form.details.' . $index . '.user_id'),
-                                                        ])
-                                                            wire:model="form.details.{{ $index }}.user_id">
-                                                            <option value="">---</option>
-                                                            @foreach ($this->users->sortBy('name') as $user)
-                                                                <option value="{{ $user->id }}">{{ $user->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </x-select> --}}
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <x-input class="w-full py-0"
-                                                            x-model="form.details[{{ $index }}].narration"
-                                                            autocomplete="off" type="text" />
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <x-input @class([
-                                                            'w-full py-0',
-                                                            'border-red-500' => $errors->has('form.details.' . $index . '.debit'),
-                                                        ]) step="0.001"
-                                                            x-model="form.details[{{ $index }}].debit"
-                                                            autocomplete="off" type="number"
-                                                            @input="$dispatch('debit')"
-                                                            x-on:input="form.details[{{ $index }}].credit = 0" />
+                            <x-table class=" table-fixed">
+                                <x-thead>
+                                    <tr>
+                                        <x-th class=" !w-[300px] !px-0.5">{{ __('messages.account') }}</x-th>
+                                        <x-th class=" !w-[150px] !px-0.5">{{ __('messages.cost_center') }}</x-th>
+                                        <x-th class=" !w-[150px] !px-0.5">{{ __('messages.contact') }}</x-th>
+                                        <x-th class=" !w-[370px] !px-0.5">{{ __('messages.narration') }}</x-th>
+                                        <x-th class=" !w-[100px] !px-0.5">{{ __('messages.debit') }}</x-th>
+                                        <x-th class=" !w-[100px] !px-0.5">{{ __('messages.credit') }}</x-th>
+                                        <x-th class=" !w-[50px] !px-0.5"></x-th>
+                                    </tr>
+                                </x-thead>
+                                <tbody x-data="{ form: @entangle('form') }">
+                                    @foreach ($form->details as $index => $row)
+                                        <x-tr>
+                                            <x-td class=" !px-0.5">
+                                                <x-searchable-select 
+                                                    :invalid="$errors->has('form.details.' . $index . '.account_id')" 
+                                                    :list="$this->accounts" 
+                                                    wire:model="form.details.{{ $index }}.account_id" 
+                                                />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <x-searchable-select :list="$this->cost_centers" wire:model="form.details.{{ $index }}.cost_center_id" />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <x-searchable-select :list="$this->users" wire:model="form.details.{{ $index }}.user_id" />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <x-input class="w-full text-start"
+                                                    x-model="form.details[{{ $index }}].narration"
+                                                    autocomplete="off" type="text" />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <x-input 
+                                                    @class([
+                                                        'w-full py-0 text-start',
+                                                        'border-red-500 dark:border-red-500' => $errors->has('form.details.' . $index . '.debit'),
+                                                    ]) 
+                                                    dir="ltr"
+                                                    step="0.001"
+                                                    x-model="form.details[{{ $index }}].debit"
+                                                    autocomplete="off" 
+                                                    type="number"
+                                                    x-on:input="if(form.details[{{ $index }}].debit){ form.details[{{ $index }}].credit = 0 ; $dispatch('debit') }"
+                                                />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <x-input 
+                                                    @class([
+                                                        'w-full py-0 text-start',
+                                                        'border-red-500 dark:border-red-500' => $errors->has('form.details.' . $index . '.credit'),
+                                                    ])
+                                                    dir="ltr"
+                                                    step="0.001"
+                                                    x-model="form.details[{{ $index }}].credit"
+                                                    autocomplete="off" 
+                                                    type="number"
+                                                    x-on:input="if(form.details[{{ $index }}].credit){ form.details[{{ $index }}].debit = 0 ; $dispatch('credit') }"
+                                                />
+                                            </x-td>
+                                            <x-td class=" !px-0.5">
+                                                <div class="flex items-center justify-center">
+                                                    <x-svgs.trash class="w-4 h-4 text-red-500" wire:click="deleteRow({{ $index }})" />
+                                                </div>
+                                            </x-td>
+                                        </x-tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <x-td class=" !px-0.5" colspan="4"></x-td>
 
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <x-input @class([
-                                                            'w-full py-0',
-                                                            'border-red-500' => $errors->has('form.details.' . $index . '.credit'),
-                                                        ]) step="0.001"
-                                                            x-model="form.details[{{ $index }}].credit"
-                                                            autocomplete="off" type="number"
-                                                            @input="$dispatch('credit')"
-                                                            x-on:input="form.details[{{ $index }}].debit = 0" />
+                                        <x-td dir="ltr" class=" !px-0.5 !text-start">
+                                            <div class=" border {{ $errors->has('form.total_debit') ? 'border-red-500' : 'border-green-500' }} rounded-lg p-2 text-center">
+                                                {{ $form->total_debit }}
+                                            </div>
+                                        </x-td>
+                                        <x-td dir="ltr" class=" !px-0.5 !text-start">
+                                            <div class=" border {{ $errors->has('form.total_credit') ? 'border-red-500' : 'border-green-500' }} rounded-lg p-2 text-center">
+                                                {{ $form->total_credit }}
+                                            </div>
+                                        </x-td>
 
-                                                    </td>
-                                                    <td class=" align-top">
-                                                        <div class="h-[35px] flex items-center">
-
-                                                            <x-svgs.trash class="w-4 h-4 text-red-500"
-                                                                wire:click="deleteRow({{ $index }})" />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class=" text-center">{{ $total_debit }}</td>
-                                                <td class=" text-center">{{ $total_credit }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td colspan="2" class=" text-center">{{ $balance }}</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
+                                    </tr>
+                                    <tr>
+                                        <x-td colspan="4" class=" !px-0.5"></x-td>
+                                        <x-td dir="ltr" colspan="2" class=" !px-0.5 !text-start">
+                                            <div class=" border {{ $errors->has('form.balance') ? 'border-red-500' : 'border-green-500' }} rounded-lg p-2 text-center">
+                                                {{ $form->balance }}
+                                            </div>
+                                        </x-td>
+                                    </tr>
+                                </tfoot>
+                            </x-table>    
+                            
                         @endif
-                        <div class=" text-center">
 
+                        <div class=" text-center">
                             <x-button type=button wire:click="addRow">{{ __('messages.add_line') }}</x-button>
                         </div>
-
-
+                        
                     </div>
 
-                    @if ($balance == 0 && $total_debit != 0 && $total_credit != 0)
-                        <div class="mt-3">
-                            <x-button>{{ __('messages.save') }}</x-button>
-                        </div>
-                    @endif
+                    <div class="mt-3">
+                        <x-button wire:model.live="form" wire:dirty.class="border-yellow">{{ __('messages.save') }}</x-button>
+                    </div>
 
                 </form>
             @endif

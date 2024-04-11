@@ -59,8 +59,8 @@
                                 <div class=" flex items-center gap-2">
                                     <div>
                                         <div class="w-64">
-                                            <x-searchable-select :list="$this->areas"
-                                                model="form.addresses.{{ $index }}.area_id" />
+                                            <x-searchable-select :list="$this->areas" :title="__('messages.area')"
+                                                wire:model="form.addresses.{{ $index }}.area_id" />
                                         </div>
                                         <x-input-error for="form.addresses.{{ $index }}.area_id" />
                                     </div>

@@ -4,6 +4,7 @@ namespace App\Livewire\Customers;
 
 use App\Models\Area;
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -16,7 +17,7 @@ class CustomerIndex extends Component
     public $filters = [
         'name' => '',
         'phone' => '',
-        'area_id' => '',
+        'area_id' => [],
         'block' => '',
         'street' => '',
     ];
@@ -53,7 +54,9 @@ class CustomerIndex extends Component
                 $q->whereRelation('phones', 'number', 'like', '%' . $this->filters["phone"] . '%');
             })
             ->when($this->filters['area_id'], function ($q) {
-                $q->whereRelation('addresses', 'area_id', $this->filters["area_id"]);
+                $q->whereHas('addresses',function( Builder $q){
+                    $q->whereIn('area_id', $this->filters["area_id"]);
+                });
             })
             ->when($this->filters['block'], function ($q) {
                 $q->whereRelation('addresses', 'block', $this->filters["block"]);

@@ -84,11 +84,6 @@
                                 <span class="ms-2 ">{{ __('messages.active') }}</span>
                             </x-label>
                         </div>
-                        {{-- <div>
-                            <x-label for="cost_account_id">{{ __('messages.cost_account_id') }}</x-label>
-                            <x-searchable-select position="relative" :list="$this->accounts" model="form.cost_account_id" />
-                            <x-input-error for="form.cost_account_id" />
-                        </div> --}}
                     </div>
                     <div class="mt-3">
                         <x-button>{{ __('messages.save') }}</x-button>
