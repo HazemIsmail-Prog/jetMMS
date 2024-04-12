@@ -522,4 +522,6 @@ return [
     'exporting' => 'Exporting, Please wait ...',
     'hidden' => 'Hidden',
     'edit_marketing' => 'Edit Marketing',
+    'wrong_voucher' => 'Wrong Voucher',
+    'count' => 'Count',
 ];

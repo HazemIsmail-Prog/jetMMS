@@ -546,6 +546,7 @@ return [
     'hidden' => 'مخفي',
     'edit_marketing' => 'تعديل تسويق',
     'wrong_voucher' => 'قيد خطأ',
+    'count' => 'العدد',
 
 
 
