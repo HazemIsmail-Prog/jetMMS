@@ -101,7 +101,7 @@
                             <x-td>{!! $row->voucher->formated_date !!}</x-td>
                             <x-td>{{ $row->cost_center->name ?? '-' }}</x-td>
                             <x-td>{{ $row->contact->name ?? '-' }}</x-td>
-                            <x-td>{{ $row->narration }}</x-td>
+                            <x-td class=" !whitespace-normal">{{ $row->narration }}</x-td>
                             <x-td>{{ $row->formated_debit }}</x-td>
                             <x-td>{{ $row->formated_credit }}</x-td>
                             <x-td @class(['', 'text-red-500' => $balance < 0])>
