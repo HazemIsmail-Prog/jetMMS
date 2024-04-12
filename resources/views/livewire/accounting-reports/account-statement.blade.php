@@ -50,18 +50,18 @@
                 {{ $account->name }}
             </h3>
 
-            <x-table>
+            <x-table class=" table-fixed">
                 <x-thead>
                     <tr>
-                        <x-th>{{ __('messages.voucher_number') }}</x-th>
-                        <x-th>{{ __('messages.type') }}</x-th>
-                        <x-th>{{ __('messages.date') }}</x-th>
-                        <x-th>{{ __('messages.cost_center') }}</x-th>
-                        <x-th>{{ __('messages.contact') }}</x-th>
-                        <x-th>{{ __('messages.narration') }}</x-th>
-                        <x-th>{{ __('messages.debit') }}</x-th>
-                        <x-th>{{ __('messages.credit') }}</x-th>
-                        <x-th>{{ __('messages.balance') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.voucher_number') }}</x-th>
+                        <x-th class="!w-[200px]">{{ __('messages.type') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.date') }}</x-th>
+                        <x-th class="!w-[200px]">{{ __('messages.cost_center') }}</x-th>
+                        <x-th class="!w-[200px]">{{ __('messages.contact') }}</x-th>
+                        <x-th class="w-auto min-w-[600px]">{{ __('messages.narration') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.debit') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.credit') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.balance') }}</x-th>
                     </tr>
                 </x-thead>
                 <tbody>
@@ -74,7 +74,7 @@
                         <x-td></x-td>
                         <x-td></x-td>
                         <x-td></x-td>
-                        <x-td>{{ __('messages.opening_balance') }}</x-td>
+                        <x-td class=" text-end">{{ __('messages.opening_balance') }}</x-td>
                         <x-td>
                             {{ $this->openning['debit'] == 0 ? '-' : number_format($this->openning['debit'], 3) }}
                         </x-td>
@@ -113,7 +113,7 @@
                             </x-td>
                             <x-td>{!! $row->voucher->formated_date !!}</x-td>
                             <x-td>{{ $row->cost_center->name ?? '-' }}</x-td>
-                            <x-td>{{ $row->contact->name ?? '-' }}</x-td>
+                            <x-td class="!whitespace-normal">{{ $row->contact->name ?? '-' }}</x-td>
                             <x-td class=" !whitespace-normal">{{ $row->narration }}</x-td>
                             <x-td>{{ $row->formated_debit }}</x-td>
                             <x-td>{{ $row->formated_credit }}</x-td>
