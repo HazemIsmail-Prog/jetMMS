@@ -9,6 +9,16 @@
         </div>
     </x-slot>
 
+    {{-- hidden divs just to compile variable colors --}}
+    <div class="hidden bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-300"></div>
+    <div class="hidden bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"></div>
+    <div class="hidden bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-300"></div>
+    <div class="hidden bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300"></div>
+    <div class="hidden bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-300"></div>
+    <div class="hidden bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-300"></div>
+    {{-- hidden divs just to compile variable colors --}}
+
+
     <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 no-print">
 
         <div class=" col-span-1 md:col-span-2 xl:col-span-3">
@@ -97,7 +107,10 @@
                         @endphp
                         <x-tr>
                             <x-td>{{ $row->voucher->id }}</x-td>
-                            <x-td>{{ $row->voucher->type }}</x-td>
+                            <x-td>
+                                <span
+                                    class=" {{ $row->voucher->casted_type_color_classes }} text-xs font-medium px-2 py-0.5 rounded-lg ">{{ $row->voucher->casted_type_title }}</span>
+                            </x-td>
                             <x-td>{!! $row->voucher->formated_date !!}</x-td>
                             <x-td>{{ $row->cost_center->name ?? '-' }}</x-td>
                             <x-td>{{ $row->contact->name ?? '-' }}</x-td>

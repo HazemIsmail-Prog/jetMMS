@@ -547,6 +547,12 @@ return [
     'edit_marketing' => 'تعديل تسويق',
     'wrong_voucher' => 'قيد خطأ',
     'count' => 'العدد',
+    'journal_voucher' => 'قيد يومي',
+    'invoice_voucher' => 'فاتورة مبيعات',
+    'invoice_cash_payment_voucher' => 'دفعة مبيعات نقدية',
+    'invoice_knet_payment_voucher' => 'دفعة مبيعات كي نت',
+    'part_invoice_voucher' => 'فاتورة بضاعة عهدة',
+    'cost_voucher' => 'قيد تكاليف',
 
 
 

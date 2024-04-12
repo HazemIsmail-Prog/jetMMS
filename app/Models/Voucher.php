@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\VoucherTypeEnum;
 use App\Observers\VoucherObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,6 +20,7 @@ class Voucher extends Model
 
     protected $casts = [
         'date' => 'date:Y-m-d',
+        'type' => VoucherTypeEnum::class
     ];
 
     public function voucherDetails() : HasMany {
@@ -34,6 +36,13 @@ class Voucher extends Model
     }
 
     // Formatters
+
+    public function getCastedTypeTitleAttribute() {
+        return $this->type->title();
+    }
+    public function getCastedTypeColorClassesAttribute() {
+        return $this->type->color();
+    }
 
     public function getFormatedDateAttribute()
     {
