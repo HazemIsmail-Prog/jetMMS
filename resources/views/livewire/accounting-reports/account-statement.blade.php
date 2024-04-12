@@ -53,11 +53,11 @@
             <x-table class=" table-fixed">
                 <x-thead>
                     <tr>
-                        <x-th class="!w-[100px]">{{ __('messages.voucher_number') }}</x-th>
-                        <x-th class="!w-[200px]">{{ __('messages.type') }}</x-th>
+                        <x-th class="!w-[80px]">{{ __('messages.voucher_number') }}</x-th>
+                        <x-th class="!w-[150px]">{{ __('messages.type') }}</x-th>
                         <x-th class="!w-[100px]">{{ __('messages.date') }}</x-th>
-                        <x-th class="!w-[200px]">{{ __('messages.cost_center') }}</x-th>
-                        <x-th class="!w-[200px]">{{ __('messages.contact') }}</x-th>
+                        <x-th class="!w-[100px]">{{ __('messages.cost_center') }}</x-th>
+                        <x-th class="!w-[150px]">{{ __('messages.contact') }}</x-th>
                         <x-th class="w-auto min-w-[600px]">{{ __('messages.narration') }}</x-th>
                         <x-th class="!w-[100px]">{{ __('messages.debit') }}</x-th>
                         <x-th class="!w-[100px]">{{ __('messages.credit') }}</x-th>
