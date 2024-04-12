@@ -9,6 +9,7 @@
         </div>
     </x-slot>
 
+    @livewire('orders.hold-or-cancel-reason-modal')
     @livewire('orders.comments.comment-modal')
     @livewire('orders.statuses.status-modal')
     @livewire('orders.invoices.invoice-modal')

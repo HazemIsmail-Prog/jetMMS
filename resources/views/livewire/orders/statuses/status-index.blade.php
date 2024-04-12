@@ -4,6 +4,7 @@
             <x-thead>
                 <tr>
                     <x-th>{{ __('messages.status') }}</x-th>
+                    <x-th>{{ __('messages.reason') }}</x-th>
                     <x-th>{{ __('messages.technician') }}</x-th>
                     <x-th>{{ __('messages.date') }}/{{ __('messages.time') }}</x-th>
                     <x-th>{{ __('messages.creator') }}</x-th>
@@ -13,6 +14,7 @@
                 @foreach ($this->statuses as $status)
                     <x-tr>
                         <x-td style="color: {{ $status->status->color }}">{{ $status->status->name }}</x-td>
+                        <x-td>{{ @$status->reason ?? '-' }}</x-td>
                         <x-td>{{ @$status->technician->name ?? '-' }}</x-td>
                         <x-td>
                             <div>{{ $status->created_at->format('d-m-Y') }}</div>

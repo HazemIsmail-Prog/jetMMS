@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Order;
-use App\Models\Status;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +19,7 @@ class CreateOrderStatusesTable extends Migration
             $table->foreignId('status_id')->constrained('statuses');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('technician_id')->nullable()->constrained('users');
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

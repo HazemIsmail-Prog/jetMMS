@@ -30,6 +30,7 @@ return new class extends Migration
             $table->dateTime('completed_at')->nullable();
             $table->dateTime('cancelled_at')->nullable();
             $table->string('tag')->nullable();
+            $table->string('reason')->nullable(); //temp field just to send the reason of hold or cancel to order statuses via observer
             $table->timestamps();
             $table->softDeletes();
         });

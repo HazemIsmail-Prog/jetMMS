@@ -47,11 +47,12 @@ class OrderObserver
                 'order_id' => $order->id,
                 'status_id' => $order->status_id,
                 'technician_id' => $order->technician_id,
+                'reason' => $order->reason,
                 'user_id' => auth()->id(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
+
             RefreshOrderStatusesScreenEvent::dispatch($order->id);
         }
 
@@ -70,15 +71,14 @@ class OrderObserver
 
             if ($oldTechnician) {
 
-                if(!$oldTechnician->current_order_for_technician){
+                if (!$oldTechnician->current_order_for_technician) {
                     RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
                     return;
                 }
 
-                if ($oldTechnician->current_order_for_technician->id != $order->id && $order->index< $oldTechnician->current_order_for_technician->index ) {
+                if ($oldTechnician->current_order_for_technician->id != $order->id && $order->index < $oldTechnician->current_order_for_technician->index) {
                     RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
                 }
-
             }
         }
     }

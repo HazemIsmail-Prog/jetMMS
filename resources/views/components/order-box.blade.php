@@ -99,15 +99,21 @@
         <div class=" flex gap-2 items-center">
 
             @if ($order->can_hold_order)
-                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
-                    wire:click="dragEnd({{ $order->id }},'hold',null,{{ $order->index }})">
+                <x-badgeWithCounter 
+                    {{-- wire:confirm="{{ __('messages.are_u_sure') }}" --}}
+                    {{-- wire:click="dragEnd({{ $order->id }},'hold',null,{{ $order->index }})" --}}
+                    wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})"
+                >
                     <x-svgs.clock class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endif
 
             @can('cancel_order', $order)
-                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
-                    wire:click="dragEnd({{ $order->id }},'cancel',null,{{ $order->index }})">
+                <x-badgeWithCounter 
+                    {{-- wire:confirm="{{ __('messages.are_u_sure') }}" --}}
+                    {{-- wire:click="dragEnd({{ $order->id }},'cancel',null,{{ $order->index }})" --}}
+                    wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'cancel',index:{{ $order->index }}})"
+                >
                     <x-svgs.trash class="h-4 w-4" />
                 </x-badgeWithCounter>
             @endcan

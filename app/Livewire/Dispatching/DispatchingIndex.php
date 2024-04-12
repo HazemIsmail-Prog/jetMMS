@@ -19,6 +19,7 @@ class DispatchingIndex extends Component
         return [
             'commentsUpdated' => '$refresh',
             'invoicesUpdated' => '$refresh',
+            'holdOrCancelReasonUpdated' => '$refresh',
             "echo:departments.{$this->department->id},RefreshDepartmentScreenEvent" => '$refresh',
         ];
     }
@@ -79,26 +80,26 @@ class DispatchingIndex extends Component
     public function dragEnd($order_id, $destenation_id, $source_id, $new_index)
     {
         $current_order = Order::find($order_id);
-        $current_order->index = $new_index;
 
         switch ($destenation_id) {
             case 0: //dragged to unassgined box
+                $current_order->index = $new_index;
                 $current_order->technician_id = null;
                 $current_order->status_id = Status::CREATED;
                 break;
 
-            case 'hold': //dragged to on hold box
-                $current_order->technician_id = null;
-                $current_order->status_id = Status::ON_HOLD;
-                break;
-
-            case 'cancel': // cancel button clicked
-                $current_order->technician_id = null;
-                $current_order->status_id = Status::CANCELLED;
-                $current_order->cancelled_at = now();
+            case 'hold': //dragged to on hold box or hold button clicked
+                if ($source_id == 'hold') {
+                    // no need for reason because order already on hold (just change the index)
+                    $current_order->index = $new_index;
+                } else {
+                    // open reason modal
+                    $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold',$new_index);
+                }
                 break;
 
             default: // dragged to technician box
+                $current_order->index = $new_index;
                 $current_order->technician_id = $destenation_id;
                 $current_order->status_id = Status::DESTRIBUTED;
         }

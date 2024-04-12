@@ -553,6 +553,11 @@ return [
     'invoice_knet_payment_voucher' => 'دفعة مبيعات كي نت',
     'part_invoice_voucher' => 'فاتورة بضاعة عهدة',
     'cost_voucher' => 'قيد تكاليف',
+    'hold_order' => 'ايقاف مؤقت للطلب',
+    'please_provide_reason_for_hold' => 'يرجى تحديد سبب الايقاف المؤقت للطلب',
+    'please_provide_reason_for_cancel' => 'يرجى تحديد سبب الغاء الطلب',
+    'confirm_cancel' => 'تأكيد الالغاء',
+    'confirm_hold' => 'تأكيد التوقف',
 
 
 
