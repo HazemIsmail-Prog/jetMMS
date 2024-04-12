@@ -38,6 +38,7 @@ class VoucherIndex extends Component
     {
         return Voucher::query()
             ->latest()
+            ->where('type','jv')
             ->with('user')
             ->orderBy('id', 'desc')
             ->paginate(15);
