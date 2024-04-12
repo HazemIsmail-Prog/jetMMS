@@ -17,7 +17,6 @@ class InvoiceForm extends Component
     public $showModal = false;
     public Order $order;
     public $search = '';
-    // #[Rule('required')]
     public $selected_services = [];
     public $select_service = [];
     public $delivery = 0;
@@ -58,7 +57,6 @@ class InvoiceForm extends Component
 
     public function deletePartRow($index) {
         unset($this->parts[$index]);
-
     }
 
     public function hideInvoiceForm()

@@ -27,7 +27,7 @@ class InvoiceObserver
     {
         if ($invoice->isDirty('discount')) {
 
-            // This chek for old invoices which not have vouchers
+            // This check for old invoices which not have vouchers
             if($invoice->voucher?->voucherDetails){
                 $invoice->voucher->voucherDetails()->forceDelete();
                 CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
