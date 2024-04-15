@@ -1,12 +1,9 @@
 <div>
     <x-slot name="header">
-        <div class=" flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight truncate">
                 {{ $department->name }}
                 <span id="counter"></span>
             </h2>
-            <span id="shifts"></span>
-        </div>
     </x-slot>
 
     @livewire('orders.hold-or-cancel-reason-modal')
@@ -18,38 +15,16 @@
     @livewire('orders.invoices.discount.discount-form')
 
     @teleport('#counter')
-        <span
-            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-            {{ $this->orders->count() }}
-        </span>
-    @endteleport
-
-    @teleport('#shifts')
-        <div class=" flex items-center gap-1">
-            @if ($this->technicians->where('shift_id', null)->count() > 1)
-                <x-button onclick="location.href='#shift-';">
-                    <span class="text-sm font-semibold uppercase truncate">
-                        {{ __('messages.undefined_shift') }}
-                    </span>
-                </x-button>
-            @endif
-            @foreach ($this->shifts as $shift)
-                @if ($this->technicians->where('shift_id', $shift->id)->count() > 1)
-                    <x-button onclick="location.href='#shift-{{ $shift->id }}';">
-                        <span class="text-sm font-semibold uppercase truncate">
-                            {{ $shift->name }}
-                        </span>
-                    </x-button>
-                @endif
-            @endforeach
-        </div>
+    <span
+        class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+        {{ $this->orders->count() }}
+    </span>
     @endteleport
 
     <div x-data="{
                     hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]'),
                     alpineLoaded: false
-                }"
-            x-init="() => {
+                }" x-init="() => {
                 alpineLoaded = true;
                 $watch('hiddenContainers', value => {
                     localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
@@ -63,10 +38,7 @@
 
 
         {{-- Hidden Container --}}
-        <div 
-            x-cloak 
-            x-show="hiddenContainers.length > 0" 
-            class="h-full w-24 shrink-0 flex flex-col gap-1 ">
+        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 shrink-0 flex flex-col gap-1 ">
             <div @click="hiddenContainers= []"
                 class="flex items-center justify-between rounded-md cursor-pointer h-10 p-4 bg-gray-300 dark:bg-gray-700">
                 <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
@@ -90,31 +62,32 @@
         <x-orders-container title="{{ __('messages.on_hold') }}" :list="$this->onHoldOrders" box_id="techhold" />
 
         {{-- Shifts --}}
-        <div class="flex-1 h-full overflow-y-auto hidden-scrollbar scroll-smooth">
+        <div class="flex gap-1 flex-1 h-full overflow-y-auto hidden-scrollbar scroll-smooth">
 
             {{-- Null Shift --}}
             @if ($this->technicians->where('shift_id', null)->count() >= 1)
-                <x-shift-container title="{{ __('messages.undefined_shift') }}" :list="$this->technicians->where('shift_id', null)" :shift_id="null" />
+            <x-shift-container title="{{ __('messages.undefined_shift') }}"
+                :list="$this->technicians->where('shift_id', null)" :shift_id="null" />
             @endif
 
             {{-- Existing Shifts --}}
             @foreach ($this->shifts as $shift)
-                @if ($this->technicians->where('shift_id', $shift->id)->count() >= 1)
-                    <x-shift-container title="{{ $shift->full_name }}" :list="$this->technicians->where('shift_id', $shift->id)" :shift_id="$shift->id" />
-                @endif
+            @if ($this->technicians->where('shift_id', $shift->id)->count() >= 1)
+            <x-shift-container title="{{ $shift->full_name }}" :list="$this->technicians->where('shift_id', $shift->id)"
+                :shift_id="$shift->id" />
+            @endif
             @endforeach
-
         </div>
     </div>
 </div>
 
 @assets
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 @endassets
 
 @script
-    <script>
-        box = document.querySelectorAll('.box')
+<script>
+    box = document.querySelectorAll('.box')
         box.forEach(element => {
             const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body
                 .clientWidth;
@@ -168,5 +141,5 @@
                 },
             });
         });
-    </script>
+</script>
 @endscript

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Shift;
 use App\Models\Status;
 use App\Models\User;
+use Illuminate\Support\Js;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -94,28 +95,26 @@ class DispatchingIndex extends Component
                     $current_order->index = $new_index;
                 } else {
                     // open reason modal
-                    $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold',$new_index);
+                    $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold', $new_index);
                 }
                 break;
 
             default: // dragged to technician box
-                $current_order->index = $new_index;
+
+                if ($new_index) {
+                    // this for changing technician on dragging
+                    $current_order->index = $new_index;
+                } else {
+                    // this for changing technicina from dropdown select
+                    $current_order->index =
+                        Order::where('technician_id', $destenation_id)
+                        ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
+                        ->max('index') + 10;
+                }
                 $current_order->technician_id = $destenation_id;
                 $current_order->status_id = Status::DESTRIBUTED;
         }
         $current_order->save();
-    }
-
-    public function changeTechnician($technician_id, $order_id)
-    {
-        $order = Order::find($order_id);
-        $order->index =
-            Order::where('technician_id', $technician_id)
-            ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
-            ->max('index') + 10;
-        $order->technician_id = $technician_id;
-        $order->status_id = Status::DESTRIBUTED;
-        $order->save();
     }
 
     public function render()
