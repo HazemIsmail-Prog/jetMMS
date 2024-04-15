@@ -97,7 +97,7 @@
                                                     x-model="form.details[{{ $index }}].debit"
                                                     autocomplete="off" 
                                                     type="number"
-                                                    x-on:input="if(form.details[{{ $index }}].debit){ form.details[{{ $index }}].credit = 0 ; $dispatch('debit') }"
+                                                    @input.debounce.1000ms="if(form.details[{{ $index }}].debit){ form.details[{{ $index }}].credit = 0 ; $dispatch('debit') }"
                                                 />
                                             </x-td>
                                             <x-td class=" !px-0.5">
@@ -111,7 +111,7 @@
                                                     x-model="form.details[{{ $index }}].credit"
                                                     autocomplete="off" 
                                                     type="number"
-                                                    x-on:input="if(form.details[{{ $index }}].credit){ form.details[{{ $index }}].debit = 0 ; $dispatch('credit') }"
+                                                    @input.debounce.1000ms="if(form.details[{{ $index }}].credit){ form.details[{{ $index }}].debit = 0 ; $dispatch('credit') }"
                                                 />
                                             </x-td>
                                             <x-td class=" !px-0.5">
