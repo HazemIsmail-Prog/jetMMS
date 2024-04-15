@@ -148,7 +148,7 @@
                 <x-td style="color: {{ $order->status->color }}">
                     {{ $order->status->name }}
                 </x-td>
-                <x-td>{{ $order->department->name }}</x-td>
+                <x-td class=" !whitespace-normal">{{ $order->department->name }}</x-td>
                 <x-td>{{ $order->technician->name ?? '-' }}</x-td>
                 <x-td>{!! $order->formated_completed_at !!}</x-td>
                 <x-td>
