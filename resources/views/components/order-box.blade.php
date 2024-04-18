@@ -34,19 +34,24 @@
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
             {{ $order->formated_id }}
         </div>
-
+        
         @if (!$order->in_progress)
-        <div class="flex items-center my-1 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700">
-            <x-select wire:change="dragEnd({{ $order['id'] }},$event.target.value,null,null)"
-                class="!h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700 ">
-                @if ($order->status_id != 2)
-                <option value="">---</option>
-                @endif
-                @foreach ($this->technicians->sortBy('name') as $technician)
-                <option @if ($order->technician_id == $technician->id) selected @endif value="{{ $technician->id }}">
-                    {{ $technician->name }}</option>
-                @endforeach
-            </x-select>
+        <div x-data="{ selectedTechnician:{{ @json_encode($order->technician_id) }} }" class="flex items-center my-1 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700">
+            <form class="w-full" @submit.prevent="$wire.dragEnd({{$order['id']}},selectedTechnician,null,null)">
+                <x-select 
+                    x-model="selectedTechnician"  
+                    x-on:change="setTimeout(() => $refs.button.click(), 50)"
+                    class="technician_select !h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700 ">
+                    @if ($order->status_id != 2)
+                    <option value="">---</option>
+                    @endif
+                    @foreach ($this->technicians->sortBy('name') as $technician)
+                    <option value="{{ $technician->id }}">
+                        {{ $technician->name }}</option>
+                    @endforeach
+                </x-select>
+                <button class=" hidden" x-ref="button"></button>
+            </form>
         </div>
         @endif
 

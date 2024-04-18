@@ -142,7 +142,7 @@
                 <x-td>{{ $order->formated_order_id }}</x-td>
                 <x-td>
                     <div>{!! $order->formated_created_at !!}</div>
-                    <div class="text-xs">{{ $order->creator->name }}</div>
+                    <div class="text-xs truncate">{{ $order->creator->name }}</div>
                 </x-td>
                 <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
                 <x-td style="color: {{ $order->status->color }}">
