@@ -526,4 +526,11 @@ return [
     'edit_marketing' => 'Edit Marketing',
     'wrong_voucher' => 'Wrong Voucher',
     'count' => 'Count',
+    'add_permission' => 'Add Permission',
+    'section_name_ar' => 'Section Name AR',
+    'section_name_en' => 'Section Name EN',
+    'desc_ar' => 'Description AR',
+    'desc_en' => 'Description EN',
+    'edit_permission' => 'Edit Permission',
+
 ];

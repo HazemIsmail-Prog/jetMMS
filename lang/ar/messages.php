@@ -547,6 +547,12 @@ return [
     'please_provide_reason_for_cancel' => 'يرجى تحديد سبب الغاء الطلب',
     'confirm_cancel' => 'تأكيد الالغاء',
     'confirm_hold' => 'تأكيد التوقف',
+    'add_permission' => 'اضافة صلاحية',
+    'section_name_ar' => 'اسم القسم بالعربي',
+    'section_name_en' => 'اسم القسم بالانجليزي',
+    'desc_ar' => 'الوصف بالعربي',
+    'desc_en' => 'الوصف بالانجليزي',
+    'edit_permission' => 'تعديل صلاحية',
 
 
 

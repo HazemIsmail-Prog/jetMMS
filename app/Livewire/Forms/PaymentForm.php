@@ -49,8 +49,5 @@ class PaymentForm extends Form
             dd($e);
         }
 
-
-
-
     }
 }

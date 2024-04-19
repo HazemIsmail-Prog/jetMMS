@@ -192,6 +192,9 @@
                 @can('viewAny', App\Models\Role::class)
                     <x-sidebar-item icon="chart-pie" route="role.index" :title="__('messages.roles')" />
                 @endcan
+                @can('viewAny', App\Models\Permission::class)
+                    <x-sidebar-item icon="chart-pie" route="permission.index" :title="__('messages.permissions')" />
+                @endcan
                 @can('viewAny', App\Models\User::class)
                     <x-sidebar-item icon="users" route="user.index" :title="__('messages.users')" />
                 @endcan

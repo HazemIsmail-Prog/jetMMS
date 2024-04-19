@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CustomerRatingController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
@@ -20,6 +19,7 @@ use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\PartInvoices\PartInvoiceIndex;
+use App\Livewire\Permissions\PermissionIndex;
 use App\Livewire\Ratings\RatingIndex;
 use App\Livewire\Roles\RoleIndex;
 use App\Livewire\Services\ServiceIndex;
@@ -44,6 +44,7 @@ use App\Models\Invoice;
 use App\Models\Marketing;
 use App\Models\Order;
 use App\Models\PartInvoice;
+use App\Models\Permission;
 use App\Models\Rating;
 use App\Models\Role;
 use App\Models\Service;
@@ -175,6 +176,10 @@ Route::middleware([
         Route::get('roles', RoleIndex::class)
             ->name('role.index')
             ->can('viewAny', Role::class);
+
+        Route::get('permissions', PermissionIndex::class)
+            ->name('permission.index')
+            ->can('viewAny', Permission::class);
 
         Route::get('users', UserIndex::class)
             ->name('user.index')
