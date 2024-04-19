@@ -5,6 +5,7 @@ namespace App\Livewire\Invoices;
 use App\Exports\InvoicesExport;
 use App\Models\Department;
 use App\Models\Invoice;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -101,7 +102,10 @@ class InvoiceIndex extends Component
     #[Computed()]
     public function departments()
     {
-        return Department::whereHas('orders')
+        return Department::query()
+            ->whereHas('orders', function (Builder $q) {
+                $q->where('status_id', Status::COMPLETED);
+            })
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();
