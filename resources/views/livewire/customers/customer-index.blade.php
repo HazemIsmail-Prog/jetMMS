@@ -37,7 +37,7 @@
 
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
         <div>
             <x-label for="name">{{ __('messages.name') }}</x-label>
             <x-input id="name" wire:model.live="filters.name"
@@ -61,6 +61,13 @@
             <x-label for="street">{{ __('messages.street') }}</x-label>
             <x-input id="street" wire:model.live="filters.street"
                 class="w-full py-0" dir="ltr" />
+        </div>
+        <div>
+            <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
+            <x-input id="start_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.start_created_at" />
+            <x-input id="end_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                wire:model.live="filters.end_created_at" />
         </div>
     </div>
 

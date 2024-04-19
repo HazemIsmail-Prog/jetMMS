@@ -20,6 +20,8 @@ class CustomerIndex extends Component
         'area_id' => [],
         'block' => '',
         'street' => '',
+        'start_created_at' => '',
+        'end_created_at' => '',
     ];
 
     public function updatedFilters()
@@ -63,6 +65,12 @@ class CustomerIndex extends Component
             })
             ->when($this->filters['street'], function ($q) {
                 $q->whereRelation('addresses', 'street', $this->filters["street"]);
+            })
+            ->when($this->filters['start_created_at'], function (Builder $q) {
+                $q->whereDate('created_at', '>=', $this->filters['start_created_at']);
+            })
+            ->when($this->filters['end_created_at'], function (Builder $q) {
+                $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
             ->paginate(15);
     }
