@@ -480,6 +480,8 @@ return [
     'internal' => 'Internal',
     'external' => 'External',
     'part_source' => 'Part Source',
+    'internal_parts' => 'Internal Parts',
+    'external_parts' => 'Exrernal Parts',
     'no_uncollected_payments' => 'No Uncollected Payments',
     'income_account_id' => 'Income Account',
     'cost_account_id' => 'Cost Account',
