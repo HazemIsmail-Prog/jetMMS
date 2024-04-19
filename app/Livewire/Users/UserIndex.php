@@ -17,7 +17,7 @@ class UserIndex extends Component
 {
     use WithPagination;
 
-    public $perPage = 1000;
+    public $perPage = 15;
     public $filters = [
         'name' => '',
         'username' => '',
@@ -67,7 +67,6 @@ class UserIndex extends Component
     }
 
     #[Computed()]
-    #[On('statusChanged')]
     #[On('usersUpdated')]
     public function users()
     {
@@ -109,6 +108,11 @@ class UserIndex extends Component
 
     public function delete(User $user) {
         $user->delete();
+    }
+
+    public function change_status(User $user) {
+        $user->active = !$user->active;
+        $user->save();
     }
 
     public function render()

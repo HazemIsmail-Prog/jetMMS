@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Department;
-use App\Models\Shift;
-use App\Models\Title;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

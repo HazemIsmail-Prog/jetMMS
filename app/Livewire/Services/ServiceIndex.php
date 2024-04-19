@@ -58,6 +58,12 @@ class ServiceIndex extends Component
         $service->delete();
     }
 
+    
+    public function change_status(Service $service) {
+        $service->active = !$service->active;
+        $service->save();
+    }
+
     public function render()
     {
         return view('livewire.services.service-index');
