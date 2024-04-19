@@ -39,6 +39,7 @@
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.name') }}</x-th>
+                <x-th>{{ __('messages.account') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -46,6 +47,7 @@
             @foreach ($this->suppliers as $supplier)
                 <x-tr>
                     <x-td>{{ $supplier->name }}</x-td>
+                    <x-td>{{ $supplier->account->name }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
 

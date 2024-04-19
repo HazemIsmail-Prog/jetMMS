@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Supplier extends Model
 {
@@ -18,5 +19,9 @@ class Supplier extends Model
         } else {
             return $this->name_en ?? $this->name_ar;
         }
+    }
+
+    public function account() : BelongsTo {
+        return $this->belongsTo(Account::class);
     }
 }

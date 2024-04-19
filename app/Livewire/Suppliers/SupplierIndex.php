@@ -19,10 +19,12 @@ class SupplierIndex extends Component
     public function suppliers()
     {
         return Supplier::query()
+            ->with('account')
             ->paginate(15);
     }
 
-    public function delete(Supplier $supplier) {
+    public function delete(Supplier $supplier)
+    {
         $supplier->delete();
     }
 
