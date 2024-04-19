@@ -39,11 +39,13 @@
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         <div>
+            <x-label for="search">{{ __('messages.search') }}</x-label>
+            <x-input id="search" type="text" wire:model.live="filters.search" class="w-full text-start py-0" />
+        </div>
+        <div>
             <x-label for="date">{{ __('messages.date') }}</x-label>
-            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date"
-                wire:model.live="filters.start_date" class="w-full text-start py-0" />
-            <x-input id="date" placeholder="{{ __('messages.date') }}" type="date"
-                wire:model.live="filters.end_date" class="w-full text-start py-0" />
+            <x-input id="date" type="date" wire:model.live="filters.start_date" class="w-full text-start py-0" />
+            <x-input type="date" wire:model.live="filters.end_date" class="w-full text-start py-0" />
         </div>
     </div>
 
@@ -51,6 +53,7 @@
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.voucher_number') }}</x-th>
+                <x-th>{{ __('messages.manual_id') }}</x-th>
                 <x-th>{{ __('messages.date') }}</x-th>
                 <x-th>{{ __('messages.notes') }}</x-th>
                 <x-th>{{ __('messages.amount') }}</x-th>
@@ -61,6 +64,7 @@
             @foreach ($this->vouchers as $voucher)
                 <x-tr>
                     <x-td>{{ $voucher->id }}</x-td>
+                    <x-td>{{ $voucher->manual_id }}</x-td>
                     <x-td>{!! $voucher->formated_date !!}</x-td>
                     <x-td>{{ $voucher->notes }}</x-td>
                     <x-td>{{ $voucher->formated_amount }}</x-td>
