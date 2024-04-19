@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('manual_id')->nullable();
+            $table->string('manual_id')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices');
             $table->foreignId('part_invoice_id')->nullable()->constrained('part_invoices');
