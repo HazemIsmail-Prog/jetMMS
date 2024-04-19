@@ -30,7 +30,7 @@
                     localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
                 });
             }"
-        class="relative flex gap-1 lg:h-[calc(100dvh-184px)] text-gray-700 dark:text-slate-400">
+        class="relative flex gap-1 h-[calc(100dvh-184px)] text-gray-700 dark:text-slate-400">
 
         <div x-show="!alpineLoaded">
             <x-loading-spinner class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
