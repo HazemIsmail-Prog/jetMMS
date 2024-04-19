@@ -28,7 +28,7 @@
             <span id="pagination"></span>
         </x-slot>
         @teleport('#pagination')
-            <div class="">{{ $this->customers->links() }}</div>
+            <div>{{ $this->customers->links() }}</div>
         @endteleport
     @endif
 

@@ -23,12 +23,12 @@
 
 </head>
 
-<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden">
+<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh overflow-hidden">
 
-    <div class="flex h-screen max-w-md mx-auto dark:bg-gray-900">
+    <div class="flex h-dvh max-w-md mx-auto dark:bg-gray-900">
 
         <!-- Content area -->
-        <div class="flex flex-col flex-1 h-screen">
+        <div class="flex flex-col flex-1 h-dvh">
 
             <nav class="no-print bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->

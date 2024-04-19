@@ -45,7 +45,7 @@
     @endteleport
 
     @teleport('#pagination')
-        <div class="mt-4">{{ $this->invoices->links() }}</div>
+        <div>{{ $this->invoices->links() }}</div>
     @endteleport
 
     {{-- Filters --}}

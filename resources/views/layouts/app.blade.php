@@ -35,7 +35,7 @@
         localStorage.setItem('sidebarExpanded', JSON.stringify(value));
     });
 }"
-    class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
+    class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh overflow-hidden bg-gray-100 dark:bg-gray-900">
 
     {{-- Chatting --}}
     {{-- @persist('chats') --}}
@@ -47,7 +47,7 @@
     @livewire('sidebar')
 
     {{-- Main --}}
-    <div x-cloak class=" h-full flex flex-col min-h-screen transition-all"
+    <div style="height: 100dvh;" x-cloak class=" flex flex-col transition-all"
         :class="{ ' ms-0 md:ms-64 ': sidebarExpanded }">
         {{-- Topbar --}}
 

@@ -23,12 +23,12 @@
 
 </head>
 
-<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-screen overflow-hidden">
+<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh overflow-hidden">
 
-    <div class="flex h-screen mx-auto dark:bg-gray-900">
+    <div class="flex h-dvh mx-auto dark:bg-gray-900">
 
         <!-- Content area -->
-        <div class="flex flex-col flex-1 h-screen">
+        <div class="flex flex-col flex-1 h-dvh">
             @livewire('navigation-menu')
             <!-- Page Content -->
             <main class=" flex-1 overflow-y-auto p-2 ">
