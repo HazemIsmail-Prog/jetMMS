@@ -50,14 +50,14 @@ class Invoice extends Model
     }
 
     // this function to prevent eager loading for get attributes
-    public function newQuery($excludeDeleted = true)
-    {
-        return parent::newQuery($excludeDeleted)->with([
-            'invoice_details',
-            'invoice_part_details',
-            'payments',
-        ]);
-    }
+    // public function newQuery($excludeDeleted = true)
+    // {
+    //     return parent::newQuery($excludeDeleted)->with([
+    //         'invoice_details',
+    //         'invoice_part_details',
+    //         'payments',
+    //     ]);
+    // }
 
     public function getAmountAttribute()
     {
@@ -65,7 +65,7 @@ class Invoice extends Model
         foreach ($this->invoice_details as $row) {
             $amount += $row->total;
         }
-        foreach ($this->invoice_part_details as $row) {
+        foreach ($this->invoice_part_details() as $row) {
             $amount += $row->total;
         }
         return $amount + $this->delivery - $this->discount;
@@ -104,7 +104,7 @@ class Invoice extends Model
                 $amount += $row->total;
             }
         }
-        foreach ($this->invoice_part_details as $row) {
+        foreach ($this->invoice_part_details() as $row) {
             $amount += $row->total;
         }
         return $amount;
@@ -118,7 +118,7 @@ class Invoice extends Model
                 $amount += $row->total;
             }
         }
-        foreach ($this->invoice_part_details->where('type', 'internal') as $row) {
+        foreach ($this->invoice_part_details()->where('type', 'internal') as $row) {
             $amount += $row->total;
         }
         return $amount;
@@ -127,7 +127,7 @@ class Invoice extends Model
     public function getExternalPartsAmountAttribute()
     {
         $amount = 0;
-        foreach ($this->invoice_part_details->where('type', 'external') as $row) {
+        foreach ($this->invoice_part_details()->where('type', 'external') as $row) {
             $amount += $row->total;
         }
         return $amount;

@@ -60,12 +60,26 @@ class OrderIndex extends Component
     }
 
     #[Computed()]
-    public function creators()
+    public function users()
     {
         return User::query()
-            ->whereHas('orders_creator')
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name')
+            ->orderBy('name');
+    }
+
+    #[Computed()]
+    public function creators()
+    {
+        return $this->users()
+            ->whereHas('orders_creator')
+            ->get();
+    }
+    
+    #[Computed()]
+    public function technicians()
+    {
+        return $this->users()
+            ->whereHas('orders_technician')
             ->get();
     }
 
@@ -75,16 +89,6 @@ class OrderIndex extends Component
         return Status::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('index')
-            ->get();
-    }
-
-    #[Computed()]
-    public function technicians()
-    {
-        return User::query()
-            ->whereHas('orders_technician')
-            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name')
             ->get();
     }
 
@@ -121,14 +125,14 @@ class OrderIndex extends Component
     public function getData()
     {
         return Order::query()
-            ->with('creator')
-            ->with('status')
-            ->with('department')
-            ->with('technician')
-            ->with('customer')
-            ->with('phone')
+            ->with('creator:id,name_ar,name_en')
+            ->with('status:id,name_ar,name_en,color')
+            ->with('department:id,name_ar,name_en')
+            ->with('technician:id,name_ar,name_en')
+            ->with('customer:id,name')
+            ->with('phone:id,number')
             ->with('address')
-            ->with('invoices')
+            ->with('invoices:id')
             ->withCount('invoices as custom_invoices_count')
             ->withCount('comments as all_comments')
             ->orderBy('id', 'desc')

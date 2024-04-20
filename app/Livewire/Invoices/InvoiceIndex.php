@@ -50,10 +50,10 @@ class InvoiceIndex extends Component
     {
         return Invoice::query()
             ->orderBy('id', 'desc')
-            ->with('order.department')
-            ->with('order.customer')
-            ->with('order.phone')
-            ->with('order.technician')
+            ->with('order.department:id,name_ar,name_en')
+            ->with('order.customer:id,name')
+            ->with('order.phone:id,number')
+            ->with('order.technician:id,name_ar,name_en')
             ->with('invoice_details.service')
             ->with('payments')
 
