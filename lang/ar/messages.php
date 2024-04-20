@@ -553,6 +553,7 @@ return [
     'desc_ar' => 'الوصف بالعربي',
     'desc_en' => 'الوصف بالانجليزي',
     'edit_permission' => 'تعديل صلاحية',
+    'details_for_order_number' => 'تفاصيل الطلب رقم',
 
 
 

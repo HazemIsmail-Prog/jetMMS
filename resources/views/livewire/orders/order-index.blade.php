@@ -46,6 +46,7 @@
     @livewire('orders.order-form')
     @livewire('orders.comments.comment-modal')
     @livewire('orders.statuses.status-modal')
+    @livewire('orders.details.details-modal')
     @livewire('orders.invoices.invoice-modal')
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
@@ -169,6 +170,13 @@
                         <x-badgeWithCounter title="{{ __('messages.edit') }}"
                             wire:click="$dispatch('showOrderFormModal',{order:{{ $order }},customer:{{ $order->customer }}})">
                             <x-svgs.edit class="h-4 w-4" />
+                        </x-badgeWithCounter>
+                        @endcan
+
+                        @can('viewAny', App\Models\Order::class)
+                        <x-badgeWithCounter title="{{ __('messages.order_details') }}"
+                            wire:click="$dispatch('showDetailsModal',{order:{{ $order }}})">
+                            <x-svgs.view class="h-4 w-4" />
                         </x-badgeWithCounter>
                         @endcan
 

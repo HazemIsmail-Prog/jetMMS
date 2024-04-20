@@ -1,6 +1,8 @@
 @props(['order'])
 
-<div wire:key="order-{{ $order->id }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}" class="
+<div 
+@dblclick="$dispatch('showDetailsModal',{order:{!! $order !!}})"
+wire:key="order-{{ $order->id }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}" class="
     {{ $order->in_progress ? '' : 'draggable' }}
     {{-- {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }} --}}
     order

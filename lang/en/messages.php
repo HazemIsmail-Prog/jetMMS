@@ -532,5 +532,7 @@ return [
     'desc_ar' => 'Description AR',
     'desc_en' => 'Description EN',
     'edit_permission' => 'Edit Permission',
+    'details_for_order_number' => 'Details of order #',
+
 
 ];
