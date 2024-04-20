@@ -13,16 +13,64 @@ class Account extends Model
 
     protected $guarded = [];
 
-    public function parent() : BelongsTo {
-        return $this->belongsTo(Account::class,'account_id');
-    }
-    
-    public function child_accounts() : HasMany {
-        return $this->hasMany(Account::class,'account_id')->with('child_accounts');
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'account_id');
     }
 
-    public function voucher_details() : HasMany {
+    public function child_accounts(): HasMany
+    {
+        return $this->hasMany(Account::class, 'account_id')
+            ->with('child_accounts');
+    }
+
+    public function voucher_details(): HasMany
+    {
         return $this->hasMany(VoucherDetail::class);
+    }
+
+    public function getBalanceAttribute()
+    {
+        // Get all descendant accounts including itself
+        $accounts = [];
+        switch ($this->level) {
+
+            case 0:
+                foreach ($this->child_accounts as $level1Account) {
+                    foreach ($level1Account->child_accounts as $level2Account) {
+                        foreach ($level2Account->child_accounts as $level3Account) {
+                            $accounts[] = $level3Account->id;
+                        }
+                    }
+                }
+                break;
+
+            case 1:
+                foreach ($this->child_accounts as $level2Account) {
+                    foreach ($level2Account->child_accounts as $level3Account) {
+                        $accounts[] = $level3Account->id;
+                    }
+                }
+                break;
+
+            case 2:
+                foreach ($this->child_accounts as $level3Account) {
+                    $accounts[] = $level3Account->id;
+                }
+                break;
+
+            case 3:
+                $accounts[] = $this->id;
+                break;
+
+        }
+
+        // Calculate sum of debit and credit for the account and its descendants
+        $balance = VoucherDetail::whereIn('account_id', $accounts)
+            ->selectRaw('SUM(debit) as total_debit, SUM(credit) as total_credit')
+            ->first();
+
+            return $this->type = 'debit' ? $balance->total_debit - $balance->total_credit : $balance->total_credit -  $balance->total_debit ;
     }
 
     public function getNameAttribute()

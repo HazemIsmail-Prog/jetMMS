@@ -19,17 +19,24 @@ class AccountIndex extends Component
     public function accounts()
     {
         return Account::query()
-        ->where('level',0)
-        ->with('child_accounts')
-            ->paginate(15);
+            ->where('level', 0)
+            ->with('child_accounts', function($q){
+                $q->withSum('voucher_details','debit');
+                $q->with('child_accounts',function($q){
+                    $q->withSum('voucher_details','debit');
+                });
+            })
+            ->get();
     }
 
-    public function delete(Account $account) {
+    public function delete(Account $account)
+    {
         $account->delete();
     }
 
     public function render()
     {
+        // dd($this->accounts);
         return view('livewire.accounts.account-index');
     }
 }
