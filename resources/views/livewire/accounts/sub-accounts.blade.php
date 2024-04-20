@@ -4,14 +4,20 @@
     'ms-40' => $account->level == 2,
     'ms-60' => $account->level == 3,
     ])>
-    <x-label>{{ $account->name }}
-        @if ($account->balance != 0)
+    <div class=" flex-1 flex items-center justify-between">
+        <x-label>{{ $account->name }}</x-label>
+        @if ($account->balance > 0)
         <span
-            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+            class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
             {{number_format($account->balance,3)}}
         </span>
         @endif
-    </x-label>
+        @if ($account->balance < 0) <span
+            class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-700 dark:text-red-300">
+            {{number_format(abs($account->balance),3)}}
+            </span>
+            @endif
+    </div>
     <div class=" flex items-center gap-2">
         @if ($account->level < 3) @can('create', App\Models\Account::class) <x-badgeWithCounter
             title="{{ __('messages.add') }}"
