@@ -66,7 +66,7 @@
                     <x-td>{{ $voucher->id }}</x-td>
                     <x-td>{{ $voucher->manual_id }}</x-td>
                     <x-td>{!! $voucher->formated_date !!}</x-td>
-                    <x-td>{{ $voucher->notes }}</x-td>
+                    <x-td class=" !whitespace-normal">{{ $voucher->notes }}</x-td>
                     <x-td>{{ $voucher->formated_amount }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
