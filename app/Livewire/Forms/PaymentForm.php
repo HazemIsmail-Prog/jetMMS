@@ -23,7 +23,12 @@ class PaymentForm extends Form
         return [
             'amount' => 'required',
             'method' => 'required',
-            'knet_ref_number' => 'nullable|required_if:method,knet|numeric|digits:6',
+            'knet_ref_number' => [
+                'nullable',
+                // 'required_if:method,knet',
+                'numeric',
+                'digits:6'
+            ],
             'invoice_id' => 'required',
         ];
     }
