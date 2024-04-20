@@ -24,7 +24,7 @@
     @endif
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
         <div>
             <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
             <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
@@ -47,6 +47,17 @@
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
             <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.departments" multipule />
+        </div>
+        <div>
+            <x-label for="rating">{{ __('messages.rating') }}</x-label>
+            <x-select class="w-full" id="rating" wire:model.live="rating">
+                <option value="">---</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </x-select>
         </div>
         <div>
             <x-label for="start_completed_at">{{ __('messages.completed_at') }}</x-label>
