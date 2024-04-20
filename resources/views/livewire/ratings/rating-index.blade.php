@@ -50,7 +50,7 @@
         </div>
         <div>
             <x-label for="rating">{{ __('messages.rating') }}</x-label>
-            <x-select class="w-full" id="rating" wire:model.live="rating">
+            <x-select class="w-full" id="rating" wire:model.live="filters.rating">
                 <option value="">---</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
