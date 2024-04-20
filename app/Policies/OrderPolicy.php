@@ -30,7 +30,7 @@ class OrderPolicy
 
     public function update(User $user, Order $order): bool
     {
-        return $user->hasPermission('orders_edit');
+        return $user->hasPermission('orders_edit') || $order->created_by == $user->id;
     }
     
     public function view_order_progress(User $user, Order $order): bool
