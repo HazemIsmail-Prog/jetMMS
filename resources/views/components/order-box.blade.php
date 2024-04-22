@@ -42,7 +42,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
             <form class="w-full" @submit.prevent="$wire.dragEnd({{$order['id']}},selectedTechnician,null,null)">
                 <x-select 
                     x-model="selectedTechnician"  
-                    x-on:change="setTimeout(() => $refs.button.click(), 50)"
+                    x-on:change="setTimeout(() => $refs.button.click(), 100)"
                     class="technician_select !h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700 ">
                     @if ($order->status_id != 2)
                     <option value="">---</option>
