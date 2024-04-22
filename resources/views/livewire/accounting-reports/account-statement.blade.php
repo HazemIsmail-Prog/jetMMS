@@ -112,7 +112,7 @@
                                     class=" {{ $row->voucher->casted_type_color_classes }} text-xs font-medium px-2 py-0.5 rounded-lg ">{{ $row->voucher->casted_type_title }}</span>
                             </x-td>
                             <x-td>{!! $row->voucher->formated_date !!}</x-td>
-                            <x-td>{{ $row->cost_center->name ?? '-' }}</x-td>
+                            <x-td class="!whitespace-normal">{{ $row->cost_center->name ?? '-' }}</x-td>
                             <x-td class="!whitespace-normal">{{ $row->contact->name ?? '-' }}</x-td>
                             <x-td class=" !whitespace-normal">{{ $row->narration }}</x-td>
                             <x-td>{{ $row->formated_debit }}</x-td>
