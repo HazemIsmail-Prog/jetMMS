@@ -13,6 +13,10 @@ class InvoiceCard extends Component
 {
     public Invoice $invoice;
 
+    public function mount() {
+        $this->invoice->load('invoice_part_details');
+    }
+
     #[Computed()]
     public function payments() {
         return Payment::query()

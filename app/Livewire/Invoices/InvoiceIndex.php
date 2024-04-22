@@ -55,7 +55,6 @@ class InvoiceIndex extends Component
             ->with('order.phone:id,number')
             ->with('order.technician:id,name_ar,name_en')
             ->with('invoice_details.service')
-            ->with('invoice_part_details')
             ->with('payments')
 
             ->when($this->filters['payment_status'], function (Builder $q) {
