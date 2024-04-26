@@ -14,6 +14,7 @@
                         <x-input step="0.001" min="{{ $service['min_price'] }}"
                             max="{{ $service['max_price'] }}" required class="w-full p-1 text-xs"
                             type="number"
+                            step="0.001"
                             wire:model.live.debounce.500ms="selected_services.{{ $service['service_id'] }}.price"
                             dir="ltr"
                             placeholder="{{ $service['min_price'] }} - {{ $service['max_price'] }}" />
@@ -51,7 +52,7 @@
                         wire:model.live.debounce.500ms="parts.{{ $index }}.quantity" dir="ltr"
                         placeholder="{{ __('messages.quantity') }}" />
                     <x-input required class="w-full p-1 text-xs" type="number"
-                        wire:model.live.debounce.500ms="parts.{{ $index }}.price" dir="ltr"
+                        wire:model.live.debounce.500ms="parts.{{ $index }}.price" dir="ltr" step="0.001"
                         placeholder="{{ __('messages.amount') }}" />
                     <p>{{ number_format($parts[$index]['total'], 3) }}</p>
                 </div>
