@@ -8,7 +8,7 @@
 
     <link rel="icon" href="{{ $settings->full_favicon_path }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{$title ?? config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

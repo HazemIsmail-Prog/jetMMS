@@ -120,6 +120,6 @@ class DispatchingIndex extends Component
 
     public function render()
     {
-        return view('livewire.dispatching.dispatching-index');
+        return view('livewire.dispatching.dispatching-index')->title($this->department->name);
     }
 }
