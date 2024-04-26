@@ -3,13 +3,30 @@
 namespace App\Livewire\Cashier;
 
 use App\Models\Payment;
+use App\Models\Title;
+use App\Models\User;
 use App\Services\CreateInvoicePaymentVoucher;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class CashCollection extends Component
 {
+
+    public $filters;
+
+    public function mount()
+    {
+
+        $this->filters =
+            [
+                'start_created_at' => '',
+                'end_created_at' => '',
+                'technician_id' => [],
+            ];
+    }
+
     #[Computed()]
     public function unCollectedPayments()
     {
@@ -18,8 +35,31 @@ class CashCollection extends Component
             ->with('user')
             ->where('is_collected', false)
             ->where('method', 'cash')
+            ->when($this->filters['technician_id'], function (Builder $q) {
+                $q->whereHas('invoice',function(Builder $q){
+                    $q->whereHas('order',function(Builder $q){
+                        $q->whereIn('technician_id',$this->filters['technician_id']);
+                    });
+                });
+            })
+            ->when($this->filters['start_created_at'], function (Builder $q) {
+                $q->whereDate('created_at', '>=', $this->filters['start_created_at']);
+            })
+            ->when($this->filters['end_created_at'], function (Builder $q) {
+                $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate();
+    }
+
+    #[Computed()]
+    public function technicians()
+    {
+        return User::query()
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
     }
 
     public function collect_payment(Payment $payment)
