@@ -30,6 +30,6 @@ class AreaIndex extends Component
 
     public function render()
     {
-        return view('livewire.areas.area-index');
+        return view('livewire.areas.area-index')->title(__('messages.areas'));
     }
 }

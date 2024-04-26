@@ -70,6 +70,6 @@ class VoucherIndex extends Component
 
     public function render()
     {
-        return view('livewire.vouchers.voucher-index');
+        return view('livewire.vouchers.voucher-index')->title(__('messages.journal_vouchers'));
     }
 }

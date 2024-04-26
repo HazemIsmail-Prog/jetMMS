@@ -28,6 +28,6 @@ class PermissionIndex extends Component
 
     public function render()
     {
-        return view('livewire.permissions.permission-index');
+        return view('livewire.permissions.permission-index')->title(__('messages.permissions'));
     }
 }

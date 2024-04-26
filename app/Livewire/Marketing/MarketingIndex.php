@@ -105,6 +105,6 @@ class MarketingIndex extends Component
 
     public function render()
     {
-        return view('livewire.marketing.marketing-index');
+        return view('livewire.marketing.marketing-index')->title(__('messages.marketings'));
     }
 }

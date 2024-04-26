@@ -28,6 +28,6 @@ class CostCenterIndex extends Component
 
     public function render()
     {
-        return view('livewire.cost-centers.cost-center-index');
+        return view('livewire.cost-centers.cost-center-index')->title(__('messages.cost_centers'));
     }
 }

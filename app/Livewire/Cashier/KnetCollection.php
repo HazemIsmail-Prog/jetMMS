@@ -85,6 +85,6 @@ class KnetCollection extends Component
 
     public function render()
     {
-        return view('livewire.cashier.knet-collection');
+        return view('livewire.cashier.knet-collection')->title(__('messages.knet_collection'));
     }
 }

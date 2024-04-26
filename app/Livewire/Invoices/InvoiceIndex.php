@@ -145,6 +145,6 @@ class InvoiceIndex extends Component
 
     public function render()
     {
-        return view('livewire.invoices.invoice-index');
+        return view('livewire.invoices.invoice-index')->title(__('messages.invoices'));
     }
 }

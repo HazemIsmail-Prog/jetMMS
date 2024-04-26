@@ -30,6 +30,6 @@ class RoleIndex extends Component
 
     public function render()
     {
-        return view('livewire.roles.role-index');
+        return view('livewire.roles.role-index')->title(__('messages.roles'));
     }
 }

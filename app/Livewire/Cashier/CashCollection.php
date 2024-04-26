@@ -86,6 +86,6 @@ class CashCollection extends Component
 
     public function render()
     {
-        return view('livewire.cashier.cash-collection');
+        return view('livewire.cashier.cash-collection')->title(__('messages.cash_collection'));
     }
 }

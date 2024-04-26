@@ -30,6 +30,6 @@ class DepartmentIndex extends Component
 
     public function render()
     {
-        return view('livewire.departments.department-index');
+        return view('livewire.departments.department-index')->title(__('messages.departments'));
     }
 }

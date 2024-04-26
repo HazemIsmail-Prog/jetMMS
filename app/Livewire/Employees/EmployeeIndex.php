@@ -103,6 +103,6 @@ class EmployeeIndex extends Component
 
     public function render()
     {
-        return view('livewire.employees.employee-index');
+        return view('livewire.employees.employee-index')->title(__('messages.employees'));
     }
 }

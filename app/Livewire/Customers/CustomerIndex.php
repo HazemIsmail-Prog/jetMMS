@@ -82,6 +82,6 @@ class CustomerIndex extends Component
 
     public function render()
     {
-        return view('livewire.customers.customer-index');
+        return view('livewire.customers.customer-index')->title(__('messages.customers'));
     }
 }

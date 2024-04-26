@@ -28,6 +28,6 @@ class TitleIndex extends Component
 
     public function render()
     {
-        return view('livewire.titles.title-index');
+        return view('livewire.titles.title-index')->title(__('messages.titles'));
     }
 }

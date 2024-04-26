@@ -66,6 +66,6 @@ class ServiceIndex extends Component
 
     public function render()
     {
-        return view('livewire.services.service-index');
+        return view('livewire.services.service-index')->title(__('messages.services'));
     }
 }

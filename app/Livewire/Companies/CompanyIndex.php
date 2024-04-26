@@ -28,6 +28,6 @@ class CompanyIndex extends Component
 
     public function render()
     {
-        return view('livewire.companies.company-index');
+        return view('livewire.companies.company-index')->title(__('messages.companies'));
     }
 }

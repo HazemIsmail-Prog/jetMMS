@@ -46,6 +46,6 @@ class CarIndex extends Component
 
     public function render()
     {
-        return view('livewire.cars.car-index');
+        return view('livewire.cars.car-index')->title(__('messages.cars'));
     }
 }

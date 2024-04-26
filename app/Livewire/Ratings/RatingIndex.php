@@ -109,6 +109,6 @@ class RatingIndex extends Component
 
     public function render()
     {
-        return view('livewire.ratings.rating-index');
+        return view('livewire.ratings.rating-index')->title(__('messages.ratings'));
     }
 }

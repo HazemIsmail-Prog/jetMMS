@@ -200,6 +200,6 @@ class OrderIndex extends Component
 
     public function render()
     {
-        return view('livewire.orders.order-index');
+        return view('livewire.orders.order-index')->title(__('messages.orders'));
     }
 }

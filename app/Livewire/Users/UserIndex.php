@@ -117,6 +117,6 @@ class UserIndex extends Component
 
     public function render()
     {
-        return view('livewire.users.user-index');
+        return view('livewire.users.user-index')->title(__('messages.users'));
     }
 }

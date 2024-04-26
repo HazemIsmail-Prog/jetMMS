@@ -111,6 +111,6 @@ class AccountStatement extends Component
 
     public function render()
     {
-        return view('livewire.accounting-reports.account-statement');
+        return view('livewire.accounting-reports.account-statement')->title(__('messages.account_statement'));
     }
 }

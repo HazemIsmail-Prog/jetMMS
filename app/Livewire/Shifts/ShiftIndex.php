@@ -28,6 +28,6 @@ class ShiftIndex extends Component
 
     public function render()
     {
-        return view('livewire.shifts.shift-index');
+        return view('livewire.shifts.shift-index')->title(__('messages.shifts'));
     }
 }

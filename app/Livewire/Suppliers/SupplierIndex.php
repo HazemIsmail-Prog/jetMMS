@@ -30,6 +30,6 @@ class SupplierIndex extends Component
 
     public function render()
     {
-        return view('livewire.suppliers.supplier-index');
+        return view('livewire.suppliers.supplier-index')->title(__('messages.suppliers'));
     }
 }

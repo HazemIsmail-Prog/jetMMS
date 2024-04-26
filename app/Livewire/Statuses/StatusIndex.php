@@ -24,6 +24,6 @@ class StatusIndex extends Component
 
     public function render()
     {
-        return view('livewire.statuses.status-index');
+        return view('livewire.statuses.status-index')->title(__('messages.statuses'));
     }
 }

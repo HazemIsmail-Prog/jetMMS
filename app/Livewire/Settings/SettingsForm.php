@@ -49,6 +49,6 @@ class SettingsForm extends Component
 
     public function render()
     {
-        return view('livewire.settings.settings-form');
+        return view('livewire.settings.settings-form')->title(__('messages.settings'));
     }
 }

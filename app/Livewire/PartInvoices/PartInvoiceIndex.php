@@ -38,6 +38,6 @@ class PartInvoiceIndex extends Component
 
     public function render()
     {
-        return view('livewire.part-invoices.part-invoice-index');
+        return view('livewire.part-invoices.part-invoice-index')->title(__('messages.part_invoices'));
     }
 }

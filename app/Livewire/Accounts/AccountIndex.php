@@ -37,6 +37,6 @@ class AccountIndex extends Component
     public function render()
     {
         // dd($this->accounts);
-        return view('livewire.accounts.account-index');
+        return view('livewire.accounts.account-index')->title(__('messages.accounts'));
     }
 }
