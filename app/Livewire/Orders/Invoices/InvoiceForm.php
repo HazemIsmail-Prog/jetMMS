@@ -35,6 +35,7 @@ class InvoiceForm extends Component
     {
         $this->search = '';
         $this->select_service = [];
+        $this->selected_services = [];
         $this->delivery = 0;
         $this->parts = [];
         $this->showModal = true;
