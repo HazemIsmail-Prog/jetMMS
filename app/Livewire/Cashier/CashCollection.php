@@ -15,6 +15,8 @@ class CashCollection extends Component
 {
 
     public $filters;
+    public $perPage = 10;
+
 
     public function mount()
     {
@@ -49,7 +51,7 @@ class CashCollection extends Component
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
             ->orderBy('created_at', 'desc')
-            ->paginate();
+            ->paginate($this->perPage);
     }
 
     #[Computed()]

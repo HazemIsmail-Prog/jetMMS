@@ -21,7 +21,15 @@
         <span id="pagination"></span>
     </x-slot>
     @teleport('#pagination')
-    <div class="">{{ $this->unCollectedPayments->links() }}</div>
+    <div class=" flex items-center justify-between gap-2">
+        <x-select wire:model.live="perPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </x-select>
+        <div class=" flex-1">{{ $this->unCollectedPayments->links() }}</div>
+    </div>
     @endteleport
     @endif
 
@@ -62,7 +70,9 @@
             <x-tr>
                 <x-td>{!! $payment->formated_created_at !!}</x-td>
                 <x-td>
-                    <span class=" cursor-pointer" wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{ $payment->invoice->order->technician->name }}</span>
+                    <span class=" cursor-pointer"
+                        wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{
+                        $payment->invoice->order->technician->name }}</span>
                 </x-td>
                 <x-td>{{ $payment->user->name }}</x-td>
                 <x-td>{{ $payment->knet_ref_number }}</x-td>

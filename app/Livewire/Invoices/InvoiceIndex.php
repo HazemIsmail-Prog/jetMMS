@@ -20,6 +20,7 @@ class InvoiceIndex extends Component
 
     public int $maxExportSize = 5000;
     public $filters;
+    public $perPage = 10;
 
 
     public function mount()
@@ -117,7 +118,7 @@ class InvoiceIndex extends Component
     public function invoices()
     {
         return $this->getData()
-            ->paginate(10);
+            ->paginate($this->perPage);
     }
 
     public function excel()

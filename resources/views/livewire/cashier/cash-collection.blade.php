@@ -20,8 +20,17 @@
     <x-slot name="footer">
         <span id="pagination"></span>
     </x-slot>
+
     @teleport('#pagination')
-    <div class="">{{ $this->unCollectedPayments->links() }}</div>
+    <div class=" flex items-center justify-between gap-2">
+        <x-select wire:model.live="perPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </x-select>
+        <div class=" flex-1">{{ $this->unCollectedPayments->links() }}</div>
+    </div>
     @endteleport
     @endif
 

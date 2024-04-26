@@ -19,33 +19,40 @@
     @livewire('orders.invoices.discount.discount-form')
 
     @teleport('#counter')
-        <span
-            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-            {{ $this->invoices->total() }}
-        </span>
+    <span
+        class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+        {{ $this->invoices->total() }}
+    </span>
     @endteleport
 
     @teleport('#excel')
-        <div>
-            @if ($this->invoices->total() <= $maxExportSize)
-                <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
-                    wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
-                    wire:loading.attr="disabled">
-                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden"
-                        wire:target="excel">
-                        {{ __('messages.exporting') }}
-                    </span>
-                    <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
-                </x-button>
+    <div>
+        @if ($this->invoices->total() <= $maxExportSize) <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+            wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+            wire:loading.attr="disabled">
+            <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden" wire:target="excel">
+                {{ __('messages.exporting') }}
+            </span>
+            <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+            </x-button>
             @else
-                <x-button disabled class=" cursor-not-allowed"
-                    title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{ __('messages.export_to_excel') }}</x-button>
+            <x-button disabled class=" cursor-not-allowed"
+                title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{
+                __('messages.export_to_excel') }}</x-button>
             @endif
-        </div>
+    </div>
     @endteleport
 
     @teleport('#pagination')
-        <div>{{ $this->invoices->links() }}</div>
+    <div class=" flex items-center justify-between gap-2">
+        <x-select wire:model.live="perPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </x-select>
+        <div class=" flex-1">{{ $this->invoices->links() }}</div>
+    </div>
     @endteleport
 
     {{-- Filters --}}
@@ -91,7 +98,7 @@
             <x-select id="payment_status" required wire:model.live="filters.payment_status" class=" w-full py-0">
                 <option value="">---</option>
                 @foreach (App\Enums\PaymentStatusEnum::cases() as $status)
-                    <option value="{{ $status->value }}">{{ $status->title() }}</option>
+                <option value="{{ $status->value }}">{{ $status->title() }}</option>
                 @endforeach
             </x-select>
         </div>
@@ -134,63 +141,63 @@
         </x-thead>
         <tbody>
             @foreach ($this->invoices as $invoice)
-                <x-tr>
-                    <x-td>
-                        <a target="_blank" class="btn"
-                            href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{ $invoice->formated_id }}</a>
-                    </x-td>
-                    <x-td>
-                        <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
+            <x-tr>
+                <x-td>
+                    <a target="_blank" class="btn" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{
+                        $invoice->formated_id }}</a>
+                </x-td>
+                <x-td>
+                    <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
                             ? $this->invoices->where('order_id', $invoice->order_id)->count()
                             : null" title="{{ __('messages.invoices') }}"
-                            wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
-                            {{ $invoice->order->formated_id }}
+                        wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
+                        {{ $invoice->order->formated_id }}
+                    </x-badgeWithCounter>
+                </x-td>
+                <x-td>
+                    <span dir="ltr" class=" cursor-pointer"
+                        wire:click="dateClicked('{{ $invoice->created_at->format('Y-m-d') }}')">
+                        {!! $invoice->formated_created_at !!}
+                    </span>
+                </x-td>
+                <x-td>
+                    <span class=" cursor-pointer"
+                        wire:click="$set('filters.department_id',[{{ $invoice->order->department_id }}])">
+                        {{ $invoice->order->department->name }}
+                    </span>
+                </x-td>
+                <x-td>
+                    <span class=" cursor-pointer"
+                        wire:click="$set('filters.technician_id',[{{ $invoice->order->technician_id }}])">
+                        {{ $invoice->order->technician->name }}
+                    </span>
+                </x-td>
+                <x-td>{{ $invoice->order->customer->name }}</x-td>
+                <x-td>{{ $invoice->order->phone->number }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_services_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_discount_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_service_amount_after_discount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_internal_parts_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_external_parts_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_delivery_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_cash_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_knet_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_total_paid_amount }}</x-td>
+                <x-td class="!text-right">{{ $invoice->formated_remaining_amount }}</x-td>
+                <x-td>{{ $invoice->payment_status->title() }}</x-td>
+                <x-td>
+                    <div class=" flex items-center justify-end gap-2">
+                        @if ($invoice->can_deleted)
+                        <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
+                            wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
+                            wire:click="delete({{ $invoice->id }})">
+                            <x-svgs.trash class="h-4 w-4" />
                         </x-badgeWithCounter>
-                    </x-td>
-                    <x-td>
-                        <span dir="ltr" class=" cursor-pointer"
-                            wire:click="dateClicked('{{ $invoice->created_at->format('Y-m-d') }}')">
-                            {!! $invoice->formated_created_at !!}
-                        </span>
-                    </x-td>
-                    <x-td>
-                        <span class=" cursor-pointer"
-                            wire:click="$set('filters.department_id',[{{ $invoice->order->department_id }}])">
-                            {{ $invoice->order->department->name }}
-                        </span>
-                    </x-td>
-                    <x-td>
-                        <span class=" cursor-pointer"
-                            wire:click="$set('filters.technician_id',[{{ $invoice->order->technician_id }}])">
-                            {{ $invoice->order->technician->name }}
-                        </span>
-                    </x-td>
-                    <x-td>{{ $invoice->order->customer->name }}</x-td>
-                    <x-td>{{ $invoice->order->phone->number }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_services_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_discount_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_service_amount_after_discount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_internal_parts_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_external_parts_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_delivery_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_cash_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_knet_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_total_paid_amount }}</x-td>
-                    <x-td class="!text-right">{{ $invoice->formated_remaining_amount }}</x-td>
-                    <x-td>{{ $invoice->payment_status->title() }}</x-td>
-                    <x-td>
-                        <div class=" flex items-center justify-end gap-2">
-                            @if ($invoice->can_deleted)
-                                <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
-                                    wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
-                                    wire:click="delete({{ $invoice->id }})">
-                                    <x-svgs.trash class="h-4 w-4" />
-                                </x-badgeWithCounter>
-                            @endif
-                        </div>
-                    </x-td>
-                </x-tr>
+                        @endif
+                    </div>
+                </x-td>
+            </x-tr>
             @endforeach
         </tbody>
         <x-tfoot>
@@ -202,17 +209,28 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('discount') <= 0 ? '-' : number_format($this->invoices->sum('discount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount_after_discount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount_after_discount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('internal_parts_amount') <= 0 ? '-' : number_format($this->invoices->sum('internal_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('external_parts_amount') <= 0 ? '-' : number_format($this->invoices->sum('external_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('delivery_amount') <= 0 ? '-' : number_format($this->invoices->sum('delivery_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->invoices->sum('amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->invoices->sum('cash_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->invoices->sum('knet_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('total_paid_amount') <= 0 ? '-' : number_format($this->invoices->sum('total_paid_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('remaining_amount') <= 0 ? '-' : number_format($this->invoices->sum('remaining_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('services_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('discount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('discount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount_after_discount') <= 0 ? '-' :
+                        number_format($this->invoices->sum('services_amount_after_discount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('internal_parts_amount') <= 0 ? '-' :
+                        number_format($this->invoices->sum('internal_parts_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('external_parts_amount') <= 0 ? '-' :
+                        number_format($this->invoices->sum('external_parts_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('delivery_amount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('delivery_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('cash_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->
+                        invoices->sum('knet_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('total_paid_amount') <= 0 ? '-' :
+                        number_format($this->invoices->sum('total_paid_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('remaining_amount') <= 0 ? '-' :
+                        number_format($this->invoices->sum('remaining_amount') , 3) }}</x-th>
                 <x-th></x-th>
                 <x-th></x-th>
             </tr>
