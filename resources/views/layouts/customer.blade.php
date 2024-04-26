@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" href="https://miskalddartestbucket.s3.amazonaws.com/{{ App\Models\Setting::find(1)->favicon_path }}">
+    <link rel="icon" href="{{ $settings->full_favicon_path }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
