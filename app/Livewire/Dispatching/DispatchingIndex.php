@@ -8,6 +8,7 @@ use App\Models\Shift;
 use App\Models\Status;
 use App\Models\User;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DispatchingIndex extends Component
@@ -17,7 +18,7 @@ class DispatchingIndex extends Component
     public function getListeners()
     {
         return [
-            'commentsUpdated' => '$refresh',
+            // 'commentsUpdated' => '$refresh',
             'invoicesUpdated' => '$refresh',
             'holdOrCancelReasonUpdated' => '$refresh',
             "echo:departments.{$this->department->id},RefreshDepartmentScreenEvent" => '$refresh',
@@ -25,6 +26,7 @@ class DispatchingIndex extends Component
     }
 
     #[Computed()]
+    #[On('commentsUpdated')]
     public function orders()
     {
         return Order::query()
