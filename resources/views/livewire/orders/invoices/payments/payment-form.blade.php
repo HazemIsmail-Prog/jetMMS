@@ -13,7 +13,7 @@
                         <div>
                             <x-label for="amount">{{ __('messages.amount') }}</x-label>
                             <x-input class="w-full" required type="number" wire:model="form.amount" id="amount" dir="ltr"
-                                min="0" max="{{ $invoice->remaining_amount }}" />
+                                min="0" step="0.001" max="{{ $invoice->remaining_amount }}" />
                             <x-input-error for="form.amount" />
                         </div>
                         <div>
