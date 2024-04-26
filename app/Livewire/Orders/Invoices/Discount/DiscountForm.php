@@ -3,6 +3,7 @@
 namespace App\Livewire\Orders\Invoices\Discount;
 
 use App\Models\Invoice;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -29,9 +30,12 @@ class DiscountForm extends Component
     public function save()
     {
         $this->invoice->discount = $this->discount;
-        $this->invoice->save();
-        $this->dispatch('discountUpdated');
-        $this->showModal = false;
+        DB::transaction(function () {
+            $this->invoice->save();
+            DB::commit();
+            $this->dispatch('discountUpdated');
+            $this->showModal = false;
+        });
     }
 
     public function render()

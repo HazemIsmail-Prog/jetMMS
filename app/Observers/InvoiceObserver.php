@@ -26,15 +26,12 @@ class InvoiceObserver
     public function updated(Invoice $invoice): void
     {
         if ($invoice->isDirty('discount')) {
-
             // This check for old invoices which not have vouchers
-            if($invoice->voucher?->voucherDetails){
-                $invoice->voucher->voucherDetails()->forceDelete();
-                CreateInvoiceVoucher::createVoucherDetails($invoice , $invoice->voucher);
-            }
+            $voucher = $invoice->vouchers()->where('type', 'inv')->first(); // get only inv voucher because invoice may have cost voucher also
+            $voucher->voucherDetails()->forceDelete();
+            CreateInvoiceVoucher::createVoucherDetails($invoice, $voucher);
             broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
             broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
-
         }
     }
 
@@ -43,14 +40,13 @@ class InvoiceObserver
      */
     public function deleted(Invoice $invoice): void
     {
-        if ($invoice->voucher) {
-            $invoice->voucher->delete();
+        foreach ($invoice->vouchers as $voucher) {
+            $voucher->delete();
         }
 
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
         broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
         broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
-
     }
 
     /**

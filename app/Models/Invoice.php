@@ -39,9 +39,9 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function voucher(): HasOne
+    public function vouchers(): HasMany
     {
-        return $this->hasOne(Voucher::class);
+        return $this->hasMany(Voucher::class);
     }
 
     public function order(): BelongsTo
