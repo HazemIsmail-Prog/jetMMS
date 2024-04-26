@@ -61,6 +61,10 @@ class KnetCollection extends Component
             ->paginate();
     }
 
+    public function technicianClicked($technician_id) {
+        $this->filters['technician_id'] = [$technician_id];
+    }
+
     public function collect_payment(Payment $payment)
     {
         DB::beginTransaction();

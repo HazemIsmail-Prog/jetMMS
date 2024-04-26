@@ -61,7 +61,9 @@
             @foreach ($this->unCollectedPayments as $payment)
             <x-tr>
                 <x-td>{!! $payment->formated_created_at !!}</x-td>
-                <x-td>{{ $payment->invoice->order->technician->name }}</x-td>
+                <x-td>
+                    <span class=" cursor-pointer" wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{ $payment->invoice->order->technician->name }}</span>
+                </x-td>
                 <x-td>{{ $payment->user->name }}</x-td>
                 <x-td>{{ $payment->knet_ref_number }}</x-td>
                 <x-td>{{ $payment->formated_amount }}</x-td>
