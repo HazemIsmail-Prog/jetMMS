@@ -22,7 +22,8 @@ class InvoiceForm extends Component
     public $delivery = 0;
     public $parts = [];
 
-    public function rules() {
+    public function rules()
+    {
         return [
             'selected_services' => 'required_without_all:parts',
             'parts' => 'required_without_all:selected_services',
@@ -30,7 +31,8 @@ class InvoiceForm extends Component
     }
 
     #[On('showInvoiceFormModal')]
-    public function show(Order $order) {
+    public function show(Order $order)
+    {
         $this->showModal = true;
         $this->order = $order;
     }
@@ -45,8 +47,9 @@ class InvoiceForm extends Component
         }
     }
 
-    public function addPartRow() {
-        $this->parts [] = [
+    public function addPartRow()
+    {
+        $this->parts[] = [
             'name' => '',
             'quantity' => '',
             'price' => '',
@@ -55,7 +58,8 @@ class InvoiceForm extends Component
         ];
     }
 
-    public function deletePartRow($index) {
+    public function deletePartRow($index)
+    {
         unset($this->parts[$index]);
     }
 
@@ -70,11 +74,13 @@ class InvoiceForm extends Component
     {
         return
             Service::query()
-            ->where('active',true)
+            ->where('active', true)
             ->where('department_id', $this->order->department_id)
             ->when($this->search, function ($q) {
-                $q->where('name_en', 'like', '%' . $this->search . '%');
-                $q->orWhere('name_ar', 'like', '%' . $this->search . '%');
+                $q->where(function ($q) {
+                    $q->where('name_en', 'like', '%' . $this->search . '%');
+                    $q->orWhere('name_ar', 'like', '%' . $this->search . '%');
+                });
             })
             ->get();
     }
@@ -143,15 +149,12 @@ class InvoiceForm extends Component
             }
             CreateInvoiceVoucher::createVoucher($invoice);
 
-            if(collect($this->parts)->where('type','external')->sum('total') > 0)
-            {
+            if (collect($this->parts)->where('type', 'external')->sum('total') > 0) {
                 CreateCostVoucher::createVoucher($invoice);
             }
             DB::commit();
             $this->reset('select_service', 'selected_services', 'search', 'showModal');
             $this->dispatch('invoicesUpdated');
-            
-
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
