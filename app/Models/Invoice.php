@@ -29,7 +29,7 @@ class Invoice extends Model
         return $this->hasMany(InvoiceDetails::class);
     }
 
-    public function invoice_part_details: HasMany
+    public function invoice_part_details(): HasMany
     {
         return $this->hasMany(InvoicePartDetail::class);
     }
