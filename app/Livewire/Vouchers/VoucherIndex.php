@@ -49,9 +49,11 @@ class VoucherIndex extends Component
             ->where('type','jv')
             ->with('user')
             ->when($this->filters['search'],function(Builder $q){
-                $q->where('manual_id',$this->filters['search']);
-                $q->orWhere('notes','like','%'.$this->filters['search'].'%');
-                $q->orWhereRelation('voucherDetails','narration','like','%'. $this->filters['search'] .'%');
+                $q->where(function(Builder $q){
+                    $q->where('manual_id',$this->filters['search']);
+                    $q->orWhere('notes','like','%'.$this->filters['search'].'%');
+                    $q->orWhereRelation('voucherDetails','narration','like','%'. $this->filters['search'] .'%');
+                });
             })
             ->when($this->filters['start_date'], function (Builder $q) {
                 $q->whereDate('date', '>=', $this->filters['start_date']);
