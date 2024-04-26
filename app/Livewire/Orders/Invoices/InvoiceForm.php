@@ -33,6 +33,10 @@ class InvoiceForm extends Component
     #[On('showInvoiceFormModal')]
     public function show(Order $order)
     {
+        $this->search = '';
+        $this->select_service = [];
+        $this->delivery = 0;
+        $this->parts = [];
         $this->showModal = true;
         $this->order = $order;
     }
