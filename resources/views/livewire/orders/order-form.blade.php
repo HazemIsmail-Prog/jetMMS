@@ -85,13 +85,6 @@
                         </div>
 
                         <div>
-                            <x-label for="tag">{{ __('messages.orderTag') }}</x-label>
-                            <x-input class="w-full py-0" wire:model="form.tag" autocomplete="off" type="text"
-                                id="tag" />
-                            <x-input-error for="form.tag" />
-                        </div>
-
-                        <div>
                             <x-label for="order_description">{{ __('messages.order_description') }}</x-label>
                             <x-input class="w-full py-0" wire:model="form.order_description" autocomplete="off"
                                 type="text" id="order_description" />
@@ -103,6 +96,13 @@
                             <x-input class="w-full py-0" wire:model="form.notes" autocomplete="off" type="text"
                                 id="notes" />
                             <x-input-error for="form.notes" />
+                        </div>
+
+                        <div>
+                            <x-label for="tag">{{ __('messages.orderTag') }}</x-label>
+                            <x-input class="w-1/2 py-0" wire:model="form.tag" autocomplete="off" type="text"
+                                id="tag" />
+                            <x-input-error for="form.tag" />
                         </div>
 
                     </div>
