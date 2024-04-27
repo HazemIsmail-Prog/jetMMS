@@ -15,20 +15,11 @@ class DispatchingIndex extends Component
 {
     public Department $department;
 
-    public function getListeners()
-    {
-        return [
-            // 'commentsUpdated' => '$refresh',
-            // 'invoicesUpdated' => '$refresh',
-            // 'holdOrCancelReasonUpdated' => '$refresh',
-            "echo:departments.{$this->department->id},RefreshDepartmentScreenEvent" => '$refresh',
-        ];
-    }
-
     #[Computed()]
     #[On('commentsUpdated')]
     #[On('invoicesUpdated')]
     #[On('holdOrCancelReasonUpdated')]
+    #[On('echo:departments.{department.id},RefreshDepartmentScreenEvent')] // Alternative working way
     public function orders()
     {
         return Order::query()

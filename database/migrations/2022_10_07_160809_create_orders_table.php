@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('technician_id')->nullable()->constrained('users');
             $table->foreignId('status_id')->nullable()->constrained('statuses');
             $table->foreignId('department_id')->constrained('departments');
-            $table->integer('index')->nullable()->default(0);
+            $table->double('index')->nullable()->default(0);
             $table->date('estimated_start_date')->nullable();
             $table->text('notes')->nullable();
             $table->text('order_description')->nullable();
