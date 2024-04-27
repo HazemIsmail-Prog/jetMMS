@@ -15,6 +15,9 @@
         <div class=" col-span-2">
             @livewire('operations-reports.orders-status-counter', key('orders-status-counter'.rand()))
         </div>
+        <div class=" col-span-2">
+            @livewire('operations-reports.marketing-counter', key('marketing-counter'.rand()))
+        </div>
     </div>
 
 

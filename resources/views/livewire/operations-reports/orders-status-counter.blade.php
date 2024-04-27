@@ -24,7 +24,7 @@
                 <x-th class=" !px-0.5 !text-center" width="7%">{{ __('messages.total') }}</x-th>
             </tr>
         </x-thead>
-        <tbody class=" text-sm">
+        <tbody class=" text-sm" wire:poll.30s>
             @forelse ($this->counters->groupBy('date') as $row)
             <x-tr>
                 <x-td class="!px-0.5">
