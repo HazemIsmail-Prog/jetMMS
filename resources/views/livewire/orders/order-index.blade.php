@@ -44,6 +44,7 @@
     @endif
 
     @livewire('orders.order-form')
+    @livewire('customers.customer-form')
     @livewire('orders.comments.comment-modal')
     @livewire('orders.statuses.status-modal')
     @livewire('orders.details.details-modal')
@@ -153,9 +154,20 @@
                 <x-td>{{ $order->technician->name ?? '-' }}</x-td>
                 <x-td>{!! $order->formated_completed_at !!}</x-td>
                 <x-td>
-                    <div>{{ $order->customer->name }}</div>
-                    <div>{{ $order->phone->number }}</div>
-                    <div>{{ $order->address->full_address }}</div>
+                    <div class=" flex items-start gap-1">
+                        @can('update', $order->customer)
+                        <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                            wire:click="$dispatch('showCustomerFormModal',{customer:{{ $order->customer }}})">
+                            <x-svgs.edit class="h-4 w-4" />
+                        </x-badgeWithCounter>
+                        @endcan
+                        <div class=" flex-1">
+                            <div>{{ $order->customer->name }}</div>
+                            <div>{{ $order->phone->number }}</div>
+                            <div>{{ $order->address->full_address }}</div>
+                        </div>
+
+                    </div>
                 </x-td>
                 <x-td>{{ $order->formated_remaining_amount }}</x-td>
                 <x-td>
