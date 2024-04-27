@@ -84,7 +84,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
             @endcan
 
             @can('view_order_comments', $order)
-            <x-badgeWithCounter :counter="$order->comments_count"
+            <x-badgeWithCounter class="{{$order->unread_comments_count > 0 ? 'bg-red-400 border-red-400 dark:border-red-400 text-white hover:bg-red-400 hover:border-red-400 hover:dark:border-red-400 hover:text-white' : ''}}" :counter="$order->unread_comments_count"
                 wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})">
                 <x-svgs.comment class="h-4 w-4" />
             </x-badgeWithCounter>
