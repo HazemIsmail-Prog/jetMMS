@@ -33,7 +33,7 @@ class OrderObserver
             'user_id' => auth()->id() ?? 1,
         ]);
 
-        RefreshOrderStatusesScreenEvent::dispatch($order->id);
+        broadcast(new RefreshOrderStatusesScreenEvent($order->id))->toOthers();
     }
 
     /**
@@ -52,12 +52,11 @@ class OrderObserver
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            broadcast(new RefreshOrderStatusesScreenEvent($order->id))->toOthers();
 
-            RefreshOrderStatusesScreenEvent::dispatch($order->id);
         }
 
-        RefreshDepartmentScreenEvent::dispatch($order->department_id);
-
+        broadcast(new RefreshDepartmentScreenEvent($order->department_id))->toOthers();
 
         if ($order->isDirty('technician_id') || $order->isDirty('index')) {
             $oldTechnician = User::find($order->getOriginal('technician_id'));
@@ -65,19 +64,21 @@ class OrderObserver
 
             if ($newTechnician) {
                 if ($newTechnician->current_order_for_technician?->id == $order->id) {
-                    RefreshTechnicianScreenEvent::dispatch($newTechnician->id);
+                    broadcast(new RefreshTechnicianScreenEvent($newTechnician->id))->toOthers();
+
                 }
             }
 
             if ($oldTechnician) {
 
                 if (!$oldTechnician->current_order_for_technician) {
-                    RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
+                    broadcast(new RefreshTechnicianScreenEvent($oldTechnician->id))->toOthers();
+
                     return;
                 }
 
                 if ($oldTechnician->current_order_for_technician->id != $order->id && $order->index < $oldTechnician->current_order_for_technician->index) {
-                    RefreshTechnicianScreenEvent::dispatch($oldTechnician->id);
+                    broadcast(new RefreshTechnicianScreenEvent($oldTechnician->id))->toOthers();
                 }
             }
         }

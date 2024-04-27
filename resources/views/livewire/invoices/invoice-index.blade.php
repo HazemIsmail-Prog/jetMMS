@@ -209,24 +209,17 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('services_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('discount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('discount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount_after_discount') <= 0 ? '-' :
-                        number_format($this->invoices->sum('services_amount_after_discount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('discount') <= 0 ? '-' : number_format($this->invoices->sum('discount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount_after_discount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount_after_discount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('internal_parts_amount') <= 0 ? '-' :
                         number_format($this->invoices->sum('internal_parts_amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('external_parts_amount') <= 0 ? '-' :
                         number_format($this->invoices->sum('external_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('delivery_amount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('delivery_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('cash_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->
-                        invoices->sum('knet_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('delivery_amount') <= 0 ? '-' : number_format($this->invoices->sum('delivery_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->invoices->sum('amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->invoices->sum('cash_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->invoices->sum('knet_amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('total_paid_amount') <= 0 ? '-' :
                         number_format($this->invoices->sum('total_paid_amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('remaining_amount') <= 0 ? '-' :

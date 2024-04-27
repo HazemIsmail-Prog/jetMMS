@@ -27,7 +27,8 @@ class CommentModal extends Component
         ");
 
         SetCurrentCommentAsReadJob::dispatch($this->order)
-            ->afterResponse($this->dispatch('commentsUpdated'));
+            // ->afterResponse($this->dispatch('commentsUpdated'))
+            ;
     }
 
 
