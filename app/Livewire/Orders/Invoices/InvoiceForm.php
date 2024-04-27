@@ -134,7 +134,7 @@ class InvoiceForm extends Component
             $invoice = Invoice::create([
                 'order_id' => $this->order->id,
                 'user_id' => auth()->id(),
-                'delivery' => $this->delivery,
+                'delivery' =>  $this->delivery == '' ? 0 : $this->delivery,
                 'payment_status' => collect($this->selected_services)->sum('service_total') > 0 ? 'pending' : 'free',
             ]);  // Observer Applied
             foreach ($this->selected_services as $row) {
