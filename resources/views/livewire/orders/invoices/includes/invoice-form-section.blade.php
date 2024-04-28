@@ -56,12 +56,12 @@
                         placeholder="{{ __('messages.amount') }}" />
                     <p>{{ number_format($parts[$index]['total'], 3) }}</p>
                 </div>
-                <x-select required class="w-full p-1 text-xs"
+                {{-- <x-select required class="w-full p-1 text-xs"
                     wire:model="parts.{{ $index }}.type">
                     <option value="">{{ __('messages.part_source') }}</option>
                     <option value="internal">{{ __('messages.internal') }}</option>
                     <option value="external">{{ __('messages.external') }}</option>
-                </x-select>
+                </x-select> --}}
                 <button type="button" class="p-1" wire:click="deletePartRow({{ $index }})">
                     <x-svgs.trash class="w-4 h-4 text-red-600" />
                 </button>

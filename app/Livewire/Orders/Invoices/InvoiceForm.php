@@ -149,7 +149,8 @@ class InvoiceForm extends Component
                     'name' => $row['name'],
                     'quantity' => $row['quantity'],
                     'price' => $row['price'],
-                    'type' => $row['type'],
+                    // 'type' => $row['type'], // Old Method with internal and external selection
+                    'type' => 'internal',
                 ]);
             }
             CreateInvoiceVoucher::createVoucher($invoice);
