@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Cashier;
 
+use App\Models\Department;
 use App\Models\Payment;
 use App\Models\Title;
 use App\Models\User;
@@ -25,6 +26,7 @@ class KnetCollection extends Component
                 'start_created_at' => '',
                 'end_created_at' => '',
                 'technician_id' => [],
+                'department_id' => [],
             ];
     }
 
@@ -33,6 +35,16 @@ class KnetCollection extends Component
     {
         return User::query()
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::query()
+            ->where('is_service', 1)
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();
@@ -50,6 +62,13 @@ class KnetCollection extends Component
                 $q->whereHas('invoice',function(Builder $q){
                     $q->whereHas('order',function(Builder $q){
                         $q->whereIn('technician_id',$this->filters['technician_id']);
+                    });
+                });
+            })
+            ->when($this->filters['department_id'], function (Builder $q) {
+                $q->whereHas('invoice',function(Builder $q){
+                    $q->whereHas('order',function(Builder $q){
+                        $q->whereIn('department_id',$this->filters['department_id']);
                     });
                 });
             })

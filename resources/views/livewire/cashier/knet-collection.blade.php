@@ -27,6 +27,7 @@
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
+            <option value="500">500</option>
         </x-select>
         <div class=" flex-1">{{ $this->unCollectedPayments->links() }}</div>
     </div>
@@ -40,6 +41,12 @@
             <x-label for="technician">{{ __('messages.technician') }}</x-label>
             <x-searchable-select id="technician" class="!py-[5px]" :list="$this->technicians"
                 wire:model.live="filters.technician_id" multipule />
+        </div>
+
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="filters.department_id" multipule />
         </div>
 
         <div>
@@ -59,6 +66,7 @@
             <tr>
                 <x-th>{{ __('messages.date') }}</x-th>
                 <x-th>{{ __('messages.technician') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
                 <x-th>{{ __('messages.receiver') }}</x-th>
                 <x-th>{{ __('messages.knet_ref_number') }}</x-th>
                 <x-th>{{ __('messages.amount') }}</x-th>
@@ -74,6 +82,7 @@
                         wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{
                         $payment->invoice->order->technician->name }}</span>
                 </x-td>
+                <x-td>{{ $payment->invoice->order->department->name }}</x-td>
                 <x-td>{{ $payment->user->name }}</x-td>
                 <x-td>{{ $payment->knet_ref_number }}</x-td>
                 <x-td>{{ $payment->formated_amount }}</x-td>
