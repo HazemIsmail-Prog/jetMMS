@@ -103,6 +103,13 @@ class KnetCollection extends Component
         }
     }
 
+    public function changeDate($newDate,Payment $payment) {
+        $payment->update([
+            'created_at' => $newDate,
+            'updated_at' => now(),
+        ]);
+    }
+
     public function render()
     {
         return view('livewire.cashier.knet-collection')->title(__('messages.knet_collection'));

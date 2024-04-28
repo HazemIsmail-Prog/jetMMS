@@ -75,8 +75,23 @@
         </x-thead>
         <tbody>
             @foreach ($this->unCollectedPayments as $payment)
-            <x-tr>
-                <x-td>{!! $payment->formated_created_at !!}</x-td>
+            <x-tr wire:key="payment-{{$payment->id}}-{{rand()}}">
+                <x-td x-data="{editing:false,date:{{ @json_encode($payment->created_at->format('Y-m-d H:i')) }}}">
+                    <div x-show="!editing" class="flex items-center gap-2">
+                        <div>{!! $payment->formated_created_at !!}</div>
+                        <x-badgeWithCounter x-show="!editing" x-on:click="editing = true"
+                            title="{{ __('messages.edit') }}">
+                            <x-svgs.edit class="h-4 w-4" />
+                        </x-badgeWithCounter>
+                    </div>
+                    <form x-show="editing" class="flex items-center gap-2"
+                        wire:submit.prevent="changeDate($refs.date.value,{{$payment}})">
+                        <x-input required x-ref="date" x-model="date" type="datetime-local" />
+                        <x-button x-on:click="editing = false">{{__('messages.save')}}</x-button>
+                        <x-secondary-button x-on:click="editing = false" type="button">{{__('messages.cancel')}}
+                        </x-secondary-button>
+                    </form>
+                </x-td>
                 <x-td>
                     <span class=" cursor-pointer"
                         wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{
@@ -110,7 +125,4 @@
         {{ __('messages.no_uncollected_payments') }}
     </h2>
     @endif
-
-
-
 </div>
