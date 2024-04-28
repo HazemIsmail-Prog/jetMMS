@@ -55,6 +55,7 @@ class KnetCollection extends Component
     {
         return Payment::query()
             ->with('invoice.order.technician')
+            ->with('invoice.order.department')
             ->with('user')
             ->where('is_collected', false)
             ->where('method', 'knet')
