@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Order;
+use App\Models\Status;
 use Livewire\Form;
 
 class OrderForm extends Form
@@ -56,10 +57,10 @@ class OrderForm extends Form
         if ($this->technician_id) {
             $order->update([
                 'technician_id' => $this->technician_id,
-                'status_id' => 2,
+                'status_id' => Status::DESTRIBUTED,
                 'index' => Order::query()
                     ->where('technician_id', $this->technician_id)
-                    ->where('status_id', 2)
+                    ->whereNotIn('status_id', [Status::COMPLETED,Status::CANCELLED])
                     ->max('index')
                     + 1,
             ]);
