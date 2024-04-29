@@ -48,22 +48,23 @@ class OrderForm extends Form
             $this->updated_by = auth()->id();
             $this->status_id = 1;
             $order = Order::updateOrCreate(['id' => $this->id], $this->except('technician_id'));
+            if ($this->technician_id) {
+                $order->update([
+                    'technician_id' => $this->technician_id,
+                    'status_id' => Status::DESTRIBUTED,
+                    'index' => Order::query()
+                        ->where('technician_id', $this->technician_id)
+                        ->whereNotIn('status_id', [Status::COMPLETED,Status::CANCELLED])
+                        ->max('index')
+                        + 10,
+                ]);
+            }
         } else {
             // Edit State
             $this->updated_by = auth()->id();
             $order = Order::updateOrCreate(['id' => $this->id], $this->except('technician_id','creted_by','status_id'));
         }
 
-        if ($this->technician_id) {
-            $order->update([
-                'technician_id' => $this->technician_id,
-                'status_id' => Status::DESTRIBUTED,
-                'index' => Order::query()
-                    ->where('technician_id', $this->technician_id)
-                    ->whereNotIn('status_id', [Status::COMPLETED,Status::CANCELLED])
-                    ->max('index')
-                    + 1,
-            ]);
-        }
+
     }
 }
