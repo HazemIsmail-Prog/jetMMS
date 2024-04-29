@@ -20,6 +20,7 @@ class PartInvoiceIndex extends Component
         return PartInvoice::query()
             ->with('supplier')
             ->with('contact')
+            ->latest()
             ->paginate(15);
     }
 

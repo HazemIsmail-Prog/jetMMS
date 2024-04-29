@@ -5,7 +5,6 @@ namespace App\Livewire\AccountingReports;
 use App\Models\Account;
 use App\Models\CostCenter;
 use App\Models\User;
-use App\Models\VoucherDetail;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -21,7 +20,7 @@ class AccountStatement extends Component
     public function mount()
     {
         $this->start_date = today()
-            ->subMonth(1)
+            ->subDay(1)
             ->format('Y-m-d');
         $this->end_date = today()->format('Y-m-d');
     }
