@@ -23,7 +23,7 @@
 
 </head>
 
-<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh overflow-hidden">
+<body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh">
 
     <div class="flex h-dvh mx-auto dark:bg-gray-900">
 
