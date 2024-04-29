@@ -62,7 +62,7 @@
         </div>
         <div>
             <x-label for="customer_phone">{{ __('messages.customer_phone') }}</x-label>
-            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="customer_phone"
+            <x-input dir="ltr" type="number" class="w-36 min-w-full text-center py-0" id="customer_phone"
                 wire:model.live="filters.customer_phone" />
         </div>
         <div>

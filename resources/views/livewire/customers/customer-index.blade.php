@@ -45,7 +45,7 @@
         </div>
         <div>
             <x-label for="phone">{{ __('messages.phone') }}</x-label>
-            <x-input id="phone" wire:model.live="filters.phone"
+            <x-input type="number" id="phone" wire:model.live="filters.phone"
                 class="w-full py-0" dir="ltr" />
         </div>
         <div>
