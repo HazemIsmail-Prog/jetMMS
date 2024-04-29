@@ -88,7 +88,12 @@ class DispatchingIndex extends Component
                     $current_order->index = $new_index;
                 } else {
                     // open reason modal
-                    $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold', $new_index);
+                    $current_order->index = $new_index;
+                    $current_order->technician_id = null;
+                    $current_order->status_id = Status::ON_HOLD;
+                    // $current_order->reason = $this->reason;
+                    // $current_order->save();
+                    // $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold', $new_index);
                 }
                 break;
 

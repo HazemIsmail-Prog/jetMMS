@@ -103,7 +103,11 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
 
             @if ($order->can_hold_order)
             <x-badgeWithCounter
-                wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})">
+                {{-- wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})" --}}
+                wire:confirm="{{__('messages.are_u_sure')}}"
+                wire:click="dragEnd({{ $order->id }}, 'hold', null, {{ $order->index }})"
+                
+                >
                 <x-svgs.clock class="h-4 w-4" />
             </x-badgeWithCounter>
             @endif
