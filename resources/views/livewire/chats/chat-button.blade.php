@@ -1,6 +1,11 @@
 <div>
     <div x-on:click="$dispatch('showChatModal')"
-        class=" absolute bottom-10 end-7 {{ $this->total_unread_messages > 0 ? 'animate-bounce' : '' }}   z-50 ">
+        class=" 
+        absolute 
+        bottom-10 
+        end-7 
+        {{-- {{ $this->total_unread_messages > 0 ? 'animate-bounce' : '' }}  --}}
+        z-50 ">
 
         <button type="button"
             class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white dark:text-gray-800 bg-gray-800 dark:bg-gray-200 hover:bg-gray-700 dark:hover:bg-white rounded-lg">
