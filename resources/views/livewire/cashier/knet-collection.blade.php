@@ -113,6 +113,7 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
+                <x-th></x-th>
                 <x-th>{{ __('messages.total') }}</x-th>
                 <x-th>{{ number_format($this->unCollectedPayments->sum('amount'), 3) }}</x-th>
                 <x-th></x-th>
