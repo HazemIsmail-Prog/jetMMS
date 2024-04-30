@@ -38,9 +38,9 @@ class CashCollection extends Component
             ->where('is_collected', false)
             ->where('method', 'cash')
             ->when($this->filters['technician_id'], function (Builder $q) {
-                $q->whereHas('invoice',function(Builder $q){
-                    $q->whereHas('order',function(Builder $q){
-                        $q->whereIn('technician_id',$this->filters['technician_id']);
+                $q->whereHas('invoice', function (Builder $q) {
+                    $q->whereHas('order', function (Builder $q) {
+                        $q->whereIn('technician_id', $this->filters['technician_id']);
                     });
                 });
             })
@@ -64,23 +64,26 @@ class CashCollection extends Component
             ->get();
     }
 
-    public function technicianClicked($technician_id) {
+    public function technicianClicked($technician_id)
+    {
         $this->filters['technician_id'] = [$technician_id];
     }
 
     public function collect_payment(Payment $payment)
     {
-        DB::beginTransaction();
-        try {
-            $payment->update([
-                'is_collected' => true,
-                'collected_by' => auth()->id(),
-            ]);
-            CreateInvoicePaymentVoucher::createCashPaymentVoucher($payment);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
+        if (!$payment->is_collected) {
+            DB::beginTransaction();
+            try {
+                $payment->update([
+                    'is_collected' => true,
+                    'collected_by' => auth()->id(),
+                ]);
+                CreateInvoicePaymentVoucher::createCashPaymentVoucher($payment);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
         }
     }
 
