@@ -22,9 +22,8 @@
     </span>
     @endteleport
 
-    {{-- <div wire:loading>loading...</div> --}}
-
-    <div x-data="{
+    <div 
+    {{-- x-data="{
                     hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]'),
                     alpineLoaded: false
                 }" x-init="() => {
@@ -32,16 +31,16 @@
                 $watch('hiddenContainers', value => {
                     localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
                 });
-            }"
+            }" --}}
         class="relative flex gap-1 h-[calc(100dvh-110px)] lg:h-[calc(100dvh-174px)] text-gray-700 dark:text-slate-400">
 
-        <div x-show="!alpineLoaded">
+        {{-- <div x-show="!alpineLoaded">
             <x-loading-spinner class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-        </div>
+        </div> --}}
 
 
         {{-- Hidden Container --}}
-        <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 shrink-0 flex flex-col gap-1 ">
+        {{-- <div x-cloak x-show="hiddenContainers.length > 0" class="h-full w-24 shrink-0 flex flex-col gap-1 ">
             <div @click="hiddenContainers= []"
                 class="flex items-center justify-between rounded-md cursor-pointer h-10 p-4 bg-gray-300 dark:bg-gray-700">
                 <span class="block text-sm font-semibold uppercase truncate">{{ __('messages.hidden') }}</span>
@@ -55,7 +54,7 @@
                     </div>
                 </template>
             </div>
-        </div>
+        </div> --}}
 
 
         {{-- Unassigned --}}

@@ -1,6 +1,10 @@
 @props(['title', 'list', 'shift_id'])
 
-<div x-cloak x-show="!hiddenContainers.find(obj => obj.id === 'shift-{{ $shift_id }}');" id="shift-{{ $shift_id }}" class="flex flex-col h-full gap-1">
+<div 
+    {{-- x-cloak 
+    x-show="!hiddenContainers.find(obj => obj.id === 'shift-{{ $shift_id }}');"  --}}
+    id="shift-{{ $shift_id }}" 
+    class="flex flex-col h-full gap-1">
 
     <x-orders-container-header id="shift-{{ $shift_id }}" title="{{ $title }}" />
 

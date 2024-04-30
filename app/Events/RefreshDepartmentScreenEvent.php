@@ -20,16 +20,16 @@ class RefreshDepartmentScreenEvent implements ShouldBroadcast
      */
     public function __construct(
         public $departmentID,
-        public $orderID = null,
+        // public $orderID = null,
     ) {
     }
 
-    public function broadcastWith() : array {
-        return [
-            'departmentID' => $this->departmentID,
-            'orderID' => $this->orderID,
-        ];
-    }
+    // public function broadcastWith() : array {
+    //     return [
+    //         'departmentID' => $this->departmentID,
+    //         'orderID' => $this->orderID,
+    //     ];
+    // }
     /**
      * Get the channels the event should broadcast on.
      *

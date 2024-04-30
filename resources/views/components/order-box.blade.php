@@ -36,27 +36,21 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
             {{ $order->formated_id }}
         </div>
-        
+
         @if (!$order->in_progress)
-        <div x-data="{ selectedTechnician:{{ @json_encode($order->technician_id) }} }" class="flex items-center my-1 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700">
-            <form class="w-full" @submit.prevent="$wire.dragEnd({{$order['id']}},selectedTechnician,null,null)">
-                <x-select 
-                    x-model="selectedTechnician"  
-                    x-on:change="setTimeout(() => $refs.button.click(), 100)"
-                    class="technician_select !h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700 ">
-                    @if ($order->status_id != 2)
-                    <option value="">---</option>
-                    @endif
-                    @foreach ($this->technicians->sortBy('name') as $technician)
-                    <option value="{{ $technician->id }}">
-                        {{ $technician->name }}</option>
-                    @endforeach
-                </x-select>
-                <button class=" hidden" x-ref="button"></button>
-            </form>
+        <div class="flex items-center my-1 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700">
+            <x-select wire:change="dragEnd({{$order->id}}, $event.target.value, null, null)"
+                class="technician_select !h-auto text-start border-none w-full focus:ring-0 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700 ">
+                @if ($order->status_id != 2)
+                <option value="">---</option>
+                @endif
+                @foreach ($this->technicians->sortBy('name') as $technician)
+                <option @selected($technician->id == $order->technician_id) value="{{ $technician->id }}">
+                    {{ $technician->name }}</option>
+                @endforeach
+            </x-select>
         </div>
         @endif
-
 
         @if ($order->order_description)
         <div class="flex items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
@@ -84,7 +78,9 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
             @endcan
 
             @can('view_order_comments', $order)
-            <x-badgeWithCounter class="{{$order->unread_comments_count > 0 ? 'bg-red-400 border-red-400 dark:border-red-400 text-white hover:bg-red-400 hover:border-red-400 hover:dark:border-red-400 hover:text-white' : ''}}" :counter="$order->unread_comments_count"
+            <x-badgeWithCounter
+                class="{{$order->unread_comments_count > 0 ? 'bg-red-400 border-red-400 dark:border-red-400 text-white hover:bg-red-400 hover:border-red-400 hover:dark:border-red-400 hover:text-white' : ''}}"
+                :counter="$order->unread_comments_count"
                 wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})">
                 <x-svgs.comment class="h-4 w-4" />
             </x-badgeWithCounter>
@@ -102,12 +98,10 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         <div class=" flex gap-2 items-center">
 
             @if ($order->can_hold_order)
-            <x-badgeWithCounter
-                {{-- wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})" --}}
-                wire:confirm="{{__('messages.are_u_sure')}}"
-                wire:click="dragEnd({{ $order->id }}, 'hold', null, {{ $order->index }})"
-                
-                >
+            <x-badgeWithCounter {{--
+                wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})"
+                --}} wire:confirm="{{__('messages.are_u_sure')}}"
+                wire:click="dragEnd({{ $order->id }}, 'hold', null, {{ $order->index }})">
                 <x-svgs.clock class="h-4 w-4" />
             </x-badgeWithCounter>
             @endif
