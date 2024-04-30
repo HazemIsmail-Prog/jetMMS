@@ -22,6 +22,8 @@
     </span>
     @endteleport
 
+    <div wire:loading>loading...</div>
+
     <div x-data="{
                     hiddenContainers: JSON.parse(localStorage.getItem('hiddenContainers{{ $department->id }}') || '[]'),
                     alpineLoaded: false
