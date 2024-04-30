@@ -13,16 +13,18 @@ class InvoiceCard extends Component
 {
     public Invoice $invoice;
 
-    public function mount() {
+    public function mount()
+    {
         $this->invoice->load('invoice_part_details');
     }
 
     #[Computed()]
-    public function payments() {
+    public function payments()
+    {
         return Payment::query()
-        ->where('invoice_id',$this->invoice->id)
-        ->with('user')
-        ->get();
+            ->where('invoice_id', $this->invoice->id)
+            ->with('user')
+            ->get();
     }
 
     public function deleteInvoice(Invoice $invoice)
@@ -43,10 +45,12 @@ class InvoiceCard extends Component
     {
         DB::beginTransaction();
         try {
-            $payment->delete(); // Observer Applied
-            $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
-            DB::commit();
-            $this->dispatch('paymentsUpdated');
+            if (!$payment->is_collected) {
+                $payment->delete(); // Observer Applied
+                $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
+                DB::commit();
+                $this->dispatch('paymentsUpdated');
+            }
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
