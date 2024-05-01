@@ -85,10 +85,10 @@ class DispatchingIndex extends Component
             case 'hold': //dragged to on hold box or hold button clicked
                 if ($source_id == 'hold') {
                     // no need for reason because order already on hold (just change the index)
-                    $current_order->index = $new_index ?? $this->department->orders()->where('status_id',Status::ON_HOLD)->min('index') - 10;
+                    $current_order->index = $new_index;
                 } else {
                     // open reason modal
-                    $current_order->index = $new_index ?? $this->department->orders()->where('status_id',Status::ON_HOLD)->min('index') - 10;
+                    $current_order->index = $new_index;
                     $current_order->technician_id = null;
                     $current_order->status_id = Status::ON_HOLD;
                     // $current_order->reason = $this->reason;
