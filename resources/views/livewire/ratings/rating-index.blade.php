@@ -92,7 +92,7 @@
                     <x-td>{{ $order->customer->name }}</x-td>
                     <x-td>{{ $order->phone->number }}</x-td>
                     <x-td>{!! $order->formated_completed_at !!}</x-td>
-                    <x-td>{{ @$order->rating->notes }}</x-td>
+                    <x-td class=" !whitespace-normal">{{ @$order->rating->notes }}</x-td>
                     <x-td>
                         <div class=" flex items-center justify-start gap-2">
                             <x-badgeWithCounter :counter="@$order->rating->rating" title="{{ __('messages.rating') }}">
