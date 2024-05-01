@@ -18,6 +18,7 @@ class OrderForm extends Form
     public $estimated_start_date;
     public $order_description;
     public $notes;
+    public $index = 0;
     public $tag;
     public $created_by;
     public $updated_by;
@@ -47,6 +48,7 @@ class OrderForm extends Form
             $this->created_by = auth()->id();
             $this->updated_by = auth()->id();
             $this->status_id = 1;
+            $this->index = Order::where('department_id',$this->department_id)->where('status_id',Status::CREATED)->min('index') - 10;
             $order = Order::updateOrCreate(['id' => $this->id], $this->except('technician_id'));
             if ($this->technician_id) {
                 $order->update([
