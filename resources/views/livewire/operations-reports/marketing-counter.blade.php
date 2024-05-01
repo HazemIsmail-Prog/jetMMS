@@ -42,7 +42,7 @@
             </x-tr>
             @empty
             <x-tr>
-                <td colspan="9">{{ __('messages.no_marketings') }}</td>
+                <td colspan="5" class=" text-center">{{ __('messages.no_marketings') }}</td>
             </x-tr>
             @endforelse
         </tbody>

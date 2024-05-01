@@ -554,6 +554,7 @@ return [
     'desc_en' => 'الوصف بالانجليزي',
     'edit_permission' => 'تعديل صلاحية',
     'details_for_order_number' => 'تفاصيل الطلب رقم',
+    'no_marketings' => 'لا يوجد تسويق',
 
 
 
