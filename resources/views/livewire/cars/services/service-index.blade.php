@@ -28,7 +28,7 @@
                             <x-tr>
                                 <x-td>{{ $service->date->format('d-m-Y') }}</x-td>
                                 <x-td>{{ $service->notes }}</x-td>
-                                <x-td>{{ $service->cost }}</x-td>
+                                <x-td>{{ number_format($service->cost,3) }}</x-td>
                                 <x-td>
                                     <div class="flex items-center justify-end gap-2">
 
