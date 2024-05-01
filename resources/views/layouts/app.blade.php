@@ -39,8 +39,8 @@
 
     {{-- Chatting --}}
     {{-- @persist('chats') --}}
-    {{-- @livewire('chats.chat-button') --}}
-    {{-- @livewire('chats.chat-modal') --}}
+    @livewire('chats.chat-button')
+    @livewire('chats.chat-modal')
     {{-- @endpersist --}}
 
     
