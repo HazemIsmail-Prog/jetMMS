@@ -9,7 +9,6 @@ use Livewire\Form;
 class OrderForm extends Form
 {
     public $id;
-    public $status_id;
     public $customer_id;
     public $phone_id;
     public $address_id;
@@ -47,8 +46,6 @@ class OrderForm extends Form
             // Create State
             $this->created_by = auth()->id();
             $this->updated_by = auth()->id();
-            $this->status_id = 1;
-            $this->index = Order::where('department_id',$this->department_id)->where('status_id',Status::CREATED)->min('index') - 10;
             $order = Order::updateOrCreate(['id' => $this->id], $this->except('technician_id'));
             if ($this->technician_id) {
                 $order->update([

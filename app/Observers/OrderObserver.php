@@ -18,9 +18,9 @@ class OrderObserver
 
         $order->index = Order::query()
             ->where('department_id', $order->department_id)
-            ->where('status_id', 1)
+            ->where('status_id', Status::CREATED)
             ->min('index')
-            - 1;
+            - 10;
     }
 
     public function created(Order $order): void
