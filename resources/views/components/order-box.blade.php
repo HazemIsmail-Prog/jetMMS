@@ -37,6 +37,10 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
             {{ $order->formated_id }}
         </div>
 
+        <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
+            {{ $order->index }}
+        </div>
+
         @if (!$order->in_progress)
         <div class="flex items-center my-1 bg-gray-100 text-xs font-medium p-0 rounded dark:bg-gray-700">
             <x-select wire:change="dragEnd({{$order->id}}, $event.target.value, null, null)"
