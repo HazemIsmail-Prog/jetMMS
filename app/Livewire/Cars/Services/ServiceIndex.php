@@ -7,11 +7,12 @@ use App\Models\CarService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class ServiceIndex extends Component
 {
-    use WithPagination;
+    use WithPagination , WithoutUrlPagination;
 
     public Car $car;
     public $showModal = false;
@@ -20,6 +21,7 @@ class ServiceIndex extends Component
     public function show(Car $car)
     {
         $this->car = $car;
+        $this->resetPage();
         $this->showModal = true;
     }
 

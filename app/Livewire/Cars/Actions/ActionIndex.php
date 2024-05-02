@@ -7,11 +7,12 @@ use App\Models\CarAction;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class ActionIndex extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
 
     public Car $car;
     public $showModal = false;
@@ -19,6 +20,7 @@ class ActionIndex extends Component
     #[On('showCarActionsModal')]
     public function show(Car $car) {
         $this->car = $car;
+        $this->resetPage();
         $this->showModal = true;
         
     }
