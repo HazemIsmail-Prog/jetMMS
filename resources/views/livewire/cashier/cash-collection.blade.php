@@ -39,6 +39,12 @@
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
         <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="filters.department_id" multipule />
+        </div>
+
+        <div>
             <x-label for="technician">{{ __('messages.technician') }}</x-label>
             <x-searchable-select id="technician" class="!py-[5px]" :list="$this->technicians"
                 wire:model.live="filters.technician_id" multipule />
@@ -60,6 +66,7 @@
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.date') }}</x-th>
+                <x-th>{{ __('messages.department') }}</x-th>
                 <x-th>{{ __('messages.technician') }}</x-th>
                 <x-th>{{ __('messages.receiver') }}</x-th>
                 <x-th>{{ __('messages.amount') }}</x-th>
@@ -70,6 +77,7 @@
             @foreach ($this->unCollectedPayments as $payment)
             <x-tr>
                 <x-td>{!! $payment->formated_created_at !!}</x-td>
+                <x-td>{{ $payment->invoice->order->technician->department->name }}</x-td>
                 <x-td>
                     <span class=" cursor-pointer" wire:click="technicianClicked({{ $payment->invoice->order->technician_id }})">{{ $payment->invoice->order->technician->name }}</span>
                 </x-td>
@@ -84,6 +92,7 @@
         </tbody>
         <x-tfoot>
             <tr>
+                <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th>{{ __('messages.total') }}</x-th>

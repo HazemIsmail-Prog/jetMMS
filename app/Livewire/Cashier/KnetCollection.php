@@ -31,20 +31,20 @@ class KnetCollection extends Component
     }
 
     #[Computed()]
-    public function technicians()
-    {
-        return User::query()
-            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
-            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->orderBy('name')
-            ->get();
-    }
-
-    #[Computed()]
     public function departments()
     {
         return Department::query()
             ->where('is_service', 1)
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+    
+    #[Computed()]
+    public function technicians()
+    {
+        return User::query()
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();
@@ -59,13 +59,7 @@ class KnetCollection extends Component
             ->with('user')
             ->where('is_collected', false)
             ->where('method', 'knet')
-            ->when($this->filters['technician_id'], function (Builder $q) {
-                $q->whereHas('invoice',function(Builder $q){
-                    $q->whereHas('order',function(Builder $q){
-                        $q->whereIn('technician_id',$this->filters['technician_id']);
-                    });
-                });
-            })
+
             ->when($this->filters['department_id'], function (Builder $q) {
                 $q->whereHas('invoice',function(Builder $q){
                     $q->whereHas('order',function(Builder $q){
@@ -73,12 +67,23 @@ class KnetCollection extends Component
                     });
                 });
             })
+
+            ->when($this->filters['technician_id'], function (Builder $q) {
+                $q->whereHas('invoice',function(Builder $q){
+                    $q->whereHas('order',function(Builder $q){
+                        $q->whereIn('technician_id',$this->filters['technician_id']);
+                    });
+                });
+            })
+
             ->when($this->filters['start_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '>=', $this->filters['start_created_at']);
             })
+
             ->when($this->filters['end_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
+            
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
     }
