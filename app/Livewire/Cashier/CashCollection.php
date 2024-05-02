@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CashCollection extends Component
 {
+
+    use WithPagination;
 
     public $filters;
     public $perPage = 10;

@@ -11,9 +11,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class KnetCollection extends Component
 {
+
+    use WithPagination;
 
     public $filters;
     public $perPage = 10;
@@ -39,7 +42,7 @@ class KnetCollection extends Component
             ->orderBy('name')
             ->get();
     }
-    
+
     #[Computed()]
     public function technicians()
     {
@@ -61,17 +64,17 @@ class KnetCollection extends Component
             ->where('method', 'knet')
 
             ->when($this->filters['department_id'], function (Builder $q) {
-                $q->whereHas('invoice',function(Builder $q){
-                    $q->whereHas('order',function(Builder $q){
-                        $q->whereIn('department_id',$this->filters['department_id']);
+                $q->whereHas('invoice', function (Builder $q) {
+                    $q->whereHas('order', function (Builder $q) {
+                        $q->whereIn('department_id', $this->filters['department_id']);
                     });
                 });
             })
 
             ->when($this->filters['technician_id'], function (Builder $q) {
-                $q->whereHas('invoice',function(Builder $q){
-                    $q->whereHas('order',function(Builder $q){
-                        $q->whereIn('technician_id',$this->filters['technician_id']);
+                $q->whereHas('invoice', function (Builder $q) {
+                    $q->whereHas('order', function (Builder $q) {
+                        $q->whereIn('technician_id', $this->filters['technician_id']);
                     });
                 });
             })
@@ -83,12 +86,13 @@ class KnetCollection extends Component
             ->when($this->filters['end_created_at'], function (Builder $q) {
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
-            
+
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
     }
 
-    public function technicianClicked($technician_id) {
+    public function technicianClicked($technician_id)
+    {
         $this->filters['technician_id'] = [$technician_id];
     }
 
@@ -108,7 +112,8 @@ class KnetCollection extends Component
         }
     }
 
-    public function changeDate($newDate,Payment $payment) {
+    public function changeDate($newDate, Payment $payment)
+    {
         $payment->update([
             'created_at' => $newDate,
             'updated_at' => now(),

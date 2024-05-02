@@ -16,11 +16,9 @@
     </span>
     @endteleport
 
-    @if ($this->unCollectedPayments->hasPages())
     <x-slot name="footer">
         <span id="pagination"></span>
     </x-slot>
-
     @teleport('#pagination')
     <div class=" flex items-center justify-between gap-2">
         <x-select wire:model.live="perPage">
@@ -30,10 +28,11 @@
             <option value="100">100</option>
             <option value="500">500</option>
         </x-select>
+        @if ($this->unCollectedPayments->hasPages())
         <div class=" flex-1">{{ $this->unCollectedPayments->links() }}</div>
+        @endif
     </div>
     @endteleport
-    @endif
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

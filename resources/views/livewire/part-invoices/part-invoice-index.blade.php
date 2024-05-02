@@ -23,7 +23,6 @@
     </span>
     @endteleport
 
-    @if ($this->part_invoices->hasPages())
     <x-slot name="footer">
         <span id="pagination"></span>
     </x-slot>
@@ -36,10 +35,11 @@
             <option value="100">100</option>
             <option value="500">500</option>
         </x-select>
+        @if ($this->part_invoices->hasPages())
         <div class=" flex-1">{{ $this->part_invoices->links() }}</div>
+        @endif
     </div>
     @endteleport
-    @endif
 
     @livewire('part_invoices.part_invoice-form')
 
