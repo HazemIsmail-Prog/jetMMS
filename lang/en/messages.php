@@ -534,6 +534,7 @@ return [
     'edit_permission' => 'Edit Permission',
     'details_for_order_number' => 'Details of order #',
     'no_marketings' => 'No Marketings',
+    'has_active_orders' => 'Has Active Orders',
 
 
 

@@ -105,6 +105,9 @@
                 </x-td>
                 <x-td>{{ $user->shift->name ?? '-' }}</x-td>
                 <x-td>
+                    @if ($user->has_active_orders)
+                    <div class=" text-red-500">{{__('messages.has_active_orders')}}</div>
+                    @else
                     <label wire:change="change_status({{$user->id}})"
                         class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" @if($user->active) checked @endif class="sr-only peer">
@@ -112,6 +115,7 @@
                             class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
                         </div>
                     </label>
+                    @endif
                 </x-td>
                 <x-td>
                     <div class="flex items-center justify-end gap-2">

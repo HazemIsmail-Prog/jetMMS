@@ -191,6 +191,11 @@ class User extends Authenticatable
         };
     }
 
+    public function getHasActiveOrdersAttribute()
+    {
+        return $this->orders_technician()->whereNotIn('status_id',[Status::COMPLETED])->count() > 0;
+    }
+
     public function scopeActiveTechniciansPerDepartment($query, $department_id)
     {
         return $query =  $this
