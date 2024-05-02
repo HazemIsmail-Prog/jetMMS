@@ -1,5 +1,14 @@
 @props(['order'])
 
+@php
+    if($order->estimated_start_date > today())
+    {
+        $color = '#000000';
+    }else{
+        $color = $order->status->color;
+    }
+@endphp
+
 <div 
 x-on:dblclick="$dispatch('showDetailsModal',{order:{{$order->id}}})"
 wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}" class="
@@ -11,7 +20,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
     p-0 lg:p-0
     cursor-pointer
     rounded-lg
-    " style="border-color: {{ $order->status->color }};background: {{ $order->status->color }};">
+    " style="border-color: {{ $color }};background: {{ $color }};">
 
     <div wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})"
         class="block lg:hidden text-center text-xs font-medium select-none">
@@ -38,7 +47,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         </div>
 
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
-            {{ $order->index }}
+            {!! $order->formated_created_at !!}
         </div>
 
         @if (!$order->in_progress)
