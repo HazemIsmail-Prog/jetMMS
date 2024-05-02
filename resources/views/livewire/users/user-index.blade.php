@@ -105,7 +105,7 @@
                 </x-td>
                 <x-td>{{ $user->shift->name ?? '-' }}</x-td>
                 <x-td>
-                    @if ($user->has_active_orders)
+                    @if ($user->has_active_orders && $user->active)
                     <div class=" text-red-500">{{__('messages.has_active_orders')}}</div>
                     @else
                     <label wire:change="change_status({{$user->id}})"
