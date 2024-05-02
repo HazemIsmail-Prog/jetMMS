@@ -22,6 +22,14 @@ class InvoiceIndex extends Component
     public $filters;
     public $perPage = 10;
 
+    public function updatedPerPage() {
+        $this->resetPage();
+    }
+
+    public function updatedFilters() {
+        $this->resetPage();
+    }
+
 
     public function mount()
     {
@@ -40,11 +48,6 @@ class InvoiceIndex extends Component
                 'customer_id' => '',
                 'payment_status' => '',
             ];
-    }
-
-    public function updatedFilters()
-    {
-        $this->resetPage();
     }
 
     public function getData()

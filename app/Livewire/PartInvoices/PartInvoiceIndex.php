@@ -20,6 +20,14 @@ class PartInvoiceIndex extends Component
     public $filters;
     public $perPage = 10;
 
+    public function updatedPerPage() {
+        $this->resetPage();
+    }
+
+    public function updatedFilters() {
+        $this->resetPage();
+    }
+
 
     public function mount()
     {
