@@ -217,7 +217,7 @@
                         number_format($this->invoices->sum('internal_parts_amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('external_parts_amount') <= 0 ? '-' :
                         number_format($this->invoices->sum('external_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('delivery_amount') <= 0 ? '-' : number_format($this->invoices->sum('delivery_amount') , 3) }}</x-th>
+                <x-th class=" !text-right">{{ $this->invoices->sum('delivery') <= 0 ? '-' : number_format($this->invoices->sum('delivery') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->invoices->sum('amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->invoices->sum('cash_amount') , 3) }}</x-th>
                 <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->invoices->sum('knet_amount') , 3) }}</x-th>
