@@ -94,7 +94,7 @@
             const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body
                 .clientWidth;
             const delay = screenWidth < 1024 ? 500 :
-                50; // If less than 1024 pixels, set delay to 500, otherwise set to 50
+                250; // If less than 1024 pixels, set delay to 500, otherwise set to 250
 
             sortable = new Sortable.create(element, {
                 group: 'box', // set both lists to same group
