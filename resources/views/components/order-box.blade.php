@@ -10,7 +10,7 @@
 @endphp
 
 <div 
-x-on:dblclick="$dispatch('showDetailsModal',{order:{{$order->id}}})"
+{{-- x-on:dblclick="$dispatch('showDetailsModal',{order:{{$order->id}}})" --}}
 wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-index="{{ $order->index }}" class="
     {{ $order->in_progress ? '' : 'draggable' }}
     {{-- {{ $order->unread_comments_count > 0 ? ' animate-wiggle hover:animate-none' : '' }} --}}
@@ -18,7 +18,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
     border
     py-2 lg:py-0
     p-0 lg:p-0
-    cursor-pointer
+    {{-- cursor-pointer --}}
     rounded-lg
     " style="border-color: {{ $color }};background: {{ $color }};">
 
@@ -84,27 +84,28 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
 
         <div class=" flex gap-2 items-center">
 
-            @can('view_order_progress', $order)
-            <x-badgeWithCounter wire:click="$dispatch('showStatusesModal',{order:{!! $order !!}})">
+            {{-- @can('view_order_progress', $order) --}}
+            <x-badgeWithCounter wire:click="$dispatch('showDetailsModal',{order:{!! $order !!}})">
                 <x-svgs.list class="h-4 w-4" />
             </x-badgeWithCounter>
-            @endcan
+            {{-- @endcan --}}
 
-            @can('view_order_comments', $order)
+            @if($order->unread_comments_count > 0)
             <x-badgeWithCounter
-                class="{{$order->unread_comments_count > 0 ? 'bg-red-400 border-red-400 dark:border-red-400 text-white hover:bg-red-400 hover:border-red-400 hover:dark:border-red-400 hover:text-white' : ''}}"
+                class="bg-red-400 border-red-400 dark:border-red-400 text-white hover:bg-red-400 hover:border-red-400 hover:dark:border-red-400 hover:text-white"
                 :counter="$order->unread_comments_count"
-                wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})">
+                {{-- wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})" --}}
+                >
                 <x-svgs.comment class="h-4 w-4" />
             </x-badgeWithCounter>
-            @endcan
+            @endif
 
-            @if ($order->can_view_order_invoices)
+            {{-- @if ($order->can_view_order_invoices)
             <x-badgeWithCounter :counter="$order->invoices_count"
                 wire:click="$dispatch('showInvoicesModal',{order:{!! $order !!}})">
                 <x-svgs.banknotes class="h-4 w-4" />
             </x-badgeWithCounter>
-            @endif
+            @endif --}}
 
 
         </div>

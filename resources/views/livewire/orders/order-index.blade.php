@@ -185,13 +185,13 @@
                         </x-badgeWithCounter>
                         @endcan
 
-                        @can('viewAny', App\Models\Order::class)
+                        {{-- @can('viewAny', App\Models\Order::class) --}}
                         <x-badgeWithCounter title="{{ __('messages.order_details') }}"
                             wire:click="$dispatch('showDetailsModal',{order:{{ $order }}})">
-                            <x-svgs.view class="h-4 w-4" />
+                            <x-svgs.list class="h-4 w-4" />
                         </x-badgeWithCounter>
-                        @endcan
-
+                        {{-- @endcan --}}
+{{-- 
                         @can('view_order_progress', $order)
                         <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
                             wire:click="$dispatch('showStatusesModal',{order:{{ $order }}})">
@@ -214,6 +214,7 @@
                         </x-badgeWithCounter>
                         @endif
 
+                         --}}
                     </div>
                 </x-td>
             </x-tr>

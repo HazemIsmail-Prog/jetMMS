@@ -1,6 +1,9 @@
-<div>
-    @if ($order)
-        <x-table>
+<div class=" border dark:border-gray-700 rounded-lg p-3">
+    <div class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        {{ __('messages.order_progress') }}
+    </div>
+    <x-section-border />
+    <x-table>
             <x-thead>
                 <tr>
                     <x-th>{{ __('messages.status') }}</x-th>
@@ -25,5 +28,4 @@
                 @endforeach
             </tbody>
         </x-table>
-    @endif
 </div>

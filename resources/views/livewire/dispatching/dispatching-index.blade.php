@@ -7,10 +7,10 @@
     </x-slot>
 
     @livewire('orders.hold-or-cancel-reason-modal')
-    @livewire('orders.comments.comment-modal')
-    @livewire('orders.statuses.status-modal')
+    {{-- @livewire('orders.comments.comment-modal') --}}
+    {{-- @livewire('orders.statuses.status-modal') --}}
     @livewire('orders.details.details-modal')
-    @livewire('orders.invoices.invoice-modal')
+    {{-- @livewire('orders.invoices.invoice-modal') --}}
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
     @livewire('orders.invoices.discount.discount-form')

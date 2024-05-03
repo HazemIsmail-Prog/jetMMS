@@ -1,4 +1,8 @@
-<div>
+<div class=" border dark:border-gray-700 rounded-lg p-3">
+    <div class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        {{ __('messages.order_comments') }}
+    </div>
+    <x-section-border />
     @if ($order)
         <form wire:submit="save" class=" h-full">
             <div class="flex-1 justify-between flex flex-col">
