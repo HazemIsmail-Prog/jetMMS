@@ -535,6 +535,10 @@ return [
     'details_for_order_number' => 'Details of order #',
     'no_marketings' => 'No Marketings',
     'has_active_orders' => 'Has Active Orders',
+    'daily_statistics' => 'Daily Statistics',
+    'todays_completed_orders_count' => 'Completed Orders',
+    'todays_cancelled_orders_count' => 'Cancelled Orders',
+    'todays_customers_count' => 'Customers',
 
 
 

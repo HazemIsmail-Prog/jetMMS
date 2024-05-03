@@ -6,6 +6,9 @@
     </x-slot>
 
     <div class=" grid grid-cols-1 lg:grid-cols-4 gap-3">
+        <div class=" col-span-full">
+            @livewire('operations-reports.daily-statistics', key('daily-statistics'.rand()))
+        </div>
         <div class=" col-span-2">
             @livewire('operations-reports.orders-chart', key('orders-chart'.rand()))
         </div>

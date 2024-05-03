@@ -556,6 +556,10 @@ return [
     'details_for_order_number' => 'تفاصيل الطلب رقم',
     'no_marketings' => 'لا يوجد تسويق',
     'has_active_orders' => 'لديه طلبات معينه',
+    'daily_statistics' => 'احصائيات يومية',
+    'todays_completed_orders_count' => 'الطلبات المنفذة',
+    'todays_cancelled_orders_count' => 'الطلبات الملغية',
+    'todays_customers_count' => 'عملاء اليوم',
 
 
 
