@@ -216,7 +216,7 @@
 
 @script
 {{-- this script to keep sidebar scroll position on change pages --}}
-<script>
+{{-- <script>
     setTimeout(function() {
                 let sidebar = document.getElementById("sidebar");
                 let top = localStorage.getItem("sidebar-scroll");
@@ -228,5 +228,5 @@
                     localStorage.setItem("sidebar-scroll", sidebar.scrollTop);
                 });
             }, 10)
-</script>
+</script> --}}
 @endscript
