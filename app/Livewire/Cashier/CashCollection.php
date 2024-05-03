@@ -10,7 +10,6 @@ use App\Services\CreateInvoicePaymentVoucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,11 +21,13 @@ class CashCollection extends Component
     public $filters;
     public $perPage = 10;
 
-    public function updatedPerPage() {
+    public function updatedPerPage()
+    {
         $this->resetPage();
     }
 
-    public function updatedFilters() {
+    public function updatedFilters()
+    {
         $this->resetPage();
     }
 
@@ -36,6 +37,7 @@ class CashCollection extends Component
 
         $this->filters =
             [
+                'status' => '0',
                 'start_created_at' => '',
                 'end_created_at' => '',
                 'department_id' => [],
@@ -64,18 +66,22 @@ class CashCollection extends Component
     }
 
     #[Computed()]
-    public function unCollectedPayments()
+    public function payments()
     {
         return Payment::query()
             ->with('invoice.order.technician.department')
             ->with('user')
-            ->where('is_collected', false)
+            ->where('is_collected', $this->filters['status'])
+            //TODO:: Enable following line after provide opening voucher
+            // ->when($this->filters['status'] == '1',function(Builder $q){
+            //     $q->whereHas('vouchers');
+            // })
             ->where('method', 'cash')
 
             ->when($this->filters['department_id'], function (Builder $q) {
-                $q->whereHas('invoice',function(Builder $q){
-                    $q->whereHas('order',function(Builder $q){
-                        $q->whereIn('department_id',$this->filters['department_id']);
+                $q->whereHas('invoice', function (Builder $q) {
+                    $q->whereHas('order', function (Builder $q) {
+                        $q->whereIn('department_id', $this->filters['department_id']);
                     });
                 });
             })
@@ -115,6 +121,29 @@ class CashCollection extends Component
                     'collected_by' => auth()->id(),
                 ]);
                 CreateInvoicePaymentVoucher::createCashPaymentVoucher($payment);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
+        }
+    }
+
+    public function uncollect_payment(Payment $payment)
+    {
+        if ($payment->is_collected) {
+            DB::beginTransaction();
+            try {
+                $payment->update([
+                    'is_collected' => false,
+                    'collected_by' => null,
+                ]);
+                if ($payment->vouchers()->count() > 0) {
+                    // must foreach to delete related voucher details via observer
+                    foreach ($payment->vouchers as $voucher) {
+                        $voucher->delete();
+                    }
+                }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();

@@ -560,6 +560,9 @@ return [
     'todays_completed_orders_count' => 'الطلبات المنفذة',
     'todays_cancelled_orders_count' => 'الطلبات الملغية',
     'todays_customers_count' => 'عملاء اليوم',
+    'collected' => 'محصل',
+    'uncollected' => 'غير محصل',
+    'uncollect' => 'الغاء التحصيل',
 
 
 

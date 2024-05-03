@@ -539,6 +539,10 @@ return [
     'todays_completed_orders_count' => 'Completed Orders',
     'todays_cancelled_orders_count' => 'Cancelled Orders',
     'todays_customers_count' => 'Customers',
+    'collected' => 'Collected',
+    'uncollected' => 'Un-Collected',
+    'uncollect' => 'Un-Collect',
+
 
 
 

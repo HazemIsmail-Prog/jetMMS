@@ -21,11 +21,13 @@ class KnetCollection extends Component
     public $filters;
     public $perPage = 10;
 
-    public function updatedPerPage() {
+    public function updatedPerPage()
+    {
         $this->resetPage();
     }
 
-    public function updatedFilters() {
+    public function updatedFilters()
+    {
         $this->resetPage();
     }
 
@@ -34,6 +36,7 @@ class KnetCollection extends Component
     {
         $this->filters =
             [
+                'status' => '0',
                 'start_created_at' => '',
                 'end_created_at' => '',
                 'technician_id' => [],
@@ -62,13 +65,17 @@ class KnetCollection extends Component
     }
 
     #[Computed()]
-    public function unCollectedPayments()
+    public function payments()
     {
         return Payment::query()
             ->with('invoice.order.technician')
             ->with('invoice.order.department')
             ->with('user')
-            ->where('is_collected', false)
+            ->where('is_collected', $this->filters['status'])
+            //TODO:: Enable following line after provide opening voucher
+            // ->when($this->filters['status'] == '1',function(Builder $q){
+            //     $q->whereHas('vouchers');
+            // })
             ->where('method', 'knet')
 
             ->when($this->filters['department_id'], function (Builder $q) {
@@ -113,7 +120,30 @@ class KnetCollection extends Component
                     'is_collected' => true,
                     'collected_by' => auth()->id(),
                 ]);
-                CreateInvoicePaymentVoucher::createCashPaymentVoucher($payment);
+                CreateInvoicePaymentVoucher::createKnetPaymentVoucher($payment);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
+        }
+    }
+
+    public function uncollect_payment(Payment $payment)
+    {
+        if ($payment->is_collected) {
+            DB::beginTransaction();
+            try {
+                $payment->update([
+                    'is_collected' => false,
+                    'collected_by' => null,
+                ]);
+                if ($payment->vouchers()->count() > 0) {
+                    // must foreach to delete related voucher details via observer
+                    foreach ($payment->vouchers as $voucher) {
+                        $voucher->delete();
+                    }
+                }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();

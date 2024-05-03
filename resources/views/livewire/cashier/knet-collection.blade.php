@@ -12,7 +12,7 @@
     @teleport('#counter')
     <span
         class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-        {{ $this->unCollectedPayments->total() }}
+        {{ $this->payments->total() }}
     </span>
     @endteleport
 
@@ -28,14 +28,22 @@
             <option value="100">100</option>
             <option value="500">500</option>
         </x-select>
-        @if ($this->unCollectedPayments->hasPages())
-        <div class=" flex-1">{{ $this->unCollectedPayments->links() }}</div>
+        @if ($this->payments->hasPages())
+        <div class=" flex-1">{{ $this->payments->links() }}</div>
         @endif
     </div>
     @endteleport
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+
+        <div>
+            <x-label for="status">{{ __('messages.status') }}</x-label>
+            <x-select class="w-full" wire:model.live="filters.status">
+                <option value="1">{{ __("messages.collected") }}</option>
+                <option value="0">{{ __("messages.uncollected") }}</option>
+            </x-select>
+        </div>
 
         <div>
             <x-label for="department">{{ __('messages.department') }}</x-label>
@@ -60,11 +68,12 @@
 
     </div>
 
-    @if ($this->unCollectedPayments->count() > 0)
+    @if ($this->payments->count() > 0)
     <x-table>
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.date') }}</x-th>
+                <x-th>{{ __('messages.invoice_number') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
                 <x-th>{{ __('messages.technician') }}</x-th>
                 <x-th>{{ __('messages.receiver') }}</x-th>
@@ -74,7 +83,7 @@
             </tr>
         </x-thead>
         <tbody>
-            @foreach ($this->unCollectedPayments as $payment)
+            @foreach ($this->payments as $payment)
             <x-tr wire:key="payment-{{$payment->id}}-{{rand()}}">
                 <x-td x-data="{editing:false,date:{{ @json_encode($payment->created_at->format('Y-m-d H:i')) }}}">
                     <div x-show="!editing" class="flex items-center gap-2">
@@ -92,6 +101,10 @@
                         </x-secondary-button>
                     </form>
                 </x-td>
+                <x-td> <a target="_blank" class="btn"
+                        href="{{ route('invoice.detailed_pdf', encrypt($payment->invoice->id)) }}">{{
+                        $payment->invoice->formated_id }}</a>
+                </x-td>
                 <x-td>{{ $payment->invoice->order->department->name }}</x-td>
                 <x-td>
                     <span class=" cursor-pointer"
@@ -102,8 +115,13 @@
                 {{-- <x-td>{{ $payment->knet_ref_number }}</x-td> --}}
                 <x-td>{{ $payment->formated_amount }}</x-td>
                 <x-td class=" text-end">
+                    @if ($payment->is_collected)
+                    <x-danger-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                        wire:click="uncollect_payment({{ $payment }})">{{ __('messages.uncollect') }}</x-danger-button>
+                    @else
                     <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
                         wire:click="collect_payment({{ $payment }})">{{ __('messages.collect') }}</x-button>
+                    @endif
                 </x-td>
             </x-tr>
             @endforeach
@@ -113,9 +131,10 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
+                <x-th></x-th>
                 {{-- <x-th></x-th> --}}
                 <x-th>{{ __('messages.total') }}</x-th>
-                <x-th>{{ number_format($this->unCollectedPayments->sum('amount'), 3) }}</x-th>
+                <x-th>{{ number_format($this->payments->sum('amount'), 3) }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-tfoot>
