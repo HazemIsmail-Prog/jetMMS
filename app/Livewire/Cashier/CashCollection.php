@@ -123,6 +123,14 @@ class CashCollection extends Component
         }
     }
 
+    public function changeDate($newDate, Payment $payment)
+    {
+        $payment->update([
+            'created_at' => $newDate,
+            'updated_at' => now(),
+        ]);
+    }
+
     public function render()
     {
         return view('livewire.cashier.cash-collection')->title(__('messages.cash_collection'));
