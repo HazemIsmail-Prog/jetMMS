@@ -161,7 +161,7 @@
 
                 <x-td>
                     <div>{{ $order->completed_at ? $order->completed_at->format("d-m-Y") : ($order->cancelled_at ? $order->cancelled_at->format("d-m-Y") : '' )}}</div>
-                    <div>{{ $order->completed_at ? $order->completed_at->format("H:i") : ($order->cancelled_at ? $order->cancelled_at->format("H:i") : '' )}}</div>
+                    <div class="text-[0.7rem]">{{ $order->completed_at ? $order->completed_at->format("H:i") : ($order->cancelled_at ? $order->cancelled_at->format("H:i") : '' )}}</div>
                 </x-td>
                 <x-td>
                     <div class=" flex items-start gap-1">
