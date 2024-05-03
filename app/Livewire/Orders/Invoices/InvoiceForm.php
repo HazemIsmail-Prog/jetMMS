@@ -90,7 +90,6 @@ class InvoiceForm extends Component
             ->get();
     }
 
-
     public function updatedSelectedServices($val, $key)
     {
         $index = explode('.', $key)[0];
@@ -101,12 +100,13 @@ class InvoiceForm extends Component
         }
     }
 
-    public function updatedSelectService($val, $key)
+    public function toggleService(Service $service, $val)
     {
-        if ($val) {
-            $service = $this->services->where('id', $key)->first();
-            $this->selected_services[$key] = [
-                'service_id' => $key,
+        if (isset($this->selected_services[$val])) {
+            unset($this->selected_services[$val]);
+        } else {
+            $this->selected_services[$val] = [
+                'service_id' => $val,
                 'service_type' => $service->type,
                 'name' => $service->name,
                 'min_price' => $service->min_price,
@@ -115,8 +115,6 @@ class InvoiceForm extends Component
                 'price' => '',
                 'service_total' => 0,
             ];
-        } else {
-            unset($this->selected_services[$key]);
         }
     }
 
