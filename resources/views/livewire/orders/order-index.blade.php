@@ -142,17 +142,27 @@
             @foreach ($this->orders as $order)
             <x-tr>
                 <x-td>{{ $order->formated_order_id }}</x-td>
+
                 <x-td>
-                    <div>{!! $order->formated_created_at !!}</div>
-                    <div class="text-xs truncate">{{ $order->creator->name }}</div>
+                    <div>{{ $order->created_at->format("d-m-Y") }}</div>
+                    <div class=" text-[0.7rem]">{{ $order->created_at->format("H:i") }}</div>
+                    <div class="text-[0.7rem] truncate">{{ $order->creator->name }}</div>
                 </x-td>
+
                 <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
+
                 <x-td style="color: {{ $order->status->color }}">
                     {{ $order->status->name }}
                 </x-td>
+
                 <x-td class=" !whitespace-normal">{{ $order->department->name }}</x-td>
-                <x-td>{{ $order->technician->name ?? '-' }}</x-td>
-                <x-td>{!! $order->formated_completed_at !!}</x-td>
+
+                <x-td class=" !whitespace-normal">{{ $order->technician->name ?? '-' }}</x-td>
+
+                <x-td>
+                    <div>{{ $order->completed_at?->format("d-m-Y") }}</div>
+                    <div class=" text-[0.7rem]">{{ $order->completed_at?->format("H:i") }}</div>
+                </x-td>
                 <x-td>
                     <div class=" flex items-start gap-1">
                         @can('update', $order->customer)
