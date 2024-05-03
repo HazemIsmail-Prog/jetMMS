@@ -46,9 +46,9 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
             {{ $order->formated_id }}
         </div>
 
-        <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
+        {{-- <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
             {{ $order->index }}
-        </div>
+        </div> --}}
 
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
             {!! $order->formated_created_at !!}
