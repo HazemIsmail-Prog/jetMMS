@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class=" grid grid-cols-1 lg:grid-cols-4 gap-3">
+    <div class=" grid grid-flow-dense grid-cols-1 gap-y-3 lg:grid-cols-4 lg:gap-x-3">
         <div class=" col-span-full">
             @livewire('operations-reports.daily-statistics', key('daily-statistics'.rand()))
         </div>
