@@ -265,6 +265,8 @@ return [
     'confirm_saving' => 'Yes, Im Sure',
     'back_to_invoice' => 'No, Back to invoice',
     'print_detailed_invoice' => 'Detailed Invoice',
+    'print_non_detailed_invoice' => 'Short Invoice',
+
     'print_invoice' => 'Invoice',
     'orderTag' => 'Tag',
     'marketing_counter' => 'Marketing Counter',

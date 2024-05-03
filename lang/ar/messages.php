@@ -564,6 +564,7 @@ return [
     'uncollected' => 'غير محصل',
     'uncollect' => 'الغاء التحصيل',
 
+    
 
 
 ];
