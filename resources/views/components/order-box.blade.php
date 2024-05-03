@@ -23,7 +23,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
     " style="border-color: {{ $color }};background: {{ $color }};">
 
     <div wire:click="$dispatch('showCommentsModal',{order:{!! $order !!}})"
-        class="block lg:hidden text-center text-xs font-medium select-none">
+        class="block lg:hidden text-center text-xs font-medium">
         {{ $order->formated_id }}
     </div>
     <div class="p-2 text-white">
