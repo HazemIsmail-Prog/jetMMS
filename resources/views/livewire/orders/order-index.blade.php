@@ -146,7 +146,7 @@
                 <x-td>
                     <div>{{ $order->created_at->format("d-m-Y") }}</div>
                     <div class=" text-[0.7rem]">{{ $order->created_at->format("H:i") }}</div>
-                    <div class="text-[0.7rem] truncate">{{ $order->creator->name }}</div>
+                    <div class="text-[0.7rem] w-20 whitespace-normal">{{ $order->creator->name }}</div>
                 </x-td>
 
                 <x-td>{!! $order->formated_estimated_start_date !!}</x-td>
