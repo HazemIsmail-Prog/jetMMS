@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    @livewire('orders.hold-or-cancel-reason-modal')
+    @livewire('orders.cancel-reason-modal')
     {{-- @livewire('orders.comments.comment-modal') --}}
     {{-- @livewire('orders.statuses.status-modal') --}}
     @livewire('orders.details.details-modal')

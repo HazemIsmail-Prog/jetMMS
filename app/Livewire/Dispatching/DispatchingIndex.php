@@ -30,7 +30,7 @@ class DispatchingIndex extends Component
             ->with('phone:id,number')
             ->with('address.area:id,name_' . app()->getLocale())
             ->with('creator:id,name_' . app()->getLocale())
-            ->withCount('invoices')
+            // ->withCount('invoices')
             ->withCount(['comments as unread_comments_count' => function ($q) {
                 $q->where('is_read', false);
                 $q->where('user_id', '!=', auth()->id());
@@ -83,18 +83,9 @@ class DispatchingIndex extends Component
                 break;
 
             case 'hold': //dragged to on hold box or hold button clicked
-                if ($source_id == 'hold') {
-                    // no need for reason because order already on hold (just change the index)
-                    $current_order->index = $new_index;
-                } else {
-                    // open reason modal
-                    $current_order->index = $new_index;
-                    $current_order->technician_id = null;
-                    $current_order->status_id = Status::ON_HOLD;
-                    // $current_order->reason = $this->reason;
-                    // $current_order->save();
-                    // $this->dispatch('showHoldOrCancelReasonModal', $current_order, 'hold', $new_index);
-                }
+                $current_order->index = $new_index ?? $this->department->orders()->where('status_id',Status::ON_HOLD)->min('index') - 10;
+                $current_order->technician_id = null;
+                $current_order->status_id = Status::ON_HOLD;
                 break;
 
             default: // dragged to technician box

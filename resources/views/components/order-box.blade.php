@@ -47,6 +47,10 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         </div>
 
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
+            {{ $order->index }}
+        </div>
+
+        <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
             {!! $order->formated_created_at !!}
         </div>
 
@@ -112,17 +116,16 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         <div class=" flex gap-2 items-center">
 
             @if ($order->can_hold_order)
-            <x-badgeWithCounter {{--
-                wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'hold',index:{{ $order->index }}})"
-                --}} wire:confirm="{{__('messages.are_u_sure')}}"
-                wire:click="dragEnd({{ $order->id }}, 'hold', null, {{ $order->index }})">
+            <x-badgeWithCounter 
+                wire:confirm="{{__('messages.are_u_sure')}}"
+                wire:click="dragEnd({{ $order->id }}, 'hold', null, null)">
                 <x-svgs.clock class="h-4 w-4" />
             </x-badgeWithCounter>
             @endif
 
             @can('cancel_order', $order)
             <x-badgeWithCounter
-                wire:click="$dispatch('showHoldOrCancelReasonModal',{order:{!! $order !!},action:'cancel',index:{{ $order->index }}})">
+                wire:click="$dispatch('showCancelReasonModal',{order:{!! $order !!}})">
                 <x-svgs.trash class="h-4 w-4" />
             </x-badgeWithCounter>
             @endcan

@@ -13,7 +13,7 @@
                         <x-input id="reason" wire:model="reason" class="w-full text-start" type="text" />
                         <x-input-error for="reason" />
                     </div>
-                    <x-button>{{ __('messages.confirm_' . $action) }}</x-button>
+                    <x-button>{{ __('messages.confirm_cancel') }}</x-button>
                 </form>
             @endif
         </x-slot>
