@@ -62,7 +62,7 @@ class VoucherIndex extends Component
                 $q->whereDate('date', '<=', $this->filters['end_date']);
             })
             ->orderBy('id', 'desc')
-            ->paginate(15);
+            ->paginate(1500);
     }
 
     public function delete(Voucher $voucher)
