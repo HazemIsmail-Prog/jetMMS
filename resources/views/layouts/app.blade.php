@@ -37,12 +37,7 @@
 }"
     class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased h-dvh overflow-hidden bg-gray-100 dark:bg-gray-900">
 
-    {{-- Chatting --}}
-    {{-- @persist('chats') --}}
-    @livewire('chats.chat-button')
     @livewire('chats.chat-modal')
-    {{-- @endpersist --}}
-
     
     @livewire('sidebar')
 
