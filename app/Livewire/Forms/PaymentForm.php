@@ -33,7 +33,8 @@ class PaymentForm extends Form
         ];
     }
 
-    public function setData(Invoice $invoice) {
+    public function setData(Invoice $invoice)
+    {
         $this->invoice = $invoice;
         $this->invoice_id = $invoice->id;
     }
@@ -43,16 +44,17 @@ class PaymentForm extends Form
         $this->validate();
         $this->user_id = auth()->id();
 
-        DB::beginTransaction();
-        try {
-            Payment::updateOrCreate(['id' => $this->id], $this->except('invoice'));
-            $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
-            DB::commit();
-            $this->reset();
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
+        if ($this->amount <= $this->invoice->remaining_amount) {
+            DB::beginTransaction();
+            try {
+                Payment::updateOrCreate(['id' => $this->id], $this->except('invoice'));
+                $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
+                DB::commit();
+                $this->reset();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
         }
-
     }
 }
