@@ -106,17 +106,19 @@ class KnetCollection extends Component
 
     public function collect_payment(Payment $payment)
     {
-        DB::beginTransaction();
-        try {
-            $payment->update([
-                'is_collected' => true,
-                'collected_by' => auth()->id(),
-            ]);
-            CreateInvoicePaymentVoucher::createKnetPaymentVoucher($payment);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
+        if (!$payment->is_collected) {
+            DB::beginTransaction();
+            try {
+                $payment->update([
+                    'is_collected' => true,
+                    'collected_by' => auth()->id(),
+                ]);
+                CreateInvoicePaymentVoucher::createCashPaymentVoucher($payment);
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
         }
     }
 
