@@ -7,7 +7,7 @@
 
     <x-section-border />
 
-    <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div wire:poll.30s class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
         <div class="border border-green-600 dark:border-green-700 rounded-lg p-4">
             <h2 class="font-semibold text-lg flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
