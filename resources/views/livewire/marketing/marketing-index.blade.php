@@ -109,7 +109,7 @@
                     <x-td>{{ $marketing->name }}</x-td>
                     <x-td>{{ $marketing->phone }}</x-td>
                     <x-td>{{ $marketing->address }}</x-td>
-                    <x-td>{{ $marketing->notes }}</x-td>
+                    <x-td class=" !whitespace-normal">{{ $marketing->notes }}</x-td>
                     <x-td>{{ __('messages.' . $marketing->type) }}</x-td>
                     <x-td>
                         <div class=" flex items-center justify-end gap-2">
