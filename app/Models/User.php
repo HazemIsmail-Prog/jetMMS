@@ -200,7 +200,7 @@ class User extends Authenticatable
     {
         return $query =  $this
             ->where('active', true)
-            ->whereIn('title_id', [10, 11])
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->where('department_id', $department_id);
     }
 

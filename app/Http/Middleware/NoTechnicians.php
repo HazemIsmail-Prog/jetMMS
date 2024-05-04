@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Title;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class NoTechnicians
      */
     public function handle(Request $request, Closure $next)
     {
-        if (in_array($request->user()->title_id,[10,11])) {
+        if (in_array($request->user()->title_id,Title::TECHNICIANS_GROUP)) {
             return redirect()->route('technician_page');
         }
 

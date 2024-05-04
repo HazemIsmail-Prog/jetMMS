@@ -5,6 +5,7 @@ namespace App\Livewire\Chats;
 use App\Events\MessageReadEvent;
 use App\Events\MessageSentEvent;
 use App\Models\Message;
+use App\Models\Title;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -37,7 +38,7 @@ class ChatModal extends Component
             ->where('id', '!=', auth()->id())
             ->where('active', true)
             ->orderBy('name_' . config('app.locale'))
-            ->whereNotIn('title_id', [10, 11])
+            ->whereNotIn('title_id', Title::TECHNICIANS_GROUP)
             ->when($this->search, function ($q) {
                 $q->where('name_en', 'like', "%{$this->search}%");
                 $q->orWhere('name_ar', 'like', "%{$this->search}%");
