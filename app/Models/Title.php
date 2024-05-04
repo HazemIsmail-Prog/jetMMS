@@ -13,7 +13,11 @@ class Title extends Model
 
     protected $guarded = [];
 
-    const TECHNICIANS_GROUP = [10,11];
+    const TECHNICIANS_GROUP = [
+        10, // فني
+        11, // مراقب
+        26, // فني نسبة
+    ];
 
     public function getNameAttribute($value)
     {
