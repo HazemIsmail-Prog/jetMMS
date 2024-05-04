@@ -10,6 +10,7 @@ class TitleForm extends Form
     public $id;
     public $name_ar;
     public $name_en;
+    public $active = true;
 
     public function rules()
     {
