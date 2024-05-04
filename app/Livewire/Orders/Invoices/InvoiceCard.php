@@ -43,17 +43,23 @@ class InvoiceCard extends Component
 
     public function deletePayment(Payment $payment)
     {
-        DB::beginTransaction();
-        try {
-            if (!$payment->is_collected) {
+        if (!$payment->is_collected) {
+            DB::beginTransaction();
+            try {
+                foreach ($payment->vouchers()->withTrashed()->get() as $voucher) {
+                    foreach($voucher->voucherDetails()->withTrashed()->get() as $row){
+                        $row->forceDelete();
+                    }
+                    $voucher->forceDelete();
+                }
                 $payment->delete(); // Observer Applied
                 $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
                 DB::commit();
                 $this->dispatch('paymentsUpdated');
+            } catch (\Exception $e) {
+                DB::rollback();
+                dd($e);
             }
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
         }
     }
 
