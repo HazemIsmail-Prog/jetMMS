@@ -4,6 +4,7 @@ namespace App\Livewire\AccountingReports;
 
 use App\Models\Account;
 use App\Models\CostCenter;
+use App\Models\Department;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -13,6 +14,7 @@ class AccountStatement extends Component
 
     public $account_id = [];
     public $cost_center_id = [];
+    public $department_id = [];
     public $contact_id = [];
     public $start_date = '';
     public $end_date = '';
@@ -23,6 +25,10 @@ class AccountStatement extends Component
             ->subDay(1)
             ->format('Y-m-d');
         $this->end_date = today()->format('Y-m-d');
+    }
+
+    public function updatedDepartmentId($val) {
+        $this->contact_id = User::whereIn('department_id',$this->department_id)->pluck('id');
     }
 
     #[Computed()]
@@ -101,6 +107,16 @@ class AccountStatement extends Component
     {
         return User::query()
             ->whereHas('voucher_details')
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed()]
+    public function departments()
+    {
+        return Department::query()
+            ->where('is_service', 1)
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();

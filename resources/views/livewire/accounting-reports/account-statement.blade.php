@@ -19,13 +19,13 @@
     {{-- hidden divs just to compile variable colors --}}
 
 
-    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-3 no-print">
+    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
 
-        <div class=" col-span-1 md:col-span-2 xl:col-span-3">
+        <div class=" col-span-1 md:col-span-2 xl:col-span-4">
             <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
             <x-input type="date" class="w-full" id="start_date" wire:model.live="start_date" />
         </div>
-        <div class=" col-span-1 md:col-span-2 xl:col-span-3">
+        <div class=" col-span-1 md:col-span-2 xl:col-span-4">
             <x-label for="end_date">{{ __('messages.end_date') }}</x-label>
             <x-input type="date" class="w-full" id="end_date" wire:model.live="end_date" />
         </div>
@@ -36,6 +36,11 @@
         <div class=" col-span-1 xl:col-span-2">
             <x-label for="cost_center">{{ __('messages.cost_center') }}</x-label>
             <x-searchable-select :list="$this->cost_centers" wire:model.live="cost_center_id" multipule />
+        </div>
+        <div class=" col-span-1 xl:col-span-2">
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="department_id" multipule />
         </div>
         <div class=" col-span-1 xl:col-span-2">
             <x-label for="contact">{{ __('messages.contact') }}</x-label>
