@@ -44,7 +44,7 @@ class PaymentForm extends Form
         $this->validate();
         $this->user_id = auth()->id();
 
-        if ($this->amount <= $this->invoice->remaining_amount) {
+        if ((string)$this->amount <= (string)$this->invoice->remaining_amount) {
             DB::beginTransaction();
             try {
                 Payment::updateOrCreate(['id' => $this->id], $this->except('invoice'));
