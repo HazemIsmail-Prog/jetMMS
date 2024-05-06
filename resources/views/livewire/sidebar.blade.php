@@ -112,6 +112,9 @@
             @endcan
             @can('accounting_reports', App\Models\DummyModel::class)
             <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
+                @if (auth()->id() == 1)
+                <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
+                @endif
                 @can('account_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                 @endcan

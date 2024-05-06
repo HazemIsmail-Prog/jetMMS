@@ -3,6 +3,7 @@
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
+use App\Livewire\AccountingReports\DailyReview;
 use App\Livewire\Accounts\AccountIndex;
 use App\Livewire\Areas\AreaIndex;
 use App\Livewire\Cars\CarIndex;
@@ -124,6 +125,11 @@ Route::middleware([
         Route::get('accounts', AccountIndex::class)
             ->name('account.index')
             ->can('viewAny', Account::class);
+
+        Route::get('accounts/reports/daily_review', DailyReview::class)
+            ->name('daily_review')
+            // ->can('daily_review_report', DummyModel::class)
+            ;
 
         Route::get('accounts/reports/account_statement', AccountStatement::class)
             ->name('account_statement')

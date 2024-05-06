@@ -26,6 +26,10 @@ class VoucherDetail extends Model
         return $this->belongsTo(CostCenter::class);
     }
 
+    public function getAbsoluteAttribute() {
+        return abs( $this->debit - $this->credit);
+    }
+
     // Formatters
 
     public function getFormatedDebitAttribute()
