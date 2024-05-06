@@ -128,7 +128,7 @@ Route::middleware([
 
         Route::get('accounts/reports/daily_review', DailyReview::class)
             ->name('daily_review')
-            // ->can('daily_review_report', DummyModel::class)
+            ->can('daily_review_report', DummyModel::class)
             ;
 
         Route::get('accounts/reports/account_statement', AccountStatement::class)

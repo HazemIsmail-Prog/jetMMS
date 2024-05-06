@@ -544,6 +544,8 @@ return [
     'collected' => 'Collected',
     'uncollected' => 'Un-Collected',
     'uncollect' => 'Un-Collect',
+    'daily_review' => 'Daily Review',
+
 
 
 

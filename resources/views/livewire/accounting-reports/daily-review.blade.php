@@ -3,7 +3,7 @@
         <div class=" flex items-center justify-between">
 
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.account_statement') }}
+                {{ __('messages.daily_review') }}
             </h2>
 
         </div>
@@ -52,33 +52,36 @@
                 <tbody>
                     @foreach ($this->departments as $department)
                         <x-tr>
-                            <x-td class="!whitespace-normal">{{ $department->name }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->invoices->where('order.department_id',$department->id)->sum('amount') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->invoices->where('order.department_id',$department->id)->sum('cash_amount') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->invoices->where('order.department_id',$department->id)->sum('knet_amount') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->invoices->where('order.department_id',$department->id)->sum('remaining_amount') }}</x-td>
+                            <x-td class="border border-black !whitespace-normal">{{ $department->name }}</x-td>
+                            <x-td class="border border-black">{{ $this->invoices->where('order.department_id',$department->id)->sum('amount') > 0 ? number_format($this->invoices->where('order.department_id',$department->id)->sum('amount'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->invoices->where('order.department_id',$department->id)->sum('cash_amount') > 0 ? number_format($this->invoices->where('order.department_id',$department->id)->sum('cash_amount'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->invoices->where('order.department_id',$department->id)->sum('knet_amount') > 0 ? number_format($this->invoices->where('order.department_id',$department->id)->sum('knet_amount'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->invoices->where('order.department_id',$department->id)->sum('remaining_amount') > 0 ? number_format($this->invoices->where('order.department_id',$department->id)->sum('remaining_amount'),3) : '-' }}</x-td>
 
 
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->sum('absolute') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->cost_account_id)->sum('absolute') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',1)->sum('absolute') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',2)->sum('absolute') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',3)->sum('absolute') }}</x-td>
-                            {{-- <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->sum('credit') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->sum('credit') }}</x-td>
-                            <x-td class="!whitespace-normal">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->sum('credit') }}</x-td> --}}
+                            <x-td class="border border-black">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->sum('absolute') > 0 ? number_format($this->voucherDetails->where('account_id',$department->income_account_id)->sum('absolute'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->voucherDetails->where('account_id',$department->cost_account_id)->sum('absolute') > 0 ? number_format($this->voucherDetails->where('account_id',$department->cost_account_id)->sum('absolute'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',1)->sum('absolute') > 0 ? number_format($this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',1)->sum('absolute'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',2)->sum('absolute') > 0 ? number_format($this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',2)->sum('absolute'),3) : '-' }}</x-td>
+                            <x-td class="border border-black">{{ $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',3)->sum('absolute') > 0 ? number_format($this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',3)->sum('absolute'),3) : '-' }}</x-td>
                         </x-tr>
                     @endforeach
                 </tbody>
-                <tfoot class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <x-tr>
-                        <x-td class="!whitespace-normal">{{ __('messages.total') }}</x-td>
-                        <x-td class="!whitespace-normal">{{ $this->invoices->sum('amount') }}</x-td>
-                        <x-td class="!whitespace-normal">{{ $this->invoices->sum('cash_amount') }}</x-td>
-                        <x-td class="!whitespace-normal">{{ $this->invoices->sum('knet_amount') }}</x-td>
-                        <x-td class="!whitespace-normal">{{ $this->invoices->sum('remaining_amount') }}</x-td>
-                    </x-tr>
-                </tfoot>
+                <x-tfoot>
+                    <tr>
+                        <x-th class="border border-black">{{ __('messages.total') }}</x-th>
+                        <x-th class="border border-black">{{ $this->invoices->sum('amount') > 0 ? number_format($this->invoices->sum('amount'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->invoices->sum('cash_amount') > 0 ? number_format($this->invoices->sum('cash_amount'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->invoices->sum('knet_amount') > 0 ? number_format($this->invoices->sum('knet_amount'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->invoices->sum('remaining_amount') > 0 ? number_format($this->invoices->sum('remaining_amount'),3) : '-' }}</x-th>
+
+                        <x-th class="border border-black">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th class="border border-black">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute'),3) : '-' }}</x-th>
+                    </tr>
+                </x-tfoot>
             </x-table>
 
         {{-- </div> --}}

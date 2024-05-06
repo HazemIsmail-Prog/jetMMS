@@ -76,7 +76,7 @@
             </li>
             @endcan
             @can('canDispatch', App\Models\DummyModel::class)
-            
+
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.dispatching') }}
             </h3>
             @foreach ($this->departments as $department)
@@ -112,9 +112,9 @@
             @endcan
             @can('accounting_reports', App\Models\DummyModel::class)
             <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
-                @if (auth()->id() == 1)
+                @can('daily_review_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
-                @endif
+                @endcan
                 @can('account_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                 @endcan

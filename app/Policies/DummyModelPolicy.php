@@ -79,11 +79,17 @@ class DummyModelPolicy
     public function accounting_reports(User $user): bool
     {
         return
-            $user->hasPermission('account_statement_report')
+            $user->hasPermission('daily_review_report')
+            || $user->hasPermission('account_statement_report')
             || $user->hasPermission('balance_sheet_report')
             || $user->hasPermission('trial_balance_report')
             || $user->hasPermission('profit_loss_report');
     }
+    public function daily_review_report(User $user): bool
+    {
+        return $user->hasPermission('daily_review_report');
+    }
+
     public function account_statement_report(User $user): bool
     {
         return $user->hasPermission('account_statement_report');

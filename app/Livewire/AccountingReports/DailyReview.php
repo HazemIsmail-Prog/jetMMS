@@ -20,7 +20,9 @@ class DailyReview extends Component
 
     public function mount()
     {
-        $this->date = today()->subDay(6)->format('Y-m-d');
+        $this->date = today()
+        // ->subDay(6)
+        ->format('Y-m-d');
     }
 
     #[Computed()]
@@ -83,6 +85,6 @@ class DailyReview extends Component
 
     public function render()
     {
-        return view('livewire.accounting-reports.daily-review');
+        return view('livewire.accounting-reports.daily-review')->title(__('messages.daily_review'));
     }
 }

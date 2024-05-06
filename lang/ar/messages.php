@@ -563,6 +563,7 @@ return [
     'collected' => 'محصل',
     'uncollected' => 'غير محصل',
     'uncollect' => 'الغاء التحصيل',
+    'daily_review' => 'المراجعة اليومية',
 
     
 
