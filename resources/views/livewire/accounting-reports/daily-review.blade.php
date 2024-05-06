@@ -9,16 +9,6 @@
         </div>
     </x-slot>
 
-    {{-- hidden divs just to compile variable colors --}}
-    <div class="hidden bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-300"></div>
-    <div class="hidden bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"></div>
-    <div class="hidden bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-300"></div>
-    <div class="hidden bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300"></div>
-    <div class="hidden bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-300"></div>
-    <div class="hidden bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-300"></div>
-    {{-- hidden divs just to compile variable colors --}}
-
-
     <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
 
         <div class=" col-span-1 md:col-span-2 xl:col-span-4">
