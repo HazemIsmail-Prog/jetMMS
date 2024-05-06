@@ -46,7 +46,7 @@ class VoucherIndex extends Component
     {
         return Voucher::query()
             ->latest()
-            // ->where('type','jv')
+            ->where('type','jv')
             ->with('user')
             ->when($this->filters['search'],function(Builder $q){
                 $q->where(function(Builder $q){
