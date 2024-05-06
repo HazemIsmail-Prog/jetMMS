@@ -21,7 +21,7 @@ class DailyReview extends Component
     public function mount()
     {
         $this->date = today()
-        // ->subDay(6)
+        ->subDay(1)
         ->format('Y-m-d');
     }
 
