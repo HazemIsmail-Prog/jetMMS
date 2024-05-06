@@ -2,6 +2,7 @@
 
 namespace App\Livewire\PartInvoices;
 
+use App\Models\Department;
 use App\Models\PartInvoice;
 use App\Models\Supplier;
 use App\Models\Title;
@@ -18,6 +19,7 @@ class PartInvoiceIndex extends Component
     use WithPagination;
 
     public $filters;
+    public $department_id = [];
     public $perPage = 10;
 
     public function updatedPerPage() {
@@ -60,6 +62,17 @@ class PartInvoiceIndex extends Component
     }
 
     #[Computed()]
+    public function departments()
+    {
+        return Department::query()
+            ->where('is_service', 1)
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
+
+
+    #[Computed()]
     #[On('partInvoicesUpdated')]
     public function part_invoices()
     {
@@ -93,6 +106,10 @@ class PartInvoiceIndex extends Component
             DB::rollback();
             dd($e);
         }
+    }
+
+    public function updatedDepartmentId($val) {
+        $this->filters['technician_id'] = User::whereIn('department_id',$this->department_id)->pluck('id');
     }
 
     public function render()

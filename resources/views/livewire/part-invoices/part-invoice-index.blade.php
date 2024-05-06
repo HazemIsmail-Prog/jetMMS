@@ -44,12 +44,18 @@
     @livewire('part_invoices.part_invoice-form')
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
 
         <div>
             <x-label for="supplier">{{ __('messages.supplier') }}</x-label>
             <x-searchable-select id="supplier" class="!py-[5px]" :list="$this->suppliers"
                 wire:model.live="filters.supplier_id" multipule />
+        </div>
+
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="department_id" multipule />
         </div>
 
         <div>
