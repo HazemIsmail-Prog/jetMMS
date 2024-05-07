@@ -75,35 +75,37 @@ class DispatchingIndex extends Component
     {
         $current_order = Order::find($order_id);
 
-        switch ($destenation_id) {
-            case 0: //dragged to unassgined box
-                $current_order->index = $new_index;
-                $current_order->technician_id = null;
-                $current_order->status_id = Status::CREATED;
-                break;
-
-            case 'hold': //dragged to on hold box or hold button clicked
-                $current_order->index = $new_index ?? $this->department->orders()->where('status_id',Status::ON_HOLD)->min('index') - 10;
-                $current_order->technician_id = null;
-                $current_order->status_id = Status::ON_HOLD;
-                break;
-
-            default: // dragged to technician box
-
-                if ($new_index) {
-                    // this for changing technician on dragging
+        if ($current_order->department_id == $this->department->id) {
+            switch ($destenation_id) {
+                case 0: //dragged to unassgined box
                     $current_order->index = $new_index;
-                } else {
-                    // this for changing technicina from dropdown select
-                    $current_order->index =
-                        Order::where('technician_id', $destenation_id)
-                        ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
-                        ->max('index') + 10;
-                }
-                $current_order->technician_id = $destenation_id;
-                $current_order->status_id = Status::DESTRIBUTED;
+                    $current_order->technician_id = null;
+                    $current_order->status_id = Status::CREATED;
+                    break;
+
+                case 'hold': //dragged to on hold box or hold button clicked
+                    $current_order->index = $new_index ?? $this->department->orders()->where('status_id', Status::ON_HOLD)->min('index') - 10;
+                    $current_order->technician_id = null;
+                    $current_order->status_id = Status::ON_HOLD;
+                    break;
+
+                default: // dragged to technician box
+
+                    if ($new_index) {
+                        // this for changing technician on dragging
+                        $current_order->index = $new_index;
+                    } else {
+                        // this for changing technicina from dropdown select
+                        $current_order->index =
+                            Order::where('technician_id', $destenation_id)
+                            ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
+                            ->max('index') + 10;
+                    }
+                    $current_order->technician_id = $destenation_id;
+                    $current_order->status_id = Status::DESTRIBUTED;
+            }
+            $current_order->save();
         }
-        $current_order->save();
     }
 
     public function render()
