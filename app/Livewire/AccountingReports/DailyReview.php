@@ -78,7 +78,7 @@ class DailyReview extends Component
     {
         return VoucherDetail::query()
             ->whereHas('voucher', function (Builder $q) {
-                $q->whereDate('created_at', $this->date);
+                $q->where('date', $this->date);
             })
             ->get();
     }
