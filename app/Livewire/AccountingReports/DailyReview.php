@@ -5,6 +5,7 @@ namespace App\Livewire\AccountingReports;
 use App\Models\Account;
 use App\Models\Department;
 use App\Models\Invoice;
+use App\Models\Setting;
 use App\Models\VoucherDetail;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -21,7 +22,7 @@ class DailyReview extends Component
     public function mount()
     {
         $this->date = today()
-        ->subDay(1)
+        ->subDay(7)
         ->format('Y-m-d');
     }
 
@@ -59,6 +60,14 @@ class DailyReview extends Component
     {
         return Department::query()
             ->where('is_service', 1)
+            ->with('technicians',function($q){
+                $q->with('title');
+                $q->whereHas('voucherDetails',function(Builder $q){
+                    $q->whereHas('voucher',function(Builder $q){
+                        $q->where('date',$this->date);
+                    });
+                });
+            })
             // ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name','inc')
             // ->orderBy('name')
             ->get();
@@ -77,6 +86,17 @@ class DailyReview extends Component
     public function voucherDetails()
     {
         return VoucherDetail::query()
+            ->whereHas('voucher', function (Builder $q) {
+                $q->where('date', $this->date);
+            })
+            ->get();
+    }
+
+    #[Computed()]
+    public function partsAccountTransactions()
+    {
+        return VoucherDetail::query()
+        ->where('account_id',Setting::find(1)->internal_parts_account_id)
             ->whereHas('voucher', function (Builder $q) {
                 $q->where('date', $this->date);
             })

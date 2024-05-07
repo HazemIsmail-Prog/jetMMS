@@ -93,6 +93,10 @@ class User extends Authenticatable
         return $this->hasMany(Voucher::class, 'created_by');
     }
 
+    public function voucherDetails() : HasMany {
+        return $this->hasMany(VoucherDetail::class);
+    }
+
     public function orders_technician()
     {
         return $this->hasMany(Order::class, 'technician_id');
