@@ -52,7 +52,7 @@
     @livewire('orders.invoices.invoice-form')
     @livewire('orders.invoices.payments.payment-form')
     @livewire('orders.invoices.discount.discount-form')
-    @livewire('orders.cancel-reason-modal')
+    {{-- @livewire('orders.cancel-reason-modal') --}}
 
 
     {{-- Filters --}}
@@ -204,12 +204,12 @@
                         </x-badgeWithCounter>
                         {{-- @endcan --}}
 
-                        @can('cancel_order', $order)
+                        {{-- @can('cancel_order', $order)
                         <x-badgeWithCounter
                             wire:click="$dispatch('showCancelReasonModal',{order:{{ $order }}})">
                             <x-svgs.trash class="h-4 w-4" />
                         </x-badgeWithCounter>
-                        @endcan
+                        @endcan --}}
 {{-- 
                         @can('view_order_progress', $order)
                         <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
