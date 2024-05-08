@@ -22,19 +22,19 @@
             <x-table>
                 <x-thead>
                     <tr>
-                        <x-th class="border border-gray-300 dark:border-gray-700" rowspan="2">{{ __('messages.technician') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700" colspan="2">{{ __('messages.invoices') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700" colspan="2">{{ __('messages.accounts') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700" colspan="3">{{ __('messages.cost_centers') }}</x-th>
+                        <x-th  rowspan="2">{{ __('messages.technician') }}</x-th>
+                        <x-th  colspan="2">{{ __('messages.invoices') }}</x-th>
+                        <x-th  colspan="2">{{ __('messages.accounts') }}</x-th>
+                        <x-th  colspan="3">{{ __('messages.cost_centers') }}</x-th>
                     </tr>
                     <tr>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.amount') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.parts_difference') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.income_account_id') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.cost_account_id') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.services') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.parts') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.delivery') }}</x-th>
+                        <x-th >{{ __('messages.amount') }}</x-th>
+                        <x-th >{{ __('messages.parts_difference') }}</x-th>
+                        <x-th >{{ __('messages.income_account_id') }}</x-th>
+                        <x-th >{{ __('messages.cost_account_id') }}</x-th>
+                        <x-th >{{ __('messages.services') }}</x-th>
+                        <x-th >{{ __('messages.parts') }}</x-th>
+                        <x-th >{{ __('messages.delivery') }}</x-th>
                     </tr>
                 </x-thead>
 
@@ -142,14 +142,14 @@
                         $delivery = $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',3)->sum('absolute');
                     @endphp
                         <tr class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
-                            <x-th class="border border-gray-300 dark:border-gray-700 !whitespace-normal">{{ $department->name }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700 {{ $parts_difference < 0  ? 'text-red-500' : ''}}">{{ $parts_difference == 0 ? '-' : number_format($parts_difference,3)  }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $income > 0 ? number_format($income,3) : '-' }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $cost > 0 ? number_format($cost,3) : '-' }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $services > 0 ? number_format($services,3) : '-' }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $parts > 0 ? number_format($parts,3) : '-' }}</x-th>
-                            <x-th class="border border-gray-300 dark:border-gray-700">{{ $delivery > 0 ? number_format($delivery,3) : '-' }}</x-th>
+                            <x-th class=" !whitespace-normal">{{ $department->name }}</x-th>
+                            <x-th >{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
+                            <x-th class=" {{ $parts_difference < 0  ? 'text-red-500' : ''}}">{{ $parts_difference == 0 ? '-' : number_format($parts_difference,3)  }}</x-th>
+                            <x-th >{{ $income > 0 ? number_format($income,3) : '-' }}</x-th>
+                            <x-th >{{ $cost > 0 ? number_format($cost,3) : '-' }}</x-th>
+                            <x-th >{{ $services > 0 ? number_format($services,3) : '-' }}</x-th>
+                            <x-th >{{ $parts > 0 ? number_format($parts,3) : '-' }}</x-th>
+                            <x-th >{{ $delivery > 0 ? number_format($delivery,3) : '-' }}</x-th>
                         </tr>
                         
                     @endforeach
@@ -162,14 +162,14 @@
 
                 <x-tfoot>
                     <tr>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ __('messages.grand_total') }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->invoices->sum('amount') > 0 ? number_format($this->invoices->sum('amount'),3) : '-' }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700 {{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) < 0 ? 'text-red-500' : '' }}">{{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) == 0 ? '-' : number_format(round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3),3) }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute'),3) : '-' }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute'),3) : '-' }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute'),3) : '-' }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute'),3) : '-' }}</x-th>
-                        <x-th class="border border-gray-300 dark:border-gray-700">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th >{{ __('messages.grand_total') }}</x-th>
+                        <x-th >{{ $this->invoices->sum('amount') > 0 ? number_format($this->invoices->sum('amount'),3) : '-' }}</x-th>
+                        <x-th class=" {{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) < 0 ? 'text-red-500' : '' }}">{{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) == 0 ? '-' : number_format(round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3),3) }}</x-th>
+                        <x-th >{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th >{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th >{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th >{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute'),3) : '-' }}</x-th>
+                        <x-th >{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute'),3) : '-' }}</x-th>
                     </tr>
                 </x-tfoot>
             </x-table>
