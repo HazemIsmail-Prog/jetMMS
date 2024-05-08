@@ -547,6 +547,8 @@ return [
     'daily_review' => 'Daily Review',
     'parts_difference' => 'Parts Difference',
     'grand_total' => 'Grand Total',
+    'company_technicians' => 'Company Technicians',
+    'commission_technicians' => 'Commission Technicians',
 
 
 

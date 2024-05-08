@@ -566,6 +566,8 @@ return [
     'daily_review' => 'المراجعة اليومية',
     'parts_difference' => 'فرق العهدة',
     'grand_total' => 'الاجمالي الكلي',
+    'company_technicians' => 'فنيي الشركة',
+    'commission_technicians' => 'فنيي النسبة',
 
     
 
