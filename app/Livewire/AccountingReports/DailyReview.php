@@ -2,7 +2,6 @@
 
 namespace App\Livewire\AccountingReports;
 
-use App\Models\Account;
 use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\Setting;
@@ -13,10 +12,6 @@ use Livewire\Component;
 
 class DailyReview extends Component
 {
-    public $account_id = [];
-    public $cost_center_id = [];
-    public $department_id = [];
-    public $contact_id = [];
     public $date = '';
 
     public function mount()
@@ -27,49 +22,18 @@ class DailyReview extends Component
     }
 
     #[Computed()]
-    public function accountsVoucherDetails()
-    {
-        return Account::query()
-            ->where('level', 3)
-            ->whereIn('id', $this->account_id)
-
-            //Get openining sum of Debit before start Date
-            ->withSum(['voucher_details' => function ($q) {
-                $q->whereHas('voucher', function ($q) {
-                    $q->where('date', '<', $this->date);
-                });
-            }], 'debit')
-
-            //Get openining sum of credit before start Date
-            ->withSum(['voucher_details' => function ($q) {
-                $q->whereHas('voucher', function ($q) {
-                    $q->where('date', '<', $this->date);
-                });
-            }], 'credit')
-
-            ->withWhereHas('voucher_details', function ($q) {
-                $q->withWhereHas('voucher', function ($q) {
-                    $q->where('date', [$this->date]);
-                });
-            })
-            ->get();
-    }
-
-    #[Computed()]
     public function departments()
     {
         return Department::query()
             ->where('is_service', 1)
             ->with('technicians',function($q){
-                $q->with('title');
+                $q->with('title:id,name_en,name_ar');
                 $q->whereHas('voucherDetails',function(Builder $q){
                     $q->whereHas('voucher',function(Builder $q){
                         $q->where('date',$this->date);
                     });
                 });
             })
-            // ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name','inc')
-            // ->orderBy('name')
             ->get();
     }
 
@@ -78,7 +42,7 @@ class DailyReview extends Component
     {
         return Invoice::query()
             ->whereDate('created_at', $this->date)
-            ->with('order')
+            ->with('order:id,department_id,technician_id')
             ->get();
     }
 

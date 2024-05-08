@@ -545,6 +545,9 @@ return [
     'uncollected' => 'Un-Collected',
     'uncollect' => 'Un-Collect',
     'daily_review' => 'Daily Review',
+    'parts_difference' => 'Parts Difference',
+    'grand_total' => 'Grand Total',
+
 
 
 

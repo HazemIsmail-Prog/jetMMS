@@ -564,6 +564,8 @@ return [
     'uncollected' => 'غير محصل',
     'uncollect' => 'الغاء التحصيل',
     'daily_review' => 'المراجعة اليومية',
+    'parts_difference' => 'فرق العهدة',
+    'grand_total' => 'الاجمالي الكلي',
 
     
 
