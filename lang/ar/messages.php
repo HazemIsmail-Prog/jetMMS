@@ -568,6 +568,11 @@ return [
     'grand_total' => 'الاجمالي الكلي',
     'company_technicians' => 'فنيي الشركة',
     'commission_technicians' => 'فنيي النسبة',
+    'net_knet' => 'صافي كي نت',
+    'knet_charges' => 'عمولة كي نت',
+    'knet_total' => 'احمالي كي نت',
+    'cash_total' => 'احمالي النقدي',
+    'collection_statement' => 'كشف تحقيق التحصيل',
 
     
 

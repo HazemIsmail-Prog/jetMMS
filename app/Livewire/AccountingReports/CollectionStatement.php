@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class DailyReview extends Component
+class CollectionStatement extends Component
 {
     public $date = '';
 
@@ -57,13 +57,25 @@ class DailyReview extends Component
     }
 
     #[Computed()]
-    public function partsAccountTransactions()
+    public function bankTransactions()
     {
-        return $this->voucherDetails->where('account_id',Setting::find(1)->internal_parts_account_id);
+        return $this->voucherDetails->where('account_id',Setting::find(1)->bank_account_id);
+    }
+
+    #[Computed()]
+    public function bankChargesTransactions()
+    {
+        return $this->voucherDetails->where('account_id',Setting::find(1)->bank_charges_account_id);
+    }
+
+    #[Computed()]
+    public function cashTransactions()
+    {
+        return $this->voucherDetails->where('account_id',Setting::find(1)->cash_account_id);
     }
 
     public function render()
     {
-        return view('livewire.accounting-reports.daily-review')->title(__('messages.daily_review'));
+        return view('livewire.accounting-reports.collection-statement');
     }
 }

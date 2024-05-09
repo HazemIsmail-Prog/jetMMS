@@ -115,6 +115,9 @@
                 @can('daily_review_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
                 @endcan
+                @can('collection_statement_report', App\Models\DummyModel::class)
+                <x-nested-sidebar-item route="collection_statement" :title="__('messages.collection_statement')" />
+                @endcan
                 @can('account_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                 @endcan

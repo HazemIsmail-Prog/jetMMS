@@ -549,6 +549,12 @@ return [
     'grand_total' => 'Grand Total',
     'company_technicians' => 'Company Technicians',
     'commission_technicians' => 'Commission Technicians',
+    'net_knet' => 'Net K-Net',
+    'knet_charges' => 'K-Net Charges',
+    'knet_total' => 'K-Net Total',
+    'cash_total' => 'Cash Total',
+    'collection_statement' => 'Collection Statement',
+
 
 
 
