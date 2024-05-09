@@ -16,13 +16,16 @@ class CompanyIndex extends Component
 
     #[Computed()]
     #[On('companiesUpdated')]
+    #[On('attachmentsUpdated')]
     public function companies()
     {
         return Company::query()
+            ->withCount('attachments')
             ->paginate(15);
     }
 
-    public function delete(Company $company) {
+    public function delete(Company $company)
+    {
         $company->delete();
     }
 
