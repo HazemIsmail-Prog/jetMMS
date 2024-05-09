@@ -76,6 +76,6 @@ class CollectionStatement extends Component
 
     public function render()
     {
-        return view('livewire.accounting-reports.collection-statement');
+        return view('livewire.accounting-reports.collection-statement')->title(__('messages.collection_statement'));
     }
 }
