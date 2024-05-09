@@ -66,7 +66,7 @@
                     $remaining = $this->invoices->where('order.technician_id',$technician->id)->sum('remaining_amount');
                     $bank = $this->bankTransactions->where('user_id',$technician->id)->sum('absolute');
                     $bank_charges = $this->bankChargesTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('debit');
                     @endphp
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
@@ -91,7 +91,7 @@
                     $remaining = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('remaining_amount');
                     $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('absolute');
                     $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('debit');
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.company_technicians')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
@@ -115,7 +115,7 @@
                     $remaining = $this->invoices->where('order.technician_id',$technician->id)->sum('remaining_amount');
                     $bank = $this->bankTransactions->where('user_id',$technician->id)->sum('absolute');
                     $bank_charges = $this->bankChargesTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('debit');
                     @endphp
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
@@ -140,7 +140,7 @@
                     $remaining = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('remaining_amount');
                     $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('absolute');
                     $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('debit');
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.commission_technicians')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
@@ -165,7 +165,7 @@
                     $remaining = $this->invoices->where('order.department_id',$department->id)->sum('remaining_amount');
                     $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
                     $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('debit');
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.total')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
@@ -213,7 +213,7 @@
                 $remaining = $this->invoices->sum('remaining_amount');
                 $bank = $this->bankTransactions->sum('absolute');
                 $bank_charges = $this->bankChargesTransactions->sum('absolute');
-                $cashTransactions = $this->cashTransactions->sum('absolute');
+                $cashTransactions = $this->cashTransactions->sum('debit');
                 @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
