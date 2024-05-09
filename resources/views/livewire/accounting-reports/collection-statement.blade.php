@@ -227,5 +227,5 @@
         </x-thead>
     </x-table>
 
-    <h1>{{ number_fromat($this->cashTransactions->sum('debit') - $this->cashTransactions->sum('credit'),3) }}</h1>
+    <h1>{{ number_format($this->cashTransactions->sum('debit') - $this->cashTransactions->sum('credit'),3) }}</h1>
 </div>
