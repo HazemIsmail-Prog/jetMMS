@@ -226,4 +226,6 @@
             </tr>
         </x-thead>
     </x-table>
+
+    <h1>{{ $this->cashTransactions->sum('debit') - $this->cashTransactions->sum('credit') }}</h1>
 </div>
