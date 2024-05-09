@@ -38,4 +38,9 @@ class CompanyPolicy
         return $user->hasPermission('companies_delete');
     }
 
+    public function viewAnyAttachment(User $user, Company $company): bool
+    {
+        return $user->hasPermission('companies_attachment');
+    }
+
 }

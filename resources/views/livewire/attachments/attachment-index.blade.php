@@ -1,5 +1,5 @@
 <div>
-    <x-dialog-modal maxWidth="7xl" wire:model.live="showModal">
+    <x-dialog-modal maxWidth="2xl" wire:model.live="showModal">
 
         <x-slot name="title">
             <div class=" flex items-center justify-between">

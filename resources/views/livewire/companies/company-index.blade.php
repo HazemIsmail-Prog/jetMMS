@@ -37,6 +37,9 @@
 
     @livewire('companies.company-form')
 
+    @livewire('attachments.attachment-index')
+    @livewire('attachments.attachment-form')
+
     <x-table>
         <x-thead>
             <tr>
@@ -57,6 +60,13 @@
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showCompanyFormModal',{company:{{ $company }}})">
                                     <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+
+                            @can('viewAnyAttachment', $company)
+                                <x-badgeWithCounter :counter="$company->attachments_count" title="{{ __('messages.attachments') }}"
+                                    wire:click="$dispatch('showAttachmentModal',{model:'Company',id:{{ $company->id }}})">
+                                    <x-svgs.attachment class="w-4 h-4" />
                                 </x-badgeWithCounter>
                             @endcan
 
