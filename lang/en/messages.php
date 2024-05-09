@@ -554,6 +554,8 @@ return [
     'knet_total' => 'K-Net Total',
     'cash_total' => 'Cash Total',
     'collection_statement' => 'Collection Statement',
+    'bank_deposit_required' => 'Bank Deposit Required',
+
 
 
 

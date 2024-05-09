@@ -573,6 +573,7 @@ return [
     'knet_total' => 'احمالي كي نت',
     'cash_total' => 'احمالي النقدي',
     'collection_statement' => 'كشف تحقيق التحصيل',
+    'bank_deposit_required' => 'المبلغ المطلوب ايداعه في البنك',
 
     
 

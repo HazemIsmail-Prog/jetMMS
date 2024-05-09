@@ -17,7 +17,7 @@ class CollectionStatement extends Component
     public function mount()
     {
         $this->date = today()
-        ->subDay(1)
+        ->subDay(8)
         ->format('Y-m-d');
     }
 

@@ -70,13 +70,13 @@
                     @endphp
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
                 </x-tr>
                 @endforeach
 
@@ -95,13 +95,13 @@
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.company_technicians')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
                 </tr>
                 @endif
 
@@ -119,13 +119,13 @@
                     @endphp
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-td>
                     <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
+                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
                 </x-tr>
                 @endforeach
 
@@ -144,13 +144,13 @@
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.commission_technicians')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
                 </tr>
                 @endif
             </tbody>
@@ -169,13 +169,13 @@
                     @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.total')}}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
                 </tr>
             </x-tfoot>
 
@@ -188,6 +188,8 @@
         </x-table>
     </div>
     @endforeach
+
+
     <x-table>
         <x-thead>
             <tr>
@@ -216,16 +218,26 @@
                 $cashTransactions = $this->cashTransactions->sum('debit');
                 @endphp
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
                     <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $knet != ($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ $cash != $cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
+                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
             </tr>
         </x-thead>
     </x-table>
 
-    <h1>{{ number_format($this->cashTransactions->sum('debit') - $this->cashTransactions->sum('credit'),3) }}</h1>
+
+    <div class=" border border-green-500 rounded-lg p-5 my-5 flex flex-col items-center justify-center gap-3">
+
+        <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('messages.bank_deposit_required') }}
+        </h2>
+        <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
+            {{ number_format($this->cashTransactions->sum('debit') - $this->cashTransactions->sum('credit'),3) }}
+        </h2>
+    </div>
+
 </div>
