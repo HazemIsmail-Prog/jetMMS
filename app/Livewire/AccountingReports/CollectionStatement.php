@@ -5,6 +5,7 @@ namespace App\Livewire\AccountingReports;
 use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\Setting;
+use App\Models\Title;
 use App\Models\VoucherDetail;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -43,6 +44,14 @@ class CollectionStatement extends Component
         return Invoice::query()
             ->whereDate('created_at', $this->date)
             ->with('order:id,department_id,technician_id')
+            ->get();
+    }
+
+    #[Computed()]
+    public function titles()
+    {
+        return Title::query()
+            ->whereIn('id', Title::TECHNICIANS_GROUP)
             ->get();
     }
 

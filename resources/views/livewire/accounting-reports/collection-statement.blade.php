@@ -25,206 +25,151 @@
         <x-table>
             <x-thead>
                 <tr>
-                    <x-th class=" border border-gray-700 dark:border-gray-100" rowspan="2">{{ __('messages.technician')
-                        }}</x-th>
-                    <x-th class=" border border-gray-700 dark:border-gray-100" colspan="4">{{ __('messages.invoices') }}
-                    </x-th>
-                    <x-th class=" border border-gray-700 dark:border-gray-100" colspan="4">{{ __('messages.accounts') }}
-                    </x-th>
+                    <x-borderd-th rowspan="2">{{ __('messages.technician')}}</x-borderd-th>
+                    <x-borderd-th colspan="4">{{ __('messages.invoices') }}</x-borderd-th>
+                    <x-borderd-th colspan="4">{{ __('messages.accounts') }}</x-borderd-th>
                 </tr>
                 <tr>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.amount') }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.cash')
-                        }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.knet') }}
-                    </x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.remaining_amount') }}
-                    </x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.net_knet') }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.knet_charges') }}
-                    </x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{
-                        __('messages.knet_total') }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.cash_total')
-                        }}</x-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.amount') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.cash')}}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.knet') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.remaining_amount') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.net_knet') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.knet_charges') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{__('messages.knet_total') }}</x-borderd-th>
+                    <x-borderd-th class="!w-1/12">{{ __('messages.cash_total')}}</x-borderd-th>
                 </tr>
             </x-thead>
 
-
-
-
-
             <tbody>
 
-                {{-- company_technicians rows --}}
-                @foreach ($department->technicians->where('title_id',11) as $technician)
-                <x-tr>
-                    @php
-                    $amount = $this->invoices->where('order.technician_id',$technician->id)->sum('amount');
-                    $cash = $this->invoices->where('order.technician_id',$technician->id)->sum('cash_amount');
-                    $knet = $this->invoices->where('order.technician_id',$technician->id)->sum('knet_amount');
-                    $remaining = $this->invoices->where('order.technician_id',$technician->id)->sum('remaining_amount');
-                    $bank = $this->bankTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $bank_charges = $this->bankChargesTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('debit');
-                    @endphp
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
-                </x-tr>
+                @foreach ($this->titles as $title)
+                    @foreach ($department->technicians->where('title_id',$title->id) as $technician)
+                        <x-tr>
+
+                            @php
+                                $amount = $this->invoices->where('order.technician_id',$technician->id)->sum('amount');
+                                $cash = $this->invoices->where('order.technician_id',$technician->id)->sum('cash_amount');
+                                $knet = $this->invoices->where('order.technician_id',$technician->id)->sum('knet_amount');
+                                $remaining = $this->invoices->where('order.technician_id',$technician->id)->sum('remaining_amount');
+                                $bank = $this->bankTransactions->where('user_id',$technician->id)->sum('absolute');
+                                $bank_charges = $this->bankChargesTransactions->where('user_id',$technician->id)->sum('absolute');
+                                $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('debit');
+                                $cashNotEqual = (string)$cash != (string)$cashTransactions;
+                                $knetNotEqual = (string)$knet != (string)($bank + $bank_charges);
+                            @endphp
+                            
+                            <x-borderd-td>{{ $technician->name }}</x-borderd-td>
+                            <x-borderd-td>{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td>{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td>{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td>{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-borderd-td>
+                            <x-borderd-td class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-borderd-td>
+                            <x-borderd-td class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-borderd-td>
+                        </x-tr>
+                    @endforeach
+
+                    @if ($department->technicians->whereNotIn('title_id',$title->id)->count() > 0  && $department->technicians->whereIn('title_id',$title->id)->count() > 0)
+                        <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
+
+                            @php
+                                $amount = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('amount');
+                                $cash = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('cash_amount');
+                                $knet = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('knet_amount');
+                                $remaining = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('remaining_amount');
+                                $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('absolute');
+                                $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('absolute');
+                                $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('debit');
+                                $cashNotEqual = (string)$cash != (string)$cashTransactions;
+                                $knetNotEqual = (string)$knet != (string)($bank + $bank_charges);
+                            @endphp
+
+                            <x-borderd-th>{{ $title->name }}</x-borderd-th>
+                            <x-borderd-th>{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th>{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th>{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th>{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-borderd-th>
+                            <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-borderd-th>
+                            <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-borderd-th>
+                        </tr>
+                    @endif
                 @endforeach
 
-                {{-- company_technicians totals --}}
-                @if ($department->technicians->where('title_id',11)->count() > 0 &&
-                $department->technicians->where('title_id',26)->count() > 0)
-                <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
-                    @php
-                    $amount = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('amount');
-                    $cash = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('cash_amount');
-                    $knet = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('knet_amount');
-                    $remaining = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('remaining_amount');
-                    $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('absolute');
-                    $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',11)->pluck('id'))->sum('debit');
-                    @endphp
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.company_technicians')}}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
-                </tr>
-                @endif
-
-                {{-- commission_technicians rows --}}
-                @foreach ($department->technicians->where('title_id',26) as $technician)
-                <x-tr>
-                    @php
-                    $amount = $this->invoices->where('order.technician_id',$technician->id)->sum('amount');
-                    $cash = $this->invoices->where('order.technician_id',$technician->id)->sum('cash_amount');
-                    $knet = $this->invoices->where('order.technician_id',$technician->id)->sum('knet_amount');
-                    $remaining = $this->invoices->where('order.technician_id',$technician->id)->sum('remaining_amount');
-                    $bank = $this->bankTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $bank_charges = $this->bankChargesTransactions->where('user_id',$technician->id)->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->where('user_id',$technician->id)->sum('debit');
-                    @endphp
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $technician->name }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-td>
-                    <x-td class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-td>
-                </x-tr>
-                @endforeach
-
-                {{-- commission_technicians totals --}}
-                @if ($department->technicians->where('title_id',11)->count() > 0 &&
-                $department->technicians->where('title_id',26)->count() > 0)
-                <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
-                    @php
-                    $amount = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('amount');
-                    $cash = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('cash_amount');
-                    $knet = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('knet_amount');
-                    $remaining = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('remaining_amount');
-                    $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('absolute');
-                    $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->where('title_id',26)->pluck('id'))->sum('debit');
-                    @endphp
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.commission_technicians')}}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
-                </tr>
-                @endif
             </tbody>
 
             {{-- single table total --}}
             <x-tfoot>
                 <tr>
+
                     @php
-                    $amount = $this->invoices->where('order.department_id',$department->id)->sum('amount');
-                    $cash = $this->invoices->where('order.department_id',$department->id)->sum('cash_amount');
-                    $knet = $this->invoices->where('order.department_id',$department->id)->sum('knet_amount');
-                    $remaining = $this->invoices->where('order.department_id',$department->id)->sum('remaining_amount');
-                    $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
-                    $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
-                    $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('debit');
+                        $amount = $this->invoices->where('order.department_id',$department->id)->sum('amount');
+                        $cash = $this->invoices->where('order.department_id',$department->id)->sum('cash_amount');
+                        $knet = $this->invoices->where('order.department_id',$department->id)->sum('knet_amount');
+                        $remaining = $this->invoices->where('order.department_id',$department->id)->sum('remaining_amount');
+                        $bank = $this->bankTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
+                        $bank_charges = $this->bankChargesTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('absolute');
+                        $cashTransactions = $this->cashTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('debit');
+                        $cashNotEqual = (string)$cash != (string)$cashTransactions;
+                        $knetNotEqual = (string)$knet != (string)($bank + $bank_charges);
                     @endphp
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ __('messages.total')}}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+
+                    <x-borderd-th>{{ __('messages.total')}}</x-borderd-th>
+                    <x-borderd-th>{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-borderd-th>
                 </tr>
             </x-tfoot>
-
-
-
-
-
-
 
         </x-table>
     </div>
     @endforeach
 
-
     <x-table>
         <x-thead>
             <tr>
-                <x-th class=" border border-gray-700 dark:border-gray-100" rowspan="3">{{ __('messages.grand_total')}}</x-th>
-                <x-th class=" border border-gray-700 dark:border-gray-100" colspan="4">{{ __('messages.invoices') }}</x-th>
-                <x-th class=" border border-gray-700 dark:border-gray-100" colspan="4">{{ __('messages.accounts') }}</x-th>
+                <x-borderd-th rowspan="3">{{ __('messages.grand_total')}}</x-borderd-th>
+                <x-borderd-th colspan="4">{{ __('messages.invoices') }}</x-borderd-th>
+                <x-borderd-th colspan="4">{{ __('messages.accounts') }}</x-borderd-th>
             </tr>
             <tr>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.amount') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.cash')}}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.knet') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.remaining_amount') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.net_knet') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.knet_charges') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{__('messages.knet_total') }}</x-th>
-                <x-th class="border border-gray-700 dark:border-gray-100 !w-1/12">{{ __('messages.cash_total')}}</x-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.amount') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.cash')}}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.knet') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.remaining_amount') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.net_knet') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.knet_charges') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{__('messages.knet_total') }}</x-borderd-th>
+                <x-borderd-th class="!w-1/12">{{ __('messages.cash_total')}}</x-borderd-th>
             </tr>
             <tr>
                 @php
-                $amount = $this->invoices->sum('amount');
-                $cash = $this->invoices->sum('cash_amount');
-                $knet = $this->invoices->sum('knet_amount');
-                $remaining = $this->invoices->sum('remaining_amount');
-                $bank = $this->bankTransactions->sum('absolute');
-                $bank_charges = $this->bankChargesTransactions->sum('absolute');
-                $cashTransactions = $this->cashTransactions->sum('debit');
+                    $amount = $this->invoices->sum('amount');
+                    $cash = $this->invoices->sum('cash_amount');
+                    $knet = $this->invoices->sum('knet_amount');
+                    $remaining = $this->invoices->sum('remaining_amount');
+                    $bank = $this->bankTransactions->sum('absolute');
+                    $bank_charges = $this->bankChargesTransactions->sum('absolute');
+                    $cashTransactions = $this->cashTransactions->sum('debit');
+                    $cashNotEqual = (string)$cash != (string)$cashTransactions;
+                    $knetNotEqual = (string)$knet != (string)($bank + $bank_charges);
                 @endphp
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100">{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$knet != (string)($bank + $bank_charges) ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-th>
-                    <x-th class="border border-gray-700 dark:border-gray-100 {{ (string)$cash != (string)$cashTransactions ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-th>
+                    <x-borderd-th>{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cash > 0 ? number_format($cash,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ $knet > 0 ? number_format($knet,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $remaining > 0 ? number_format($remaining,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $bank > 0 ? number_format($bank,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $bank_charges > 0 ? number_format($bank_charges,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $knetNotEqual ? 'bg-red-200' : '' }}">{{ ($bank + $bank_charges) > 0 ? number_format(($bank + $bank_charges),3) : '-' }}</x-borderd-th>
+                    <x-borderd-th class=" {{ $cashNotEqual ? 'bg-red-200' : '' }}">{{ $cashTransactions > 0 ? number_format($cashTransactions,3) :'-' }}</x-borderd-th>
             </tr>
         </x-thead>
     </x-table>
