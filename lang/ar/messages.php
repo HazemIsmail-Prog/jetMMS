@@ -574,6 +574,7 @@ return [
     'cash_total' => 'احمالي النقدي',
     'collection_statement' => 'كشف تحقيق التحصيل',
     'bank_deposit_required' => 'المبلغ المطلوب ايداعه في البنك',
+    'users_receivables' => 'كشف ذمم الموظفين',
 
     
 

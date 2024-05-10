@@ -13,6 +13,8 @@ class Account extends Model
 
     protected $guarded = [];
 
+    const RECEIVABLE_ACCOUNTS_PARENT_ID = 21;
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'account_id');

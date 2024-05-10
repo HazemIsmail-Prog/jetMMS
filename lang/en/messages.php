@@ -555,6 +555,8 @@ return [
     'cash_total' => 'Cash Total',
     'collection_statement' => 'Collection Statement',
     'bank_deposit_required' => 'Bank Deposit Required',
+    'users_receivables' => 'Employee Receivables',
+
 
 
 
