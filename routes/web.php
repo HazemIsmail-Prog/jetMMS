@@ -5,6 +5,7 @@ use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
 use App\Livewire\AccountingReports\CollectionStatement;
 use App\Livewire\AccountingReports\DailyReview;
+use App\Livewire\AccountingReports\TrialBalance;
 use App\Livewire\AccountingReports\UsersReceivables;
 use App\Livewire\Accounts\AccountIndex;
 use App\Livewire\Areas\AreaIndex;
@@ -151,7 +152,7 @@ Route::middleware([
             ->name('balance_sheet')
             ->can('balance_sheet_report', DummyModel::class);
 
-        Route::get('accounts/reports/trial_balance', AccountStatement::class) // TODO:change class to its new page
+        Route::get('accounts/reports/trial_balance', TrialBalance::class)
             ->name('trial_balance')
             ->can('trial_balance_report', DummyModel::class);
 

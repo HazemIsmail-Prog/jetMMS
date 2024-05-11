@@ -556,6 +556,8 @@ return [
     'collection_statement' => 'Collection Statement',
     'bank_deposit_required' => 'Bank Deposit Required',
     'users_receivables' => 'Employee Receivables',
+    'transactions_balance' => 'Transactions Balance',
+    'closing_balance' => 'Closing Balance',
 
 
 

@@ -403,7 +403,7 @@ return [
     'copy' => 'نسخ',
     'invalid_voucher_number' => 'لا يوجد قيد بهذا الرقم',
     'balance' => 'الرصيد',
-    'opening_balance' => 'الرصيد السابق',
+    'opening_balance' => 'رصيد اول المدة',
     'usage' => 'الاستخدام',
     
     
@@ -575,6 +575,8 @@ return [
     'collection_statement' => 'كشف تحقيق التحصيل',
     'bank_deposit_required' => 'المبلغ المطلوب ايداعه في البنك',
     'users_receivables' => 'كشف ذمم الموظفين',
+    'transactions_balance' => 'رصيد الحركة',
+    'closing_balance' => 'الرصيد الختامي',
 
     
 
