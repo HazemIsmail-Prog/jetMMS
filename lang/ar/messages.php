@@ -571,12 +571,13 @@ return [
     'net_knet' => 'صافي كي نت',
     'knet_charges' => 'عمولة كي نت',
     'knet_total' => 'احمالي كي نت',
-    'cash_total' => 'احمالي النقدي',
+    'cash_total' => 'اجمالي النقدية',
     'collection_statement' => 'كشف تحقيق التحصيل',
     'bank_deposit_required' => 'المبلغ المطلوب ايداعه في البنك',
     'users_receivables' => 'كشف ذمم الموظفين',
     'transactions_balance' => 'رصيد الحركة',
     'closing_balance' => 'الرصيد الختامي',
+    'parts_total' => 'اجمالي بضاعة العهدة',
 
     
 

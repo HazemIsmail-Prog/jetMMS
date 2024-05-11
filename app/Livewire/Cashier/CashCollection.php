@@ -4,8 +4,10 @@ namespace App\Livewire\Cashier;
 
 use App\Models\Department;
 use App\Models\Payment;
+use App\Models\Setting;
 use App\Models\Title;
 use App\Models\User;
+use App\Models\VoucherDetail;
 use App\Services\CreateInvoicePaymentVoucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -158,6 +160,22 @@ class CashCollection extends Component
             'created_at' => $newDate,
             'updated_at' => now(),
         ]);
+    }
+
+    #[Computed()]
+    public function voucherDetails()
+    {
+        return VoucherDetail::query()
+            ->whereHas('voucher', function (Builder $q) {
+                $q->where('date', today());
+            })
+            ->get();
+    }
+
+    #[Computed()]
+    public function cashTransactions()
+    {
+        return $this->voucherDetails->where('account_id',Setting::find(1)->cash_account_id);
     }
 
     public function render()

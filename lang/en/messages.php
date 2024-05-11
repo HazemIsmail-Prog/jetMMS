@@ -558,6 +558,7 @@ return [
     'users_receivables' => 'Employee Receivables',
     'transactions_balance' => 'Transactions Balance',
     'closing_balance' => 'Closing Balance',
+    'parts_total' => 'Parts Total',
 
 
 
