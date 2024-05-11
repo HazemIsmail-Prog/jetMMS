@@ -15,7 +15,7 @@ class TrialBalance extends Component
     {
         $this->filters =
             [
-                'start_date' => today()->subDay(9)->format('Y-m-d'),
+                'start_date' => today()->startOfYear()->format('Y-m-d'),
                 'end_date' => today()->format('Y-m-d'),
             ];
     }
