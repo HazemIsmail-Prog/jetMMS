@@ -34,26 +34,28 @@
         <tbody>
             @foreach ($this->users as $user)
                 @php
-                    $total_debit = $this->voucherDetails->where('user_id',$user->id)->sum('debit');
-                    $total_credit = $this->voucherDetails->where('user_id',$user->id)->sum('credit');
+                    $total_debit = $user['debit_total'];
+                    $total_credit = $user['credit_total'];
                     $total_amount = round($total_debit-$total_credit,3);
                 @endphp
+
                 @if ($total_amount != 0)
                     <x-tr>
                         <x-td>{{ $user->name }}</x-td>
                         <x-td>{{ $user->title->name }}</x-td>
                         <x-td>{{ $user->department->name }}</x-td>
                         @foreach ($this->receivableAccounts as $account)
-                        @php
-                            $debit = $this->voucherDetails->where('account_id',$account->id)->where('user_id',$user->id)->sum('debit');
-                            $credit = $this->voucherDetails->where('account_id',$account->id)->where('user_id',$user->id)->sum('credit');
-                            $amount = round($debit-$credit,3);
-                        @endphp
-                        <x-td class="!w-1/12 {{ $amount < 0 ? 'text-red-500' : '' }}">{{ $amount == 0 ? '-' : number_format($amount,3) }}</x-td>
+                            @php
+                                $debit = $user['debit_sum_of_account_'.$account->id];
+                                $credit = $user['credit_sum_of_account_'.$account->id];
+                                $amount = round($debit-$credit,3);
+                            @endphp
+                            <x-td class="!w-1/12 {{ $amount < 0 ? 'text-red-500' : '' }}">{{ $amount == 0 ? '-' : number_format($amount,3) }}</x-td>
                         @endforeach
                         <x-td class="!w-1/12 {{ $total_amount < 0 ? 'text-red-500' : '' }}">{{ $total_amount == 0 ? '-' : number_format($total_amount,3) }}</x-td>
                     </x-tr>
                 @endif
+                
             @endforeach
         </tbody>
 
@@ -62,15 +64,15 @@
                 <x-th colspan="3">{{ __('messages.total') }}</x-th>
                 @foreach ($this->receivableAccounts as $account)
                 @php
-                    $debit = $this->voucherDetails->where('account_id',$account->id)->sum('debit');
-                    $credit = $this->voucherDetails->where('account_id',$account->id)->sum('credit');
+                    $debit = $this->users->sum('debit_sum_of_account_'.$account->id);
+                    $credit = $this->users->sum('credit_sum_of_account_'.$account->id);
                     $amount = round($debit-$credit,3);
                 @endphp
                 <x-th class="!w-1/12 {{ $amount < 0 ? 'text-red-500' : '' }}">{{ $amount == 0 ? '-' : number_format($amount,3) }}</x-th>
                 @endforeach
                 @php
-                    $total_debit = $this->voucherDetails->sum('debit');
-                    $total_credit = $this->voucherDetails->sum('credit');
+                    $total_debit = $this->users->sum('debit_total');
+                    $total_credit = $this->users->sum('credit_total');
                     $total_amount = round($total_debit-$total_credit,3);
                 @endphp
                 <x-th class="!w-1/12 {{ $total_amount < 0 ? 'text-red-500' : '' }}">{{ $total_amount == 0 ? '-' : number_format($total_amount,3) }}</x-th>
