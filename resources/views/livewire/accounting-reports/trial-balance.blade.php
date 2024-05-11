@@ -39,6 +39,16 @@
         </x-thead>
 
         <tbody>
+            @php
+                $total_opening_debit = 0;
+                $total_opening_credit = 0;
+
+                $total_transactions_debit = 0;
+                $total_transactions_credit = 0;
+
+                $total_closing_debit = 0;
+                $total_closing_credit = 0;
+            @endphp
             @foreach ($this->accounts as $account)
             <x-tr>
                 @php
@@ -51,6 +61,15 @@
 
                     $closing_debit = $opening_debit + $transactions_debit;
                     $closing_credit = $opening_credit + $transactions_credit;
+
+                    $total_opening_debit += $opening_debit;
+                    $total_opening_credit += $opening_credit;
+
+                    $total_transactions_debit += $transactions_debit;
+                    $total_transactions_credit += $transactions_credit;
+
+                    $total_closing_debit += $closing_debit;
+                    $total_closing_credit += $closing_credit;
                 
                 @endphp
 
@@ -63,6 +82,18 @@
                 <x-borderd-td>{{ $closing_credit > 0 ? number_format($closing_credit,3) : '-'}}</x-borderd-td>
             </x-tr>
             @endforeach
+
+            <x-tfoot>
+                <tr>
+                    <x-borderd-th>{{ __('messages.total') }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_opening_debit > 0 ? number_format($total_opening_debit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_opening_credit > 0 ? number_format($total_opening_credit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_transactions_debit > 0 ? number_format($total_transactions_debit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_transactions_credit > 0 ? number_format($total_transactions_credit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_closing_debit > 0 ? number_format($total_closing_debit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_closing_credit > 0 ? number_format($total_closing_credit,3) : '-' }}</x-borderd-th>
+                </tr>
+            </x-tfoot>
         </tbody>
 
     </x-table>
