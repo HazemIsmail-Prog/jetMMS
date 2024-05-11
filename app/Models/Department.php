@@ -15,12 +15,17 @@ class Department extends Model
 
     protected $guarded = [];
 
-    public function technicians()
+    public function technicians(): HasMany
     {
         return $this->hasMany(User::class)->whereIn('title_id', Title::TECHNICIANS_GROUP);
     }
 
-    public function orders()
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }

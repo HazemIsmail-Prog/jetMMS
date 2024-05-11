@@ -1,21 +1,69 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.users_receivables') }}
+                <span id="counter"></span>
             </h2>
-
         </div>
     </x-slot>
 
-    {{-- <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
+    @teleport('#counter')
+    <span
+        class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+        {{ $this->users->total() }}
+    </span>
+    @endteleport
 
-        <div class=" col-span-1 md:col-span-2 xl:col-span-4">
-            <x-label for="date">{{ __('messages.date') }}</x-label>
-            <x-input type="date" class="w-full" id="date" wire:model.live="date" />
+    <x-slot name="footer">
+        <span id="pagination"></span>
+    </x-slot>
+    @teleport('#pagination')
+    <div class=" flex items-center justify-between gap-2">
+        <x-select wire:model.live="perPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+        </x-select>
+        @if ($this->users->hasPages())
+        <div class=" flex-1">{{ $this->users->links() }}</div>
+        @endif
+    </div>
+    @endteleport
+
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+
+        <div>
+            <x-label for="user">{{ __('messages.name') }}</x-label>
+            <x-searchable-select id="user" class="!py-[5px]" :list="$this->users_filter_list"
+                wire:model.live="filters.user_id" multipule />
         </div>
-    </div> --}}
+
+        <div>
+            <x-label for="title">{{ __('messages.title') }}</x-label>
+            <x-searchable-select id="title" class="!py-[5px]" :list="$this->titles"
+                wire:model.live="filters.title_id" multipule />
+        </div>
+
+        <div>
+            <x-label for="department">{{ __('messages.department') }}</x-label>
+            <x-searchable-select id="department" class="!py-[5px]" :list="$this->departments"
+                wire:model.live="filters.department_id" multipule />
+        </div>
+
+        <div>
+            <x-label for="start_date">{{ __('messages.date') }}</x-label>
+            <x-input class="w-full text-center py-0" type="date" id="start_date"
+                wire:model.live="filters.start_date" />
+            <x-input class="w-full text-center py-0" type="date" id="end_date"
+                wire:model.live="filters.end_date" />
+
+        </div>
+
+    </div>
 
 
     <x-table>
