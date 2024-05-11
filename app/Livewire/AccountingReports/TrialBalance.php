@@ -52,6 +52,7 @@ class TrialBalance extends Component
 
 
         ->where('level',3)
+        ->orderBy('account_id')
         ->get()
         ;
     }
