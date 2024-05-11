@@ -48,6 +48,7 @@ class UsersReceivables extends Component
             ->select('id', 'department_id', 'title_id', 'name_' . app()->getLocale())
             ->with('title:id,name_' . app()->getLocale())
             ->with('department:id,name_' . app()->getLocale())
+
             ->withWhereHas('voucherDetails', function ($q) {
                 $q->whereIn('account_id', $this->receivableAccounts->pluck('id'));
                 $q->when($this->filters['start_date'], function (Builder $q) {
@@ -62,11 +63,37 @@ class UsersReceivables extends Component
                 });
             })
             ->withSum(
-                ['voucherDetails as debit_total' => fn ($query) => $query->whereIn('account_id', $this->receivableAccounts->pluck('id'))],
+                ['voucherDetails as debit_total' =>
+                function (Builder $q) {
+                    $q->whereIn('account_id', $this->receivableAccounts->pluck('id'));
+                    $q->when($this->filters['start_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '>=', $this->filters['start_date']);
+                        });
+                    });
+                    $q->when($this->filters['end_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '<=', $this->filters['end_date']);
+                        });
+                    });
+                }],
                 'debit'
             )
             ->withSum(
-                ['voucherDetails as credit_total' => fn ($query) => $query->whereIn('account_id', $this->receivableAccounts->pluck('id'))],
+                ['voucherDetails as credit_total' =>
+                function (Builder $q) {
+                    $q->whereIn('account_id', $this->receivableAccounts->pluck('id'));
+                    $q->when($this->filters['start_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '>=', $this->filters['start_date']);
+                        });
+                    });
+                    $q->when($this->filters['end_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '<=', $this->filters['end_date']);
+                        });
+                    });
+                }],
                 'credit'
             )
 
@@ -92,11 +119,38 @@ class UsersReceivables extends Component
 
         foreach ($this->receivableAccounts as $account) {
             $users->loadSum(
-                ['voucherDetails as debit_sum_of_account_' . $account->id => fn ($query) => $query->where('account_id', $account->id)],
+                ['voucherDetails as debit_sum_of_account_' . $account->id =>
+                function (Builder $q) use ($account) {
+                    $q->where('account_id', $account->id);
+                    $q->when($this->filters['start_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '>=', $this->filters['start_date']);
+                        });
+                    });
+                    $q->when($this->filters['end_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '<=', $this->filters['end_date']);
+                        });
+                    });
+                }],
                 'debit'
             );
+
             $users->loadSum(
-                ['voucherDetails as credit_sum_of_account_' . $account->id => fn ($query) => $query->where('account_id', $account->id)],
+                ['voucherDetails as credit_sum_of_account_' . $account->id =>
+                function (Builder $q) use ($account) {
+                    $q->where('account_id', $account->id);
+                    $q->when($this->filters['start_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '>=', $this->filters['start_date']);
+                        });
+                    });
+                    $q->when($this->filters['end_date'], function (Builder $q) {
+                        $q->whereHas('voucher', function (Builder $q) {
+                            $q->where('date', '<=', $this->filters['end_date']);
+                        });
+                    });
+                }],
                 'credit'
             );
         }
