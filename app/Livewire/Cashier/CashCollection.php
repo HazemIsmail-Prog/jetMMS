@@ -166,26 +166,27 @@ class CashCollection extends Component
     public function cashTransactions()
     {
         $cashTransactions = VoucherDetail::query()
-            ->selectRaw('SUM(debit) as debit, SUM(credit) as credit')
             ->where('account_id', Setting::find(1)->cash_account_id);
+            
 
-        if ($this->filters['start_created_at'] || $this->filters['end_created_at']) {
-
+        if ($this->filters['start_created_at'] && $this->filters['end_created_at']) {
             $cashTransactions->whereHas('voucher', function (Builder $q) {
-                $q->where('date', ' >=', $this->filters['start_created_at']);
-                $q->where('date', ' <=', $this->filters['end_created_at']);
+                $q->whereBetween('date', [$this->filters['start_created_at'],$this->filters['end_created_at']]);
             });
         } else {
 
             $cashTransactions->whereHas('voucher', function (Builder $q) {
-                $q->where('date', today());
+                $q->where('date', today()->subDay(10));
             });
         }
 
-        $cashTransactions->get();
-        return $cashTransactions->first();
-    }
+        $debitSum = $cashTransactions->sum('debit');
+        $creditSum = $cashTransactions->sum('credit');
+    
+        return ['debit' => $debitSum, 'credit' => $creditSum];
 
+    }
+    
     public function render()
     {
         return view('livewire.cashier.cash-collection')->title(__('messages.cash_collection'));
