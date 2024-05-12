@@ -41,6 +41,19 @@ class DummyModelPolicy
         return $user->hasPermission('dispatching_menu');
     }
 
+    public function operations_reports(User $user): bool
+    {
+        return
+            $user->hasPermission('expected_invoices_deletion_report')
+            // || $user->hasPermission('collection_statement_report')
+            ;
+    }
+
+    public function expected_invoices_deletion_report(User $user): bool
+    {
+        return $user->hasPermission('expected_invoices_deletion_report');
+    }
+
     // Cashier 
     public function cashier_title(User $user)
     {

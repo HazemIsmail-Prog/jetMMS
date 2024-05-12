@@ -21,6 +21,7 @@ use App\Livewire\Dispatching\DispatchingIndex;
 use App\Livewire\Employees\EmployeeIndex;
 use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
+use App\Livewire\OperationsReports\ExpectedInvoicesDeletion;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\PartInvoices\PartInvoiceIndex;
 use App\Livewire\Permissions\PermissionIndex;
@@ -108,6 +109,10 @@ Route::middleware([
         Route::get('dispatch-panel/{department}', DispatchingIndex::class)
             ->name('dispatch-panel.index')
             ->can('canDispatch', DummyModel::class);
+
+        Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
+            ->name('expected_invoices_deletion')
+            ->can('expected_invoices_deletion_report', DummyModel::class);
 
         // ========== Cashier ==========
         Route::get('cash-collection', CashCollection::class)

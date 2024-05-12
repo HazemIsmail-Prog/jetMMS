@@ -53,27 +53,12 @@
             @can('viewAny', App\Models\Invoice::class)
             <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
             @endcan
-            @can('operations_reports')
-            <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'bg-slate-900' }} @endif"
-                x-data="{ open: {{ in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index']) ? 1 : 0 }} }">
-                <a class="block text-slate-400 hover:text-white truncate transition duration-150 @if (in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hover:text-slate-200' }} @endif"
-                    href="#0" @click.prevent="sidebarExpanded ? open = !open : sidebarExpanded = true">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <x-svgs.settings />
-                            <span class="text-sm font-medium ms-3 duration-200">{{ __('messages.reports') }}</span>
-                        </div>
-                        <x-svgs.chevron />
-                    </div>
-                </a>
-                <ul class="ps-9 mt-1 @if (!in_array(Route::current()->getName(), ['roles.index', 'permissions.index', 'users.index'])) {{ 'hidden' }} @endif"
-                    :class="open ? '!block' : 'hidden'">
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.account_statement')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.balance_sheet')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.trial_balance')" />
-                    <x-nested-sidebar-item route="dashboard" :title="__('messages.profit_loss')" />
-                </ul>
-            </li>
+            @can('operations_reports', App\Models\DummyModel::class)
+            <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
+                @can('expected_invoices_deletion_report', App\Models\DummyModel::class)
+                <x-nested-sidebar-item route="expected_invoices_deletion" :title="__('messages.expected_invoices_deletion')" />
+                @endcan
+            </x-sidebar-dropdown>
             @endcan
             @can('canDispatch', App\Models\DummyModel::class)
 

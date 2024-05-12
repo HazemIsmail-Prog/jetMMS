@@ -578,6 +578,7 @@ return [
     'transactions_balance' => 'رصيد الحركة',
     'closing_balance' => 'الرصيد الختامي',
     'parts_total' => 'اجمالي بضاعة العهدة',
+    'expected_invoices_deletion' => 'فواتير محتمل الغائها',
 
     
 

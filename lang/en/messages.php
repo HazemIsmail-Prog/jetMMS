@@ -559,6 +559,8 @@ return [
     'transactions_balance' => 'Transactions Balance',
     'closing_balance' => 'Closing Balance',
     'parts_total' => 'Parts Total',
+    'expected_invoices_deletion' => 'Expected Invoices Deletion',
+
 
 
 
