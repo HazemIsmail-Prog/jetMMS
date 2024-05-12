@@ -56,7 +56,7 @@
             <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments"
                 wire:model.live="filters.department_id" multipule />
         </div>
-        @if (auth()id() == 1)
+        @if (auth()->id() == 1)
         <div>
             <x-label for="roles">{{ __('messages.roles') }}</x-label>
             <x-searchable-select class=" !py-[5px]" id="roles" :list="$this->roles" wire:model.live="filters.role_id"
@@ -85,7 +85,7 @@
                 <x-th>{{ __('messages.username') }}</x-th>
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
-                @if (auth()id() == 1)
+                @if (auth()->id() == 1)
                 <x-th>{{ __('messages.roles') }}</x-th>
                 @endif
                 <x-th>{{ __('messages.shift') }}</x-th>
@@ -100,7 +100,7 @@
                 <x-td>{{ $user->username }}</x-td>
                 <x-td>{{ $user->title->name }}</x-td>
                 <x-td>{{ $user->department->name ?? '-' }}</x-td>
-                @if (auth()id() == 1)
+                @if (auth()->id() == 1)
                 <x-td>
                     @foreach ($user->roles as $role)
                     <span
