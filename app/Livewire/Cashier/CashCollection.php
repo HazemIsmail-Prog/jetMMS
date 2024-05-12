@@ -163,19 +163,27 @@ class CashCollection extends Component
     }
 
     #[Computed()]
-    public function voucherDetails()
-    {
-        return VoucherDetail::query()
-            ->whereHas('voucher', function (Builder $q) {
-                $q->where('date', today());
-            })
-            ->get();
-    }
-
-    #[Computed()]
     public function cashTransactions()
     {
-        return $this->voucherDetails->where('account_id',Setting::find(1)->cash_account_id);
+        $cashTransactions = VoucherDetail::query()
+            ->selectRaw('SUM(debit) as debit, SUM(credit) as credit')
+            ->where('account_id', Setting::find(1)->cash_account_id);
+
+        if ($this->filters['start_created_at'] || $this->filters['end_created_at']) {
+
+            $cashTransactions->whereHas('voucher', function (Builder $q) {
+                $q->where('date', ' >=', $this->filters['start_created_at']);
+                $q->where('date', ' <=', $this->filters['end_created_at']);
+            });
+        } else {
+
+            $cashTransactions->whereHas('voucher', function (Builder $q) {
+                $q->where('date', today());
+            });
+        }
+
+        $cashTransactions->get();
+        return $cashTransactions->first();
     }
 
     public function render()
