@@ -6,7 +6,7 @@ use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\Setting;
 use App\Models\Title;
-use App\Models\VoucherDetail;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -18,8 +18,156 @@ class DailyReview extends Component
     public function mount()
     {
         $this->date = today()
-        ->subDay(1)
-        ->format('Y-m-d');
+            ->subDay(12)
+            ->format('Y-m-d');
+    }
+
+    #[Computed()]
+    public function technicians()
+    {
+        $settings = Setting::find(1);
+        return User::query()
+
+            ->select("id", "department_id", "title_id")
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->whereHas('voucherDetails', function (Builder $q) {
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            })
+
+            // Part Difference
+            ->withSum(['voucherDetails as PartDifferenceDebit' => function (Builder $q) use ($settings) {
+                $q->where('account_id', $settings->internal_parts_account_id);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as PartDifferenceCredit' => function (Builder $q) use ($settings) {
+                $q->where('account_id', $settings->internal_parts_account_id);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+            // Service Cost Center
+            ->withSum(['voucherDetails as servicesCostCenterDebit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 1);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as servicesCostCenterCredit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 1);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+            // Parts Cost Center
+            ->withSum(['voucherDetails as partsCostCenterDebit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 2);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as partsCostCenterCredit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 2);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+            // Delivery Cost Center
+            ->withSum(['voucherDetails as deliveryCostCenterDebit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 3);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as deliveryCostCenterCredit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->where('cost_center_id', 3);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+            // Income Account
+            ->withSum(['voucherDetails as incomeAccountDebit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as incomeAccountCredit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('income_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+
+            // Cost Account
+            ->withSum(['voucherDetails as costAccountDebit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('cost_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as costAccountCredit' => function (Builder $q) {
+                $q->where('account_id', function ($query) {
+                    $query->select('cost_account_id')
+                        ->from('departments')
+                        ->whereColumn('departments.id', 'users.department_id');
+                });
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->where('date', $this->date);
+                });
+            }], 'credit')
+
+            ->get();
     }
 
     #[Computed()]
@@ -27,11 +175,11 @@ class DailyReview extends Component
     {
         return Department::query()
             ->where('is_service', 1)
-            ->with('technicians',function($q){
+            ->with('technicians', function ($q) {
                 $q->with('title:id,name_en,name_ar');
-                $q->whereHas('voucherDetails',function(Builder $q){
-                    $q->whereHas('voucher',function(Builder $q){
-                        $q->where('date',$this->date);
+                $q->whereHas('voucherDetails', function (Builder $q) {
+                    $q->whereHas('voucher', function (Builder $q) {
+                        $q->where('date', $this->date);
                     });
                 });
             })
@@ -55,24 +203,9 @@ class DailyReview extends Component
             ->get();
     }
 
-    #[Computed()]
-    public function voucherDetails()
-    {
-        return VoucherDetail::query()
-            ->whereHas('voucher', function (Builder $q) {
-                $q->where('date', $this->date);
-            })
-            ->get();
-    }
-
-    #[Computed()]
-    public function partsAccountTransactions()
-    {
-        return $this->voucherDetails->where('account_id',Setting::find(1)->internal_parts_account_id);
-    }
-
     public function render()
     {
+        // dd($this->technicians);
         return view('livewire.accounting-reports.daily-review')->title(__('messages.daily_review'));
     }
 }

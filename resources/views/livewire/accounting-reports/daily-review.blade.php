@@ -53,15 +53,14 @@
                         @foreach ($department->technicians->where('title_id',$title->id) as $technician)
 
                             <x-tr>
-
                                 @php
                                     $amount = $this->invoices->where('order.technician_id',$technician->id)->sum('amount');
-                                    $parts_difference = round($this->partsAccountTransactions->where('user_id',$technician->id)->sum('debit') - $this->partsAccountTransactions->where('user_id',$technician->id)->sum('credit'),3);
-                                    $income = $this->voucherDetails->where('account_id',$department->income_account_id)->where('user_id',$technician->id)->sum('absolute');
-                                    $cost = $this->voucherDetails->where('account_id',$department->cost_account_id)->where('user_id',$technician->id)->sum('absolute');
-                                    $services = $this->voucherDetails->where('account_id',$department->income_account_id)->where('user_id',$technician->id)->where('cost_center_id',1)->sum('absolute');
-                                    $parts = $this->voucherDetails->where('account_id',$department->income_account_id)->where('user_id',$technician->id)->where('cost_center_id',2)->sum('absolute');
-                                    $delivery = $this->voucherDetails->where('account_id',$department->income_account_id)->where('user_id',$technician->id)->where('cost_center_id',3)->sum('absolute');
+                                    $parts_difference = round($this->technicians->where('id',$technician->id)->first()->PartDifferenceDebit - $this->technicians->where('id',$technician->id)->first()->PartDifferenceCredit,3);
+                                    $income = abs($this->technicians->where('id',$technician->id)->first()->incomeAccountDebit - $this->technicians->where('id',$technician->id)->first()->incomeAccountCredit);
+                                    $cost = abs($this->technicians->where('id',$technician->id)->first()->costAccountDebit - $this->technicians->where('id',$technician->id)->first()->costAccountCredit);
+                                    $services = abs($this->technicians->where('id',$technician->id)->first()->servicesCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->servicesCostCenterCredit);
+                                    $parts = abs($this->technicians->where('id',$technician->id)->first()->partsCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->partsCostCenterCredit);
+                                    $delivery = abs($this->technicians->where('id',$technician->id)->first()->deliveryCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->deliveryCostCenterCredit);
                                 @endphp
 
                                 <x-borderd-td>{{ $technician->name }}</x-borderd-td>
@@ -83,14 +82,12 @@
 
                                 @php
                                     $amount = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('amount');
-                                    $parts_transactions_debits = $this->partsAccountTransactions->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('debit');
-                                    $parts_transactions_credits = $this->partsAccountTransactions->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('credit');
-                                    $parts_difference = round($parts_transactions_debits - $parts_transactions_credits,3);
-                                    $income = $this->voucherDetails->where('account_id',$department->income_account_id)->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('absolute');
-                                    $cost = $this->voucherDetails->where('account_id',$department->cost_account_id)->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->sum('absolute');
-                                    $services = $this->voucherDetails->where('account_id',$department->income_account_id)->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->where('cost_center_id',1)->sum('absolute');
-                                    $parts = $this->voucherDetails->where('account_id',$department->income_account_id)->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->where('cost_center_id',2)->sum('absolute');
-                                    $delivery = $this->voucherDetails->where('account_id',$department->income_account_id)->whereIn('user_id',$department->technicians->where('title_id',$title->id)->pluck('id'))->where('cost_center_id',3)->sum('absolute');
+                                    $parts_difference = round($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('PartDifferenceDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('PartDifferenceCredit'),3);
+                                    $income = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('incomeAccountDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('incomeAccountCredit'));
+                                    $cost = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('costAccountDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('costAccountCredit'));
+                                    $services = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('servicesCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('servicesCostCenterCredit'));
+                                    $parts = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('partsCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('partsCostCenterCredit'));
+                                    $delivery = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('deliveryCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('deliveryCostCenterCredit'));
                                 @endphp
 
                                 <x-borderd-th>{{ $title->name }}</x-borderd-th>
@@ -111,13 +108,14 @@
                     <tr class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
 
                         @php
-                            $amount = $this->invoices->where('order.department_id',$department->id)->sum('amount');
-                            $parts_difference = round($this->partsAccountTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('debit') - $this->partsAccountTransactions->whereIn('user_id',$department->technicians->pluck('id'))->sum('credit'),3);
-                            $income = $this->voucherDetails->where('account_id',$department->income_account_id)->sum('absolute');
-                            $cost = $this->voucherDetails->where('account_id',$department->cost_account_id)->sum('absolute');
-                            $services = $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',1)->sum('absolute');
-                            $parts = $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',2)->sum('absolute');
-                            $delivery = $this->voucherDetails->where('account_id',$department->income_account_id)->where('cost_center_id',3)->sum('absolute');
+                            $amount = $this->invoices->where('order.department_id',$department->id)->sum('amount');                 
+                            $parts_difference = round($this->technicians->where('department_id',$department->id)->sum('PartDifferenceDebit') - $this->technicians->where('department_id',$department->id)->sum('PartDifferenceCredit'),3);
+                            $income = abs($this->technicians->where('department_id',$department->id)->sum('incomeAccountDebit') - $this->technicians->where('department_id',$department->id)->sum('incomeAccountCredit'));
+                            $cost = abs($this->technicians->where('department_id',$department->id)->sum('costAccountDebit') - $this->technicians->where('department_id',$department->id)->sum('costAccountCredit'));
+                            $services = abs($this->technicians->where('department_id',$department->id)->sum('servicesCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('servicesCostCenterCredit'));
+                            $parts = abs($this->technicians->where('department_id',$department->id)->sum('partsCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('partsCostCenterCredit'));
+                            $delivery = abs($this->technicians->where('department_id',$department->id)->sum('deliveryCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('deliveryCostCenterCredit'));
+
                         @endphp
 
                         <x-borderd-th>{{ __('messages.total') }}</x-borderd-th>
@@ -159,13 +157,23 @@
                 <x-borderd-th class="!w-1/12">{{ __('messages.cost_account_id')}}</x-borderd-th>
             </tr>
             <tr>
-                <x-borderd-th class="!w-1/12">{{ $this->invoices->sum('amount') > 0 ? number_format($this->invoices->sum('amount'),3) : '-' }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12 {{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) < 0 ? 'text-red-500' : '' }}">{{ round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3) == 0 ? '-' : number_format(round($this->partsAccountTransactions->sum('debit') - $this->partsAccountTransactions->sum('credit'),3),3) }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12">{{$this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',1)->sum('absolute'),3) : '-' }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',2)->sum('absolute'),3) : '-' }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->where('cost_center_id',3)->sum('absolute'),3) : '-' }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('income_account_id'))->sum('absolute'),3) : '-' }}</x-borderd-th>
-                <x-borderd-th class="!w-1/12">{{ $this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute') > 0 ? number_format($this->voucherDetails->whereIn('account_id',$this->departments->pluck('cost_account_id'))->sum('absolute'),3) : '-' }}</x-borderd-th>
+                @php
+                    $amount = $this->invoices->sum('amount');
+                    $parts_difference = round($this->technicians->sum('PartDifferenceDebit') - $this->technicians->sum('PartDifferenceCredit'),3);
+                    $income = abs($this->technicians->sum('incomeAccountDebit') - $this->technicians->sum('incomeAccountCredit'));
+                    $cost = abs($this->technicians->sum('costAccountDebit') - $this->technicians->sum('costAccountCredit'));
+                    $services = abs($this->technicians->sum('servicesCostCenterDebit') - $this->technicians->sum('servicesCostCenterCredit'));
+                    $parts = abs($this->technicians->sum('partsCostCenterDebit') - $this->technicians->sum('partsCostCenterCredit'));
+                    $delivery = abs($this->technicians->sum('deliveryCostCenterDebit') - $this->technicians->sum('deliveryCostCenterCredit'));
+
+                @endphp
+                <x-borderd-th>{{ $amount > 0 ? number_format($amount,3) : '-' }}</x-borderd-th>
+                <x-borderd-th class=" {{ $parts_difference < 0  ? 'text-red-500' : ''}}"> {{ $parts_difference == 0 ? '-' : number_format($parts_difference,3) }}</x-borderd-th>
+                <x-borderd-th>{{ $services > 0 ? number_format($services,3) : '-' }}</x-borderd-th>
+                <x-borderd-th>{{ $parts > 0 ? number_format($parts,3) : '-' }}</x-borderd-th>
+                <x-borderd-th>{{ $delivery > 0 ? number_format($delivery,3) : '-' }}</x-borderd-th>
+                <x-borderd-th>{{ $income > 0 ? number_format($income,3) : '-' }}</x-borderd-th>
+                <x-borderd-th>{{ $cost > 0 ? number_format($cost,3) : '-' }}</x-borderd-th>
             </tr>
 
         </x-thead>
