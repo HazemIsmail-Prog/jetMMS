@@ -169,7 +169,7 @@ class CashCollection extends Component
             ->where('account_id', Setting::find(1)->cash_account_id);
             
 
-        if ($this->filters['start_created_at'] && $this->filters['end_created_at']) {
+        if ($this->filters['start_created_at'] || $this->filters['end_created_at']) {
             $cashTransactions->whereHas('voucher', function (Builder $q) {
                 $q->whereBetween('date', [$this->filters['start_created_at'],$this->filters['end_created_at']]);
             });
