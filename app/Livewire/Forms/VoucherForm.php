@@ -63,7 +63,7 @@ class VoucherForm extends Form
     {
         $this->total_debit = collect($this->details)->sum('debit');
         $this->total_credit = collect($this->details)->sum('credit');
-        $this->balance = $this->total_debit - $this->total_credit;
+        $this->balance = round($this->total_debit - $this->total_credit,3);
         $this->validate([
             'balance' => ['required', 'numeric', 'in:0'],
             'total_debit' => ['required', 'numeric', 'gt:0'],
