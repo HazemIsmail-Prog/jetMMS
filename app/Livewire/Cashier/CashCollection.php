@@ -176,7 +176,7 @@ class CashCollection extends Component
         } else {
 
             $cashTransactions->whereHas('voucher', function (Builder $q) {
-                $q->where('date', today()->subDay(10));
+                $q->where('date', today());
             });
         }
 
