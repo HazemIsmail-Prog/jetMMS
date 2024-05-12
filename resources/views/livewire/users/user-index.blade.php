@@ -42,10 +42,12 @@
             <x-label for="name">{{ __('messages.name') }}</x-label>
             <x-input id="name" wire:model.live="filters.name" class="w-full py-0" />
         </div>
+        @if (auth()->id() == 1)
         <div>
             <x-label for="username">{{ __('messages.username') }}</x-label>
             <x-input id="username" wire:model.live="filters.username" class="w-full py-0" dir="ltr" />
         </div>
+        @endif
         <div>
             <x-label for="title">{{ __('messages.title') }}</x-label>
             <x-searchable-select class=" !py-[5px]" id="title" :list="$this->titles" wire:model.live="filters.title_id"
@@ -82,7 +84,9 @@
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.name') }}</x-th>
+                @if (auth()->id() == 1)
                 <x-th>{{ __('messages.username') }}</x-th>
+                @endif
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
                 @if (auth()->id() == 1)
@@ -97,7 +101,9 @@
             @foreach ($this->users as $user)
             <x-tr wire:key="user-{{$user->id}}">
                 <x-td>{{ $user->name }}</x-td>
+                @if (auth()->id() == 1)
                 <x-td>{{ $user->username }}</x-td>
+                @endif
                 <x-td>{{ $user->title->name }}</x-td>
                 <x-td>{{ $user->department->name ?? '-' }}</x-td>
                 @if (auth()->id() == 1)

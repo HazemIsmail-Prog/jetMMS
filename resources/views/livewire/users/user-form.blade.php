@@ -34,7 +34,6 @@
                         <x-input-error for="form.password" />
                     </div>
 
-                    @endif
                     <div>
                         <x-label for="title_id">{{ __('messages.title') }}</x-label>
                         <x-select class="w-full" wire:model="form.title_id" id="title_id">
@@ -65,7 +64,6 @@
                         </x-select>
                         <x-input-error for="form.shift_id" />
                     </div>
-                    @if (auth()->id() == 1)
                     <div>
                         <x-label for="roles">{{ __('messages.roles') }}</x-label>
                         <div class="p-2 border dark:border-gray-700 rounded-lg">
@@ -78,13 +76,13 @@
                         </div>
                         <x-input-error for="form.roles" />
                     </div>
-                    @endif
                     <div>
                         <x-label for="active" class="flex items-center">
                             <x-checkbox wire:model="form.active" id="active" />
                             <span class="ms-2 ">{{ __('messages.active') }}</span>
                         </x-label>
                     </div>
+                    @endif
                 </div>
                 <div class="mt-3">
                     <x-button>{{ __('messages.save') }}</x-button>
