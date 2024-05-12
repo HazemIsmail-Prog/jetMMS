@@ -129,7 +129,7 @@ class OrderIndex extends Component
             ->with('status:id,name_ar,name_en,color')
             ->with('department:id,name_ar,name_en')
             ->with('technician:id,name_ar,name_en')
-            ->with('customer:id,name')
+            ->with('customer:id,name,notes')
             ->with('phone:id,number')
             ->with('address')
             ->with('invoices:id')

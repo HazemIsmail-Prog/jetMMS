@@ -82,7 +82,12 @@
         <tbody>
             @foreach ($this->customers as $customer)
             <x-tr>
-                <x-th>{{ $customer->name }}</x-th>
+                <x-th>
+                    <div>{{ $customer->name }}</div>
+                    @if ($customer->notes)
+                    <div class=" text-red-400 font-normal">{{ $customer->notes }}</div>
+                    @endif
+                </x-th>
                 <x-td>
                     @foreach ($customer->phones as $phone)
                     <div>{{ $phone->number }}</div>

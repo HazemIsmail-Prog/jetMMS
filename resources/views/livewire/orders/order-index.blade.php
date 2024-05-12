@@ -177,6 +177,9 @@
                             <div>{{ $order->customer->name }}</div>
                             <div>{{ $order->phone->number }}</div>
                             <div>{{ $order->address->full_address }}</div>
+                            @if ($order->customer->notes)
+                            <div class=" text-red-400 font-normal">{{ $order->customer->notes }}</div>
+                            @endif
                         </div>
 
                     </div>
