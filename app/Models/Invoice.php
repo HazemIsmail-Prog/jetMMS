@@ -74,7 +74,7 @@ class Invoice extends Model
     public function getTotalPaidAmountAttribute()
     {
         $amount = 0;
-        foreach ($this->payments as $row) {
+        foreach ($this->load('payments')->payments as $row) {
             $amount += $row->amount;
         }
         return $amount;
@@ -140,12 +140,12 @@ class Invoice extends Model
 
     public function getCashAmountAttribute()
     {
-        return $this->payments->where('method', 'cash')->sum('amount');
+        return $this->load('payments')->payments->where('method', 'cash')->sum('amount');
     }
 
     public function getKnetAmountAttribute()
     {
-        return $this->payments->where('method', 'knet')->sum('amount');
+        return $this->load('payments')->payments->where('method', 'knet')->sum('amount');
     }
 
     public function computePaymentStatus()
