@@ -62,7 +62,7 @@ class Invoice extends Model
     public function getAmountAttribute()
     {
         $amount = 0;
-        foreach ($this->invoice_details as $row) {
+        foreach ($this->load('invoice_details')->invoice_details as $row) {
             $amount += $row->total;
         }
         foreach ($this->invoice_part_details as $row) {
