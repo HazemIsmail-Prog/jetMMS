@@ -132,6 +132,7 @@ class OrderIndex extends Component
             ->with('customer:id,name,notes')
             ->with('phone:id,number')
             ->with('address')
+            ->with('invoices:id')
             ->with('invoices.invoice_details')
             ->withCount('invoices as custom_invoices_count')
             ->withCount('comments as all_comments')
