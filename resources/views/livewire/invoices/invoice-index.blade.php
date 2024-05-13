@@ -183,7 +183,7 @@
                 <x-td>
                     <span class=" cursor-pointer"
                         wire:click="$set('filters.technician_id',[{{ $invoice->order->technician_id }}])">
-                        {{ $invoice->order->technician->name }}
+                        {{ @$invoice->order->technician->name }}
                     </span>
                 </x-td>
                 <x-td>{{ $invoice->order->customer->name }}</x-td>
