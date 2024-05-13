@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\Title;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -18,7 +19,7 @@ class DailyReview extends Component
     public function mount()
     {
         $this->date = today()
-            ->subDay(1)
+            ->subDay(13)
             ->format('Y-m-d');
     }
 
@@ -192,8 +193,22 @@ class DailyReview extends Component
         return Invoice::query()
             ->whereDate('created_at', $this->date)
             ->with('order:id,department_id,technician_id')
-            ->with('invoice_details')
-            ->with('invoice_part_details')
+            ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
+
+            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function($q){
+                $q->whereHas('service',function($q){
+                    $q->where('type','part');
+                });
+            }],DB::raw('quantity * price'))
+
+            ->withSum(['invoice_part_details as internalPartsAmountSum' => function($q){
+                    $q->where('type','internal');
+            }],DB::raw('quantity * price'))
+
+            ->withSum(['invoice_part_details as externalPartsAmountSum' => function($q){
+                    $q->where('type','external');
+            }],DB::raw('quantity * price'))
+
             ->get();
     }
 
@@ -207,7 +222,6 @@ class DailyReview extends Component
 
     public function render()
     {
-        // dd($this->technicians);
         return view('livewire.accounting-reports.daily-review')->title(__('messages.daily_review'));
     }
 }

@@ -29,6 +29,6 @@ class ExpectedInvoicesDeletion extends Component
     public function render()
     {
         // dd($this->invoices);
-        return view('livewire.operations-reports.expected-invoices-deletion');
+        return view('livewire.operations-reports.expected-invoices-deletion')->title( __('messages.expected_invoices_deletion'));
     }
 }
