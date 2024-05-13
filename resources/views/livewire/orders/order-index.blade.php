@@ -136,7 +136,7 @@
                 <x-th>{{ __('messages.technician') }}</x-th>
                 <x-th>{{ __('messages.completed_date') }}</x-th>
                 <x-th>{{ __('messages.customer') }}</x-th>
-                <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                {{-- <x-th>{{ __('messages.remaining_amount') }}</x-th> --}}
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -184,7 +184,7 @@
 
                     </div>
                 </x-td>
-                <x-td>{{ $order->formated_remaining_amount }}</x-td>
+                {{-- <x-td>{{ $order->formated_remaining_amount }}</x-td> --}}
                 <x-td>
                     <div class=" flex items-center justify-end gap-2">
 
