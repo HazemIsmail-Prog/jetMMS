@@ -560,6 +560,8 @@ return [
     'closing_balance' => 'Closing Balance',
     'parts_total' => 'Parts Total',
     'expected_invoices_deletion' => 'Expected Invoices Deletion',
+    'deleted_invoices_counter' => 'Deleted Invoices Counter',
+    'no_deleted_invoices' => 'No deleted invoices',
 
 
 

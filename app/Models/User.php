@@ -88,6 +88,11 @@ class User extends Authenticatable
         return $this->hasMany(Marketing::class);
     }
 
+    public function deletedInvoices()
+    {
+        return $this->hasMany(Invoice::class)->onlyTrashed();
+    }
+
     public function vouchers()
     {
         return $this->hasMany(Voucher::class, 'created_by');

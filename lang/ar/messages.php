@@ -579,6 +579,8 @@ return [
     'closing_balance' => 'الرصيد الختامي',
     'parts_total' => 'اجمالي بضاعة العهدة',
     'expected_invoices_deletion' => 'فواتير محتمل الغائها',
+    'deleted_invoices_counter' => 'احصائية الفواتير الملغية',
+    'no_deleted_invoices' => 'لا يوجد فواتير ملغية',
 
     
 
