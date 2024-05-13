@@ -65,7 +65,7 @@ class Invoice extends Model
         foreach ($this->load('invoice_details')->invoice_details as $row) {
             $amount += $row->total;
         }
-        foreach ($this->invoice_part_details as $row) {
+        foreach ($this->load('invoice_part_details')->invoice_part_details as $row) {
             $amount += $row->total;
         }
         return $amount + $this->delivery - $this->discount;
