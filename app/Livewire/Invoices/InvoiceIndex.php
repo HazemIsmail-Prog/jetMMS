@@ -54,7 +54,10 @@ class InvoiceIndex extends Component
     public function getData()
     {
         return Invoice::query()
-        ->select('*', DB::raw('(SELECT COUNT(*) FROM invoices AS i WHERE i.order_id = invoices.order_id) AS order_invoices_count'))
+            ->select('*', DB::raw('(SELECT COUNT(*) FROM invoices AS i WHERE i.order_id = invoices.order_id) AS order_invoices_count'))
+            ->whereHas('order',function($q){
+                $q->where('status_id',Status::COMPLETED);
+            })
             ->orderBy('id', 'desc')
             ->with('order.department:id,name_ar,name_en')
             ->with('order.customer:id,name')
