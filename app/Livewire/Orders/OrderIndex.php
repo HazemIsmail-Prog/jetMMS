@@ -132,7 +132,7 @@ class OrderIndex extends Component
             ->with('customer:id,name,notes')
             ->with('phone:id,number')
             ->with('address')
-            ->with('invoices:id')
+            // ->with('invoices:id')
             ->with('invoices',function($q){
                 $q->with('invoice_details');
             })
