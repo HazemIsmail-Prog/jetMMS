@@ -49,6 +49,7 @@ class CustomerIndex extends Component
             ->with('addresses')
             ->with('orders')
             ->with('invoices.invoice_details')
+            ->with('invoices.invoice_part_details')
             ->with('invoices.payments')
             ->when($this->filters['name'], function ($q) {
                 $q->where('name', 'like', '%' . $this->filters["name"] . '%');

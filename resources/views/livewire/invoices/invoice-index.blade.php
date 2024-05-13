@@ -143,13 +143,26 @@
         <tbody>
             @foreach ($this->invoices as $invoice)
             <x-tr>
+                @php
+                    $servicesAmount = $invoice->servicesAmountSum;
+                    $discountAmount = $invoice->discount;
+                    $servicesAfterDiscount = $invoice->servicesAmountSum - $invoice->discount;
+                    $internalPartsAmount = $invoice->invoiceDetailsPartsAmountSum + $invoice->internalPartsAmountSum;
+                    $externalPartsAmount = $invoice->externalPartsAmountSum;
+                    $deliveryAmount = $invoice->delivery;
+                    $cashAmount = $invoice->totalCashAmountSum;
+                    $knetAmount = $invoice->totalKnetAmountSum;
+                    $totalPaidAmount = $invoice->totalPaidAmountSum;
+                    $totalAmount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                    $remainingAmount = $totalAmount - $totalPaidAmount;
+                @endphp
                 <x-td>
                     <a target="_blank" class="btn" href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{
                         $invoice->formated_id }}</a>
                 </x-td>
                 <x-td>
-                    <x-badgeWithCounter :counter="$this->invoices->where('order_id', $invoice->order_id)->count() > 1
-                            ? $this->invoices->where('order_id', $invoice->order_id)->count()
+                    <x-badgeWithCounter :counter="$invoice->order_invoices_count > 1
+                            ? $invoice->order_invoices_count
                             : null" title="{{ __('messages.invoices') }}"
                         wire:click="$dispatch('showInvoicesModal',{order:{{ $invoice->order }}})">
                         {{ $invoice->order->formated_id }}
@@ -175,26 +188,30 @@
                 </x-td>
                 <x-td>{{ $invoice->order->customer->name }}</x-td>
                 <x-td>{{ $invoice->order->phone->number }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_services_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_discount_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_service_amount_after_discount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_internal_parts_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_external_parts_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_delivery_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_cash_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_knet_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_total_paid_amount }}</x-td>
-                <x-td class="!text-right">{{ $invoice->formated_remaining_amount }}</x-td>
+                <x-td class="!text-right">{{ $servicesAmount > 0 ? number_format($servicesAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $discountAmount > 0 ? number_format($discountAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $servicesAfterDiscount > 0 ? number_format($servicesAfterDiscount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $internalPartsAmount > 0 ? number_format($internalPartsAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $externalPartsAmount > 0 ? number_format($externalPartsAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $deliveryAmount > 0 ? number_format($deliveryAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $totalAmount > 0 ? number_format($totalAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $cashAmount > 0 ? number_format($cashAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $knetAmount > 0 ? number_format($knetAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $totalPaidAmount > 0 ? number_format($totalPaidAmount,3) : '-' }}</x-td>
+                <x-td class="!text-right">{{ $remainingAmount > 0 ? number_format($remainingAmount,3) : '-' }}</x-td>
                 <x-td>{{ $invoice->payment_status->title() }}</x-td>
                 <x-td>
                     <div class=" flex items-center justify-end gap-2">
-                        @if ($invoice->can_deleted)
-                        <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
-                            wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
-                            wire:click="delete({{ $invoice->id }})">
-                            <x-svgs.trash class="h-4 w-4" />
-                        </x-badgeWithCounter>
+                        @if ($invoice->collectedPayments === 0)
+                            @if ($invoice->order_invoices_count > 1)
+                                @can('delete',$invoice)
+                                    <x-badgeWithCounter title="{{ __('messages.delete_invoice') }}"
+                                        wire:confirm="{{ __('messages.delete_invoice_confirmation') }}"
+                                        wire:click="delete({{ $invoice->id }})">
+                                        <x-svgs.trash class="h-4 w-4" />
+                                    </x-badgeWithCounter>
+                                @endcan
+                            @endif
                         @endif
                     </div>
                 </x-td>
@@ -202,6 +219,19 @@
             @endforeach
         </tbody>
         <x-tfoot>
+                @php
+                    $servicesAmount = $this->invoices->sum('servicesAmountSum');
+                    $discountAmount = $this->invoices->sum('discount');
+                    $servicesAfterDiscount = $this->invoices->sum('servicesAmountSum') - $this->invoices->sum('discount');
+                    $internalPartsAmount = $this->invoices->sum('invoiceDetailsPartsAmountSum') + $this->invoices->sum('internalPartsAmountSum');
+                    $externalPartsAmount = $this->invoices->sum('externalPartsAmountSum');
+                    $deliveryAmount = $this->invoices->sum('delivery');
+                    $cashAmount = $this->invoices->sum('totalCashAmountSum');
+                    $knetAmount = $this->invoices->sum('totalKnetAmountSum');
+                    $totalPaidAmount = $this->invoices->sum('totalPaidAmountSum');
+                    $totalAmount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                    $remainingAmount = $totalAmount - $totalPaidAmount;
+                @endphp
             <tr>
                 <x-th></x-th>
                 <x-th></x-th>
@@ -210,21 +240,17 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('discount') <= 0 ? '-' : number_format($this->invoices->sum('discount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('services_amount_after_discount') <= 0 ? '-' : number_format($this->invoices->sum('services_amount_after_discount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('internal_parts_amount') <= 0 ? '-' :
-                        number_format($this->invoices->sum('internal_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('external_parts_amount') <= 0 ? '-' :
-                        number_format($this->invoices->sum('external_parts_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('delivery') <= 0 ? '-' : number_format($this->invoices->sum('delivery') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('amount') <= 0 ? '-' : number_format($this->invoices->sum('amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('cash_amount') <= 0 ? '-' : number_format($this->invoices->sum('cash_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('knet_amount') <= 0 ? '-' : number_format($this->invoices->sum('knet_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('total_paid_amount') <= 0 ? '-' :
-                        number_format($this->invoices->sum('total_paid_amount') , 3) }}</x-th>
-                <x-th class=" !text-right">{{ $this->invoices->sum('remaining_amount') <= 0 ? '-' :
-                        number_format($this->invoices->sum('remaining_amount') , 3) }}</x-th>
+                <x-th class="!text-right">{{ $servicesAmount > 0 ? number_format($servicesAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $discountAmount > 0 ? number_format($discountAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $servicesAfterDiscount > 0 ? number_format($servicesAfterDiscount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $internalPartsAmount > 0 ? number_format($internalPartsAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $externalPartsAmount > 0 ? number_format($externalPartsAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $deliveryAmount > 0 ? number_format($deliveryAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $totalAmount > 0 ? number_format($totalAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $cashAmount > 0 ? number_format($cashAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $knetAmount > 0 ? number_format($knetAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $totalPaidAmount > 0 ? number_format($totalPaidAmount,3) : '-' }}</x-th>
+                <x-th class="!text-right">{{ $remainingAmount > 0 ? number_format($remainingAmount,3) : '-' }}</x-th>
                 <x-th></x-th>
                 <x-th></x-th>
             </tr>

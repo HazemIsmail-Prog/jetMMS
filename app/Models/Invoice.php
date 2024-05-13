@@ -50,14 +50,14 @@ class Invoice extends Model
     }
 
     // this function to prevent eager loading for get attributes
-    public function newQuery($excludeDeleted = true)
-    {
-        return parent::newQuery($excludeDeleted)->with([
-            'invoice_details',
-            'invoice_part_details',
-            'payments',
-        ]);
-    }
+    // public function newQuery($excludeDeleted = true)
+    // {
+    //     return parent::newQuery($excludeDeleted)->with([
+    //         'invoice_details',
+    //         'invoice_part_details',
+    //         'payments',
+    //     ]);
+    // }
 
     public function getAmountAttribute()
     {
@@ -167,12 +167,17 @@ class Invoice extends Model
 
     public function getCanDeletedAttribute()
     {
-        return
-            Gate::allows('delete', $this)
-            &&
-            $this->payments->where('is_collected', true)->count() == 0
-            &&
-            $this->load('order:id')->order->invoices->count() > 1;
+        // Eager load necessary relationships with count
+        $this->loadCount(['payments' => function ($query) {
+            $query->where('is_collected', true);
+        }]);
+
+        $order_invoices_count = $this->where('order_id',$this->order_id)->count();
+    
+        // Check if the gate allows deletion, if payments are collected, and if there are more than one invoice for the order
+        return Gate::allows('delete', $this) &&
+            $this->payments_count === 0 &&
+            $order_invoices_count > 1;
     }
 
 

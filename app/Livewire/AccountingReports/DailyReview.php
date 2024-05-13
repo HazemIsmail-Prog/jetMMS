@@ -192,6 +192,8 @@ class DailyReview extends Component
         return Invoice::query()
             ->whereDate('created_at', $this->date)
             ->with('order:id,department_id,technician_id')
+            ->with('invoice_details')
+            ->with('invoice_part_details')
             ->get();
     }
 

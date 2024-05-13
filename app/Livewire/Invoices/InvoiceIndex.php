@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -53,13 +54,42 @@ class InvoiceIndex extends Component
     public function getData()
     {
         return Invoice::query()
+        ->select('*', DB::raw('(SELECT COUNT(*) FROM invoices AS i WHERE i.order_id = invoices.order_id) AS order_invoices_count'))
             ->orderBy('id', 'desc')
             ->with('order.department:id,name_ar,name_en')
             ->with('order.customer:id,name')
             ->with('order.phone:id,number')
             ->with('order.technician:id,name_ar,name_en')
-            ->with('invoice_details.service')
-            ->with('payments')
+
+            ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
+
+            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function($q){
+                $q->whereHas('service',function($q){
+                    $q->where('type','part');
+                });
+            }],DB::raw('quantity * price'))
+
+            ->withSum(['invoice_part_details as internalPartsAmountSum' => function($q){
+                    $q->where('type','internal');
+            }],DB::raw('quantity * price'))
+
+            ->withSum(['invoice_part_details as externalPartsAmountSum' => function($q){
+                    $q->where('type','external');
+            }],DB::raw('quantity * price'))
+
+            ->withSum('payments as totalPaidAmountSum','amount')
+
+            ->withSum(['payments as totalCashAmountSum' => function($q){
+                $q->where('method','cash');
+            }],'amount')
+
+            ->withSum(['payments as totalKnetAmountSum' => function($q){
+                $q->where('method','knet');
+            }],'amount')
+
+            ->withCount(['payments as collectedPayments' => function ($query) {
+                $query->where('is_collected', true);
+            }])
 
             ->when($this->filters['payment_status'], function (Builder $q) {
                 $q->where('payment_status', $this->filters['payment_status']);

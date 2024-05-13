@@ -92,7 +92,7 @@ class Order extends Model
 
     public function getRemainingAmountAttribute()
     {
-        return $this->invoices->sum('remaining_amount');
+        return $this->invoices()->get()->sum('remaining_amount');
     }
 
     public function latest_status()
