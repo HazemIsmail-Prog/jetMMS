@@ -4,8 +4,10 @@
         <x-slot name="title">
             <div class=" flex items-center justify-between">
                 <div>{{ $modalTitle }}</div>
-                <x-button type="button"
-                    wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord?->id }}})">{{ __('messages.add_attachment') }}</x-button>
+                @can('create','App\\Models\\'.$model)
+                    <x-button type="button"
+                        wire:click="$dispatch('showAttachmentFormModal',{model:'{{ $model }}',id:{{ $currentRecord?->id }}})">{{ __('messages.add_attachment') }}</x-button>                    
+                @endcan
             </div>
             <x-section-border />
         </x-slot>
@@ -42,16 +44,20 @@
                                                         <x-svgs.view class="w-4 h-4" />
                                                     </x-badgeWithCounter>
                                                 </a>
-                                                <x-badgeWithCounter
-                                                    wire:click="$dispatch('showAttachmentFormModal',{attachment:{{ $attachment }}})"
-                                                    title="{{ __('messages.edit') }}">
-                                                    <x-svgs.edit class="w-4 h-4" />
-                                                </x-badgeWithCounter>
-                                                <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
-                                                    wire:click="delete({{ $attachment }})"
-                                                    title="{{ __('messages.delete') }}">
-                                                    <x-svgs.trash class="w-4 h-4" />
-                                                </x-badgeWithCounter>
+                                                @can('update',$currentRecord)
+                                                    <x-badgeWithCounter
+                                                        wire:click="$dispatch('showAttachmentFormModal',{attachment:{{ $attachment }}})"
+                                                        title="{{ __('messages.edit') }}">
+                                                        <x-svgs.edit class="w-4 h-4" />
+                                                    </x-badgeWithCounter>
+                                                @endcan
+                                                @can('delete',$currentRecord)
+                                                    <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
+                                                        wire:click="delete({{ $attachment }})"
+                                                        title="{{ __('messages.delete') }}">
+                                                        <x-svgs.trash class="w-4 h-4" />
+                                                    </x-badgeWithCounter>
+                                                @endcan
                                             </div>
                                         </x-td>
                                     </x-tr>
