@@ -23,11 +23,13 @@ class InvoiceIndex extends Component
     public $filters;
     public $perPage = 10;
 
-    public function updatedPerPage() {
+    public function updatedPerPage()
+    {
         $this->resetPage();
     }
 
-    public function updatedFilters() {
+    public function updatedFilters()
+    {
         $this->resetPage();
     }
 
@@ -55,8 +57,8 @@ class InvoiceIndex extends Component
     {
         return Invoice::query()
             ->select('*', DB::raw('(SELECT COUNT(*) FROM invoices AS i WHERE i.order_id = invoices.order_id) AS order_invoices_count'))
-            ->whereHas('order',function($q){
-                $q->where('status_id',Status::COMPLETED);
+            ->whereHas('order', function ($q) {
+                $q->where('status_id', Status::COMPLETED);
             })
             ->orderBy('id', 'desc')
             ->with('order.department:id,name_ar,name_en')
@@ -64,31 +66,35 @@ class InvoiceIndex extends Component
             ->with('order.phone:id,number')
             ->with('order.technician:id,name_ar,name_en')
 
-            ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
-
-            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function($q){
-                $q->whereHas('service',function($q){
-                    $q->where('type','part');
+            ->withSum(['invoice_details as servicesAmountSum' => function ($q) {
+                $q->whereHas('service', function ($q) {
+                    $q->where('type', 'service');
                 });
-            }],DB::raw('quantity * price'))
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as internalPartsAmountSum' => function($q){
-                    $q->where('type','internal');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function ($q) {
+                $q->whereHas('service', function ($q) {
+                    $q->where('type', 'part');
+                });
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as externalPartsAmountSum' => function($q){
-                    $q->where('type','external');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_part_details as internalPartsAmountSum' => function ($q) {
+                $q->where('type', 'internal');
+            }], DB::raw('quantity * price'))
 
-            ->withSum('payments as totalPaidAmountSum','amount')
+            ->withSum(['invoice_part_details as externalPartsAmountSum' => function ($q) {
+                $q->where('type', 'external');
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['payments as totalCashAmountSum' => function($q){
-                $q->where('method','cash');
-            }],'amount')
+            ->withSum('payments as totalPaidAmountSum', 'amount')
 
-            ->withSum(['payments as totalKnetAmountSum' => function($q){
-                $q->where('method','knet');
-            }],'amount')
+            ->withSum(['payments as totalCashAmountSum' => function ($q) {
+                $q->where('method', 'cash');
+            }], 'amount')
+
+            ->withSum(['payments as totalKnetAmountSum' => function ($q) {
+                $q->where('method', 'knet');
+            }], 'amount')
 
             ->withCount(['payments as collectedPayments' => function ($query) {
                 $query->where('is_collected', true);
@@ -170,6 +176,20 @@ class InvoiceIndex extends Component
     {
         $invoice->payments()->delete();
         $invoice->delete();
+        $this->dispatch('invoicesUpdated');
+    }
+
+    public function refreshStatus(Invoice $invoice)
+    {
+        $payment_status = $invoice->totalPaidAmount == 0
+            ? 'pending'
+            : ($invoice->remainingAmount == 0
+                ? 'paid'
+                : 'partially_paid'
+            );
+        $invoice->payment_status = $payment_status;
+        $invoice->save();
+
         $this->dispatch('invoicesUpdated');
     }
 

@@ -210,8 +210,14 @@
                                         wire:click="delete({{ $invoice->id }})">
                                         <x-svgs.trash class="h-4 w-4" />
                                     </x-badgeWithCounter>
-                                @endcan
+                                    @endcan
                             @endif
+                        @endif
+                        @if (auth()->id() == 1)
+                            <x-badgeWithCounter
+                                wire:click="refreshStatus({{ $invoice->id }})">
+                                <x-svgs.arrow-path class="h-4 w-4" />
+                            </x-badgeWithCounter>
                         @endif
                     </div>
                 </x-td>

@@ -48,7 +48,6 @@ class PaymentForm extends Form
             DB::beginTransaction();
             try {
                 Payment::updateOrCreate(['id' => $this->id], $this->except('invoice'));
-                $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
                 DB::commit();
                 $this->reset();
             } catch (\Exception $e) {

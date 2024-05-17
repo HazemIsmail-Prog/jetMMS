@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 #[ObservedBy(InvoiceObserver::class)]
@@ -49,112 +49,93 @@ class Invoice extends Model
         return $this->belongsTo(Order::class);
     }
 
-    // this function to prevent eager loading for get attributes
-    // public function newQuery($excludeDeleted = true)
-    // {
-    //     return parent::newQuery($excludeDeleted)->with([
-    //         'invoice_details',
-    //         'invoice_part_details',
-    //         'payments',
-    //     ]);
-    // }
-
-    public function getAmountAttribute()
+    public function getServicesAmountAttribute(): float|null
     {
-        $amount = 0;
-        foreach ($this->invoice_details as $row) {
-            $amount += $row->total;
-        }
-        foreach ($this->invoice_part_details as $row) {
-            $amount += $row->total;
-        }
-        return $amount + $this->delivery - $this->discount;
+        return $this->loadSum(['invoice_details as servicesAmountSum' => function ($q) {
+            $q->whereHas('service', function ($q) {
+                $q->where('type', 'service');
+            });
+        }], DB::raw('quantity * price'))->servicesAmountSum;
     }
 
-    public function getTotalPaidAmountAttribute()
+    public function getPartsAmountAttribute(): float|null
     {
         $amount = 0;
-        foreach ($this->payments as $row) {
-            $amount += $row->amount;
-        }
+
+        $invoiceDetailsParts = $this->loadSum(['invoice_details as invoiceDetailsParts' => function ($q) {
+            $q->whereHas('service', function ($q) {
+                $q->where('type', 'part');
+            });
+        }], DB::raw('quantity * price'))->invoiceDetailsParts;
+
+        $invoicePartDetails = $this->loadSum('invoice_part_details as invoicePartDetails', DB::raw('quantity * price'))->invoicePartDetails;
+
+        $amount = $invoiceDetailsParts + $invoicePartDetails;
+
         return $amount;
     }
 
-    public function getRemainingAmountAttribute()
-    {
-        return $this->amount - $this->total_paid_amount;
-    }
-
-    public function getServicesAmountAttribute()
+    public function getInternalPartsAmountAttribute(): float|null
     {
         $amount = 0;
-        foreach ($this->invoice_details as $row) {
-            if ($row->service->type == 'service') {
-                $amount += $row->total;
-            }
-        }
+
+        $invoiceDetailsParts = $this->loadSum(['invoice_details as invoiceDetailsParts' => function ($q) {
+            $q->whereHas('service', function ($q) {
+                $q->where('type', 'part');
+            });
+        }], DB::raw('quantity * price'))->invoiceDetailsParts;
+
+        $invoiceInternalPartsDetails = $this->loadSum(['invoice_part_details as invoiceInternalPartsDetails' => function ($q) {
+            $q->where('type', 'internal');
+        }], DB::raw('quantity * price'))->invoiceInternalPartsDetails;
+
+        $amount = $invoiceDetailsParts + $invoiceInternalPartsDetails;
+
         return $amount;
     }
 
-    public function getPartsAmountAttribute()
+    public function getExternalPartsAmountAttribute(): float|null
     {
-        $amount = 0;
-        foreach ($this->invoice_details as $row) {
-            if ($row->service->type == 'part') {
-                $amount += $row->total;
-            }
-        }
-        foreach ($this->invoice_part_details as $row) {
-            $amount += $row->total;
-        }
-        return $amount;
+        return $this->loadSum(['invoice_part_details as invoiceExternalPartsDetails' => function ($q) {
+            $q->where('type', 'external');
+        }], DB::raw('quantity * price'))->invoiceExternalPartsDetails;
     }
 
-    public function getInternalPartsAmountAttribute()
-    {
-        $amount = 0;
-        foreach ($this->invoice_details as $row) {
-            if ($row->service->type == 'part') {
-                $amount += $row->total;
-            }
-        }
-        foreach ($this->invoice_part_details->where('type', 'internal') as $row) {
-            $amount += $row->total;
-        }
-        return $amount;
-    }
-
-    public function getExternalPartsAmountAttribute()
-    {
-        $amount = 0;
-        foreach ($this->invoice_part_details->where('type', 'external') as $row) {
-            $amount += $row->total;
-        }
-        return $amount;
-    }
-
-    public function getServicesAmountAfterDiscountAttribute()
+    public function getServicesAmountAfterDiscountAttribute(): float
     {
         return $this->services_amount - $this->discount;
     }
 
-    public function getCashAmountAttribute()
+    public function getAmountAttribute(): float
     {
-        return $this->payments->where('method', 'cash')->sum('amount');
+        return $this->services_amount_after_discount
+        + $this->internal_parts_amount
+        + $this->external_parts_amount
+        + $this->delivery;
     }
 
-    public function getKnetAmountAttribute()
+    public function getCashAmountAttribute(): float|null
     {
-        return $this->payments->where('method', 'knet')->sum('amount');
+        return $this->loadSum(['payments as cash' => function ($q) {
+            $q->where('method', 'cash');
+        }], 'amount')->cash;
     }
 
-    public function computePaymentStatus()
+    public function getKnetAmountAttribute(): float|null
     {
-        if ($this->payments()->count() == 0) {
-            return $this->amount > 0 ? 'pending' : 'free';
-        } else {
-            return $this->remaining_amount == 0 ? 'paid' : 'partially_paid';
-        }
+        return $this->loadSum(['payments as knet' => function ($q) {
+            $q->where('method', 'knet');
+        }], 'amount')->knet;
+    }
+
+    public function getTotalPaidAmountAttribute(): float|null
+    {
+        return $this->loadSum('payments as total','amount')->total;
+    }
+
+    public function getRemainingAmountAttribute(): float
+    {
+        return $this->amount - $this->total_paid_amount;
     }
 
     public function getCanApplyDiscountAttribute()
@@ -172,8 +153,8 @@ class Invoice extends Model
             $query->where('is_collected', true);
         }]);
 
-        $order_invoices_count = $this->where('order_id',$this->order_id)->count();
-    
+        $order_invoices_count = $this->where('order_id', $this->order_id)->count();
+
         // Check if the gate allows deletion, if payments are collected, and if there are more than one invoice for the order
         return Gate::allows('delete', $this) &&
             $this->payments_count === 0 &&

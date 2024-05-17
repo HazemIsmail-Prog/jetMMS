@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Payment;
 use App\Events\RefreshInvoicePaymentsScreenEvent;
+use App\Models\Invoice;
 
 class PaymentObserver
 {
@@ -12,6 +13,7 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
+        $this->setPaymentStatus($payment->invoice);
         RefreshInvoicePaymentsScreenEvent::dispatch($payment->invoice->id);
     }
 
@@ -28,6 +30,7 @@ class PaymentObserver
      */
     public function deleted(Payment $payment): void
     {
+        $this->setPaymentStatus($payment->invoice);
         RefreshInvoicePaymentsScreenEvent::dispatch($payment->invoice->id);
     }
 
@@ -45,5 +48,17 @@ class PaymentObserver
     public function forceDeleted(Payment $payment): void
     {
         //
+    }
+
+    private function setPaymentStatus(Invoice $invoice): void
+    {
+        $payment_status = $invoice->totalPaidAmount == 0
+            ? 'pending'
+            : ($invoice->remainingAmount == 0
+                ? 'paid'
+                : 'partially_paid'
+            );
+        $invoice->payment_status = $payment_status;
+        $invoice->save();
     }
 }
