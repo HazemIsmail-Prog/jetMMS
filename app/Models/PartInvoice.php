@@ -39,6 +39,14 @@ class PartInvoice extends Model
 
     // Formatters
 
+    public function getFormatedInvoiceAmountAttribute()
+    {
+        return $this->invoice_amount > 0 ? number_format($this->invoice_amount, 3) : '-';
+    }
+    public function getFormatedDiscountAmountAttribute()
+    {
+        return $this->discount_amount > 0 ? number_format($this->discount_amount, 3) : '-';
+    }
     public function getFormatedCostAmountAttribute()
     {
         return $this->cost_amount > 0 ? number_format($this->cost_amount, 3) : '-';

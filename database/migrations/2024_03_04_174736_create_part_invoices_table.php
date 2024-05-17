@@ -17,6 +17,8 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->foreignId('contact_id')->constrained('users');
+            $table->float('invoice_amount',8,3)->nullable();
+            $table->float('discount_amount',8,3)->nullable();
             $table->float('cost_amount',8,3);
             $table->float('sales_amount',8,3);
             $table->timestamps();

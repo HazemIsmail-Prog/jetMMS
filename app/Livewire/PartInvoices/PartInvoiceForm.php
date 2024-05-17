@@ -28,6 +28,12 @@ class PartInvoiceForm extends Component
             ->get();
     }
 
+    public function updated($key,$val) {
+        if($key == 'form.invoice_amount' || $key == 'form.discount_amount'){
+            $this->form->getCostAmount();
+        }
+    }
+
     #[Computed()]
     public function contacts()
     {
@@ -46,6 +52,9 @@ class PartInvoiceForm extends Component
         $this->part_invoice = $part_invoice;
         $this->modalTitle = $this->part_invoice->id ? __('messages.edit_part_invoice') . ' ' . $this->part_invoice->id : __('messages.add_part_invoice');
         $this->form->fill($this->part_invoice);
+        if(!$this->form->id){
+            $this->form->date = today()->format('Y-m-d');
+        }
     }
 
     public function save()

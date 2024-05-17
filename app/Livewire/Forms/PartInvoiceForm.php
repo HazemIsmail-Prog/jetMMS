@@ -13,8 +13,10 @@ class PartInvoiceForm extends Form
     public $date;
     public $supplier_id;
     public $contact_id;
-    public $cost_amount;
-    public $sales_amount;
+    public float $invoice_amount = 0;
+    public float $discount_amount = 0;
+    public float $cost_amount = 0;
+    public float $sales_amount = 0;
 
     public function rules()
     {
@@ -24,9 +26,17 @@ class PartInvoiceForm extends Form
             'date' => 'required',
             'supplier_id' => 'required',
             'contact_id' => 'required',
-            'cost_amount' => 'required',
+            'invoice_amount' => 'required',
+            'discount_amount' => 'required',
+            'cost_amount' => 'required|numeric|gt:0',
             'sales_amount' => 'required',
         ];
+    }
+
+
+
+    public function getCostAmount() {
+        $this->cost_amount = round(($this->invoice_amount ?? 0) - ($this->discount_amount ?? 0),3) ;
     }
 
     public function updateOrCreate() {

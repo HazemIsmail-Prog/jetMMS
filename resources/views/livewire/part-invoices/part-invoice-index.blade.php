@@ -83,6 +83,8 @@
                 <x-th>{{ __('messages.date') }}</x-th>
                 <x-th>{{ __('messages.supplier') }}</x-th>
                 <x-th>{{ __('messages.contact') }}</x-th>
+                <x-th>{{ __('messages.amount') }}</x-th>
+                <x-th>{{ __('messages.discount') }}</x-th>
                 <x-th>{{ __('messages.cost_amount') }}</x-th>
                 <x-th>{{ __('messages.sales_amount') }}</x-th>
                 <x-th></x-th>
@@ -96,6 +98,8 @@
                 <x-td>{!! $part_invoice->formated_date !!}</x-td>
                 <x-td>{{ $part_invoice->supplier->name }}</x-td>
                 <x-td>{{ $part_invoice->contact->name }}</x-td>
+                <x-td>{{ $part_invoice->formated_invoice_amount }}</x-td>
+                <x-td>{{ $part_invoice->formated_discount_amount }}</x-td>
                 <x-td>{{ $part_invoice->formated_cost_amount }}</x-td>
                 <x-td>{{ $part_invoice->formated_sales_amount }}</x-td>
                 <x-td>
@@ -125,6 +129,8 @@
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th>{{ __('messages.total') }}</x-th>
+                <x-th>{{ number_format($this->part_invoices->sum('invoice_amount'), 3) }}</x-th>
+                <x-th>{{ number_format($this->part_invoices->sum('discount_amount'), 3) }}</x-th>
                 <x-th>{{ number_format($this->part_invoices->sum('cost_amount'), 3) }}</x-th>
                 <x-th>{{ number_format($this->part_invoices->sum('sales_amount'), 3) }}</x-th>
                 <x-th></x-th>

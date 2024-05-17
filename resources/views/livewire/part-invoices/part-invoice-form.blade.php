@@ -37,15 +37,27 @@
                         </div>
 
                         <div>
+                            <x-label for="invoice_amount">{{ __('messages.amount') }}</x-label>
+                            <x-input dir="ltr" required min="0.001" step="0.001" class="w-full py-0" wire:model.blur="form.invoice_amount" autocomplete="off"
+                                type="number" id="invoice_amount" />
+                            <x-input-error for="form.invoice_amount" />
+                        </div>
+                        <div>
+                            <x-label for="discount_amount">{{ __('messages.discount') }}</x-label>
+                            <x-input dir="ltr" required min="0.000" step="0.001" class="w-full py-0" wire:model.blur="form.discount_amount" autocomplete="off"
+                                type="number" id="discount_amount" />
+                            <x-input-error for="form.discount_amount" />
+                        </div>
+                        <div>
                             <x-label for="cost_amount">{{ __('messages.cost_amount') }}</x-label>
-                            <x-input required min="0.001" step="0.001" class="w-full py-0" wire:model="form.cost_amount" autocomplete="off"
+                            <x-input dir="ltr" required readonly min="0.001" step="0.001" class="w-full py-0" wire:model="form.cost_amount" autocomplete="off"
                                 type="number" id="cost_amount" />
                             <x-input-error for="form.cost_amount" />
                         </div>
 
                         <div>
                             <x-label for="sales_amount">{{ __('messages.sales_amount') }}</x-label>
-                            <x-input required min="0.001" step="0.001" class="w-full py-0" wire:model="form.sales_amount" autocomplete="off"
+                            <x-input dir="ltr" required min="0.001" step="0.001" class="w-full py-0" wire:model="form.sales_amount" autocomplete="off"
                                 type="number" id="sales_amount" />
                             <x-input-error for="form.sales_amount" />
                         </div>
