@@ -17,36 +17,25 @@
                 <form wire:submit.prevent="save" wire:loading.class="opacity-50">
 
                     <div class=" space-y-3">
-                        <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-3">
-                            <div class=" flex-1">
+                        <div class=" grid grid-cols-1 lg:grid-cols-4 items-start gap-3">
+                            <div class=" col-span-1 lg:col-span-1">
                                 <x-label for="manual_id">{{ __('messages.manual_id') }}</x-label>
                                 <x-input class="w-full py-0" wire:model="form.manual_id" autocomplete="off"
                                     type="text" id="manual_id" />
                                 <x-input-error for="form.manual_id" />
                             </div>
-                            <div class=" flex-1">
+                            <div class=" col-span-1 lg:col-span-1">
                                 <x-label for="date">{{ __('messages.date') }}</x-label>
                                 <x-input required class="w-full py-0" wire:model="form.date" autocomplete="off"
                                     type="date" id="date" />
                                 <x-input-error for="form.date" />
                             </div>
-                            <div class=" flex-1">
+                            <div class=" col-span-1 lg:col-span-2">
                                 <x-label for="notes">{{ __('messages.notes') }}</x-label>
                                 <x-input class="w-full py-0" wire:model="form.notes" autocomplete="off" type="text"
                                     id="notes" />
                                 <x-input-error for="form.notes" />
                             </div>
-                            @if (!$form->id)
-                                <div class=" flex-1">
-                                    <x-label for="copy_from">{{ __('messages.copy_from') }}</x-label>
-                                    <div class=" flex gap-1">
-                                        <x-input class=" flex-1 w-full py-0" wire:model="copy_from" autocomplete="off"
-                                            type="number" min="1" id="copy_from" />
-                                        <x-button wire:click="copy" type="button">{{ __('messages.copy') }}</x-button>
-                                    </div>
-                                    <x-input-error for="copy_from" />
-                                </div>
-                            @endif
                         </div>
 
                         @if ($form->details)

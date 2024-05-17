@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Vouchers;
 
-use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -26,7 +25,6 @@ class VoucherIndex extends Component
     {
         $this->title = __('messages.journal_vouchers');
         $this->add_button_label = __('messages.add_journal_voucher');
-        $this->creators = User::whereHas('vouchers')->select('id', 'name_en', 'name_ar')->get();
 
         $this->filters = [
             'search' => '',
@@ -49,10 +47,11 @@ class VoucherIndex extends Component
             ->when(auth()->id() != 1 , function(Builder $q){
                 $q->where('type','jv');
             })
-            ->with('user')
+            ->withSum('voucherDetails','debit')
             ->when($this->filters['search'],function(Builder $q){
                 $q->where(function(Builder $q){
-                    $q->where('manual_id',$this->filters['search']);
+                    $q->where('id',$this->filters['search']);
+                    $q->orWhere('manual_id',$this->filters['search']);
                     $q->orWhere('notes','like','%'.$this->filters['search'].'%');
                     $q->orWhereRelation('voucherDetails','narration','like','%'. $this->filters['search'] .'%');
                 });

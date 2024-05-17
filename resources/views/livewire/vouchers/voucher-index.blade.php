@@ -67,13 +67,19 @@
                     <x-td>{{ $voucher->manual_id }}</x-td>
                     <x-td>{!! $voucher->formated_date !!}</x-td>
                     <x-td class=" !whitespace-normal">{{ $voucher->notes }}</x-td>
-                    <x-td>{{ $voucher->formated_amount }}</x-td>
+                    <x-td>{{ number_format($voucher->voucher_details_sum_debit,3) }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
                             @can('update', $voucher)
                                 <x-badgeWithCounter title="{{ __('messages.edit') }}"
                                     wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }}})">
                                     <x-svgs.edit class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('create', App\Models\Voucher::class)
+                                <x-badgeWithCounter title="{{ __('messages.duplicate') }}"
+                                    wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }},action:'duplicate'})">
+                                    <x-svgs.duplicate class="h-4 w-4" />
                                 </x-badgeWithCounter>
                             @endcan
                             @can('delete', $voucher)

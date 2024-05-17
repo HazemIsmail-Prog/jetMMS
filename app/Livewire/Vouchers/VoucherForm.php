@@ -8,6 +8,7 @@ use App\Models\CostCenter;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -21,8 +22,13 @@ class VoucherForm extends Component
     public FormsVoucherForm $form;
 
     #[On('showVoucherFormModal')]
-    public function show(Voucher $voucher)
+    public function show(Voucher $voucher,$action=null)
     {
+
+        Cache::forget('voucher-form-accounts');
+        Cache::forget('voucher-form-cost_centers');
+        Cache::forget('voucher-form-users');
+
         $this->reset('copy_from');
         $this->resetErrorBag();
         $this->form->reset();
@@ -32,6 +38,16 @@ class VoucherForm extends Component
         $this->modalTitle = $this->voucher->id ? __('messages.edit_journal_voucher') . $this->voucher->id : __('messages.add_journal_voucher');
         $this->form->fill($this->voucher);
         $this->form->details = $this->voucher->voucherDetails->toArray();
+        if($action == 'duplicate'){
+            $this->form->id = null;
+            $this->form->manual_id = null;
+            $this->form->date = today()->format('Y-m-d');
+            $this->modalTitle = __('messages.add_journal_voucher'); 
+            $copiedVoucherDetailsWithoutId = $this->voucher->voucherDetails->map(function ($detail) {
+                return Arr::except($detail, ['id']);
+            });
+            $this->form->details = $copiedVoucherDetailsWithoutId->toArray();
+        }
         if (!$this->voucher->id) {
             //Add 2 Starting rows on Create
             $this->addRow();
@@ -44,22 +60,6 @@ class VoucherForm extends Component
     #[On('credit')]
     public function getBalance() {
         $this->form->getBalance();
-    }
-
-    public function copy()
-    {
-        $copiedVoucher = Voucher::where('type', 'jv')->find($this->copy_from);
-        if ($copiedVoucher) {
-            $copiedVoucher->load('voucherDetails');
-            $copiedVoucherDetailsWithoutId = $copiedVoucher->voucherDetails->map(function ($detail) {
-                return Arr::except($detail, ['id']);
-            });
-            $this->form->details = $copiedVoucherDetailsWithoutId->toArray();
-            $this->form->getBalance();
-            $this->resetErrorBag();
-        } else {
-            $this->addError('copy_from', __('messages.invalid_voucher_number'));
-        }
     }
 
     public function addRow()
@@ -80,7 +80,7 @@ class VoucherForm extends Component
         $this->form->getBalance();
     }
 
-    #[Computed()]
+    #[Computed(cache: true, key: 'voucher-form-accounts')]
     public function accounts()
     {
         return Account::query()
@@ -90,7 +90,7 @@ class VoucherForm extends Component
             ->get();
     }
 
-    #[Computed()]
+    #[Computed(cache: true, key: 'voucher-form-cost_centers')]
     public function cost_centers()
     {
         return CostCenter::query()
@@ -99,7 +99,7 @@ class VoucherForm extends Component
             ->get();
     }
 
-    #[Computed()]
+    #[Computed(cache: true, key: 'voucher-form-users')]
     public function users()
     {
         return User::query()
