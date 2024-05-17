@@ -40,6 +40,7 @@ class VoucherIndex extends Component
 
     #[Computed()]
     #[On('vouchersUpdated')]
+    #[On('attachmentsUpdated')]
     public function vouchers()
     {
         return Voucher::query()
@@ -48,6 +49,7 @@ class VoucherIndex extends Component
                 $q->where('type','jv');
             })
             ->withSum('voucherDetails','debit')
+            ->withCount('attachments')
             ->when($this->filters['search'],function(Builder $q){
                 $q->where(function(Builder $q){
                     $q->where('id',$this->filters['search']);

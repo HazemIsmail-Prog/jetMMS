@@ -36,6 +36,9 @@
 
     @livewire('vouchers.voucher-form')
 
+    @livewire('attachments.attachment-index')
+    @livewire('attachments.attachment-form')
+
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         <div>
@@ -80,6 +83,12 @@
                                 <x-badgeWithCounter title="{{ __('messages.duplicate') }}"
                                     wire:click="$dispatch('showVoucherFormModal',{voucher:{{ $voucher }},action:'duplicate'})">
                                     <x-svgs.duplicate class="h-4 w-4" />
+                                </x-badgeWithCounter>
+                            @endcan
+                            @can('viewAnyAttachment', $voucher)
+                                <x-badgeWithCounter :counter="$voucher->attachments_count" title="{{ __('messages.attachments') }}"
+                                    wire:click="$dispatch('showAttachmentModal',{model:'Voucher',id:{{ $voucher->id }}})">
+                                    <x-svgs.attachment class="w-4 h-4" />
                                 </x-badgeWithCounter>
                             @endcan
                             @can('delete', $voucher)

@@ -35,7 +35,7 @@
                             <tbody>
                                 @foreach ($this->attachments as $attachment)
                                     <x-tr>
-                                        <x-td>{{ $attachment->description }}</x-td>
+                                        <x-td class=" !whitespace-normal">{{ $attachment->description }}</x-td>
                                         <x-td>{{ $attachment->expirationDate?->format('d-m-Y') }}</x-td>
                                         <x-td>
                                             <div class=" flex items-center justify-end gap-2">
@@ -51,7 +51,7 @@
                                                         <x-svgs.edit class="w-4 h-4" />
                                                     </x-badgeWithCounter>
                                                 @endcan
-                                                @can('delete',$currentRecord)
+                                                @can('update',$currentRecord)
                                                     <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
                                                         wire:click="delete({{ $attachment }})"
                                                         title="{{ __('messages.delete') }}">

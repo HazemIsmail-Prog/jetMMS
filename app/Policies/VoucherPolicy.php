@@ -42,4 +42,9 @@ class VoucherPolicy
     {
         return $user->hasPermission('journal_vouchers_delete');
     }
+
+    public function viewAnyAttachment(User $user, Voucher $voucher): bool
+    {
+        return $user->hasPermission('journal_vouchers_attachment');
+    }
 }
