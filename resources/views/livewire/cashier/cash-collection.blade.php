@@ -33,38 +33,14 @@
     </div>
     @endteleport
 
-    <div wire:poll.30s class=" flex items-center gap-5">
         
-        <div class=" flex-1 border border-green-500 rounded-lg p-5 my-5 flex flex-col items-center justify-center gap-3">
-    
-    
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.cash_total') }}
-            </h2>
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ number_format($this->cashTransactions['debit'],3) }}
-            </h2>
-        </div>
-        <div class=" flex-1 border border-red-500 rounded-lg p-5 my-5 flex flex-col items-center justify-center gap-3">
-    
-    
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.parts_total') }}
-            </h2>
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ number_format($this->cashTransactions['credit'],3) }}
-            </h2>
-        </div>
-        <div class=" flex-1 border border-green-500 rounded-lg p-5 my-5 flex flex-col items-center justify-center gap-3">
-    
-    
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.bank_deposit_required') }}
-            </h2>
-            <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ number_format($this->cashTransactions['debit'] - $this->cashTransactions['credit'],3) }}
-            </h2>
-        </div>
+    <div wire:poll.30s class=" flex-1 border border-green-500 rounded-lg p-5 my-5 flex flex-col items-center justify-center gap-3">
+        <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('messages.bank_deposit_required') }}
+        </h2>
+        <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
+            {{ number_format($this->technicians->sum('cashAccountDebit') - $this->technicians->sum('cashAccountCredit'),3) }}
+        </h2>
     </div>
 
 

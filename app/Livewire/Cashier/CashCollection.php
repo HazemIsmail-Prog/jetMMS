@@ -7,7 +7,6 @@ use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Title;
 use App\Models\User;
-use App\Models\VoucherDetail;
 use App\Services\CreateInvoicePaymentVoucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -40,8 +39,8 @@ class CashCollection extends Component
         $this->filters =
             [
                 'status' => '0',
-                'start_created_at' => '',
-                'end_created_at' => '',
+                'start_created_at' => today()->format('Y-m-d'),
+                'end_created_at' => today()->format('Y-m-d'),
                 'department_id' => [],
                 'technician_id' => [],
             ];
@@ -60,10 +59,32 @@ class CashCollection extends Component
     #[Computed()]
     public function technicians()
     {
+        $settings = Setting::find(1);
         return User::query()
-            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->orderBy('name')
+            ->whereHas('voucherDetails', function (Builder $q) {
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->whereBetween('date', [$this->filters['start_created_at'], $this->filters['end_created_at']]);
+                });
+            })
+
+            // Cash Account
+            ->withSum(['voucherDetails as cashAccountDebit' => function (Builder $q) use ($settings) {
+                $q->where('account_id', $settings->cash_account_id);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->whereBetween('date', [$this->filters['start_created_at'], $this->filters['end_created_at']]);
+                });
+            }], 'debit')
+            ->withSum(['voucherDetails as cashAccountCredit' => function (Builder $q) use ($settings) {
+                $q->where('account_id', $settings->cash_account_id);
+                $q->whereHas('voucher', function (Builder $q) {
+                    $q->whereBetween('date', [$this->filters['start_created_at'], $this->filters['end_created_at']]);
+                });
+            }], 'credit')
+
             ->get();
     }
 
@@ -162,31 +183,6 @@ class CashCollection extends Component
         ]);
     }
 
-    #[Computed()]
-    public function cashTransactions()
-    {
-        $cashTransactions = VoucherDetail::query()
-            ->where('account_id', Setting::find(1)->cash_account_id);
-            
-
-        if ($this->filters['start_created_at'] || $this->filters['end_created_at']) {
-            $cashTransactions->whereHas('voucher', function (Builder $q) {
-                $q->whereBetween('date', [$this->filters['start_created_at'],$this->filters['end_created_at']]);
-            });
-        } else {
-
-            $cashTransactions->whereHas('voucher', function (Builder $q) {
-                $q->where('date', today());
-            });
-        }
-
-        $debitSum = $cashTransactions->sum('debit');
-        $creditSum = $cashTransactions->sum('credit');
-    
-        return ['debit' => $debitSum, 'credit' => $creditSum];
-
-    }
-    
     public function render()
     {
         return view('livewire.cashier.cash-collection')->title(__('messages.cash_collection'));
