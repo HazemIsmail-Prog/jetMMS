@@ -14,13 +14,13 @@ use Livewire\Component;
 
 class CollectionStatement extends Component
 {
-    public $date = '';
+    public $start_date = '';
+    public $end_date = '';
 
     public function mount()
     {
-        $this->date = today()
-        ->subDay(1)
-        ->format('Y-m-d');
+        $this->start_date = today()->subDay(1)->format('Y-m-d');
+        $this->end_date = today()->subDay(1)->format('Y-m-d');
     }
 
     #[Computed()]
@@ -32,7 +32,7 @@ class CollectionStatement extends Component
                 $q->with('title:id,name_en,name_ar');
                 $q->whereHas('voucherDetails', function (Builder $q) {
                     $q->whereHas('voucher', function (Builder $q) {
-                        $q->where('date', $this->date);
+                        $q->whereBetween('date', [$this->start_date, $this->end_date]);
                     });
                 });
             })
@@ -43,7 +43,7 @@ class CollectionStatement extends Component
     public function invoices()
     {
         return Invoice::query()
-            ->whereDate('created_at', $this->date)
+            ->whereBetween('created_at', [$this->start_date, $this->end_date])
             ->with('order:id,department_id,technician_id')
             ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
 
@@ -82,7 +82,7 @@ class CollectionStatement extends Component
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->whereHas('voucherDetails', function (Builder $q) {
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             })
 
@@ -90,13 +90,13 @@ class CollectionStatement extends Component
             ->withSum(['voucherDetails as bankAccountDebit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->bank_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as bankAccountCredit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->bank_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -104,13 +104,13 @@ class CollectionStatement extends Component
             ->withSum(['voucherDetails as bankChargesAccountDebit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->bank_charges_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as bankChargesAccountCredit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->bank_charges_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -118,13 +118,13 @@ class CollectionStatement extends Component
             ->withSum(['voucherDetails as cashAccountDebit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->cash_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as cashAccountCredit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->cash_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
