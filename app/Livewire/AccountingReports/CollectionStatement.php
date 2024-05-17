@@ -43,31 +43,32 @@ class CollectionStatement extends Component
     public function invoices()
     {
         return Invoice::query()
-            ->whereBetween('created_at', [$this->start_date, $this->end_date])
+            ->whereDate('created_at', '>=', $this->start_date)
+            ->whereDate('created_at', '<=', $this->end_date)
             ->with('order:id,department_id,technician_id')
-            ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
+            ->withSum('invoice_details as servicesAmountSum', DB::raw('quantity * price'))
 
-            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function($q){
-                $q->whereHas('service',function($q){
-                    $q->where('type','part');
+            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function ($q) {
+                $q->whereHas('service', function ($q) {
+                    $q->where('type', 'part');
                 });
-            }],DB::raw('quantity * price'))
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as internalPartsAmountSum' => function($q){
-                    $q->where('type','internal');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_part_details as internalPartsAmountSum' => function ($q) {
+                $q->where('type', 'internal');
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as externalPartsAmountSum' => function($q){
-                    $q->where('type','external');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_part_details as externalPartsAmountSum' => function ($q) {
+                $q->where('type', 'external');
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['payments as cashAmountSum' => function($q){
-                    $q->where('method','cash');
-            }],'amount')
+            ->withSum(['payments as cashAmountSum' => function ($q) {
+                $q->where('method', 'cash');
+            }], 'amount')
 
-            ->withSum(['payments as knetAmountSum' => function($q){
-                    $q->where('method','knet');
-            }],'amount')
+            ->withSum(['payments as knetAmountSum' => function ($q) {
+                $q->where('method', 'knet');
+            }], 'amount')
 
             ->get();
     }

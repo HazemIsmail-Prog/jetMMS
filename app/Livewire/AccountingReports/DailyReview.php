@@ -191,7 +191,8 @@ class DailyReview extends Component
     public function invoices()
     {
         return Invoice::query()
-            ->whereBetween('created_at', [$this->start_date, $this->end_date])
+            ->whereDate('created_at','>=' ,$this->start_date)
+            ->whereDate('created_at','<=' ,$this->end_date)
             ->with('order:id,department_id,technician_id')
             ->withSum('invoice_details as servicesAmountSum', DB::raw('quantity * price'))
 
