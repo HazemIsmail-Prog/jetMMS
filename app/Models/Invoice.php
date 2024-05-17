@@ -135,7 +135,7 @@ class Invoice extends Model
 
     public function getRemainingAmountAttribute(): float
     {
-        return $this->amount - $this->total_paid_amount;
+        return abs(round($this->amount - $this->total_paid_amount,3)) ;
     }
 
     public function getCanApplyDiscountAttribute()
