@@ -53,7 +53,6 @@ class InvoiceCard extends Component
                     $voucher->forceDelete();
                 }
                 $payment->delete(); // Observer Applied
-                $this->invoice->update(['payment_status' => $this->invoice->computePaymentStatus()]);
                 DB::commit();
                 $this->dispatch('paymentsUpdated');
             } catch (\Exception $e) {
