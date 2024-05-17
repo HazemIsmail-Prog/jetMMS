@@ -14,13 +14,13 @@ use Livewire\Component;
 
 class DailyReview extends Component
 {
-    public $date = '';
+    public $start_date = '';
+    public $end_date = '';
 
     public function mount()
     {
-        $this->date = today()
-            ->subDay(1)
-            ->format('Y-m-d');
+        $this->start_date = today()->subDay(1)->format('Y-m-d');
+        $this->end_date = today()->subDay(1)->format('Y-m-d');
     }
 
     #[Computed()]
@@ -33,7 +33,7 @@ class DailyReview extends Component
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->whereHas('voucherDetails', function (Builder $q) {
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             })
 
@@ -41,13 +41,13 @@ class DailyReview extends Component
             ->withSum(['voucherDetails as PartDifferenceDebit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->internal_parts_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as PartDifferenceCredit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->internal_parts_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -60,7 +60,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 1);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as servicesCostCenterCredit' => function (Builder $q) {
@@ -71,7 +71,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 1);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -84,7 +84,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 2);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as partsCostCenterCredit' => function (Builder $q) {
@@ -95,7 +95,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 2);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -108,7 +108,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 3);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as deliveryCostCenterCredit' => function (Builder $q) {
@@ -119,7 +119,7 @@ class DailyReview extends Component
                 });
                 $q->where('cost_center_id', 3);
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -131,7 +131,7 @@ class DailyReview extends Component
                         ->whereColumn('departments.id', 'users.department_id');
                 });
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as incomeAccountCredit' => function (Builder $q) {
@@ -141,7 +141,7 @@ class DailyReview extends Component
                         ->whereColumn('departments.id', 'users.department_id');
                 });
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -154,7 +154,7 @@ class DailyReview extends Component
                         ->whereColumn('departments.id', 'users.department_id');
                 });
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
             ->withSum(['voucherDetails as costAccountCredit' => function (Builder $q) {
@@ -164,7 +164,7 @@ class DailyReview extends Component
                         ->whereColumn('departments.id', 'users.department_id');
                 });
                 $q->whereHas('voucher', function (Builder $q) {
-                    $q->where('date', $this->date);
+                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
 
@@ -180,7 +180,7 @@ class DailyReview extends Component
                 $q->with('title:id,name_en,name_ar');
                 $q->whereHas('voucherDetails', function (Builder $q) {
                     $q->whereHas('voucher', function (Builder $q) {
-                        $q->where('date', $this->date);
+                        $q->whereBetween('date', [$this->start_date, $this->end_date]);
                     });
                 });
             })
@@ -191,23 +191,23 @@ class DailyReview extends Component
     public function invoices()
     {
         return Invoice::query()
-            ->whereDate('created_at', $this->date)
+            ->whereBetween('created_at', [$this->start_date, $this->end_date])
             ->with('order:id,department_id,technician_id')
-            ->withSum('invoice_details as servicesAmountSum',DB::raw('quantity * price'))
+            ->withSum('invoice_details as servicesAmountSum', DB::raw('quantity * price'))
 
-            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function($q){
-                $q->whereHas('service',function($q){
-                    $q->where('type','part');
+            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function ($q) {
+                $q->whereHas('service', function ($q) {
+                    $q->where('type', 'part');
                 });
-            }],DB::raw('quantity * price'))
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as internalPartsAmountSum' => function($q){
-                    $q->where('type','internal');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_part_details as internalPartsAmountSum' => function ($q) {
+                $q->where('type', 'internal');
+            }], DB::raw('quantity * price'))
 
-            ->withSum(['invoice_part_details as externalPartsAmountSum' => function($q){
-                    $q->where('type','external');
-            }],DB::raw('quantity * price'))
+            ->withSum(['invoice_part_details as externalPartsAmountSum' => function ($q) {
+                $q->where('type', 'external');
+            }], DB::raw('quantity * price'))
 
             ->get();
     }

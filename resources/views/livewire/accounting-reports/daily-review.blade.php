@@ -12,8 +12,9 @@
     <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
 
         <div class=" col-span-1 md:col-span-2 xl:col-span-4">
-            <x-label for="date">{{ __('messages.date') }}</x-label>
-            <x-input type="date" class="w-full" id="date" wire:model.live="date" />
+            <x-label for="start_date">{{ __('messages.date') }}</x-label>
+            <x-input type="date" class="w-full" id="start_date" wire:model.live="start_date" />
+            <x-input type="date" class="w-full" id="end_date" wire:model.live="end_date" />
         </div>
     </div>
 
