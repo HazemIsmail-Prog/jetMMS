@@ -125,11 +125,15 @@
                 <x-td>{{ $payment->formated_amount }}</x-td>
                 <x-td class=" text-end">
                     @if ($payment->is_collected)
-                    <x-danger-button wire:confirm="{{ __('messages.are_u_sure') }}"
-                        wire:click="uncollect_payment({{ $payment }})">{{ __('messages.uncollect') }}</x-danger-button>
+                        @can('uncollect',$payment)
+                            <x-danger-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                                wire:click="uncollect_payment({{ $payment }})">{{ __('messages.uncollect') }}</x-danger-button>
+                        @endcan
                     @else
-                    <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
-                        wire:click="collect_payment({{ $payment }})">{{ __('messages.collect') }}</x-button>
+                        @can('collect',$payment)
+                            <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                                wire:click="collect_payment({{ $payment }})">{{ __('messages.collect') }}</x-button>
+                        @endcan
                     @endif
                 </x-td>
             </x-tr>

@@ -28,4 +28,14 @@ class PaymentPolicy
         return $user->hasPermission('payments_delete');
     }
 
+    public function collect(User $user, Payment $payment): bool
+    {
+        return $user->hasPermission('payments_collect');
+    }
+
+    public function uncollect(User $user, Payment $payment): bool
+    {
+        return $user->hasPermission('payments_uncollect');
+    }
+
 }
