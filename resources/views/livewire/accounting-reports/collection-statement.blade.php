@@ -82,7 +82,7 @@
                                     $bankAccount            = round(abs($accounts->bankAccountDebit - $accounts->bankAccountCredit),3);
                                     $bankChargesAccount     = round(abs($accounts->bankChargesAccountDebit - $accounts->bankChargesAccountCredit),3);
                                     $totalKnet              = round($bankAccount + $bankChargesAccount,3);
-                                    $cashAccount            = round(abs($accounts->cashAccountDebit - $accounts->cashAccountCredit),3);
+                                    $cashAccount            = round(abs($accounts->cashAccountDebit),3);
                                     @endphp
     
                                     <x-borderd-td>{{ $technician->name }}</x-borderd-td>
@@ -122,7 +122,7 @@
                                     $bankAccount            = round(abs($accounts->sum('bankAccountDebit') - $accounts->sum('bankAccountCredit')),3);
                                     $bankChargesAccount     = round(abs($accounts->sum('bankChargesAccountDebit') - $accounts->sum('bankChargesAccountCredit')),3);
                                     $totalKnet              = round($bankAccount + $bankChargesAccount,3);
-                                    $cashAccount            = round(abs($accounts->sum('cashAccountDebit') - $accounts->sum('cashAccountCredit')),3);
+                                    $cashAccount            = round(abs($accounts->sum('cashAccountDebit')),3);
                                     @endphp
     
                                     <x-borderd-th>{{ $title->name }}</x-borderd-th>
@@ -161,7 +161,7 @@
                             $bankAccount            = round(abs($accounts->sum('bankAccountDebit') - $accounts->sum('bankAccountCredit')),3);
                             $bankChargesAccount     = round(abs($accounts->sum('bankChargesAccountDebit') - $accounts->sum('bankChargesAccountCredit')),3);
                             $totalKnet              = round($bankAccount + $bankChargesAccount);
-                            $cashAccount            = round(abs($accounts->sum('cashAccountDebit') - $accounts->sum('cashAccountCredit')),3);
+                            $cashAccount            = round(abs($accounts->sum('cashAccountDebit')),3);
                             @endphp
     
                             <x-borderd-th>{{ __('messages.total') }}</x-borderd-th>
