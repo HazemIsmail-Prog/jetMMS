@@ -122,12 +122,6 @@ class CollectionStatement extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
-            ->withSum(['voucherDetails as cashAccountCredit' => function (Builder $q) use ($settings) {
-                $q->where('account_id', $settings->cash_account_id);
-                $q->whereHas('voucher', function (Builder $q) {
-                    $q->whereBetween('date', [$this->start_date, $this->end_date]);
-                });
-            }], 'credit')
 
             ->get();
     }
