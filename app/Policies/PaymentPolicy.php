@@ -38,4 +38,9 @@ class PaymentPolicy
         return $user->hasPermission('payments_uncollect');
     }
 
+    public function change_date(User $user, Payment $payment): bool
+    {
+        return $user->hasPermission('payments_date_change');
+    }
+
 }
