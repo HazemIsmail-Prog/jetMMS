@@ -5,7 +5,7 @@
     {
         $color = '#000000';
     }else{
-        $color = $order->status->color;
+        $color = $order->status_color;
     }
 @endphp
 
@@ -29,8 +29,8 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
     <div class="p-2 text-white">
 
         <div class="hidden lg:flex justify-between items-center">
-            <div class="text-md font-semibold truncate">{{ $order->customer->name }}</div>
-            <div class="text-xs">{{ $order->phone->number }}</div>
+            <div class="text-md font-semibold truncate">{{ $order->customer_name }}</div>
+            <div class="text-xs">{{ $order->phone_number }}</div>
         </div>
         <h4 class="hidden lg:block mt-2 text-xs">{{ $order->address->full_address }}</h4>
     </div>
@@ -39,7 +39,7 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         class="hidden lg:block mt-0 lg:mt-2 bg-white p-2 rounded-t-lg dark:bg-gray-800  text-gray-950 dark:text-gray-200">
 
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">
-            {{ $order->creator->name }}
+            {{ $order->creator_name }}
         </div>
 
         <div class="items-center my-1 bg-gray-100 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700">

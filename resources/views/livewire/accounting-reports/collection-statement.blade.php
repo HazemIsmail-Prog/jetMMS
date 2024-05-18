@@ -81,7 +81,7 @@
                                     $accounts               = $this->technicians->where('id',$technician->id)->first();
                                     $bankAccount            = round(abs($accounts->bankAccountDebit - $accounts->bankAccountCredit),3);
                                     $bankChargesAccount     = round(abs($accounts->bankChargesAccountDebit - $accounts->bankChargesAccountCredit),3);
-                                    $totalKnet              = round($bankAccount + $bankChargesAccount);
+                                    $totalKnet              = round($bankAccount + $bankChargesAccount,3);
                                     $cashAccount            = round(abs($accounts->cashAccountDebit - $accounts->cashAccountCredit),3);
                                     @endphp
     
@@ -121,7 +121,7 @@
                                     $accounts               = $this->technicians->where('department_id',$department->id)->where('title_id',$title->id);
                                     $bankAccount            = round(abs($accounts->sum('bankAccountDebit') - $accounts->sum('bankAccountCredit')),3);
                                     $bankChargesAccount     = round(abs($accounts->sum('bankChargesAccountDebit') - $accounts->sum('bankChargesAccountCredit')),3);
-                                    $totalKnet              = round($bankAccount + $bankChargesAccount);
+                                    $totalKnet              = round($bankAccount + $bankChargesAccount,3);
                                     $cashAccount            = round(abs($accounts->sum('cashAccountDebit') - $accounts->sum('cashAccountCredit')),3);
                                     @endphp
     
@@ -221,7 +221,7 @@
                     $accounts               = $this->technicians;
                     $bankAccount            = round(abs($accounts->sum('bankAccountDebit') - $accounts->sum('bankAccountCredit')),3);
                     $bankChargesAccount     = round(abs($accounts->sum('bankChargesAccountDebit') - $accounts->sum('bankChargesAccountCredit')),3);
-                    $totalKnet              = round($bankAccount + $bankChargesAccount);
+                    $totalKnet              = round($bankAccount + $bankChargesAccount,3);
                     $cashAccount            = round(abs($accounts->sum('cashAccountDebit') - $accounts->sum('cashAccountCredit')),3);
                     @endphp
     

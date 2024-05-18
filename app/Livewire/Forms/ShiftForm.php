@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Shift;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Form;
 
 class ShiftForm extends Form
@@ -28,5 +29,7 @@ class ShiftForm extends Form
     {
         $this->validate();
         Shift::updateOrCreate(['id' => $this->id], $this->all());
+        Cache::forget('dispatching-shifts');
+
     }
 }

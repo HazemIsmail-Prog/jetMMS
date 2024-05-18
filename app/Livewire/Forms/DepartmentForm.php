@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Department;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Form;
 
 class DepartmentForm extends Form
@@ -27,5 +28,6 @@ class DepartmentForm extends Form
     public function updateOrCreate() {
         $this->validate();
         Department::updateOrCreate(['id' => $this->id], $this->all());
+        Cache::forget('sidebar-departments');
     }
 }

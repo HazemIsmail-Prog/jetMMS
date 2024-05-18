@@ -25,12 +25,24 @@ class DispatchingIndex extends Component
         return Order::query()
             ->where('department_id', $this->department->id)
             ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
-            ->with('status:id,color')
-            ->with('customer:id,name')
-            ->with('phone:id,number')
             ->with('address.area:id,name_' . app()->getLocale())
-            ->with('creator:id,name_' . app()->getLocale())
-            // ->withCount('invoices')
+            
+            ->withCount(['status as status_color' => function($q){
+                $q->select('color');
+            }])
+
+            ->withCount(['customer as customer_name' => function($q){
+                $q->select('name');
+            }])
+
+            ->withCount(['phone as phone_number' => function($q){
+                $q->select('number');
+            }])
+
+            ->withCount(['creator as creator_name' => function($q){
+                $q->select('name_' . app()->getLocale());
+            }])
+
             ->withCount(['comments as unread_comments_count' => function ($q) {
                 $q->where('is_read', false);
                 $q->where('user_id', '!=', auth()->id());
@@ -65,7 +77,7 @@ class DispatchingIndex extends Component
             ->sortBy('name');
     }
 
-    #[Computed()]
+    #[Computed(cache: true, key: 'dispatching-shifts')]
     public function shifts()
     {
         return Shift::all();
