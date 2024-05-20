@@ -84,9 +84,7 @@
         <x-thead>
             <tr>
                 <x-th>{{ __('messages.name') }}</x-th>
-                @if (auth()->id() == 1)
                 <x-th>{{ __('messages.username') }}</x-th>
-                @endif
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
                 @if (auth()->id() == 1)
@@ -101,9 +99,7 @@
             @foreach ($this->users as $user)
             <x-tr wire:key="user-{{$user->id}}">
                 <x-td>{{ $user->name }}</x-td>
-                @if (auth()->id() == 1)
                 <x-td>{{ $user->username }}</x-td>
-                @endif
                 <x-td>{{ $user->title->name }}</x-td>
                 <x-td>{{ $user->department->name ?? '-' }}</x-td>
                 @if (auth()->id() == 1)
