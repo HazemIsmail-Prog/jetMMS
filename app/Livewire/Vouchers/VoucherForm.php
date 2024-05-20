@@ -61,11 +61,17 @@ class VoucherForm extends Component
     public function getBalance() {
         $this->form->getBalance();
     }
+    
+    
+    public function verify() {
+        $this->form->getBalance();
+        $this->form->validate();
+    }
 
     public function addRow()
     {
         $this->form->details[] = [
-            'account_id' => '',
+            'account_id' => null,
             'cost_center_id' => null,
             'user_id' => '',
             'narration' => $this->form->notes ?? null,
@@ -110,6 +116,7 @@ class VoucherForm extends Component
 
     public function save()
     {
+        // dd($this->form->details);
         $this->form->updateOrCreate();
         $this->dispatch('vouchersUpdated');
         $this->showModal = false;
