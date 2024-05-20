@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Voucher;
+use App\Rules\ValidDebitCredit;
 use Illuminate\Support\Facades\DB;
 use Livewire\Form;
 
@@ -25,38 +26,61 @@ class VoucherForm extends Form
         return [
             'id' => 'nullable',
             'manual_id' => 'nullable',
-            'type' => 'required',
-            'created_by' => 'required',
-            'date' => 'required',
-            'notes' => 'nullable',
-            'details' => ['required', 'array'],
-            'balance' => ['required','numeric','in:0'],
-            'total_debit' => ['required', 'numeric','gt:0'],
-            'total_credit' => ['required', 'numeric','gt:0'],
-            'details.*.account_id' => 'required',
-
+            'type' => 'required|string',
+            'created_by' => 'required|integer',
+            'date' => 'required|date',
+            'notes' => 'nullable|string',
+            'details' => 'required|array',
+            'balance' => 'required|numeric|in:0',
+            'total_debit' => 'required|numeric|gt:0',
+            'total_credit' => 'required|numeric|gt:0',
+            'details.*.account_id' => 'required|integer',
             'details.*.debit' => [
-                'required_without:details.*.credit', 
-                'numeric', 
-                function ($attribute, $value, $fail) {
-                    $creditValue = $this->details[explode('.', $attribute)[1]]['credit'] ?? null;
-                    if ($value <= 0 && ($creditValue === null || $creditValue <= 0)) {
-                        $fail('Either debit or credit must be greater than zero.');
-                    }
-                }
-                    ],
-                    
+                'required_without:details.*.credit',
+                'numeric',
+                new ValidDebitCredit($this->details)
+            ],
             'details.*.credit' => [
                 'required_without:details.*.debit',
                 'numeric',
-                function ($attribute, $value, $fail) {
-                    $debitValue = $this->details[explode('.', $attribute)[1]]['debit'] ?? null;
-                    if ($value <= 0 && ($debitValue === null || $debitValue <= 0)) {
-                        $fail('Either debit or credit must be greater than zero.');
-                    }
-                }
+                new ValidDebitCredit($this->details)
             ],
         ];
+        // return [
+        //     'id' => 'nullable',
+        //     'manual_id' => 'nullable',
+        //     'type' => 'required',
+        //     'created_by' => 'required',
+        //     'date' => 'required',
+        //     'notes' => 'nullable',
+        //     'details' => ['required', 'array'],
+        //     'balance' => ['required','numeric','in:0'],
+        //     'total_debit' => ['required', 'numeric','gt:0'],
+        //     'total_credit' => ['required', 'numeric','gt:0'],
+        //     'details.*.account_id' => 'required',
+
+        //     'details.*.debit' => [
+        //         'required_without:details.*.credit', 
+        //         'numeric', 
+        //         function ($attribute, $value, $fail) {
+        //             $creditValue = $this->details[explode('.', $attribute)[1]]['credit'] ?? null;
+        //             if ($value <= 0 && ($creditValue === null || $creditValue <= 0)) {
+        //                 $fail('Either debit or credit must be greater than zero.');
+        //             }
+        //         }
+        //             ],
+                    
+        //     'details.*.credit' => [
+        //         'required_without:details.*.debit',
+        //         'numeric',
+        //         function ($attribute, $value, $fail) {
+        //             $debitValue = $this->details[explode('.', $attribute)[1]]['debit'] ?? null;
+        //             if ($value <= 0 && ($debitValue === null || $debitValue <= 0)) {
+        //                 $fail('Either debit or credit must be greater than zero.');
+        //             }
+        //         }
+        //     ],
+        // ];
     }
 
     public function getBalance()
