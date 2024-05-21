@@ -46,41 +46,6 @@ class VoucherForm extends Form
                 new ValidDebitCredit($this->details)
             ],
         ];
-        // return [
-        //     'id' => 'nullable',
-        //     'manual_id' => 'nullable',
-        //     'type' => 'required',
-        //     'created_by' => 'required',
-        //     'date' => 'required',
-        //     'notes' => 'nullable',
-        //     'details' => ['required', 'array'],
-        //     'balance' => ['required','numeric','in:0'],
-        //     'total_debit' => ['required', 'numeric','gt:0'],
-        //     'total_credit' => ['required', 'numeric','gt:0'],
-        //     'details.*.account_id' => 'required',
-
-        //     'details.*.debit' => [
-        //         'required_without:details.*.credit', 
-        //         'numeric', 
-        //         function ($attribute, $value, $fail) {
-        //             $creditValue = $this->details[explode('.', $attribute)[1]]['credit'] ?? null;
-        //             if ($value <= 0 && ($creditValue === null || $creditValue <= 0)) {
-        //                 $fail('Either debit or credit must be greater than zero.');
-        //             }
-        //         }
-        //             ],
-                    
-        //     'details.*.credit' => [
-        //         'required_without:details.*.debit',
-        //         'numeric',
-        //         function ($attribute, $value, $fail) {
-        //             $debitValue = $this->details[explode('.', $attribute)[1]]['debit'] ?? null;
-        //             if ($value <= 0 && ($debitValue === null || $debitValue <= 0)) {
-        //                 $fail('Either debit or credit must be greater than zero.');
-        //             }
-        //         }
-        //     ],
-        // ];
     }
 
     public function getBalance()
@@ -88,11 +53,6 @@ class VoucherForm extends Form
         $this->total_debit = collect($this->details)->sum('debit');
         $this->total_credit = collect($this->details)->sum('credit');
         $this->balance = abs(round($this->total_debit - $this->total_credit,3));
-        // $this->validate([
-        //     'balance' => ['required', 'numeric', 'in:0'],
-        //     'total_debit' => ['required', 'numeric', 'gt:0'],
-        //     'total_credit' => ['required', 'numeric', 'gt:0'],
-        // ]);
     }
     
     public function updateOrCreate()

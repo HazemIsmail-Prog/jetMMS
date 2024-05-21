@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\CostCenter;
 use App\Models\User;
 use App\Models\Voucher;
+use App\Models\VoucherDetail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
@@ -29,24 +30,24 @@ class VoucherForm extends Component
         Cache::forget('voucher-form-cost_centers');
         Cache::forget('voucher-form-users');
 
-        $this->reset('copy_from');
         $this->resetErrorBag();
         $this->form->reset();
         $this->form->date = today()->format('Y-m-d');
         $this->showModal = true;
-        $this->voucher = $voucher->load('voucherDetails');
-        $this->modalTitle = $this->voucher->id ? __('messages.edit_journal_voucher') . $this->voucher->id : __('messages.add_journal_voucher');
+        $this->voucher = $voucher;
+        $this->modalTitle = __('messages.add_journal_voucher');
+        if($this->voucher->id && $action != 'duplicate'){
+            $this->modalTitle = __('messages.edit_journal_voucher') . $this->voucher->id;
+            $this->form->details = VoucherDetail::where('voucher_id',$this->voucher->id)->get()->toArray();
+        }
         $this->form->fill($this->voucher);
-        $this->form->details = $this->voucher->voucherDetails->toArray();
         if($action == 'duplicate'){
             $this->form->id = null;
             $this->form->manual_id = null;
             $this->form->date = today()->format('Y-m-d');
             $this->modalTitle = __('messages.add_journal_voucher'); 
-            $copiedVoucherDetailsWithoutId = $this->voucher->voucherDetails->map(function ($detail) {
-                return Arr::except($detail, ['id']);
-            });
-            $this->form->details = $copiedVoucherDetailsWithoutId->toArray();
+            // copiedVoucherDetailsWithoutId
+            $this->form->details = VoucherDetail::select('account_id','cost_center_id','user_id','narration','debit','credit')->where('voucher_id',$this->voucher->id)->get()->toArray();
         }
         if (!$this->voucher->id) {
             //Add 2 Starting rows on Create
