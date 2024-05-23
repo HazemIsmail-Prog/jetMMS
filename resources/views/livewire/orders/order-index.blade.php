@@ -129,7 +129,7 @@
             </div>
         </div>
 
-        <div class=" border rounded-lg p-2  w-1/3 hidden-scrollbar h-40 overflow-y-auto">
+        <div class=" border dark:border-gray-700 rounded-lg p-2  w-1/3 hidden-scrollbar h-40 overflow-y-auto">
             <div class="flex flex-col gap-2 items-end">
                 @foreach ($this->creatorCounters->sortByDesc('orders_creator_count') as $user)
                 <div title="{{ $user->name }}" class="w-full justify-start flex-row-reverse rounded-full overflow-clip bg-gray-200 dark:bg-gray-700 flex items-center">
