@@ -208,7 +208,7 @@
 </div>
 
 
-@script
+{{-- @script --}}
 {{-- this script to keep sidebar scroll position on change pages --}}
 {{-- <script>
     setTimeout(function() {
@@ -223,4 +223,4 @@
                 });
             }, 10)
 </script> --}}
-@endscript
+{{-- @endscript --}}
