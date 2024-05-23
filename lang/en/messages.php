@@ -562,6 +562,8 @@ return [
     'expected_invoices_deletion' => 'Expected Invoices Deletion',
     'deleted_invoices_counter' => 'Deleted Invoices Counter',
     'no_deleted_invoices' => 'No deleted invoices',
+    'duplicate' => 'Duplicate',
+
 
 
 

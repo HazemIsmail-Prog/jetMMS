@@ -581,6 +581,7 @@ return [
     'expected_invoices_deletion' => 'فواتير محتمل الغائها',
     'deleted_invoices_counter' => 'احصائية الفواتير الملغية',
     'no_deleted_invoices' => 'لا يوجد فواتير ملغية',
+    'duplicate' => 'استنساخ',
 
     
 

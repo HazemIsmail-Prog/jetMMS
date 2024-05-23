@@ -29,7 +29,7 @@ class VoucherForm extends Component
         Cache::forget('voucher-form-users');
 
         $this->resetErrorBag();
-        // $this->form->reset();
+        $this->form->reset();
         $this->form->date = today()->format('Y-m-d');
         $this->showModal = true;
         $this->voucher = $voucher;
@@ -49,15 +49,10 @@ class VoucherForm extends Component
         }
         if (!$this->voucher->id) {
             //Add 2 Starting rows on Create
-            $this->addRow();
-            $this->addRow();
+            // $this->addRow();
+            // $this->addRow();
         }
         // $this->form->getBalance();
-    }
-    
-    public function verify() {
-        // $this->form->getBalance();
-        $this->form->validate();
     }
 
     public function addRow()
@@ -71,12 +66,6 @@ class VoucherForm extends Component
             'credit' => null,
         ];
     }
-
-    // public function deleteRow($index)
-    // {
-    //     unset($this->form->details[$index]);
-    //     $this->form->getBalance();
-    // }
 
     #[Computed(cache: true, key: 'voucher-form-accounts')]
     public function accounts()

@@ -15,7 +15,7 @@ class VoucherForm extends Form
     public $created_by;
     public $date;
     public $notes;
-    public array $details;
+    public array $details = [];
 
     public float $balance = 0;
     public float $total_debit = 0;
