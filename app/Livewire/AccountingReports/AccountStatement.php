@@ -59,12 +59,24 @@ class AccountStatement extends Component
                 $q->whereHas('voucher', function ($q) {
                     $q->where('date', '<', $this->start_date);
                 });
+                $q->when($this->cost_center_id, function($q){
+                    $q->whereIn('cost_center_id',$this->cost_center_id);
+                });
+                $q->when($this->contact_id, function($q){
+                    $q->whereIn('user_id',$this->contact_id);
+                });
             }], 'debit')
 
             //Get openining sum of credit before start Date
             ->withSum(['voucher_details' => function ($q) {
                 $q->whereHas('voucher', function ($q) {
                     $q->where('date', '<', $this->start_date);
+                });
+                $q->when($this->cost_center_id, function($q){
+                    $q->whereIn('cost_center_id',$this->cost_center_id);
+                });
+                $q->when($this->contact_id, function($q){
+                    $q->whereIn('user_id',$this->contact_id);
                 });
             }], 'credit')
 

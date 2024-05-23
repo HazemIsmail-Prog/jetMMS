@@ -105,7 +105,7 @@
                         </x-td>
                     </x-tr>
 
-                    @foreach ($account->voucher_details as $row)
+                    @foreach ($account->voucher_details->sortBy('voucher.date') as $row)
                         @php
                             $balance +=
                                 $account->type == 'debit' ? $row->debit - $row->credit : $row->credit - $row->debit;
