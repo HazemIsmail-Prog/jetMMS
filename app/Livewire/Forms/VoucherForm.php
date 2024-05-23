@@ -15,7 +15,7 @@ class VoucherForm extends Form
     public $created_by;
     public $date;
     public $notes;
-    public $details = [];
+    public array $details;
 
     public float $balance = 0;
     public float $total_debit = 0;
@@ -80,6 +80,9 @@ class VoucherForm extends Form
             foreach ($this->details as $row) {
                 if ($row['user_id'] == '') {
                     $row['user_id'] = null;
+                }
+                if ($row['cost_center_id'] == '') {
+                    $row['cost_center_id'] = null;
                 }
 
                 // 5- Create New detail or Update the remaining ones

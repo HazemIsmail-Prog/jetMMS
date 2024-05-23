@@ -8,7 +8,6 @@ use App\Models\CostCenter;
 use App\Models\User;
 use App\Models\Voucher;
 use App\Models\VoucherDetail;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -18,7 +17,6 @@ class VoucherForm extends Component
 {
     public $showModal = false;
     public $modalTitle = '';
-    public $copy_from = '';
     public Voucher $voucher;
     public FormsVoucherForm $form;
 
@@ -31,7 +29,7 @@ class VoucherForm extends Component
         Cache::forget('voucher-form-users');
 
         $this->resetErrorBag();
-        $this->form->reset();
+        // $this->form->reset();
         $this->form->date = today()->format('Y-m-d');
         $this->showModal = true;
         $this->voucher = $voucher;
@@ -54,18 +52,11 @@ class VoucherForm extends Component
             $this->addRow();
             $this->addRow();
         }
-        $this->form->getBalance();
+        // $this->form->getBalance();
     }
-    
-    #[On('debit')]
-    #[On('credit')]
-    public function getBalance() {
-        $this->form->getBalance();
-    }
-    
     
     public function verify() {
-        $this->form->getBalance();
+        // $this->form->getBalance();
         $this->form->validate();
     }
 
@@ -74,18 +65,18 @@ class VoucherForm extends Component
         $this->form->details[] = [
             'account_id' => null,
             'cost_center_id' => null,
-            'user_id' => '',
+            'user_id' => null,
             'narration' => $this->form->notes ?? null,
             'debit' => null,
             'credit' => null,
         ];
     }
 
-    public function deleteRow($index)
-    {
-        unset($this->form->details[$index]);
-        $this->form->getBalance();
-    }
+    // public function deleteRow($index)
+    // {
+    //     unset($this->form->details[$index]);
+    //     $this->form->getBalance();
+    // }
 
     #[Computed(cache: true, key: 'voucher-form-accounts')]
     public function accounts()
@@ -117,7 +108,6 @@ class VoucherForm extends Component
 
     public function save()
     {
-        // dd($this->form->details);
         $this->form->updateOrCreate();
         $this->dispatch('vouchersUpdated');
         $this->showModal = false;
