@@ -30,7 +30,7 @@
                                 @if (auth()->id() != $comment->user_id)
                                     <div class=" font-extrabold">{{ $comment->user->name }}</div>
                                 @endif
-                                <div class="dark:text-gray-400">{{ $comment->created_at->diffforHumans() }}</div>
+                                <div dir="ltr" class="dark:text-gray-400">{{ $comment->created_at->format('d-m-Y | H:i') }}</div>
                             </div>
 
 
