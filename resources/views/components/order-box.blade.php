@@ -115,20 +115,22 @@ wire:key="order-{{ $order->id . rand() }}" id="order-{{ $order->id }}" data-inde
         </div>
         <div class=" flex gap-2 items-center">
 
-            @if ($order->can_hold_order)
-            <x-badgeWithCounter 
-                wire:confirm="{{__('messages.are_u_sure')}}"
-                wire:click="dragEnd({{ $order->id }}, 'hold', null, null)">
-                <x-svgs.clock class="h-4 w-4" />
-            </x-badgeWithCounter>
-            @endif
+            @if ($order->invoices_count == 0)                
+                @if ($order->can_hold_order)
+                <x-badgeWithCounter 
+                    wire:confirm="{{__('messages.are_u_sure')}}"
+                    wire:click="dragEnd({{ $order->id }}, 'hold', null, null)">
+                    <x-svgs.clock class="h-4 w-4" />
+                </x-badgeWithCounter>
+                @endif
 
-            @can('cancel_order', $order)
-            <x-badgeWithCounter
-                wire:click="$dispatch('showCancelReasonModal',{order:{!! $order !!}})">
-                <x-svgs.trash class="h-4 w-4" />
-            </x-badgeWithCounter>
-            @endcan
+                @can('cancel_order', $order)
+                <x-badgeWithCounter
+                    wire:click="$dispatch('showCancelReasonModal',{order:{!! $order !!}})">
+                    <x-svgs.trash class="h-4 w-4" />
+                </x-badgeWithCounter>
+                @endcan
+            @endif
 
         </div>
 

@@ -43,6 +43,8 @@ class DispatchingIndex extends Component
                 $q->select('name_' . app()->getLocale());
             }])
 
+            ->withCount('invoices')
+
             ->withCount(['comments as unread_comments_count' => function ($q) {
                 $q->where('is_read', false);
                 $q->where('user_id', '!=', auth()->id());
