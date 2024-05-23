@@ -16,6 +16,8 @@
     </span>
     @endteleport
 
+
+
     @teleport('#excel')
     <div>
         @if ($this->orders->total() <= $maxExportSize) <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
@@ -54,76 +56,97 @@
     @livewire('orders.invoices.discount.discount-form')
     {{-- @livewire('orders.cancel-reason-modal') --}}
 
-
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div class=" flex gap-3">
         <div>
-            <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
-            <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
-                wire:model.live="filters.customer_name" />
+            <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        
+                <div>
+                    <x-label for="customer_name">{{ __('messages.customer_name') }}</x-label>
+                    <x-input class="w-36 min-w-full text-center py-0" id="customer_name"
+                        wire:model.live="filters.customer_name" />
+                </div>
+                <div>
+                    <x-label for="customer_phone">{{ __('messages.customer_phone') }}</x-label>
+                    <x-input dir="ltr" type="number" class="w-36 min-w-full text-center py-0" id="customer_phone"
+                        wire:model.live="filters.customer_phone" />
+                </div>
+                <div>
+                    <x-label for="area">{{ __('messages.area') }}</x-label>
+                    <x-searchable-select class="!py-[5px]" id="area" :list="$this->areas" wire:model.live="filters.areas"
+                        multipule />
+                </div>
+                <div>
+                    <x-label for="block">{{ __('messages.block') }}</x-label>
+                    <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="block" wire:model.live="filters.block" />
+                </div>
+                <div>
+                    <x-label for="street">{{ __('messages.street') }}</x-label>
+                    <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="street" wire:model.live="filters.street" />
+                </div>
+            </div>
+            <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+                <div>
+                    <x-label for="order_number">{{ __('messages.order_number') }}</x-label>
+                    <x-input id="order_number" wire:model.live="filters.order_number" type="number" dir="ltr"
+                        class="w-36 min-w-full text-center py-0" />
+                </div>
+                <div>
+                    <x-label for="creator">{{ __('messages.creator') }}</x-label>
+                    <x-searchable-select class="!py-[5px]" id="creator" :list="$this->creators"
+                        wire:model.live="filters.creators" multipule />
+                </div>
+                <div>
+                    <x-label for="status">{{ __('messages.status') }}</x-label>
+                    <x-searchable-select class="!py-[5px]" id="status" :list="$this->statuses"
+                        wire:model.live="filters.statuses" multipule />
+                </div>
+                <div>
+                    <x-label for="technician">{{ __('messages.technician') }}</x-label>
+                    <x-searchable-select class="!py-[5px]" id="technician" :list="$this->technicians"
+                        wire:model.live="filters.technicians" multipule />
+                </div>
+                <div>
+                    <x-label for="department">{{ __('messages.department') }}</x-label>
+                    <x-searchable-select class="!py-[5px]" id="department" :list="$this->departments"
+                        wire:model.live="filters.departments" multipule />
+                </div>
+                <div>
+                    <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
+                    <x-input id="start_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.start_created_at" />
+                    <x-input id="end_created_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.end_created_at" />
+                </div>
+                <div>
+                    <x-label for="start_completed_at">{{ __('messages.completed_at') }}</x-label>
+                    <x-input id="start_completed_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.start_completed_at" />
+                    <x-input id="end_completed_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.end_completed_at" />
+                </div>
+        
+            </div>
         </div>
-        <div>
-            <x-label for="customer_phone">{{ __('messages.customer_phone') }}</x-label>
-            <x-input dir="ltr" type="number" class="w-36 min-w-full text-center py-0" id="customer_phone"
-                wire:model.live="filters.customer_phone" />
+
+        <div class=" border rounded-lg p-2  w-1/3 hidden-scrollbar h-40 overflow-y-auto">
+            <div class="flex flex-col gap-2 items-end">
+                @foreach ($this->creatorCounters->sortByDesc('orders_creator_count') as $user)
+                <div title="{{ $user->name }}" class="w-full justify-start flex-row-reverse rounded-full overflow-clip bg-gray-200 dark:bg-gray-700 flex items-center">
+                    <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-2 leading-none  truncate select-none"
+                        style="width: {{ ($user->orders_creator_count / $this->creatorCounters->max('orders_creator_count')) * 100 }}%">
+                        {{ $user->name }}
+                    </div>
+                    <span class=" text-center px-2 font-semibold text-xs dark:text-white">{{ $user->orders_creator_count }}</span>
+                </div>
+                @endforeach
+            </div>
+
         </div>
-        <div>
-            <x-label for="area">{{ __('messages.area') }}</x-label>
-            <x-searchable-select class="!py-[5px]" id="area" :list="$this->areas" wire:model.live="filters.areas"
-                multipule />
-        </div>
-        <div>
-            <x-label for="block">{{ __('messages.block') }}</x-label>
-            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="block" wire:model.live="filters.block" />
-        </div>
-        <div>
-            <x-label for="street">{{ __('messages.street') }}</x-label>
-            <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="street" wire:model.live="filters.street" />
-        </div>
+
     </div>
 
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
-        <div>
-            <x-label for="order_number">{{ __('messages.order_number') }}</x-label>
-            <x-input id="order_number" wire:model.live="filters.order_number" type="number" dir="ltr"
-                class="w-36 min-w-full text-center py-0" />
-        </div>
-        <div>
-            <x-label for="creator">{{ __('messages.creator') }}</x-label>
-            <x-searchable-select class="!py-[5px]" id="creator" :list="$this->creators"
-                wire:model.live="filters.creators" multipule />
-        </div>
-        <div>
-            <x-label for="status">{{ __('messages.status') }}</x-label>
-            <x-searchable-select class="!py-[5px]" id="status" :list="$this->statuses"
-                wire:model.live="filters.statuses" multipule />
-        </div>
-        <div>
-            <x-label for="technician">{{ __('messages.technician') }}</x-label>
-            <x-searchable-select class="!py-[5px]" id="technician" :list="$this->technicians"
-                wire:model.live="filters.technicians" multipule />
-        </div>
-        <div>
-            <x-label for="department">{{ __('messages.department') }}</x-label>
-            <x-searchable-select class="!py-[5px]" id="department" :list="$this->departments"
-                wire:model.live="filters.departments" multipule />
-        </div>
-        <div>
-            <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
-            <x-input id="start_created_at" class="w-36 min-w-full text-center py-0" type="date"
-                wire:model.live="filters.start_created_at" />
-            <x-input id="end_created_at" class="w-36 min-w-full text-center py-0" type="date"
-                wire:model.live="filters.end_created_at" />
-        </div>
-        <div>
-            <x-label for="start_completed_at">{{ __('messages.completed_at') }}</x-label>
-            <x-input id="start_completed_at" class="w-36 min-w-full text-center py-0" type="date"
-                wire:model.live="filters.start_completed_at" />
-            <x-input id="end_completed_at" class="w-36 min-w-full text-center py-0" type="date"
-                wire:model.live="filters.end_completed_at" />
-        </div>
 
-    </div>
 
     <x-table>
         <x-thead>
@@ -162,8 +185,10 @@
                 <x-td class=" !whitespace-normal">{{ $order->technician->name ?? '-' }}</x-td>
 
                 <x-td>
-                    <div>{{ $order->completed_at ? $order->completed_at->format("d-m-Y") : ($order->cancelled_at ? $order->cancelled_at->format("d-m-Y") : '' )}}</div>
-                    <div class="text-[0.7rem]">{{ $order->completed_at ? $order->completed_at->format("H:i") : ($order->cancelled_at ? $order->cancelled_at->format("H:i") : '' )}}</div>
+                    <div>{{ $order->completed_at ? $order->completed_at->format("d-m-Y") : ($order->cancelled_at ?
+                        $order->cancelled_at->format("d-m-Y") : '' )}}</div>
+                    <div class="text-[0.7rem]">{{ $order->completed_at ? $order->completed_at->format("H:i") :
+                        ($order->cancelled_at ? $order->cancelled_at->format("H:i") : '' )}}</div>
                 </x-td>
                 <x-td>
                     <div class=" flex items-start gap-1">
@@ -208,12 +233,11 @@
                         {{-- @endcan --}}
 
                         {{-- @can('cancel_order', $order)
-                        <x-badgeWithCounter
-                            wire:click="$dispatch('showCancelReasonModal',{order:{{ $order }}})">
+                        <x-badgeWithCounter wire:click="$dispatch('showCancelReasonModal',{order:{{ $order }}})">
                             <x-svgs.trash class="h-4 w-4" />
                         </x-badgeWithCounter>
                         @endcan --}}
-{{-- 
+                        {{--
                         @can('view_order_progress', $order)
                         <x-badgeWithCounter title="{{ __('messages.order_progress') }}"
                             wire:click="$dispatch('showStatusesModal',{order:{{ $order }}})">
@@ -236,7 +260,7 @@
                         </x-badgeWithCounter>
                         @endif
 
-                         --}}
+                        --}}
                     </div>
                 </x-td>
             </x-tr>

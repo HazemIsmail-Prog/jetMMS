@@ -74,6 +74,21 @@ class OrderIndex extends Component
             ->whereHas('orders_creator')
             ->get();
     }
+
+    #[Computed()]
+    public function creatorCounters()
+    {
+        return $this->users()
+            ->whereHas('orders_creator',function($q){
+                $q->whereMonth('created_at',now()->month);
+                $q->whereYear('created_at',now()->year);
+            })
+            ->withCount(['orders_creator'=>function($q){
+                $q->whereMonth('created_at',now()->month);
+                $q->whereYear('created_at',now()->year);
+            }])
+            ->get();
+    }
     
     #[Computed()]
     public function technicians()
