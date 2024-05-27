@@ -37,7 +37,7 @@
             this.isOpen = !this.isOpen;
             this.setWidth();
             this.search = '';
-            this.$nextTick(() => this.$refs.search.focus());
+            setTimeout(() => $refs.search.focus(), 50);
         },
 
         handleKeyDown(event) {
