@@ -95,6 +95,7 @@ class EmployeeIndex extends Component
             })
             ->join('users', 'users.id', '=', 'employees.user_id')
             ->orderBy('users.department_id')
+            ->orderBy('users.shift_id')
             ->orderBy('users.title_id')
             ->orderBy('users.name_'. app()->getLocale())
             ->paginate(1500);
