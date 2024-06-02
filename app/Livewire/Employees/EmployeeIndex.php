@@ -93,7 +93,11 @@ class EmployeeIndex extends Component
             ->when($this->filters['status'], function ($q) {
                 $q->where('status', $this->filters["status"]);
             })
-            ->paginate(15);
+            ->join('users', 'users.id', '=', 'employees.user_id')
+            ->orderBy('users.department_id')
+            ->orderBy('users.title_id')
+            ->orderBy('users.name_'. app()->getLocale())
+            ->paginate(1500);
     }
 
     public function delete(Employee $employee)

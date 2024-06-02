@@ -82,9 +82,9 @@
                 <x-th>{{ __('messages.status') }}</x-th>
                 <x-th>{{ __('messages.joinDate') }}</x-th>
                 <x-th>{{ __('messages.salary') }}</x-th>
-                <x-th>{{ __('messages.leave_balance') }}</x-th>
-                <x-th>{{ __('messages.net_working_days') }}</x-th>
-                <x-th>{{ __('messages.indemnity') }}</x-th>
+                {{-- <x-th>{{ __('messages.leave_balance') }}</x-th> --}}
+                {{-- <x-th>{{ __('messages.net_working_days') }}</x-th> --}}
+                {{-- <x-th>{{ __('messages.indemnity') }}</x-th> --}}
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -98,12 +98,12 @@
                     <x-td>{!! $employee->formated_status !!}</x-td>
                     <x-td>{!! $employee->formated_join_date !!}</x-td>
                     <x-td>{{ $employee->formated_salary }}</x-td>
-                    <x-td>
+                    {{-- <x-td>
                         <div>{{ $employee->formated_leave_days_balance }}</div>
                         <div>{{ $employee->formated_leave_balance_amount }}</div>
-                    </x-td>
-                    <x-td>{{ $employee->NetWorkingDays }}</x-td>
-                    <x-td>{{ $employee->formated_indemnity }}</x-td>
+                    </x-td> --}}
+                    {{-- <x-td>{{ $employee->NetWorkingDays }}</x-td> --}}
+                    {{-- <x-td>{{ $employee->formated_indemnity }}</x-td> --}}
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
 
