@@ -26,20 +26,20 @@ class DispatchingIndex extends Component
             ->where('department_id', $this->department->id)
             ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
             ->with('address.area:id,name_' . app()->getLocale())
-            
-            ->withCount(['status as status_color' => function($q){
+
+            ->withCount(['status as status_color' => function ($q) {
                 $q->select('color');
             }])
 
-            ->withCount(['customer as customer_name' => function($q){
+            ->withCount(['customer as customer_name' => function ($q) {
                 $q->select('name');
             }])
 
-            ->withCount(['phone as phone_number' => function($q){
+            ->withCount(['phone as phone_number' => function ($q) {
                 $q->select('number');
             }])
 
-            ->withCount(['creator as creator_name' => function($q){
+            ->withCount(['creator as creator_name' => function ($q) {
                 $q->select('name_' . app()->getLocale());
             }])
 
@@ -105,18 +105,22 @@ class DispatchingIndex extends Component
 
                 default: // dragged to technician box
 
-                    if ($new_index) {
-                        // this for changing technician on dragging
-                        $current_order->index = $new_index;
-                    } else {
-                        // this for changing technicina from dropdown select
-                        $current_order->index =
-                            Order::where('technician_id', $destenation_id)
-                            ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
-                            ->max('index') + 10;
+                    $destenation_tech = User::find($destenation_id);
+                    
+                    if ($destenation_tech->active) {
+                        if ($new_index) {
+                            // this for changing technician on dragging
+                            $current_order->index = $new_index;
+                        } else {
+                            // this for changing technicina from dropdown select
+                            $current_order->index =
+                                Order::where('technician_id', $destenation_id)
+                                ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
+                                ->max('index') + 10;
+                        }
+                        $current_order->technician_id = $destenation_id;
+                        $current_order->status_id = Status::DESTRIBUTED;
                     }
-                    $current_order->technician_id = $destenation_id;
-                    $current_order->status_id = Status::DESTRIBUTED;
             }
             $current_order->save();
         }
