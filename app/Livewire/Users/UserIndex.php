@@ -17,7 +17,7 @@ class UserIndex extends Component
 {
     use WithPagination;
 
-    public $perPage = 15;
+    public $perPage = 1500;
     public $filters = [
         'name' => '',
         'username' => '',
