@@ -87,12 +87,12 @@
                 <x-th>{{ __('messages.username') }}</x-th>
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
-                {{-- @if (auth()->id() == 1)
+                @if (auth()->id() == 1)
                 <x-th>{{ __('messages.roles') }}</x-th>
-                @endif --}}
+                @endif
                 <x-th>{{ __('messages.shift') }}</x-th>
-                {{-- <x-th>{{ __('messages.status') }}</x-th> --}}
-                {{-- <x-th></x-th> --}}
+                <x-th>{{ __('messages.status') }}</x-th>
+                <x-th></x-th>
             </tr>
         </x-thead>
         <tbody>
@@ -102,7 +102,7 @@
                 <x-td>{{ $user->username }}</x-td>
                 <x-td>{{ $user->title->name }}</x-td>
                 <x-td>{{ $user->department->name ?? '-' }}</x-td>
-                {{-- @if (auth()->id() == 1)
+                @if (auth()->id() == 1)
                 <x-td>
                     @foreach ($user->roles as $role)
                     <span
@@ -110,33 +110,33 @@
                         $role->name }}</span>
                     @endforeach
                 </x-td>
-                @endif --}}
+                @endif
                 <x-td>{{ $user->shift->name ?? '-' }}</x-td>
-                {{-- <x-td>
+                <x-td>
                     @if ($user->has_active_orders && $user->active)
                     <div class=" text-red-500">{{__('messages.has_active_orders')}}</div>
                     @else
 
-                        @if (auth()->id() == 1)
-                        <label wire:change="change_status({{$user->id}})"
-                            class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" @if($user->active) checked @endif class="sr-only peer">
-                            <div
-                                class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                            </div>
-                        </label>
-                        @else
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" disabled @if($user->active) checked @endif class="sr-only peer">
-                            <div
-                                class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                            </div>
-                        </label>
+                    @if (auth()->id() == 1)
+                    <label wire:change="change_status({{$user->id}})"
+                        class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" @if($user->active) checked @endif class="sr-only peer">
+                        <div
+                            class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                        </div>
+                    </label>
+                    @else
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" disabled @if($user->active) checked @endif class="sr-only peer">
+                        <div
+                            class="w-7 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                        </div>
+                    </label>
 
-                        @endif
                     @endif
-                </x-td> --}}
-                {{-- <x-td>
+                    @endif
+                </x-td>
+                <x-td>
                     <div class="flex items-center justify-end gap-2">
 
                         @can('update', $user)
@@ -161,7 +161,7 @@
                         @endcan
 
                     </div>
-                </x-td> --}}
+                </x-td>
             </x-tr>
             @endforeach
         </tbody>
