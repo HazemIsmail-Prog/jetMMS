@@ -19,7 +19,7 @@ class TitleIndex extends Component
     public function titles()
     {
         return Title::query()
-            ->paginate(15);
+            ->paginate(1500);
     }
 
     public function delete(Title $title) {

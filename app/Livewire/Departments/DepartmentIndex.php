@@ -21,7 +21,7 @@ class DepartmentIndex extends Component
         return Department::query()
         ->with('incomeAccount')
         ->with('costAccount')
-            ->paginate(15);
+            ->paginate(1500);
     }
 
     public function delete(Department $department) {
