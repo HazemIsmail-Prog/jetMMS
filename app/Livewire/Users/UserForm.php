@@ -45,7 +45,7 @@ class UserForm extends Component
     {
         if (!$this->user->id) {
             // Only on Create Mode
-            for ($i = 25; $i <= 500; $i++) {
+            for ($i = 25; $i <= 1000; $i++) {
                 if (!User::pluck('username')->contains($i)) {
                     $this->newExpectedUsername = $i;
                     return;
