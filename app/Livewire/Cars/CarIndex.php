@@ -32,6 +32,7 @@ class CarIndex extends Component
             ->when($this->filters['car_code'], function ($q) {
                 $q->where('code', $this->filters['car_code']);
             })
+            ->orderBy('notes')
             ->paginate(15);
     }
 
