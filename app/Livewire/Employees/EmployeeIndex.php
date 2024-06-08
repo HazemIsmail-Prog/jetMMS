@@ -94,6 +94,7 @@ class EmployeeIndex extends Component
                 $q->where('status', $this->filters["status"]);
             })
             ->join('users', 'users.id', '=', 'employees.user_id')
+            ->orderBy('employees.status')
             ->orderBy('users.department_id')
             ->orderBy('users.shift_id')
             ->orderBy('users.title_id')
