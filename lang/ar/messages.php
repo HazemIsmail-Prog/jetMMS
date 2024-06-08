@@ -582,6 +582,9 @@ return [
     'deleted_invoices_counter' => 'احصائية الفواتير الملغية',
     'no_deleted_invoices' => 'لا يوجد فواتير ملغية',
     'duplicate' => 'استنساخ',
+    'invoices_target' => 'تارجت الفواتير',
+    'amount_target' => 'تارجت الايراد',
+    'targets' => 'ادخال التارجت',
 
     
 

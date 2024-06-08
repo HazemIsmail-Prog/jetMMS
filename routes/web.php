@@ -32,6 +32,7 @@ use App\Livewire\Settings\SettingsForm;
 use App\Livewire\Shifts\ShiftIndex;
 use App\Livewire\Statuses\StatusIndex;
 use App\Livewire\Suppliers\SupplierIndex;
+use App\Livewire\Targets\TargetForm;
 use App\Livewire\TechnicianPage;
 use App\Livewire\Titles\TitleIndex;
 use App\Livewire\Users\UserIndex;
@@ -115,6 +116,7 @@ Route::middleware([
             ->can('expected_invoices_deletion_report', DummyModel::class);
 
         // ========== Cashier ==========
+
         Route::get('cash-collection', CashCollection::class)
             ->name('cash_collection')
             ->can('cash_collection_menu', DummyModel::class);
@@ -126,6 +128,10 @@ Route::middleware([
         Route::get('part-invoices', PartInvoiceIndex::class)
             ->name('part_invoice')
             ->can('viewAny', PartInvoice::class);
+
+        Route::get('targets',TargetForm::class)
+            ->name('targets')
+            ->can('targets_menu', DummyModel::class);
 
         // ========== Accounting ==========
 

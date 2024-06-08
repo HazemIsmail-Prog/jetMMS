@@ -58,11 +58,17 @@ class DummyModelPolicy
     public function cashier_title(User $user)
     {
         return
-            $user->hasPermission('cash_collection_menu')
-            || $user->hasPermission('knet_collection_menu')
-            || $user->hasPermission('part_invoices_menu')
+        $user->hasPermission('cash_collection_menu')
+        || $user->hasPermission('knet_collection_menu')
+        || $user->hasPermission('part_invoices_menu')
+        || $user->hasPermission('targets_menu')
             // || Add More if Needed
         ;
+    }
+
+    public function targets_menu(User $user)
+    {
+        return $user->hasPermission('targets_menu');
     }
 
     public function cash_collection_menu(User $user)
