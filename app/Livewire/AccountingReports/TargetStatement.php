@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-use function Laravel\Prompts\select;
-
 class TargetStatement extends Component
 {
 
@@ -18,8 +16,7 @@ class TargetStatement extends Component
     public $year;
     public function mount()
     {
-        $this->month = "05";
-        // $this->month = now()->format('m');
+        $this->month = now()->format('m');
         $this->year = now()->format('Y');
     }
 
