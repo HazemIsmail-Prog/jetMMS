@@ -107,6 +107,9 @@
                 @can('collection_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="collection_statement" :title="__('messages.collection_statement')" />
                 @endcan
+                @can('target_statement_report', App\Models\DummyModel::class)
+                <x-nested-sidebar-item route="target_statement" :title="__('messages.target_statement')" />
+                @endcan
                 @can('users_receivables_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="users_receivables" :title="__('messages.users_receivables')" />
                 @endcan

@@ -567,6 +567,17 @@ return [
     'amount_target' => 'Amount Target',
     'targets' => 'Targets',
 
+    'completed_orders' => 'Completed Orders',
+    'required_orders_target' => 'Required Orders Target',
+    'orders_shortage' => 'Orders Shortage',
+    'delivery_total' => 'Delivery Total',
+    'total_income' => 'Total Income',
+    'required_services_amount_target' => 'Required Services Amount Target',
+    'services_amount_shortage' => 'Services Amount Shortage',
+    'done_percentage' => 'Done Percentage',
+    'shortage_percentage' => 'Shortage Percentage',
+    'target_statement' => 'Target Statement',
+
 
 
 

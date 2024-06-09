@@ -100,6 +100,7 @@ class DummyModelPolicy
         return
             $user->hasPermission('daily_review_report')
             || $user->hasPermission('collection_statement_report')
+            || $user->hasPermission('target_statement_report')
             || $user->hasPermission('users_receivables_report')
             || $user->hasPermission('account_statement_report')
             || $user->hasPermission('balance_sheet_report')
@@ -113,6 +114,10 @@ class DummyModelPolicy
     public function collection_statement_report(User $user): bool
     {
         return $user->hasPermission('collection_statement_report');
+    }
+    public function target_statement_report(User $user): bool
+    {
+        return $user->hasPermission('target_statement_report');
     }
     public function users_receivables_report(User $user): bool
     {

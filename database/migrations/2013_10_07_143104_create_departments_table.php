@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId('cost_account_id')->nullable()->constrained('accounts');
             $table->string('name_ar');
             $table->string('name_en');
-            $table->boolean('active');
-            $table->boolean('is_service');
+            $table->boolean('active')->default(1);
+            $table->boolean('is_service')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

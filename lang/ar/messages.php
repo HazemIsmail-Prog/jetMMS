@@ -586,6 +586,18 @@ return [
     'amount_target' => 'تارجت الايراد',
     'targets' => 'ادخال التارجت',
 
+
+    'completed_orders' => 'الطلبات المنفذة',
+    'required_orders_target' => 'الطلبات المطلوبة',
+    'orders_shortage' => 'عجز الطلبات',
+    'delivery_total' => 'اجمال التوصيل',
+    'total_income' => 'اجمالي الايراد',
+    'required_services_amount_target' => 'ايراد الصيانة المطلوب',
+    'services_amount_shortage' => 'عجز ايراد الصيانة',
+    'done_percentage' => 'النسبة المحققة',
+    'shortage_percentage' => 'نسبة العجز',
+    'target_statement' => 'كشف تحقيق النسبة',
+
     
 
 
