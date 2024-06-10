@@ -104,7 +104,7 @@ class RatingIndex extends Component
                 $q->whereDate('completed_at', '<=', $this->filters['end_completed_at']);
             })
 
-            ->paginate(10);
+            ->paginate(100);
     }
 
     public function render()
