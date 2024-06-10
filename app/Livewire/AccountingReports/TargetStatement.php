@@ -35,9 +35,18 @@ class TargetStatement extends Component
                     $q->whereNotNull('invoices.deleted_at');
                     $q->whereDate('invoices.created_at','>=',$this->start_date);
                     $q->whereDate('invoices.created_at','<=',$this->end_date);
-                    // $q->whereMonth('invoices.created_at',$this->month);
-                    // $q->whereYear('invoices.created_at',$this->year);
                     $q->select(DB::raw('SUM(invoices.discount)'));
+                }]);
+
+                $q->withCount(['orders_technician as invoice_details_services_amount_sum' => function ($q) {
+                    $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
+                    $q->join('invoice_details', 'invoices.id', '=', 'invoice_details.invoice_id');
+                    $q->join('services', 'invoice_details.service_id', '=', 'services.id');
+                    $q->where('services.type','service');
+                    $q->whereNull('invoices.deleted_at');
+                    $q->whereDate('invoices.created_at','>=',$this->start_date);
+                    $q->whereDate('invoices.created_at','<=',$this->end_date);
+                    $q->select(DB::raw('SUM(invoice_details.quantity * invoice_details.price)'));
                 }]);
 
                 // $q->withCount(['orders_technician as delivery_amount_sum' => function ($q) {
@@ -49,18 +58,6 @@ class TargetStatement extends Component
                 //     $q->select(DB::raw('SUM(invoices.delivery)'));
                 // }]);
 
-                $q->withCount(['orders_technician as invoice_details_services_amount_sum' => function ($q) {
-                    $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
-                    $q->join('invoice_details', 'invoices.id', '=', 'invoice_details.invoice_id');
-                    $q->join('services', 'invoice_details.service_id', '=', 'services.id');
-                    $q->where('services.type','service');
-                    $q->whereNotNull('invoices.deleted_at');
-                    $q->whereDate('invoices.created_at','>=',$this->start_date);
-                    $q->whereDate('invoices.created_at','<=',$this->end_date);
-                    // $q->whereMonth('invoices.created_at',$this->month);
-                    // $q->whereYear('invoices.created_at',$this->year);
-                    $q->select(DB::raw('SUM(invoice_details.quantity * invoice_details.price)'));
-                }]);
 
                 // $q->withCount(['orders_technician as invoice_details_parts_amount_sum' => function ($q) {
                 //     $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
@@ -88,30 +85,22 @@ class TargetStatement extends Component
                     $q->where('status_id', Status::COMPLETED);
                     $q->whereDate('orders.completed_at','>=',$this->start_date);
                     $q->whereDate('orders.completed_at','<=',$this->end_date);
-                    // $q->whereMonth('completed_at', $this->month);
-                    // $q->whereYear('completed_at', $this->year);
                 }]);
 
                 $q->withCount(['targets as invoices_target_sum' => function ($q) {
                     $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
                     $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
-                    // $q->where('month',$this->month);
-                    // $q->where('year',$this->year);
                     $q->select(DB::raw('SUM(invoices_target)'));
                 }]);
                 $q->withCount(['targets as amount_target_sum' => function ($q) {
                     $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
                     $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
-                    // $q->where('month',$this->month);
-                    // $q->where('year',$this->year);
                     $q->select(DB::raw('SUM(amount_target)'));
                 }]);
 
                 $q->whereHas('targets',function($q){
                     $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
                     $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
-                    // $q->where('month',$this->month);
-                    // $q->where('year',$this->year);
                 });
             })
             ->get();
