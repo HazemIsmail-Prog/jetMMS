@@ -81,9 +81,6 @@
                             <x-borderd-th class="!w-1/12">{{ __('messages.required_orders_target') }}</x-borderd-th>
                             <x-borderd-th class="!w-1/12">{{ __('messages.orders_shortage') }}</x-borderd-th>
                             <x-borderd-th class="!w-1/12">{{ __('messages.service_total') }}</x-borderd-th>
-                            <x-borderd-th class="!w-1/12">{{ __('messages.parts_total') }}</x-borderd-th>
-                            <x-borderd-th class="!w-1/12">{{ __('messages.delivery_total') }}</x-borderd-th>
-                            <x-borderd-th class="!w-1/12">{{ __('messages.total_income') }}</x-borderd-th>
                             <x-borderd-th class="!w-1/12">{{ __('messages.required_services_amount_target') }}</x-borderd-th>
                             <x-borderd-th class="!w-1/12">{{ __('messages.services_amount_shortage') }}</x-borderd-th>
                             <x-borderd-th class="!w-1/12">{{ __('messages.done_percentage') }}</x-borderd-th>
@@ -123,9 +120,6 @@
                                     <x-borderd-td>{{ $requiredOrdersTarget }}</x-borderd-td>
                                     <x-borderd-td>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-td>
                                     <x-borderd-td>{{ $servicesAfterDiscount == 0 ? '-' : number_format($servicesAfterDiscount,3) }}</x-borderd-td>
-                                    <x-borderd-td>{{ $partsAmount == 0 ? '-' : number_format($partsAmount,3) }}</x-borderd-td>
-                                    <x-borderd-td>{{ $deliveryAmount == 0 ? '-' : number_format($deliveryAmount,3) }}</x-borderd-td>
-                                    <x-borderd-td>{{ $totalIncome == 0 ? '-' : number_format($totalIncome,3) }}</x-borderd-td>
                                     <x-borderd-td>{{ number_format($requiredServicesAmountTarget,3) }}</x-borderd-td>
                                     <x-borderd-td>{{ $servicesAmountShortage == 0 ? '-' : number_format($servicesAmountShortage,3) }}</x-borderd-td>
                                     <x-borderd-td>{{ number_format($donePercentage,2) }} %</x-borderd-td>
@@ -163,9 +157,6 @@
                                     <x-borderd-th>{{ $requiredOrdersTarget }}</x-borderd-th>
                                     <x-borderd-th>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-th>
                                     <x-borderd-th>{{ $servicesAfterDiscount == 0 ? '-' : number_format($servicesAfterDiscount,3) }}</x-borderd-th>
-                                    <x-borderd-th>{{ $partsAmount == 0 ? '-' : number_format($partsAmount,3) }}</x-borderd-th>
-                                    <x-borderd-th>{{ $deliveryAmount == 0 ? '-' : number_format($deliveryAmount,3) }}</x-borderd-th>
-                                    <x-borderd-th>{{ $totalIncome == 0 ? '-' : number_format($totalIncome,3) }}</x-borderd-th>
                                     <x-borderd-th>{{ number_format($requiredServicesAmountTarget,3) }}</x-borderd-th>
                                     <x-borderd-th>{{ $servicesAmountShortage == 0 ? '-' : number_format($servicesAmountShortage,3) }}</x-borderd-th>
                                     <x-borderd-th>{{ number_format($donePercentage,2) }} %</x-borderd-th>
@@ -202,9 +193,6 @@
                             <x-borderd-th>{{ $requiredOrdersTarget }}</x-borderd-th>
                             <x-borderd-th>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-th>
                             <x-borderd-th>{{ $servicesAfterDiscount == 0 ? '-' : number_format($servicesAfterDiscount,3) }}</x-borderd-th>
-                            <x-borderd-th>{{ $partsAmount == 0 ? '-' : number_format($partsAmount,3) }}</x-borderd-th>
-                            <x-borderd-th>{{ $deliveryAmount == 0 ? '-' : number_format($deliveryAmount,3) }}</x-borderd-th>
-                            <x-borderd-th>{{ $totalIncome == 0 ? '-' : number_format($totalIncome,3) }}</x-borderd-th>
                             <x-borderd-th>{{ number_format($requiredServicesAmountTarget,3) }}</x-borderd-th>
                             <x-borderd-th>{{ $servicesAmountShortage == 0 ? '-' : number_format($servicesAmountShortage,3) }}</x-borderd-th>
                             <x-borderd-th>{{ number_format($donePercentage,2) }} %</x-borderd-th>
