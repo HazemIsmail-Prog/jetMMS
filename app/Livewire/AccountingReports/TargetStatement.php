@@ -84,8 +84,8 @@ class TargetStatement extends Component
 
                 $q->withCount(['orders_technician as completed_orders_count' => function ($q) {
                     $q->where('status_id', Status::COMPLETED);
-                    $q->whereDate('orders.created_at','>=',$this->start_date);
-                    $q->whereDate('orders.created_at','<=',$this->end_date);
+                    $q->whereDate('created_at','>=',$this->start_date);
+                    $q->whereDate('created_at','<=',$this->end_date);
                     // $q->whereMonth('completed_at', $this->month);
                     // $q->whereYear('completed_at', $this->year);
                 }]);
