@@ -10,7 +10,19 @@
     </x-slot>
 
         {{-- Filters --}}
-        <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
+
+            <div class=" col-span-1 md:col-span-2 xl:col-span-4">
+                <x-label for="start_date">{{ __('messages.date') }}</x-label>
+                <x-input type="date" class="w-full" id="start_date" wire:model.live="start_date" />
+                <x-input type="date" class="w-full" id="end_date" wire:model.live="end_date" />
+            </div>
+        </div>
+        {{-- <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+
+
+            <input type="date" wire:model.live="start_date">
+            <input type="date" wire:model.live="end_date">
 
             <div>
                 <x-label for="month">{{ __('messages.month') }}</x-label>
@@ -40,7 +52,7 @@
             </div>
     
     
-        </div>
+        </div> --}}
 
     <div class="hidden text-center p-20"  wire:loading.class.remove="hidden" role="status">
         <svg aria-hidden="true" class="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
