@@ -32,6 +32,7 @@ class TargetStatement extends Component
 
                 $q->withCount(['orders_technician as discount_amount_sum' => function ($q) {
                     $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
+                    $q->whereNotNull('invoices.deleted_at');
                     $q->whereDate('invoices.created_at','>=',$this->start_date);
                     $q->whereDate('invoices.created_at','<=',$this->end_date);
                     // $q->whereMonth('invoices.created_at',$this->month);
@@ -53,6 +54,7 @@ class TargetStatement extends Component
                     $q->join('invoice_details', 'invoices.id', '=', 'invoice_details.invoice_id');
                     $q->join('services', 'invoice_details.service_id', '=', 'services.id');
                     $q->where('services.type','service');
+                    $q->whereNotNull('invoices.deleted_at');
                     $q->whereDate('invoices.created_at','>=',$this->start_date);
                     $q->whereDate('invoices.created_at','<=',$this->end_date);
                     // $q->whereMonth('invoices.created_at',$this->month);
