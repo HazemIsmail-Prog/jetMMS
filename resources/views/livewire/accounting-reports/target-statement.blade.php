@@ -102,7 +102,7 @@
                                         $ordersShortage = $requiredOrdersTarget - $completedOrdersCount;
                                         $requiredServicesAmountTarget = $data->amount_target_sum;
                                         $servicesAmountShortage = $requiredServicesAmountTarget - $totalIncome;
-                                        $donePercentage = $requiredServicesAmountTarget > 0 ? round($totalIncome / $requiredServicesAmountTarget * 100 ,2) : 0;
+                                        $donePercentage = $requiredServicesAmountTarget > 0 ? round($servicesAfterDiscount / $requiredServicesAmountTarget * 100 ,2) : 0;
                                         $shortagePercentage = 100 - $donePercentage;
                                     @endphp
     
@@ -142,7 +142,7 @@
                                         $ordersShortage = $requiredOrdersTarget - $completedOrdersCount;
                                         $requiredServicesAmountTarget = $data->sum('amount_target_sum');
                                         $servicesAmountShortage = $requiredServicesAmountTarget - $totalIncome;
-                                        $donePercentage = $requiredServicesAmountTarget > 0 ? round($totalIncome / $requiredServicesAmountTarget * 100 ,2) : 0;
+                                        $donePercentage = $requiredServicesAmountTarget > 0 ? round($servicesAfterDiscount / $requiredServicesAmountTarget * 100 ,2) : 0;
                                         $shortagePercentage = 100 - $donePercentage;
                                     @endphp
     
@@ -181,7 +181,7 @@
                                 $ordersShortage = $requiredOrdersTarget - $completedOrdersCount;
                                 $requiredServicesAmountTarget = $data->sum('amount_target_sum');
                                 $servicesAmountShortage = $requiredServicesAmountTarget - $totalIncome;
-                                $donePercentage = $requiredServicesAmountTarget > 0 ? round($totalIncome / $requiredServicesAmountTarget * 100 ,2) : 0;
+                                $donePercentage = $requiredServicesAmountTarget > 0 ? round($servicesAfterDiscount / $requiredServicesAmountTarget * 100 ,2) : 0;
                                 $shortagePercentage = 100 - $donePercentage;
                             @endphp
     
