@@ -597,6 +597,7 @@ return [
     'done_percentage' => 'النسبة المحققة',
     'shortage_percentage' => 'نسبة العجز',
     'target_statement' => 'كشف تحقيق النسبة',
+    'shift_target_statement' => 'كشف تحقيق النسبة للشفتات',
 
     
 

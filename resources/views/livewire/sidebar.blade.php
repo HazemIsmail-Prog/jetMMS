@@ -110,6 +110,9 @@
                 @can('target_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="target_statement" :title="__('messages.target_statement')" />
                 @endcan
+                @can('shift_target_statement_report', App\Models\DummyModel::class)
+                <x-nested-sidebar-item route="shift_target_statement" :title="__('messages.shift_target_statement')" />
+                @endcan
                 @can('users_receivables_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="users_receivables" :title="__('messages.users_receivables')" />
                 @endcan

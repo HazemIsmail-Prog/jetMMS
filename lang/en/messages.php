@@ -577,6 +577,8 @@ return [
     'done_percentage' => 'Done Percentage',
     'shortage_percentage' => 'Shortage Percentage',
     'target_statement' => 'Target Statement',
+    'shift_target_statement' => 'Shifts Target Statement',
+
 
 
 

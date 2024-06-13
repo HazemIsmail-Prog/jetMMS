@@ -3,7 +3,7 @@
         <div class=" flex items-center justify-between">
 
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.target_statement') }}
+                {{ __('messages.shift_target_statement') }}
             </h2>
 
         </div>
@@ -56,9 +56,9 @@
     
                     <tbody>
     
-                        @foreach ($this->titles as $title)
+                        @foreach ($this->shifts as $shift)
     
-                            @foreach ($department->technicians->where('title_id',$title->id) as $technician)
+                            @foreach ($department->technicians->where('shift_id',$shift->id) as $technician)
     
                                 <x-tr>
                                     @php
@@ -93,13 +93,13 @@
     
                             @endforeach
     
-                            @if ($department->technicians->whereNotIn('title_id',$title->id)->count() > 0 &&
-                            $department->technicians->whereIn('title_id',$title->id)->count() > 0)
+                            @if ($department->technicians->whereNotIn('shift_id',$shift->id)->count() > 0 &&
+                            $department->technicians->whereIn('shift_id',$shift->id)->count() > 0)
     
                                 <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
     
                                     @php
-                                        $data = $department->technicians->where('title_id',$title->id);
+                                        $data = $department->technicians->where('shift_id',$shift->id);
                                         $servicesAmount = $data->sum('invoice_details_services_amount_sum');
                                         $discountAmount = $data->sum('discount_amount_sum');
                                         $servicesAfterDiscount = $servicesAmount - $discountAmount;
@@ -117,7 +117,7 @@
                                         $shortagePercentage = 100 - $donePercentage;
                                     @endphp
     
-                                    <x-borderd-th>{{ $title->name }}</x-borderd-th>
+                                    <x-borderd-th>{{ $shift->name }}</x-borderd-th>
                                     <x-borderd-th>{{ $completedOrdersCount == 0 ? '-' : $completedOrdersCount  }}</x-borderd-th>
                                     <x-borderd-th>{{ $requiredOrdersTarget }}</x-borderd-th>
                                     <x-borderd-th>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-th>
@@ -131,6 +131,79 @@
                             @endif
     
                         @endforeach
+
+                        {{-- Null Shifts --}}
+
+                        @foreach ($department->technicians->whereNull('shift_id') as $technician)
+    
+                        <x-tr>
+                            @php
+                                $data = $technician;
+                                $servicesAmount = $data->invoice_details_services_amount_sum;
+                                $discountAmount = $data->discount_amount_sum;
+                                $servicesAfterDiscount = $servicesAmount - $discountAmount;
+                                $invoice_details_parts_amount_sum = $data->invoice_details_parts_amount_sum;
+                                $invoice_part_details_amount_sum = $data->invoice_part_details_amount_sum;
+                                $partsAmount = $invoice_details_parts_amount_sum + $invoice_part_details_amount_sum;
+                                $deliveryAmount = $data->delivery_amount_sum;
+                                $totalIncome = $servicesAfterDiscount + $partsAmount + $deliveryAmount;
+                                $completedOrdersCount = $data->completed_orders_count;
+                                $requiredOrdersTarget = $data->invoices_target_sum;
+                                $ordersShortage = $requiredOrdersTarget - $completedOrdersCount;
+                                $requiredServicesAmountTarget = $data->amount_target_sum;
+                                $servicesAmountShortage = $requiredServicesAmountTarget - $totalIncome;
+                                $donePercentage = $requiredServicesAmountTarget > 0 ? round($servicesAfterDiscount / $requiredServicesAmountTarget * 100 ,2) : 0;
+                                $shortagePercentage = 100 - $donePercentage;
+                            @endphp
+
+                            <x-borderd-td>{{ $technician->name }}</x-borderd-td>
+                            <x-borderd-td>{{ $completedOrdersCount == 0 ? '-' : $completedOrdersCount  }}</x-borderd-td>
+                            <x-borderd-td>{{ $requiredOrdersTarget }}</x-borderd-td>
+                            <x-borderd-td>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-td>
+                            <x-borderd-td>{{ $servicesAfterDiscount == 0 ? '-' : number_format($servicesAfterDiscount,3) }}</x-borderd-td>
+                            <x-borderd-td>{{ number_format($requiredServicesAmountTarget,3) }}</x-borderd-td>
+                            <x-borderd-td>{{ $servicesAmountShortage == 0 ? '-' : number_format($servicesAmountShortage,3) }}</x-borderd-td>
+                            <x-borderd-td>{{ number_format($donePercentage,2) }} %</x-borderd-td>
+                            <x-borderd-td>{{ number_format($shortagePercentage,2) }} %</x-borderd-td>  
+                        </x-tr>
+
+                    @endforeach
+
+                    @if ($department->technicians->whereNull('shift_id')->count() > 0)
+
+                        <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
+
+                            @php
+                                $data = $department->technicians->whereNull('shift_id');
+                                $servicesAmount = $data->sum('invoice_details_services_amount_sum');
+                                $discountAmount = $data->sum('discount_amount_sum');
+                                $servicesAfterDiscount = $servicesAmount - $discountAmount;
+                                $invoice_details_parts_amount_sum = $data->sum('invoice_details_parts_amount_sum');
+                                $invoice_part_details_amount_sum = $data->sum('invoice_part_details_amount_sum');
+                                $partsAmount = $invoice_details_parts_amount_sum + $invoice_part_details_amount_sum;
+                                $deliveryAmount = $data->sum('delivery_amount_sum');
+                                $totalIncome = $servicesAfterDiscount + $partsAmount + $deliveryAmount;
+                                $completedOrdersCount = $data->sum('completed_orders_count');
+                                $requiredOrdersTarget = $data->sum('invoices_target_sum');
+                                $ordersShortage = $requiredOrdersTarget - $completedOrdersCount;
+                                $requiredServicesAmountTarget = $data->sum('amount_target_sum');
+                                $servicesAmountShortage = $requiredServicesAmountTarget - $totalIncome;
+                                $donePercentage = $requiredServicesAmountTarget > 0 ? round($servicesAfterDiscount / $requiredServicesAmountTarget * 100 ,2) : 0;
+                                $shortagePercentage = 100 - $donePercentage;
+                            @endphp
+
+                            <x-borderd-th>{{ __('messages.undefined_shift') }}</x-borderd-th>
+                            <x-borderd-th>{{ $completedOrdersCount == 0 ? '-' : $completedOrdersCount  }}</x-borderd-th>
+                            <x-borderd-th>{{ $requiredOrdersTarget }}</x-borderd-th>
+                            <x-borderd-th>{{ $ordersShortage == 0 ? '-' : $ordersShortage }}</x-borderd-th>
+                            <x-borderd-th>{{ $servicesAfterDiscount == 0 ? '-' : number_format($servicesAfterDiscount,3) }}</x-borderd-th>
+                            <x-borderd-th>{{ number_format($requiredServicesAmountTarget,3) }}</x-borderd-th>
+                            <x-borderd-th>{{ $servicesAmountShortage == 0 ? '-' : number_format($servicesAmountShortage,3) }}</x-borderd-th>
+                            <x-borderd-th>{{ number_format($donePercentage,2) }} %</x-borderd-th>
+                            <x-borderd-th>{{ number_format($shortagePercentage,2) }} %</x-borderd-th>     
+                        </tr>
+
+                    @endif
     
                         <tr class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
     

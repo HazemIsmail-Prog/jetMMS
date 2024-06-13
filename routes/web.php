@@ -5,6 +5,7 @@ use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
 use App\Livewire\AccountingReports\CollectionStatement;
 use App\Livewire\AccountingReports\DailyReview;
+use App\Livewire\AccountingReports\ShiftTargetStatement;
 use App\Livewire\AccountingReports\TargetStatement;
 use App\Livewire\AccountingReports\TrialBalance;
 use App\Livewire\AccountingReports\UsersReceivables;
@@ -154,6 +155,10 @@ Route::middleware([
         Route::get('accounts/reports/target_statement', TargetStatement::class)
             ->name('target_statement')
             ->can('target_statement_report', DummyModel::class)
+            ;
+        Route::get('accounts/reports/shift_target_statement', ShiftTargetStatement::class)
+            ->name('shift_target_statement')
+            ->can('shift_target_statement_report', DummyModel::class)
             ;
 
         Route::get('accounts/reports/users_receivables', UsersReceivables::class)
