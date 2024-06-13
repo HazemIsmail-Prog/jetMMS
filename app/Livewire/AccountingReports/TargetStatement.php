@@ -16,8 +16,13 @@ class TargetStatement extends Component
     public $end_date;
     public function mount()
     {
-        $this->start_date = today()->subDays(1)->format('Y-m-d');
         $this->end_date = today()->subDays(1)->format('Y-m-d');
+        $this->start_date = today()->subDays(1)->firstOfMonth()->format('Y-m-d');
+    }
+
+    public function updatedEndDate()
+    {
+        $this->start_date = now()->parse($this->end_date)->firstOfMonth()->format('Y-m-d');
     }
 
     #[Computed()]
