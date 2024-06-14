@@ -598,6 +598,11 @@ return [
     'shortage_percentage' => 'نسبة العجز',
     'target_statement' => 'كشف تحقيق النسبة',
     'shift_target_statement' => 'كشف تحقيق النسبة للشفتات',
+    'remaining_days' => 'عدد الايام المتبقية',
+    'upcommingExpiredAttachments' => 'مرفقات تنتهي قريبا',
+    'expiredAttachments' => 'مرفقات منتهية',
+    'alerts' => 'تنبيهات',
+
 
     
 

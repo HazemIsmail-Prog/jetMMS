@@ -16,6 +16,7 @@ class Employee extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $with = ['user:id,name_ar,name_en'];
 
     protected $casts = [
         'joinDate' => 'date:Y-m-d',

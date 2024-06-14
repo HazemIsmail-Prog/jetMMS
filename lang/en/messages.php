@@ -579,6 +579,11 @@ return [
     'target_statement' => 'Target Statement',
     'shift_target_statement' => 'Shifts Target Statement',
 
+    'remaining_days' => 'Remaining Days',
+    'upcommingExpiredAttachments' => 'Upcomming Expired Attachments',
+    'expiredAttachments' => 'Expired Attachments',
+    'alerts' => 'Alerts',
+
 
 
 

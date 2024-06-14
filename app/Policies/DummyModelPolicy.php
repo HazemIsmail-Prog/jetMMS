@@ -23,6 +23,12 @@ class DummyModelPolicy
         return $user->hasPermission('dashboard_menu');
     }
 
+    // Alerts
+    public function alerts_menu(User $user): bool
+    {
+        return $user->hasPermission('alerts_menu');
+    }
+
 
     // Operations
     public function operations_title(User $user): bool

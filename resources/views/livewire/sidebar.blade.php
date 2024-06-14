@@ -33,6 +33,9 @@
             @can('dashboard_menu', App\Models\DummyModel::class)
             <x-sidebar-item icon="chart-pie" route="dashboard" :title="__('messages.dashboard')" />
             @endcan
+            @can('alerts_menu', App\Models\DummyModel::class)
+            <x-sidebar-item icon="bell" route="alerts" :title="__('messages.alerts')" />
+            @endcan
             {{-- Operations --}}
             @can('operations_title', App\Models\DummyModel::class)
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.operations') }}

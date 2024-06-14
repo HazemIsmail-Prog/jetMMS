@@ -10,6 +10,7 @@ use App\Livewire\AccountingReports\TargetStatement;
 use App\Livewire\AccountingReports\TrialBalance;
 use App\Livewire\AccountingReports\UsersReceivables;
 use App\Livewire\Accounts\AccountIndex;
+use App\Livewire\Alerts\AlertIndex;
 use App\Livewire\Areas\AreaIndex;
 use App\Livewire\Cars\CarIndex;
 use App\Livewire\Cashier\CashCollection;
@@ -91,6 +92,8 @@ Route::middleware([
         Route::get('/', function () {
             return view('dashboard');
         })->name('dashboard')->can('dashboard_menu', DummyModel::class);
+
+        Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 
         // ========== Operations ==========
         Route::get('customers', CustomerIndex::class)
