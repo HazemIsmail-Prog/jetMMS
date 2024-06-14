@@ -115,11 +115,11 @@
                             <x-svgs.edit class="h-4 w-4" />
                         </x-badgeWithCounter>
                         @endcan
-                        @if ($customer->orders->count() > 0)
+                        @if ($customer->orders_count > 0)
                         @can('viewAny', App\Models\Order::class)
                         <a href="{{ route('order.index', ['filters[customer_id]' => $customer->id]) }}">
                             <x-badgeWithCounter class="px-2">
-                                {{ $customer->orders->count() }}
+                                {{ $customer->orders_count }}
                             </x-badgeWithCounter>
                         </a>
                         @endcan

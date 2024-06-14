@@ -47,7 +47,7 @@ class CustomerIndex extends Component
             ->orderBy('id', 'desc')
             ->with('phones')
             ->with('addresses')
-            ->with('orders')
+            ->withCount('orders')
             ->with('invoices.invoice_details')
             ->with('invoices.invoice_part_details')
             ->with('invoices.payments')

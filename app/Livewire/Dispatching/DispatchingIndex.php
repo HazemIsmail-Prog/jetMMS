@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Order;
 use App\Models\Shift;
 use App\Models\Status;
+use App\Models\Title;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -70,13 +71,17 @@ class DispatchingIndex extends Component
     {
         return User::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
-            ->activeTechniciansPerDepartment($this->department->id)
+            ->where('active', true)
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->where('department_id', $this->department->id)
             ->withCount(['orders_technician as todays_completed_orders_count' => function ($q) {
                 $q->where('status_id', Status::COMPLETED);
                 $q->whereDate('completed_at', today());
             }])
+            ->orderBy('name_' . app()->getLocale())
             ->get()
-            ->sortBy('name');
+            //
+            ;
     }
 
     #[Computed(cache: true, key: 'dispatching-shifts')]
@@ -106,7 +111,7 @@ class DispatchingIndex extends Component
                 default: // dragged to technician box
 
                     $destenation_tech = User::find($destenation_id);
-                    
+
                     if ($destenation_tech->active) {
                         if ($new_index) {
                             // this for changing technician on dragging
