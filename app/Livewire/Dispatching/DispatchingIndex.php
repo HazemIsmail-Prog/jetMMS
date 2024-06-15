@@ -70,7 +70,7 @@ class DispatchingIndex extends Component
     public function technicians()
     {
         return User::query()
-            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->select('id','shift_id' ,'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->where('active', true)
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->where('department_id', $this->department->id)
