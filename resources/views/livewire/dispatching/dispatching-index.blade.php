@@ -32,7 +32,7 @@
                     localStorage.setItem('hiddenContainers{{ $department->id }}', JSON.stringify(value));
                 });
             }" --}}
-        class="relative flex gap-1 h-[calc(100dvh-110px)] lg:h-[calc(100dvh-174px)] text-gray-700 dark:text-slate-400">
+        class="relative flex shrink-0 gap-1 h-[calc(100dvh-110px)] lg:h-[calc(100dvh-174px)] text-gray-700 dark:text-slate-400 overflow-auto">
 
         {{-- <div x-show="!alpineLoaded">
             <x-loading-spinner class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
@@ -64,7 +64,7 @@
         <x-orders-container title="{{ __('messages.on_hold') }}" :list="$this->onHoldOrders" box_id="techhold" />
 
         {{-- Shifts --}}
-        <div class="flex gap-1 flex-1 h-full overflow-y-auto hidden-scrollbar scroll-smooth">
+        <div class="flex shrink-0 lg:shrink gap-1 h-full overflow-x-auto hidden-scrollbar scroll-smooth">
 
             {{-- Null Shift --}}
             @if ($this->technicians->where('shift_id', null)->count() >= 1)

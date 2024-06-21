@@ -3,7 +3,7 @@
 <div 
     {{-- x-cloak 
     x-show="!hiddenContainers.find(obj => obj.id === '{{ $box_id }}');" --}}
-    class="h-full w-24 lg:w-64 flex flex-col gap-1 flex-shrink-0">
+    class="h-full w-64 flex flex-col gap-1 flex-shrink-0">
 
     <x-orders-container-header :id="$box_id" :title="$title" :technician="$technician" :total="$list->count()" />
 

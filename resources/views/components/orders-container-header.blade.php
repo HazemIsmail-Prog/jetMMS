@@ -3,7 +3,7 @@
 <div 
     class="flex items-center justify-between rounded-md cursor-pointer select-none flex-shrink-0 h-10 p-4 bg-gray-300 dark:bg-gray-700">
     <div 
-        @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });" 
+        {{-- @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });"  --}}
         class="flex-1 text-sm font-semibold uppercase truncate">
         {{ $title }}
     </div>
@@ -23,7 +23,7 @@
         @endif
         @if ($total)
             <div 
-                @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });"
+                {{-- @click="hiddenContainers.push({ id: '{{ $id }}', title: '{{ $title }}' });" --}}
                 class="bg-gray-100 text-gray-800 border border-gray-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500">
                     {{ $total }}
             </div>
