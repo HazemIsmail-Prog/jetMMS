@@ -602,6 +602,8 @@ return [
     'upcommingExpiredAttachments' => 'مرفقات تنتهي قريبا',
     'expiredAttachments' => 'مرفقات منتهية',
     'alerts' => 'تنبيهات',
+    'total_technicians' => 'عدد الفنيين',
+    'average_completed_orders_for_technicians' => 'متوسط التنفيذ لكل فني',
 
 
     

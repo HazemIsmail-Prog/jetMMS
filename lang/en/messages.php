@@ -583,6 +583,8 @@ return [
     'upcommingExpiredAttachments' => 'Upcomming Expired Attachments',
     'expiredAttachments' => 'Expired Attachments',
     'alerts' => 'Alerts',
+    'total_technicians' => 'Total Technicians',
+    'average_completed_orders_for_technicians' => 'Complete Average per Technician',
 
 
 
