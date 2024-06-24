@@ -42,7 +42,7 @@
             setTimeout(function() {
                 var ctx = document.getElementById('customerChart').getContext('2d');
                 var chart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: @json(
                             $customers->map(function ($customer) {

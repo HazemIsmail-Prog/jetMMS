@@ -43,7 +43,7 @@
             setTimeout(function() {
                 var ctx = document.getElementById('orderChart').getContext('2d');
                 var chart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: @json(
                             $orders->map(function ($order) {
