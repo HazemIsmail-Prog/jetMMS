@@ -61,7 +61,6 @@
 
     </div>
 
-    @if ($this->invoices->count() > 0)
     <x-table>
         <x-thead>
             <tr>
@@ -85,28 +84,26 @@
                 <x-td>{{ $invoice->order_number }}</x-td>
                 <x-td>{{ $invoice->department_name }}</x-td>
                 <x-td>{{ $invoice->technician_name }}</x-td>
-                <x-td>{{ number_format((round(($invoice->queryServicesAmount - $invoice->discount) + $invoice->delivery + $invoice->queryPartsAmountFromDetails +  $invoice->queryPartsAmountFromParts - $invoice->queryPaymentsAmount,3)),3) }}</x-td>
+                <x-td>{{ number_format((round(($invoice->queryServicesAmount - $invoice->discount) + $invoice->delivery
+                    + $invoice->queryPartsAmountFromDetails + $invoice->queryPartsAmountFromParts -
+                    $invoice->queryPaymentsAmount,3)),3) }}</x-td>
             </x-tr>
             @endforeach
         </tbody>
-        {{-- <x-tfoot>
+        <x-tfoot>
             <tr>
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th></x-th>
                 <x-th>{{ __('messages.total') }}</x-th>
-                <x-th>{{ number_format($this->invoices->sum('amount'), 3) }}</x-th>
-                <x-th></x-th>
+                <x-th>{{ number_format((round(($this->invoices->sum('queryServicesAmount') - $this->invoices->sum('discount')) + $this->invoices->sum('delivery')
+                    + $this->invoices->sum('queryPartsAmountFromDetails') + $this->invoices->sum('queryPartsAmountFromParts') -
+                    $this->invoices->sum('queryPaymentsAmount'),3)),3) }}</x-th>
             </tr>
-        </x-tfoot> --}}
+        </x-tfoot>
     </x-table>
-    @else
-    {{-- <h2
-        class="font-semibold text-xl flex gap-3 items-center justify-center text-green-600 dark:text-green-500 leading-tight">
-        {{ __('messages.no_uncollected_invoices') }}
-    </h2> --}}
-    @endif
+
 
 
 </div>
