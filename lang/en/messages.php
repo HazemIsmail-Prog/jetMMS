@@ -585,6 +585,8 @@ return [
     'alerts' => 'Alerts',
     'total_technicians' => 'Total Technicians',
     'average_completed_orders_for_technicians' => 'Complete Average per Technician',
+    'pending_invoices_report' => 'Pending Invoices Report',
+
 
 
 

@@ -405,10 +405,10 @@ return [
     'balance' => 'الرصيد',
     'opening_balance' => 'رصيد اول المدة',
     'usage' => 'الاستخدام',
-    
-    
-    
-    
+
+
+
+
     'receiver' => 'المستلم',
     'delivery' => 'التوصيل',
     'discount' => 'الخصم',
@@ -604,9 +604,10 @@ return [
     'alerts' => 'تنبيهات',
     'total_technicians' => 'عدد الفنيين',
     'average_completed_orders_for_technicians' => 'متوسط التنفيذ لكل فني',
+    'pending_invoices_report' => 'كشف الفواتير المؤجلة',
 
 
-    
+
 
 
 ];

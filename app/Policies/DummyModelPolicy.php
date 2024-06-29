@@ -60,7 +60,7 @@ class DummyModelPolicy
         return $user->hasPermission('expected_invoices_deletion_report');
     }
 
-    // Cashier 
+    // Cashier
     public function cashier_title(User $user)
     {
         return
@@ -109,6 +109,7 @@ class DummyModelPolicy
             || $user->hasPermission('target_statement_report')
             || $user->hasPermission('shift_target_statement_report')
             || $user->hasPermission('users_receivables_report')
+            || $user->hasPermission('pending_payments_report')
             || $user->hasPermission('account_statement_report')
             || $user->hasPermission('balance_sheet_report')
             || $user->hasPermission('trial_balance_report')
@@ -133,6 +134,10 @@ class DummyModelPolicy
     public function users_receivables_report(User $user): bool
     {
         return $user->hasPermission('users_receivables_report');
+    }
+    public function pending_payments_report(User $user): bool
+    {
+        return $user->hasPermission('pending_payments_report');
     }
     public function account_statement_report(User $user): bool
     {

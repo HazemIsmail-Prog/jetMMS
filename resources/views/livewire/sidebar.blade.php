@@ -119,6 +119,9 @@
                 @can('users_receivables_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="users_receivables" :title="__('messages.users_receivables')" />
                 @endcan
+                @can('pending_payments_report', App\Models\DummyModel::class)
+                <x-nested-sidebar-item route="pending_payments" :title="__('messages.pending_invoices_report')" />
+                @endcan
                 @can('account_statement_report', App\Models\DummyModel::class)
                 <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
                 @endcan
