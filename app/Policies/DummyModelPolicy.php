@@ -64,8 +64,8 @@ class DummyModelPolicy
     public function contracts_title(User $user)
     {
         return
-        $user->hasPermission('contracts_menu')
-            // || Add More if Needed
+        $user->hasPermission('construction_contracts_menu')
+        || $user->hasPermission('subscription_contracts_menu')
         ;
     }
 
