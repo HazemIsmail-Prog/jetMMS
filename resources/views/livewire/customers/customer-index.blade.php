@@ -33,6 +33,7 @@
     @endif
 
     @livewire('orders.order-form')
+    @livewire('contracts.contract-form')
     @livewire('customers.customer-form')
 
 
@@ -106,6 +107,13 @@
                         <x-badgeWithCounter title="{{ __('messages.add_order') }}"
                             wire:click="$dispatch('showOrderFormModal',{customer:{{ $customer }}})">
                             <x-svgs.plus class="h-4 w-4" />
+                        </x-badgeWithCounter>
+                        @endcan
+
+                        @can('create', App\Models\Contract::class)
+                        <x-badgeWithCounter title="{{ __('messages.add_contract') }}"
+                            wire:click="$dispatch('showContractFormModal',{customer:{{ $customer }}})">
+                            {{ __('messages.add_contract') }}
                         </x-badgeWithCounter>
                         @endcan
 

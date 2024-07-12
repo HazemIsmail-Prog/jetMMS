@@ -17,6 +17,7 @@ use App\Livewire\Cars\CarIndex;
 use App\Livewire\Cashier\CashCollection;
 use App\Livewire\Cashier\KnetCollection;
 use App\Livewire\Companies\CompanyIndex;
+use App\Livewire\Contracts\ContractIndex;
 use App\Livewire\CostCenters\CostCenterIndex;
 use App\Livewire\CustomerPage;
 use App\Livewire\Customers\CustomerIndex;
@@ -45,6 +46,7 @@ use App\Models\Account;
 use App\Models\Area;
 use App\Models\Car;
 use App\Models\Company;
+use App\Models\Contract;
 use App\Models\CostCenter;
 use App\Models\Customer;
 use App\Models\Department;
@@ -65,6 +67,7 @@ use App\Models\Supplier;
 use App\Models\Title;
 use App\Models\User;
 use App\Models\Voucher;
+use App\Policies\ContractPolicy;
 use Illuminate\Support\Facades\Route;
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
@@ -120,6 +123,21 @@ Route::middleware([
         Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
             ->name('expected_invoices_deletion')
             ->can('expected_invoices_deletion_report', DummyModel::class);
+
+
+
+
+        // ========== Contracts ==========
+
+        Route::get('construction-contracts',ContractIndex::class)
+            ->name('construction.contracts')
+            ->can('viewConstructionContracts',Contract::class);
+
+        Route::get('subscription-contracts',ContractIndex::class)
+            ->name('subscription.contracts')
+            ->can('viewSubscriptionContracts',Contract::class);
+
+
 
         // ========== Cashier ==========
 

@@ -60,6 +60,15 @@ class DummyModelPolicy
         return $user->hasPermission('expected_invoices_deletion_report');
     }
 
+    // Contracts
+    public function contracts_title(User $user)
+    {
+        return
+        $user->hasPermission('contracts_menu')
+            // || Add More if Needed
+        ;
+    }
+
     // Cashier
     public function cashier_title(User $user)
     {

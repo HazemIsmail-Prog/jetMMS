@@ -75,6 +75,19 @@
 
             @endcan
 
+            {{-- Contracts --}}
+            @can('contracts_title', App\Models\DummyModel::class)
+            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.contracts') }}</h3>
+            @endcan
+            @can('viewConstructionContracts', App\Models\Contract::class)
+            <x-sidebar-item icon="document-text" route="construction.contracts" :title="__('messages.construction_contracts')" />
+            @endcan
+            @can('viewSubscriptionContracts', App\Models\Contract::class)
+            <x-sidebar-item icon="document-text" route="subscription.contracts" :title="__('messages.subscription_contracts')" />
+            @endcan
+
+
+
             {{-- Cashier --}}
             @can('cashier_title', App\Models\DummyModel::class)
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.cashier') }}</h3>

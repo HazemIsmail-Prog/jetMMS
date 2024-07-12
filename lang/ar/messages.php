@@ -610,4 +610,30 @@ return [
 
 
 
+
+
+    'contracts' => 'العقود',
+    'construction_contracts' => 'عقود الانشائي',
+    'subscription_contracts' => 'عقود الاشتراكات',
+    'add_contract' => 'اضافة عقد',
+    'edit_contract' => 'تعديل عقد',
+    'contract_type' => 'نوع العقد',
+    'building_type' => 'نوع المبنى',
+    'contract_number' => 'رقم العقد',
+    'contract_date' => 'تاريخ بداية العقد',
+    'contract_duration' => 'مدة العقد',
+    'units_count' => 'عدد الوحدات',
+    'central_count' => 'عدد السنترال',
+    'contract_value' => 'قيمة العقد',
+    'collected_amount' => 'اجمالي المحصل',
+    'contract_expiration_date' => 'تاريخ انتهاء العقد',
+    'subscription' => 'اشتراك',
+    'construction' => 'انشائي',
+    'residential' => 'سكني',
+    'commercial' => 'استثماري',
+
+
+
+
+
 ];
