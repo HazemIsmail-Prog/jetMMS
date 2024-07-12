@@ -2,12 +2,14 @@
 
 namespace App\Livewire\AccountingReports;
 
+use App\Exports\TargetsExport;
 use App\Models\Department;
 use App\Models\Status;
 use App\Models\Title;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TargetStatement extends Component
 {
@@ -34,12 +36,13 @@ class TargetStatement extends Component
             ->with('technicians', function ($q) {
 
                 $q->with('title:id,name_en,name_ar');
+                $q->with('shift:id,name_en,name_ar');
 
                 $q->withCount(['orders_technician as discount_amount_sum' => function ($q) {
                     $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
                     $q->whereNull('invoices.deleted_at');
-                    $q->whereDate('invoices.created_at','>=',$this->start_date);
-                    $q->whereDate('invoices.created_at','<=',$this->end_date);
+                    $q->whereDate('invoices.created_at', '>=', $this->start_date);
+                    $q->whereDate('invoices.created_at', '<=', $this->end_date);
                     $q->select(DB::raw('SUM(invoices.discount)'));
                 }]);
 
@@ -47,10 +50,10 @@ class TargetStatement extends Component
                     $q->join('invoices', 'orders.id', '=', 'invoices.order_id');
                     $q->join('invoice_details', 'invoices.id', '=', 'invoice_details.invoice_id');
                     $q->join('services', 'invoice_details.service_id', '=', 'services.id');
-                    $q->where('services.type','service');
+                    $q->where('services.type', 'service');
                     $q->whereNull('invoices.deleted_at');
-                    $q->whereDate('invoices.created_at','>=',$this->start_date);
-                    $q->whereDate('invoices.created_at','<=',$this->end_date);
+                    $q->whereDate('invoices.created_at', '>=', $this->start_date);
+                    $q->whereDate('invoices.created_at', '<=', $this->end_date);
                     $q->select(DB::raw('SUM(invoice_details.quantity * invoice_details.price)'));
                 }]);
 
@@ -88,27 +91,32 @@ class TargetStatement extends Component
 
                 $q->withCount(['orders_technician as completed_orders_count' => function ($q) {
                     $q->where('status_id', Status::COMPLETED);
-                    $q->whereDate('orders.completed_at','>=',$this->start_date);
-                    $q->whereDate('orders.completed_at','<=',$this->end_date);
+                    $q->whereDate('orders.completed_at', '>=', $this->start_date);
+                    $q->whereDate('orders.completed_at', '<=', $this->end_date);
                 }]);
 
                 $q->withCount(['targets as invoices_target_sum' => function ($q) {
-                    $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
-                    $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
+                    $q->whereIn('month', [explode('-', $this->start_date)[1], explode('-', $this->end_date)[1]]);
+                    $q->whereIn('year', [explode('-', $this->start_date)[0], explode('-', $this->end_date)[0]]);
                     $q->select(DB::raw('SUM(invoices_target)'));
                 }]);
                 $q->withCount(['targets as amount_target_sum' => function ($q) {
-                    $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
-                    $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
+                    $q->whereIn('month', [explode('-', $this->start_date)[1], explode('-', $this->end_date)[1]]);
+                    $q->whereIn('year', [explode('-', $this->start_date)[0], explode('-', $this->end_date)[0]]);
                     $q->select(DB::raw('SUM(amount_target)'));
                 }]);
 
-                $q->whereHas('targets',function($q){
-                    $q->whereIn('month',[explode('-',$this->start_date)[1],explode('-',$this->end_date)[1]]);
-                    $q->whereIn('year',[explode('-',$this->start_date)[0],explode('-',$this->end_date)[0]]);
+                $q->whereHas('targets', function ($q) {
+                    $q->whereIn('month', [explode('-', $this->start_date)[1], explode('-', $this->end_date)[1]]);
+                    $q->whereIn('year', [explode('-', $this->start_date)[0], explode('-', $this->end_date)[0]]);
                 });
             })
             ->get();
+    }
+
+    public function excel()
+    {
+        return Excel::download(new TargetsExport('livewire.accounting-reports.excel.target-statement', 'Targets', $this->departments()), 'Targets.xlsx');  //Excel
     }
 
     #[Computed()]
