@@ -28,6 +28,7 @@ return new class extends Migration
             $table->float('collected_amount')->nullable();
             $table->string('notes')->nullable();
             $table->boolean('active')->default(true);
+            $table->boolean('sp_included')->default(false);
             $table->timestamps();
         });
     }

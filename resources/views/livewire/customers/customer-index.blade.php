@@ -84,7 +84,15 @@
             @foreach ($this->customers as $customer)
             <x-tr>
                 <x-th>
-                    <div>{{ $customer->name }}</div>
+                    <div>
+                        {{ $customer->name }}
+                        @if ($customer->contracts_count > 0)
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
+                            {{ __('messages.contract') }}
+                        </span>
+                        @endif
+                    </div>
                     @if ($customer->notes)
                     <div class=" text-red-400 font-normal">{{ $customer->notes }}</div>
                     @endif

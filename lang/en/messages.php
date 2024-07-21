@@ -591,6 +591,33 @@ return [
 
 
 
+    'contracts' => 'Contracts',
+    'contract' => 'Contract',
+    'construction_contracts' => 'Construction Contracts',
+    'subscription_contracts' => 'Subscription Contracts',
+    'add_contract' => 'Add Contract',
+    'edit_contract' => 'Edit Contract',
+    'contract_type' => 'Contract Type',
+    'building_type' => 'Building Type',
+    'contract_number' => 'Contract Number',
+    'contract_date' => 'Contract Date',
+    'contract_duration' => 'Contract Duration',
+    'units_count' => 'Units Count',
+    'central_count' => 'Central Count',
+    'contract_value' => 'Contract Value',
+    'collected_amount' => 'Collected Amount',
+    'contract_expiration_date' => 'Contract Expiration Date',
+    'subscription' => 'Subscription',
+    'construction' => 'Construction',
+    'residential' => 'Residential',
+    'commercial' => 'Commercial',
+    'sp_included' => 'Spare Parts Included',
+
+
+
+
+
+
 
 
 

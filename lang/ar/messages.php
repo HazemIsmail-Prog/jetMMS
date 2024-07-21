@@ -613,6 +613,7 @@ return [
 
 
     'contracts' => 'العقود',
+    'contract' => 'عقد',
     'construction_contracts' => 'عقود الانشائي',
     'subscription_contracts' => 'عقود الاشتراكات',
     'add_contract' => 'اضافة عقد',
@@ -631,6 +632,7 @@ return [
     'construction' => 'انشائي',
     'residential' => 'سكني',
     'commercial' => 'استثماري',
+    'sp_included' => 'يشمل قطع غيار',
 
 
 

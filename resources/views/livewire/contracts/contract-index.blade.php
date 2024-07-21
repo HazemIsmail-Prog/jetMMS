@@ -106,6 +106,8 @@
                 <x-th>{{ __('messages.contract_date') }}</x-th>
                 <x-th>{{ __('messages.contract_duration') }}</x-th>
                 <x-th>{{ __('messages.contract_value') }}</x-th>
+                <x-th>{{ __('messages.collected_amount') }}</x-th>
+                <x-th>{{ __('messages.remaining_amount') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -125,6 +127,8 @@
                 <x-td>{{ $contract->contract_date }}</x-td>
                 <x-td>{{ $contract->contract_duration }}</x-td>
                 <x-td>{{ $contract->contract_value }}</x-td>
+                <x-td>{{ $contract->collected_amount }}</x-td>
+                <x-td>{{ $contract->contract_value - $contract->collected_amount }}</x-td>
 
                 <x-td>
                     <div class=" flex items-center justify-end gap-2">

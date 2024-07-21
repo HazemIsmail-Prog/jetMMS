@@ -60,7 +60,7 @@
 
                     <div>
                         <x-label for="contract_number">{{ __('messages.contract_number') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.contract_number" autocomplete="off" type="text"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.contract_number" autocomplete="off" type="text"
                             id="contract_number" />
                         <x-input-error for="form.contract_number" />
                     </div>
@@ -74,28 +74,28 @@
 
                     <div>
                         <x-label for="contract_duration">{{ __('messages.contract_duration') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.contract_duration" autocomplete="off"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.contract_duration" autocomplete="off"
                             type="number" id="contract_duration" />
                         <x-input-error for="form.contract_duration" />
                     </div>
 
                     <div>
                         <x-label for="contract_value">{{ __('messages.contract_value') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.contract_value" autocomplete="off" type="number"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.contract_value" autocomplete="off" type="number"
                             step='0.001' id="contract_value" />
                         <x-input-error for="form.contract_value" />
                     </div>
 
                     <div>
                         <x-label for="units_count">{{ __('messages.units_count') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.units_count" autocomplete="off"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.units_count" autocomplete="off"
                             type="number" id="units_count" />
                         <x-input-error for="form.units_count" />
                     </div>
 
                     <div>
                         <x-label for="central_count">{{ __('messages.central_count') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.central_count" autocomplete="off"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.central_count" autocomplete="off"
                             type="number" id="central_count" />
                         <x-input-error for="form.central_count" />
                     </div>
@@ -104,7 +104,7 @@
 
                     <div>
                         <x-label for="collected_amount">{{ __('messages.collected_amount') }}</x-label>
-                        <x-input class="w-full py-0" wire:model="form.collected_amount" autocomplete="off" type="number"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.collected_amount" autocomplete="off" type="number"
                             step='0.001' id="collected_amount" />
                         <x-input-error for="form.collected_amount" />
                     </div>
@@ -121,6 +121,13 @@
                         <x-input class="w-full py-0" wire:model="form.notes" autocomplete="off" type="text"
                             id="notes" />
                         <x-input-error for="form.notes" />
+                    </div>
+
+                    <div>
+                        <x-label for="sp_included" class="flex items-center">
+                            <x-checkbox wire:model="form.sp_included" id="sp_included" />
+                            <span class="ms-2 ">{{ __('messages.sp_included') }}</span>
+                        </x-label>
                     </div>
 
                     <div>

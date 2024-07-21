@@ -25,6 +25,7 @@ class ContractForm extends Form
     public $collected_amount;
     public $notes;
     public bool $active = true;
+    public bool $sp_included = false;
 
     public function rules()
     {
@@ -46,6 +47,7 @@ class ContractForm extends Form
             'collected_amount' => 'nullable',
             'notes' => 'nullable',
             'active' => 'required',
+            'sp_included' => 'required',
         ];
     }
 
