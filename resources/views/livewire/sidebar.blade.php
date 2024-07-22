@@ -86,6 +86,10 @@
             <x-sidebar-item icon="document-text" route="subscription.contracts" :title="__('messages.subscription_contracts')" />
             @endcan
 
+            @can('viewAny', App\Models\Quotation::class)
+            <x-sidebar-item icon="document-text" route="quotations" :title="__('messages.quotations')" />
+            @endcan
+
 
 
             {{-- Cashier --}}

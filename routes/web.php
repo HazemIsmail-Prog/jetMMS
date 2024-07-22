@@ -30,6 +30,7 @@ use App\Livewire\OperationsReports\ExpectedInvoicesDeletion;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\PartInvoices\PartInvoiceIndex;
 use App\Livewire\Permissions\PermissionIndex;
+use App\Livewire\Quotations\QuotationIndex;
 use App\Livewire\Ratings\RatingIndex;
 use App\Livewire\Roles\RoleIndex;
 use App\Livewire\Services\ServiceIndex;
@@ -57,6 +58,7 @@ use App\Models\Marketing;
 use App\Models\Order;
 use App\Models\PartInvoice;
 use App\Models\Permission;
+use App\Models\Quotation;
 use App\Models\Rating;
 use App\Models\Role;
 use App\Models\Service;
@@ -136,6 +138,10 @@ Route::middleware([
         Route::get('subscription-contracts',ContractIndex::class)
             ->name('subscription.contracts')
             ->can('viewSubscriptionContracts',Contract::class);
+
+        Route::get('quotations',QuotationIndex::class)
+            ->name('quotations')
+            ->can('viewAny',Quotation::class);
 
 
 

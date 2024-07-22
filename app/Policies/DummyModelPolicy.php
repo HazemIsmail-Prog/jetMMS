@@ -66,6 +66,7 @@ class DummyModelPolicy
         return
         $user->hasPermission('construction_contracts_menu')
         || $user->hasPermission('subscription_contracts_menu')
+        || $user->hasPermission('quotations_menu')
         ;
     }
 

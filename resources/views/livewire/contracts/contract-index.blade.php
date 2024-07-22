@@ -113,7 +113,7 @@
         </x-thead>
         <tbody>
             @foreach ($this->contracts as $contract)
-            <x-tr>
+            <x-tr class="{{ $contract->active ? 'text-green-500' : 'text-red-500' }}">
                 <x-td>{{ $contract->contract_number }}</x-td>
                 <x-td>
                     <div class=" flex-1">

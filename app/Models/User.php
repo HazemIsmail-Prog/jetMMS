@@ -63,6 +63,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function quotations() : HasMany {
+        return $this->hasMany(Quotation::class);
+    }
+
     public function contracts() : HasMany {
         return $this->hasMany(Contract::class);
     }

@@ -635,6 +635,11 @@ return [
     'sp_included' => 'يشمل قطع غيار',
 
 
+    'quotations' => 'عروض الاسعار',
+    'quotation_number' => 'رقم عرض السعر',
+    'add_quotation' => 'اضافة عرض سعر',
+    'edit_quotation' => 'تعديل عرض سعر',
+
 
 
 

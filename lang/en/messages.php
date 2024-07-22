@@ -613,6 +613,9 @@ return [
     'commercial' => 'Commercial',
     'sp_included' => 'Spare Parts Included',
 
+    'quotations' => 'Quotations',
+    'quotation_number' => 'Quotation Number',
+
 
 
 

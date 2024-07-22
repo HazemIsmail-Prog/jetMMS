@@ -48,7 +48,9 @@ class CustomerIndex extends Component
             ->with('phones')
             ->with('addresses')
             ->withCount('orders')
-            ->withCount('contracts')
+            ->withCount(['contracts'=>  function($q){
+                $q->where('active',true);
+            }])
             ->with('invoices.invoice_details')
             ->with('invoices.invoice_part_details')
             ->with('invoices.payments')
