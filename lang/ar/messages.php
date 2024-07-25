@@ -639,6 +639,7 @@ return [
     'quotation_number' => 'رقم عرض السعر',
     'add_quotation' => 'اضافة عرض سعر',
     'edit_quotation' => 'تعديل عرض سعر',
+    'sn' => 'م',
 
 
 

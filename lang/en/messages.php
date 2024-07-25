@@ -616,6 +616,9 @@ return [
     'quotations' => 'Quotations',
     'quotation_number' => 'Quotation Number',
 
+    'sn' => 'SN',
+
+
 
 
 

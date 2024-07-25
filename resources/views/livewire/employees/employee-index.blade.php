@@ -75,6 +75,7 @@
     <x-table>
         <x-thead>
             <tr>
+                <x-th>{{ __('messages.sn') }}</x-th>
                 <x-th>{{ __('messages.name') }}</x-th>
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
@@ -91,6 +92,7 @@
         <tbody>
             @foreach ($this->employees as $employee)
                 <x-tr>
+                    <x-td>{{ $loop->iteration }}</x-td>
                     <x-td>{{ $employee->user->name }}</x-td>
                     <x-td>{{ $employee->user->title->name }}</x-td>
                     <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
