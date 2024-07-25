@@ -210,7 +210,7 @@ class OrderIndex extends Component
     public function orders()
     {
         return $this->getData()
-            ->paginate(10);
+            ->paginate(20);
     }
 
     public function render()
