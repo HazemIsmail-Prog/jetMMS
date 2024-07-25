@@ -43,6 +43,7 @@
     <x-table>
         <x-thead>
             <tr>
+                <x-th>{{ __('messages.sn') }}</x-th>
                 <x-th>{{ __('messages.name') }}</x-th>
                 <x-th></x-th>
             </tr>
@@ -50,6 +51,9 @@
         <tbody>
             @foreach ($this->companies as $company)
                 <x-tr>
+                    <x-td>
+                        <div>{{ $loop->iteration }}</div>
+                    </x-td>
                     <x-td>
                         <div>{{ $company->name }}</div>
                     </x-td>

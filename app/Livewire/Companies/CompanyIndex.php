@@ -21,7 +21,7 @@ class CompanyIndex extends Component
     {
         return Company::query()
             ->withCount('attachments')
-            ->paginate(15);
+            ->paginate(100);
     }
 
     public function delete(Company $company)
