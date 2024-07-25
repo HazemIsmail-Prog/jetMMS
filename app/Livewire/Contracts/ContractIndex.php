@@ -124,7 +124,7 @@ class ContractIndex extends Component
     public function contracts()
     {
         return $this->getData()
-            ->paginate(10);
+            ->paginate(200);
     }
 
     public function delete(Contract $contract) {
