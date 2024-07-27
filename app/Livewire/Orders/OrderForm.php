@@ -74,7 +74,7 @@ class OrderForm extends Component
         if (in_array($key, ['form.department_id', 'form.estimated_start_date', 'form.address_id'])) {
             $this->dup_orders_count = Order::query()
                 ->where([
-                    'address_id' => $this->form->address_id,
+                    'customer_id' => $this->form->customer_id,
                     'department_id' => $this->form->department_id,
                 ])
                 ->whereNotIn('status_id', [Status::COMPLETED, Status::CANCELLED])
