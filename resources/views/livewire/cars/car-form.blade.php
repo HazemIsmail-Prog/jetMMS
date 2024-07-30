@@ -9,10 +9,6 @@
             @if ($showModal)
                 <form wire:submit.prevent="save" wire:loading.class="opacity-50">
                     <div 
-                        x-data="{
-                            has_installment : @entangle('form.has_installment'),
-                            installment_company : @entangle('form.installment_company')
-                        }"
                         class=" space-y-3">
                         <div>
                             <x-label for="code">{{ __('messages.car_code') }}</x-label>

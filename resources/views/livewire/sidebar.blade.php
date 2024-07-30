@@ -178,6 +178,9 @@
             @can('viewAny', App\Models\Car::class)
             <x-sidebar-item icon="truck" route="car.index" :title="__('messages.cars')" />
             @endcan
+            @can('viewAny', App\Models\PhoneDevice::class)
+            <x-sidebar-item icon="truck" route="phone_device.index" :title="__('messages.phone_devices')" />
+            @endcan
             @can('assets_reports')
             {{-- --}}
             {{-- --}}

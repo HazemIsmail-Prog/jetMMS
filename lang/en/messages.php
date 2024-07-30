@@ -623,7 +623,13 @@ return [
 
 
 
-
+    'add_phoneDevice' => 'Add Phone Device',
+    'edit_phoneDevice' => 'Edit Phone Device',
+    'model' => 'Model',
+    'sim_no' => 'SIM No.',
+    'phone_devices' => 'Phone Devices',
+    'phone_device_actions' => 'Phone Device Actions',
+    'add_phone_device_action' => 'Add Phone Device Action',
 
 
 

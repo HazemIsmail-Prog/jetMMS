@@ -644,4 +644,20 @@ return [
 
 
 
+
+
+
+
+
+    'add_phoneDevice' => 'اضافة جهاز تليفون',
+    'edit_phoneDevice' => 'تعديل جهاز تليفون',
+    'model' => 'الموديل',
+    'sim_no' => 'رقم الشريحة',
+    'phone_devices' => 'اجهزة التليفونات',
+    'phone_device_actions' => 'حركة جهاز',
+    'add_phone_device_action' => 'اضافة حركة',
+
+
+
+
 ];

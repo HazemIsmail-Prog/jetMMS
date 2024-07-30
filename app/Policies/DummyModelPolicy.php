@@ -189,6 +189,7 @@ class DummyModelPolicy
     {
         return
             $user->hasPermission('cars_menu')
+            || $user->hasPermission('phone_devices_menu')
             // || Add More if Needed
         ;
     }

@@ -30,6 +30,7 @@ use App\Livewire\OperationsReports\ExpectedInvoicesDeletion;
 use App\Livewire\Orders\OrderIndex;
 use App\Livewire\PartInvoices\PartInvoiceIndex;
 use App\Livewire\Permissions\PermissionIndex;
+use App\Livewire\PhoneDevices\DeviceIndex;
 use App\Livewire\Quotations\QuotationIndex;
 use App\Livewire\Ratings\RatingIndex;
 use App\Livewire\Roles\RoleIndex;
@@ -58,6 +59,7 @@ use App\Models\Marketing;
 use App\Models\Order;
 use App\Models\PartInvoice;
 use App\Models\Permission;
+use App\Models\PhoneDevice;
 use App\Models\Quotation;
 use App\Models\Rating;
 use App\Models\Role;
@@ -237,6 +239,10 @@ Route::middleware([
         Route::get('cars', CarIndex::class)
             ->name('car.index')
             ->can('viewAny', Car::class);
+
+        Route::get('phone_devices', DeviceIndex::class)
+        ->name('phone_device.index')
+        ->can('viewAny', PhoneDevice::class);
 
         // ========== Admin Settings ==========
         Route::get('suppliers', SupplierIndex::class)
