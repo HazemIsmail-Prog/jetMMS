@@ -660,4 +660,19 @@ return [
 
 
 
+
+    'administration' => 'الشؤون الادارية',
+    'company_contracts' => 'العقود والاتفاقيات',
+    'company_budgets' => 'ميزانيات الشركات',
+    'add_company_budget' => 'اضافة ميزانية',
+    'edit_company_budget' => 'تعديل ميزانية',
+    'client_name' => 'اسم العميل',
+    'add_company_contract' => 'اضافة عقد / اتفاقية',
+    'initiation_date' => 'تاريخ البداية',
+    'expiration_date' => 'تاريخ النهاية',
+    'edit_company_contract' => 'تعديل عقد / اتفاقية',
+
+
+
+
 ];

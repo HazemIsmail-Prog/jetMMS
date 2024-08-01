@@ -193,6 +193,23 @@
             {{-- --}}
             {{-- --}}
             @endcan
+
+
+
+            {{-- Administration --}}
+            @can('administration_title', App\Models\DummyModel::class)
+            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.administration') }}</h3>
+            @endcan
+            @can('viewAny', App\Models\CompanyContract::class)
+            <x-sidebar-item icon="truck" route="company_contract.index" :title="__('messages.company_contracts')" />
+            @endcan
+            @can('viewAny', App\Models\CompanyBudget::class)
+            <x-sidebar-item icon="truck" route="company_budget.index" :title="__('messages.company_budgets')" />
+            @endcan
+
+
+
+
             {{-- Admin --}}
             @can('admin_title', App\Models\DummyModel::class)
             <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>

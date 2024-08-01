@@ -633,6 +633,20 @@ return [
 
 
 
+    'administration' => 'Administration',
+    'company_contracts' => 'Company Contracts',
+    'company_budgets' => 'Company Budgets',
+    'add_company_budget' => 'Add Company Budget',
+    'edit_company_budget' => 'Edit Company Budget',
+    'client_name' => 'Client Name',
+    'add_company_contract' => 'Add Company Contract',
+    'initiation_date' => 'Initiation Date',
+    'expiration_date' => 'Expiration Date',
+    'edit_company_contract' => 'Edit Company Contract',
+
+
+
+
 
 
 

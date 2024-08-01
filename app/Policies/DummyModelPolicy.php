@@ -194,6 +194,15 @@ class DummyModelPolicy
         ;
     }
 
+    public function administration_title(User $user): bool
+    {
+        return
+            $user->hasPermission('company_contracts_menu')
+            || $user->hasPermission('company_budgets_menu')
+            // || Add More if Needed
+        ;
+    }
+
     public function hr_title(User $user): bool
     {
         return

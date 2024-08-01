@@ -16,7 +16,9 @@ use App\Livewire\Areas\AreaIndex;
 use App\Livewire\Cars\CarIndex;
 use App\Livewire\Cashier\CashCollection;
 use App\Livewire\Cashier\KnetCollection;
+use App\Livewire\Companies\Budgets\BudgetIndex;
 use App\Livewire\Companies\CompanyIndex;
+use App\Livewire\Companies\Contracts\ContractIndex as ContractsContractIndex;
 use App\Livewire\Contracts\ContractIndex;
 use App\Livewire\CostCenters\CostCenterIndex;
 use App\Livewire\CustomerPage;
@@ -48,6 +50,8 @@ use App\Models\Account;
 use App\Models\Area;
 use App\Models\Car;
 use App\Models\Company;
+use App\Models\CompanyBudget;
+use App\Models\CompanyContract;
 use App\Models\Contract;
 use App\Models\CostCenter;
 use App\Models\Customer;
@@ -243,6 +247,15 @@ Route::middleware([
         Route::get('phone_devices', DeviceIndex::class)
         ->name('phone_device.index')
         ->can('viewAny', PhoneDevice::class);
+
+        // ========== Administration ==========
+        Route::get('company_contracts', ContractsContractIndex::class)
+            ->name('company_contract.index')
+            ->can('viewAny', CompanyContract::class);
+
+        Route::get('company_budgets', BudgetIndex::class)
+            ->name('company_budget.index')
+            ->can('viewAny', CompanyBudget::class);
 
         // ========== Admin Settings ==========
         Route::get('suppliers', SupplierIndex::class)
