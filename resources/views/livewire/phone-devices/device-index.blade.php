@@ -52,6 +52,7 @@
     <x-table>
         <x-thead>
             <tr>
+                <x-th>{{ __('messages.sn') }}</x-th>
                 <x-th>{{ __('messages.serial_no') }}</x-th>
                 <x-th>{{ __('messages.brand') }}</x-th>
                 <x-th>{{ __('messages.model') }}</x-th>
@@ -65,6 +66,7 @@
         <tbody>
             @foreach ($this->phoneDevices as $phoneDevice)
                 <x-tr>
+                    <x-th>{{ $loop->iteration }}</x-th>
                     <x-th>{{ $phoneDevice->serial_no }}</x-th>
                     <x-th>{{ $phoneDevice->brand }}</x-th>
                     <x-th>{{ $phoneDevice->model }}</x-th>
