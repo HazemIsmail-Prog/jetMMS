@@ -27,11 +27,13 @@ class MarketingForm extends Form
         ];
     }
 
-    public function updateOrCreate() {
+    public function updateOrCreate()
+    {
         $this->validate();
         if (!$this->id) {
             $this->user_id = auth()->id();
         }
         Marketing::updateOrCreate(['id' => $this->id], $this->all());
+        $this->reset();
     }
 }

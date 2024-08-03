@@ -29,7 +29,6 @@ class MarketingForm extends Component
     {
         $this->form->updateOrCreate();
         $this->dispatch('marketingsUpdated');
-        $this->form->reset();
         $this->showModal = false;
     }
     
