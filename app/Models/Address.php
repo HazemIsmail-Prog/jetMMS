@@ -18,6 +18,11 @@ class Address extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
+
     public function area()
     {
         return $this->belongsTo(Area::class);

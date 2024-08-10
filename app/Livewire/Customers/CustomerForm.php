@@ -139,7 +139,7 @@ class CustomerForm extends Component
             try {
                 $this->customer->update($data);
                 $this->customer->phones()->doesntHave('orders')->delete();
-                $this->customer->addresses()->doesntHave('orders')->delete();
+                $this->customer->addresses()->whereDoesntHave('orders')->whereDoesntHave('contracts')->delete();
                 foreach ($this->form->phones as $phone) {
                     $this->customer
                         ->phones()
