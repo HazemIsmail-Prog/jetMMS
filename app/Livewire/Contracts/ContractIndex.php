@@ -82,7 +82,7 @@ class ContractIndex extends Component
             ->with('customer:id,name')
             ->with('address')
             ->withCount('attachments')
-            ->orderBy('id', 'desc')
+            ->orderBy('contract_number', 'desc')
 
             ->when($this->filters['customer_id'], function (Builder $q) {
                 $q->whereRelation('customer', 'id', $this->filters['customer_id']);
