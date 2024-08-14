@@ -88,6 +88,7 @@ class OrderForm extends Component
     public function save()
     {
         $this->form->updateOrCreate();
+        $this->form->reset();
         $this->showModal = false;
         $this->dispatch('ordersUpdated');
         RefreshDepartmentScreenEvent::dispatch($this->form->department_id);
