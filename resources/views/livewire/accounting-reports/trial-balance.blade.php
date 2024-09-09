@@ -56,11 +56,11 @@
                     $opening_debit = $account->opening_debit - $account->opening_credit > 0 ? $account->opening_debit - $account->opening_credit : 0;
                     $opening_credit = $account->opening_credit - $account->opening_debit > 0 ? $account->opening_credit - $account->opening_debit : 0;
 
-                    $transactions_debit = $account->transactions_debit - $account->transactions_credit > 0 ? $account->transactions_debit - $account->transactions_credit : 0;
-                    $transactions_credit = $account->transactions_credit - $account->transactions_debit > 0 ? $account->transactions_credit - $account->transactions_debit : 0;
+                    $transactions_debit = $account->transactions_debit > 0 ? $account->transactions_debit : 0;
+                    $transactions_credit = $account->transactions_credit > 0 ? $account->transactions_credit : 0;
 
-                    $closing_debit = $opening_debit + $transactions_debit;
-                    $closing_credit = $opening_credit + $transactions_credit;
+                    $closing_debit = $opening_debit - $opening_credit + $transactions_debit - $transactions_credit;
+                    $closing_credit = $opening_credit - $opening_debit + $transactions_credit - $transactions_debit;
 
                     $total_opening_debit += $opening_debit;
                     $total_opening_credit += $opening_credit;
