@@ -117,10 +117,10 @@ class OrderIndex extends Component
             ->get();
     }
 
-    // #[Computed(cache:true)]
-    // public function tags() {
-    //     return Order::whereNotNull('tag')->groupBy('tag')->pluck('tag');
-    // }
+    #[Computed()]
+    public function tags() {
+        return Order::whereNotNull('tag')->groupBy('tag')->pluck('tag');
+    }
 
     public function excel()
     {
