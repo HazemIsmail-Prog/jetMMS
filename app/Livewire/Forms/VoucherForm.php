@@ -90,6 +90,7 @@ class VoucherForm extends Form
             }
 
             DB::commit();
+            $this->reset();
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
