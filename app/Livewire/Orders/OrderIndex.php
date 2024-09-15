@@ -47,6 +47,8 @@ class OrderIndex extends Component
         'end_created_at' => '',
         'start_completed_at' => '',
         'end_completed_at' => '',
+        'start_cancelled_at' => '',
+        'end_cancelled_at' => '',
         'customer_id' => '',
     ];
 
@@ -201,6 +203,12 @@ class OrderIndex extends Component
             })
             ->when($this->filters['end_completed_at'], function (Builder $q) {
                 $q->whereDate('completed_at', '<=', $this->filters['end_completed_at']);
+            })
+            ->when($this->filters['start_cancelled_at'], function (Builder $q) {
+                $q->whereDate('cancelled_at', '>=', $this->filters['start_cancelled_at']);
+            })
+            ->when($this->filters['end_cancelled_at'], function (Builder $q) {
+                $q->whereDate('cancelled_at', '<=', $this->filters['end_cancelled_at']);
             });
     }
 

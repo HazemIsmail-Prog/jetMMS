@@ -85,7 +85,7 @@
                     <x-input dir="ltr" class="w-36 min-w-full text-center py-0" id="street" wire:model.live="filters.street" />
                 </div>
             </div>
-            <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
+            <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
                 <div>
                     <x-label for="order_number">{{ __('messages.order_number') }}</x-label>
                     <x-input id="order_number" wire:model.live="filters.order_number" type="number" dir="ltr"
@@ -121,6 +121,9 @@
                     @endforeach
                     </x-select>
                 </div>
+        
+            </div>
+            <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-3">
                 <div>
                     <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
                     <x-input id="start_created_at" class="w-36 min-w-full text-center py-0" type="date"
@@ -135,11 +138,18 @@
                     <x-input id="end_completed_at" class="w-36 min-w-full text-center py-0" type="date"
                         wire:model.live="filters.end_completed_at" />
                 </div>
+                <div>
+                    <x-label for="start_cancelled_at">{{ __('messages.cancelled_at') }}</x-label>
+                    <x-input id="start_cancelled_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.start_cancelled_at" />
+                    <x-input id="end_cancelled_at" class="w-36 min-w-full text-center py-0" type="date"
+                        wire:model.live="filters.end_cancelled_at" />
+                </div>
         
             </div>
         </div>
 
-        <div class=" border dark:border-gray-700 rounded-lg p-2  w-1/3 hidden-scrollbar h-40 overflow-y-auto">
+        <div class=" border dark:border-gray-700 rounded-lg p-2  w-1/3 hidden-scrollbar h-56 overflow-y-auto">
             <div class="flex flex-col gap-2 items-end">
                 @foreach ($this->creatorCounters->sortByDesc('orders_creator_count') as $user)
                 <div title="{{ $user->name }}" class="w-full justify-start flex-row-reverse rounded-full overflow-clip bg-gray-200 dark:bg-gray-700 flex items-center">
@@ -213,7 +223,7 @@
                             <div>{{ $order->phone->number }}</div>
                             <div>{{ $order->address->full_address }}</div>
                             @if ($order->customer->notes)
-                            <div class=" text-red-400 font-normal">{{ $order->customer->notes }}</div>
+                            <div class=" text-red-400 font-normal !whitespace-normal">{{ $order->customer->notes }}</div>
                             @endif
                         </div>
 
