@@ -64,25 +64,18 @@
     
                         @foreach ($this->titles as $title)
     
-                            @foreach ($department->technicians->where('title_id',$title->id) as $technician)
+                            @foreach ($this->technicians->where('department_id',$department->id)->where('title_id',$title->id) as $technician)
     
                                 <x-tr>
                                     @php
-                                        $invoices = $this->invoices->where('order.technician_id',$technician->id);
-                                        $servicesAmount = $invoices->sum('servicesAmountSum');
-                                        $discountAmount = $invoices->sum('discount');
-                                        $servicesAfterDiscount = $invoices->sum('servicesAmountSum') - $invoices->sum('discount');
-                                        $internalPartsAmount = $invoices->sum('invoiceDetailsPartsAmountSum') + $invoices->sum('internalPartsAmountSum');
-                                        $externalPartsAmount = $invoices->sum('externalPartsAmountSum');
-                                        $deliveryAmount = $invoices->sum('delivery');
-                                        $amount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                                        $amount = round($technician->grandTotal,3);
     
-                                        $parts_difference = round($this->technicians->where('id',$technician->id)->first()->PartDifferenceDebit - $this->technicians->where('id',$technician->id)->first()->PartDifferenceCredit,3);
-                                        $income = abs($this->technicians->where('id',$technician->id)->first()->incomeAccountDebit - $this->technicians->where('id',$technician->id)->first()->incomeAccountCredit);
-                                        $cost = abs($this->technicians->where('id',$technician->id)->first()->costAccountDebit - $this->technicians->where('id',$technician->id)->first()->costAccountCredit);
-                                        $services = abs($this->technicians->where('id',$technician->id)->first()->servicesCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->servicesCostCenterCredit);
-                                        $parts = abs($this->technicians->where('id',$technician->id)->first()->partsCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->partsCostCenterCredit);
-                                        $delivery = abs($this->technicians->where('id',$technician->id)->first()->deliveryCostCenterDebit - $this->technicians->where('id',$technician->id)->first()->deliveryCostCenterCredit);
+                                        $parts_difference = round($technician->PartDifferenceDebit - $technician->PartDifferenceCredit,3);
+                                        $income = abs($technician->incomeAccountDebit - $technician->incomeAccountCredit);
+                                        $cost = abs($technician->costAccountDebit - $technician->costAccountCredit);
+                                        $services = abs($technician->servicesCostCenterDebit - $technician->servicesCostCenterCredit);
+                                        $parts = abs($technician->partsCostCenterDebit - $technician->partsCostCenterCredit);
+                                        $delivery = abs($technician->deliveryCostCenterDebit - $technician->deliveryCostCenterCredit);
                                     @endphp
     
                                     <x-borderd-td>{{ $technician->name }}</x-borderd-td>
@@ -103,21 +96,15 @@
                                 <tr class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-600 dark:text-gray-400">
     
                                     @php
-                                        $invoices = $this->invoices->whereIn('order.technician_id',$department->technicians->where('title_id',$title->id)->pluck('id'));
-                                        $servicesAmount = $invoices->sum('servicesAmountSum');
-                                        $discountAmount = $invoices->sum('discount');
-                                        $servicesAfterDiscount = $invoices->sum('servicesAmountSum') - $invoices->sum('discount');
-                                        $internalPartsAmount = $invoices->sum('invoiceDetailsPartsAmountSum') + $invoices->sum('internalPartsAmountSum');
-                                        $externalPartsAmount = $invoices->sum('externalPartsAmountSum');
-                                        $deliveryAmount = $invoices->sum('delivery');
-                                        $amount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                                        $technicians = $this->technicians->where('department_id',$department->id)->where('title_id',$title->id);
+                                        $amount = round($technicians->sum('grandTotal'),3);
     
-                                        $parts_difference = round($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('PartDifferenceDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('PartDifferenceCredit'),3);
-                                        $income = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('incomeAccountDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('incomeAccountCredit'));
-                                        $cost = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('costAccountDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('costAccountCredit'));
-                                        $services = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('servicesCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('servicesCostCenterCredit'));
-                                        $parts = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('partsCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('partsCostCenterCredit'));
-                                        $delivery = abs($this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('deliveryCostCenterDebit') - $this->technicians->where('department_id',$department->id)->where('title_id',$title->id)->sum('deliveryCostCenterCredit'));
+                                        $parts_difference = round($technicians->sum('PartDifferenceDebit') - $technicians->sum('PartDifferenceCredit'),3);
+                                        $income = abs($technicians->sum('incomeAccountDebit') - $technicians->sum('incomeAccountCredit'));
+                                        $cost = abs($technicians->sum('costAccountDebit') - $technicians->sum('costAccountCredit'));
+                                        $services = abs($technicians->sum('servicesCostCenterDebit') - $technicians->sum('servicesCostCenterCredit'));
+                                        $parts = abs($technicians->sum('partsCostCenterDebit') - $technicians->sum('partsCostCenterCredit'));
+                                        $delivery = abs($technicians->sum('deliveryCostCenterDebit') - $technicians->sum('deliveryCostCenterCredit'));
                                     @endphp
     
                                     <x-borderd-th>{{ $title->name }}</x-borderd-th>
@@ -138,21 +125,15 @@
                         <tr class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
     
                             @php
-                                $invoices = $this->invoices->where('order.department_id',$department->id);
-                                $servicesAmount = $invoices->sum('servicesAmountSum');
-                                $discountAmount = $invoices->sum('discount');
-                                $servicesAfterDiscount = $invoices->sum('servicesAmountSum') - $invoices->sum('discount');
-                                $internalPartsAmount = $invoices->sum('invoiceDetailsPartsAmountSum') + $invoices->sum('internalPartsAmountSum');
-                                $externalPartsAmount = $invoices->sum('externalPartsAmountSum');
-                                $deliveryAmount = $invoices->sum('delivery');
-                                $amount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                                $technicians = $this->technicians->where('department_id',$department->id);
+                                $amount = round($technicians->sum('grandTotal'),3);
     
-                                $parts_difference = round($this->technicians->where('department_id',$department->id)->sum('PartDifferenceDebit') - $this->technicians->where('department_id',$department->id)->sum('PartDifferenceCredit'),3);
-                                $income = abs($this->technicians->where('department_id',$department->id)->sum('incomeAccountDebit') - $this->technicians->where('department_id',$department->id)->sum('incomeAccountCredit'));
-                                $cost = abs($this->technicians->where('department_id',$department->id)->sum('costAccountDebit') - $this->technicians->where('department_id',$department->id)->sum('costAccountCredit'));
-                                $services = abs($this->technicians->where('department_id',$department->id)->sum('servicesCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('servicesCostCenterCredit'));
-                                $parts = abs($this->technicians->where('department_id',$department->id)->sum('partsCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('partsCostCenterCredit'));
-                                $delivery = abs($this->technicians->where('department_id',$department->id)->sum('deliveryCostCenterDebit') - $this->technicians->where('department_id',$department->id)->sum('deliveryCostCenterCredit'));
+                                $parts_difference = round($technicians->sum('PartDifferenceDebit') - $technicians->sum('PartDifferenceCredit'),3);
+                                $income = abs($technicians->sum('incomeAccountDebit') - $technicians->sum('incomeAccountCredit'));
+                                $cost = abs($technicians->sum('costAccountDebit') - $technicians->sum('costAccountCredit'));
+                                $services = abs($technicians->sum('servicesCostCenterDebit') - $technicians->sum('servicesCostCenterCredit'));
+                                $parts = abs($technicians->sum('partsCostCenterDebit') - $technicians->sum('partsCostCenterCredit'));
+                                $delivery = abs($technicians->sum('deliveryCostCenterDebit') - $technicians->sum('deliveryCostCenterCredit'));
     
                             @endphp
     
@@ -196,15 +177,7 @@
                 </tr>
                 <tr>
                     @php
-    
-                        $invoices = $this->invoices;
-                        $servicesAmount = $invoices->sum('servicesAmountSum');
-                        $discountAmount = $invoices->sum('discount');
-                        $servicesAfterDiscount = $invoices->sum('servicesAmountSum') - $invoices->sum('discount');
-                        $internalPartsAmount = $invoices->sum('invoiceDetailsPartsAmountSum') + $invoices->sum('internalPartsAmountSum');
-                        $externalPartsAmount = $invoices->sum('externalPartsAmountSum');
-                        $deliveryAmount = $invoices->sum('delivery');
-                        $amount = round($servicesAfterDiscount + $internalPartsAmount + $externalPartsAmount + $deliveryAmount,3);
+                        $amount = round($this->technicians->sum('grandTotal'),3);
     
                         $parts_difference = round($this->technicians->sum('PartDifferenceDebit') - $this->technicians->sum('PartDifferenceCredit'),3);
                         $income = abs($this->technicians->sum('incomeAccountDebit') - $this->technicians->sum('incomeAccountCredit'));

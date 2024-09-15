@@ -3,7 +3,6 @@
 namespace App\Livewire\AccountingReports;
 
 use App\Models\Department;
-use App\Models\Invoice;
 use App\Models\Setting;
 use App\Models\Title;
 use App\Models\User;
@@ -28,11 +27,62 @@ class DailyReview extends Component
     #[On('dateUpdated')]
     public function technicians()
     {
+
         $settings = Setting::find(1);
+
+        // Subquery to calculate the total amount from invoice_details based on part type
+        $invoiceDetailsTotals = DB::table('invoice_details')
+            ->join('services', 'services.id', '=', 'invoice_details.service_id') // Join with services table
+            ->select(
+                'invoice_details.invoice_id',
+                DB::raw('SUM(CASE WHEN services.type = "service" THEN invoice_details.quantity * invoice_details.price ELSE 0 END) as totalServiceAmount'),
+                DB::raw('SUM(CASE WHEN services.type = "part" THEN invoice_details.quantity * invoice_details.price ELSE 0 END) as totalPartAmount')
+            )
+            ->groupBy('invoice_details.invoice_id');
+
+        $invoicePartDetailsTotals = DB::table('invoice_part_details')
+            ->select(
+                'invoice_part_details.invoice_id',
+                DB::raw('SUM(CASE WHEN invoice_part_details.type = "internal" THEN invoice_part_details.quantity * invoice_part_details.price ELSE 0 END) as totalInternalPartsAmount'),
+                DB::raw('SUM(CASE WHEN invoice_part_details.type = "external" THEN invoice_part_details.quantity * invoice_part_details.price ELSE 0 END) as totalExternalPartsAmount')
+            )
+            ->groupBy('invoice_part_details.invoice_id');
+
         return User::query()
 
-            ->select("id", "department_id", "title_id")
-            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->join('orders', 'orders.technician_id', '=', 'users.id')
+            ->join('invoices', function ($join) {
+                $join->on('invoices.order_id', '=', 'orders.id')
+                    ->whereNull('invoices.deleted_at')
+                    ->whereDate('invoices.created_at', '>=', $this->start_date)
+                    ->whereDate('invoices.created_at', '<=', $this->end_date);
+            })
+            ->leftJoinSub($invoiceDetailsTotals, 'invoice_details_totals', function ($join) {
+                $join->on('invoice_details_totals.invoice_id', '=', 'invoices.id');
+            })
+            ->leftJoinSub($invoicePartDetailsTotals, 'invoice_parts_totals', function ($join) {
+                $join->on('invoice_parts_totals.invoice_id', '=', 'invoices.id');
+            })
+            ->select(
+                'users.id',
+                'users.name_'.app()->getLocale(),
+                'users.department_id',
+                'users.title_id',
+                DB::raw('COUNT(invoices.id) as invoicesCount'),
+                DB::raw('SUM(invoice_details_totals.totalServiceAmount) as totalServiceAmount'),
+                DB::raw('SUM(invoice_details_totals.totalPartAmount) as totalPartAmount'),
+
+
+                DB::raw('SUM(invoice_parts_totals.totalInternalPartsAmount) as totalInternalPartsAmount'),
+                DB::raw('SUM(invoice_parts_totals.totalExternalPartsAmount) as totalExternalPartsAmount'),
+
+
+                DB::raw('SUM(invoices.discount) as discountSum'),
+                DB::raw('SUM(invoices.delivery) as deliverySum'),
+                DB::raw('SUM(invoice_details_totals.totalServiceAmount) + SUM(invoice_details_totals.totalPartAmount) + SUM(invoice_parts_totals.totalInternalPartsAmount) + SUM(invoice_parts_totals.totalExternalPartsAmount) + SUM(invoices.delivery) - SUM(invoices.discount) as grandTotal')
+            )
+            // ->where('users.id', 27)
+
             ->whereHas('voucherDetails', function (Builder $q) {
                 $q->whereHas('voucher', function (Builder $q) {
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
@@ -46,6 +96,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as PartDifferenceCredit' => function (Builder $q) use ($settings) {
                 $q->where('account_id', $settings->internal_parts_account_id);
                 $q->whereHas('voucher', function (Builder $q) {
@@ -65,6 +116,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as servicesCostCenterCredit' => function (Builder $q) {
                 $q->where('account_id', function ($query) {
                     $query->select('income_account_id')
@@ -89,6 +141,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as partsCostCenterCredit' => function (Builder $q) {
                 $q->where('account_id', function ($query) {
                     $query->select('income_account_id')
@@ -113,6 +166,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as deliveryCostCenterCredit' => function (Builder $q) {
                 $q->where('account_id', function ($query) {
                     $query->select('income_account_id')
@@ -136,6 +190,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as incomeAccountCredit' => function (Builder $q) {
                 $q->where('account_id', function ($query) {
                     $query->select('income_account_id')
@@ -146,7 +201,6 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
-
 
             // Cost Account
             ->withSum(['voucherDetails as costAccountDebit' => function (Builder $q) {
@@ -159,6 +213,7 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'debit')
+
             ->withSum(['voucherDetails as costAccountCredit' => function (Builder $q) {
                 $q->where('account_id', function ($query) {
                     $query->select('cost_account_id')
@@ -169,10 +224,10 @@ class DailyReview extends Component
                     $q->whereBetween('date', [$this->start_date, $this->end_date]);
                 });
             }], 'credit')
-
+            ->groupBy('users.id','users.department_id','users.title_id','users.name_'.app()->getLocale())
             ->get();
     }
-
+    
     #[Computed()]
     #[On('dateUpdated')]
     public function departments()
@@ -192,32 +247,6 @@ class DailyReview extends Component
 
     #[Computed()]
     #[On('dateUpdated')]
-    public function invoices()
-    {
-        return Invoice::query()
-            ->whereDate('created_at','>=' ,$this->start_date)
-            ->whereDate('created_at','<=' ,$this->end_date)
-            ->with('order:id,department_id,technician_id')
-            ->withSum('invoice_details as servicesAmountSum', DB::raw('quantity * price'))
-
-            ->withSum(['invoice_details as invoiceDetailsPartsAmountSum' => function ($q) {
-                $q->whereHas('service', function ($q) {
-                    $q->where('type', 'part');
-                });
-            }], DB::raw('quantity * price'))
-
-            ->withSum(['invoice_part_details as internalPartsAmountSum' => function ($q) {
-                $q->where('type', 'internal');
-            }], DB::raw('quantity * price'))
-
-            ->withSum(['invoice_part_details as externalPartsAmountSum' => function ($q) {
-                $q->where('type', 'external');
-            }], DB::raw('quantity * price'))
-
-            ->get();
-    }
-
-    #[Computed()]
     public function titles()
     {
         return Title::query()
