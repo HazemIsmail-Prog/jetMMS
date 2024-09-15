@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DailyReview extends Component
@@ -24,6 +25,7 @@ class DailyReview extends Component
     }
 
     #[Computed()]
+    #[On('dateUpdated')]
     public function technicians()
     {
         $settings = Setting::find(1);
@@ -172,6 +174,7 @@ class DailyReview extends Component
     }
 
     #[Computed()]
+    #[On('dateUpdated')]
     public function departments()
     {
         return Department::query()
@@ -188,6 +191,7 @@ class DailyReview extends Component
     }
 
     #[Computed()]
+    #[On('dateUpdated')]
     public function invoices()
     {
         return Invoice::query()

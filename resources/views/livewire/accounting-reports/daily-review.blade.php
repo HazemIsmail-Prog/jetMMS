@@ -9,13 +9,16 @@
         </div>
     </x-slot>
 
-    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 no-print">
+    <div class=" flex items-end gap-3 no-print">
 
         <div class=" col-span-1 md:col-span-2 xl:col-span-4">
             <x-label for="start_date">{{ __('messages.date') }}</x-label>
-            <x-input type="date" class="w-full" id="start_date" wire:model.live="start_date" />
-            <x-input type="date" class="w-full" id="end_date" wire:model.live="end_date" />
+            <x-input type="date" class="w-full" id="start_date" wire:model="start_date" />
+            <x-input type="date" class="w-full" id="end_date" wire:model="end_date" />
         </div>
+
+        <x-button type="button"
+        wire:click="$dispatch('dateUpdated')">{{ __('messages.refresh') }}</x-button> 
     </div>
 
     <div class="hidden text-center p-20"  wire:loading.class.remove="hidden" role="status">
