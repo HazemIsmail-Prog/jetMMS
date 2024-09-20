@@ -676,6 +676,21 @@ return [
 
 
     'refresh' => 'تحديث',
+    'document_types' => 'انواع السندات',
+    'documents' => 'السندات',
+    'add_document_type' => 'اضافة نوع سند',
+    'edit_document_type' => 'تعديل نوع سند',
+    'add_document' => 'اضافة سند',
+    'document_number' => 'رقم السند',
+    'document_serial_from' => 'مسلسل من',
+    'document_serial_to' => 'مسلسل الى',
+    'document_pages' => 'عدد الصفحات',
+    'receiver_id' => 'المستلم',
+    'receiving_date' => 'تاريخ الاستلام',
+    'back_date' => 'تاريخ الارجاع',
+    'expired' => 'منتهي',
+    'document_type_id' => 'نوع السند',
+    'edit_document' => 'تعديل سند',
 
 
 

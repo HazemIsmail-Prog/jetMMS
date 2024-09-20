@@ -25,6 +25,8 @@ use App\Livewire\CustomerPage;
 use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Departments\DepartmentIndex;
 use App\Livewire\Dispatching\DispatchingIndex;
+use App\Livewire\Documents\DocumentIndex;
+use App\Livewire\Documents\DocumentTypeIndex;
 use App\Livewire\Employees\EmployeeIndex;
 use App\Livewire\Invoices\InvoiceIndex;
 use App\Livewire\Marketing\MarketingIndex;
@@ -56,6 +58,8 @@ use App\Models\Contract;
 use App\Models\CostCenter;
 use App\Models\Customer;
 use App\Models\Department;
+use App\Models\Document;
+use App\Models\DocumentType;
 use App\Models\DummyModel;
 use App\Models\Employee;
 use App\Models\Invoice;
@@ -247,6 +251,14 @@ Route::middleware([
         Route::get('phone_devices', DeviceIndex::class)
         ->name('phone_device.index')
         ->can('viewAny', PhoneDevice::class);
+
+        Route::get('document_types', DocumentTypeIndex::class)
+        ->name('document_type.index')
+        ->can('viewAny', DocumentType::class);
+
+        Route::get('documents', DocumentIndex::class)
+        ->name('document.index')
+        ->can('viewAny', Document::class);
 
         // ========== Administration ==========
         Route::get('company_contracts', ContractsContractIndex::class)
