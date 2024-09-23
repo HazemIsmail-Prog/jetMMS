@@ -60,6 +60,7 @@
                 <x-th>{{ __('messages.date') }}</x-th>
                 <x-th>{{ __('messages.notes') }}</x-th>
                 <x-th>{{ __('messages.amount') }}</x-th>
+                <x-th>{{ __('messages.creator') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -71,6 +72,7 @@
                     <x-td>{!! $voucher->formated_date !!}</x-td>
                     <x-td class=" !whitespace-normal">{{ $voucher->notes }}</x-td>
                     <x-td>{{ number_format($voucher->voucher_details_sum_debit,3) }}</x-td>
+                    <x-td>{{ $voucher->user->name }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
                             @can('update', $voucher)

@@ -44,18 +44,19 @@ class VoucherIndex extends Component
     public function vouchers()
     {
         return Voucher::query()
+            ->with('user:id,name_' . app()->getLocale())
             ->latest()
-            ->when(auth()->id() != 1 , function(Builder $q){
-                $q->where('type','jv');
+            ->when(auth()->id() != 1, function (Builder $q) {
+                $q->where('type', 'jv');
             })
-            ->withSum('voucherDetails','debit')
+            ->withSum('voucherDetails', 'debit')
             ->withCount('attachments')
-            ->when($this->filters['search'],function(Builder $q){
-                $q->where(function(Builder $q){
-                    $q->where('id',$this->filters['search']);
-                    $q->orWhere('manual_id',$this->filters['search']);
-                    $q->orWhere('notes','like','%'.$this->filters['search'].'%');
-                    $q->orWhereRelation('voucherDetails','narration','like','%'. $this->filters['search'] .'%');
+            ->when($this->filters['search'], function (Builder $q) {
+                $q->where(function (Builder $q) {
+                    $q->where('id', $this->filters['search']);
+                    $q->orWhere('manual_id', $this->filters['search']);
+                    $q->orWhere('notes', 'like', '%' . $this->filters['search'] . '%');
+                    $q->orWhereRelation('voucherDetails', 'narration', 'like', '%' . $this->filters['search'] . '%');
                 });
             })
             ->when($this->filters['start_date'], function (Builder $q) {
