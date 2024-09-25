@@ -23,6 +23,8 @@ class DocumentIndex extends Component
             ->withCount('attachments')
             ->with('documentType')
             ->with('receiver')
+            ->orderBy('document_type_id')
+            ->orderBy('document_number','desc')
             ->paginate(100);
     }
 
