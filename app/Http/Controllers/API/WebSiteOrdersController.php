@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class WebSiteOrdersController extends Controller
 {
     public function store() {
-        return 'OK From Hazem'
+        return 'OK From Hazem';
     }
 }
