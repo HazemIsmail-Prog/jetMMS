@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/areas',[AreaController::class,'index']);
-Route::get('/online', [WebSiteOrdersController::class,'store']);
+Route::post('/online', [WebSiteOrdersController::class,'store']);
