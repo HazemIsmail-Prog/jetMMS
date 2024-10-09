@@ -11,6 +11,7 @@ class WebSiteOrdersController extends Controller
     public function store()
     {
         
-        return 'OKKKKKKK';
-    }
+        $areas = Area::query()->select('id','name_en','name_ar')->get();
+        return $areas;
+        }
 }
