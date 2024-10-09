@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AreaController;
-use App\Http\Controllers\Api\WebSiteOrdersController;
+use App\Http\Controllers\API\WebSiteOrdersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/areas',[AreaController::class,'index']);
-Route::get('/onlineOrder', [WebSiteOrdersController::class,'store']);
+Route::get('/online', [WebSiteOrdersController::class,'store']);
