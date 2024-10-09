@@ -10,8 +10,8 @@ class WebSiteOrdersController extends Controller
 {
     public function store()
     {
-        
-        $areas = Area::query()->select('id','name_en','name_ar')->get();
-        return $areas;
+    
+
+        return response('OK');
         }
 }
