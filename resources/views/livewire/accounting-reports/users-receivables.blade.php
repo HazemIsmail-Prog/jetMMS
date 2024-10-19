@@ -87,7 +87,7 @@
                     $total_amount = round($total_debit-$total_credit,3);
                 @endphp
 
-                @if ($total_amount != 0)
+                {{-- @if ($total_amount != 0) --}}
                     <x-tr>
                         <x-td>{{ $user->name }}</x-td>
                         <x-td>{{ $user->title->name }}</x-td>
@@ -102,7 +102,7 @@
                         @endforeach
                         <x-td class="!w-1/12 {{ $total_amount < 0 ? 'text-red-500' : '' }}">{{ $total_amount == 0 ? '-' : number_format($total_amount,3) }}</x-td>
                     </x-tr>
-                @endif
+                {{-- @endif --}}
                 
             @endforeach
         </tbody>
