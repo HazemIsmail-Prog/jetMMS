@@ -94,9 +94,9 @@ class UsersReceivables extends Component
             ->select('id', 'department_id', 'title_id', 'name_' . app()->getLocale())
             ->with('title:id,name_' . app()->getLocale())
             ->with('department:id,name_' . app()->getLocale())
-            // ->whereHas('voucherDetails', function (Builder $q) {
-            //     $this->applyVoucherDetailsFilters($q);
-            // })
+            ->whereHas('voucherDetails', function (Builder $q) {
+                $this->applyVoucherDetailsFilters($q);
+            })
             ->withSum(['voucherDetails as debit_total'=> function (Builder $q) {
                 $this->applyVoucherDetailsFilters($q);
             }],'debit')
