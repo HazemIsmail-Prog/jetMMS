@@ -2,6 +2,7 @@
 
 namespace App\Livewire\PartInvoices;
 
+use App\Exports\PartInvoiceExport;
 use App\Models\Department;
 use App\Models\PartInvoice;
 use App\Models\Supplier;
@@ -13,6 +14,8 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PartInvoiceIndex extends Component
 {
@@ -21,12 +24,25 @@ class PartInvoiceIndex extends Component
     public $filters;
     public $department_id = [];
     public $perPage = 10;
+    public int $maxExportSize = 5000;
 
-    public function updatedPerPage() {
+    public function excel()
+    {
+        if ($this->getData()->count() > $this->maxExportSize) {
+            return;
+        } else {
+            return Excel::download(new PartInvoiceExport('livewire.part-invoices.excel.excel', 'Part Invoices', $this->getData()->get()), 'Part Invoices.xlsx');  //Excel
+        }
+    }
+
+
+    public function updatedPerPage()
+    {
         $this->resetPage();
     }
 
-    public function updatedFilters() {
+    public function updatedFilters()
+    {
         $this->resetPage();
     }
 
@@ -74,7 +90,7 @@ class PartInvoiceIndex extends Component
 
     #[Computed()]
     #[On('partInvoicesUpdated')]
-    public function part_invoices()
+    public function getData()
     {
         return PartInvoice::query()
             ->with('supplier')
@@ -91,8 +107,12 @@ class PartInvoiceIndex extends Component
             ->when($this->filters['end_date'], function (Builder $q) {
                 $q->whereDate('date', '<=', $this->filters['end_date']);
             })
-            ->latest()
-            ->paginate($this->perPage);
+            ->latest();
+    }
+    #[Computed()]
+    public function part_invoices()
+    {
+        return $this->getData->paginate($this->perPage);
     }
 
     public function delete(PartInvoice $partInvoice)
@@ -108,8 +128,9 @@ class PartInvoiceIndex extends Component
         }
     }
 
-    public function updatedDepartmentId($val) {
-        $this->filters['technician_id'] = User::whereIn('department_id',$this->department_id)->pluck('id');
+    public function updatedDepartmentId($val)
+    {
+        $this->filters['technician_id'] = User::whereIn('department_id', $this->department_id)->pluck('id');
     }
 
     public function render()
