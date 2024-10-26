@@ -4,15 +4,30 @@
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.trial_balance') }}
             </h2>
+            <span id="excel"></span>
         </div>
     </x-slot>
+
+    @teleport('#excel')
+        <div>
+            <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+                wire:loading.attr="disabled">
+                <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden" wire:target="excel">
+                    {{ __('messages.exporting') }}
+                </span>
+                <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+            </x-button>
+        </div>
+    @endteleport
 
     {{-- Filters --}}
     <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
 
         <div>
             <x-label for="start_date">{{ __('messages.date') }}</x-label>
-            <x-input class="w-full text-center py-0" type="date" id="start_date" wire:model.live="filters.start_date" />
+            <x-input class="w-full text-center py-0" type="date" id="start_date"
+                wire:model.live="filters.start_date" />
             <x-input class="w-full text-center py-0" type="date" id="end_date" wire:model.live="filters.end_date" />
 
         </div>
@@ -50,48 +65,56 @@
                 $total_closing_credit = 0;
             @endphp
             @foreach ($this->accounts as $account)
-            <x-tr>
-                @php
+                <x-tr>
+                    @php
 
-                    $opening_debit = $account->opening_debit - $account->opening_credit > 0 ? $account->opening_debit - $account->opening_credit : 0;
-                    $opening_credit = $account->opening_credit - $account->opening_debit > 0 ? $account->opening_credit - $account->opening_debit : 0;
+                        $opening_debit =
+                            $account->opening_debit - $account->opening_credit > 0
+                                ? $account->opening_debit - $account->opening_credit
+                                : 0;
+                        $opening_credit =
+                            $account->opening_credit - $account->opening_debit > 0
+                                ? $account->opening_credit - $account->opening_debit
+                                : 0;
 
-                    $transactions_debit = $account->transactions_debit > 0 ? $account->transactions_debit : 0;
-                    $transactions_credit = $account->transactions_credit > 0 ? $account->transactions_credit : 0;
+                        $transactions_debit = $account->transactions_debit > 0 ? $account->transactions_debit : 0;
+                        $transactions_credit = $account->transactions_credit > 0 ? $account->transactions_credit : 0;
 
-                    $closing_debit = $opening_debit - $opening_credit + $transactions_debit - $transactions_credit;
-                    $closing_credit = $opening_credit - $opening_debit + $transactions_credit - $transactions_debit;
+                        $closing_debit = $opening_debit - $opening_credit + $transactions_debit - $transactions_credit;
+                        $closing_credit = $opening_credit - $opening_debit + $transactions_credit - $transactions_debit;
 
-                    $total_opening_debit += $opening_debit;
-                    $total_opening_credit += $opening_credit;
+                        $total_opening_debit += $opening_debit;
+                        $total_opening_credit += $opening_credit;
 
-                    $total_transactions_debit += $transactions_debit;
-                    $total_transactions_credit += $transactions_credit;
+                        $total_transactions_debit += $transactions_debit;
+                        $total_transactions_credit += $transactions_credit;
 
-                    $total_closing_debit += $closing_debit;
-                    $total_closing_credit += $closing_credit;
-                
-                @endphp
+                        $total_closing_debit += $closing_debit;
+                        $total_closing_credit += $closing_credit;
 
-                <x-borderd-td>{{ $account->name }}</x-borderd-td>
-                <x-borderd-td>{{ $opening_debit > 0 ? number_format($opening_debit,3) : '-'}}</x-borderd-td>
-                <x-borderd-td>{{ $opening_credit > 0 ? number_format($opening_credit,3) : '-'}}</x-borderd-td>
-                <x-borderd-td class=" bg-gray-200 dark:bg-gray-700">{{ $transactions_debit > 0 ? number_format($transactions_debit,3) : '-'}}</x-borderd-td>
-                <x-borderd-td class=" bg-gray-200 dark:bg-gray-700">{{ $transactions_credit > 0 ? number_format($transactions_credit,3) : '-'}}</x-borderd-td>
-                <x-borderd-td>{{ $closing_debit > 0 ? number_format($closing_debit,3) : '-'}}</x-borderd-td>
-                <x-borderd-td>{{ $closing_credit > 0 ? number_format($closing_credit,3) : '-'}}</x-borderd-td>
-            </x-tr>
+                    @endphp
+
+                    <x-borderd-td>{{ $account->name }}</x-borderd-td>
+                    <x-borderd-td>{{ $opening_debit > 0 ? number_format($opening_debit, 3) : '-' }}</x-borderd-td>
+                    <x-borderd-td>{{ $opening_credit > 0 ? number_format($opening_credit, 3) : '-' }}</x-borderd-td>
+                    <x-borderd-td
+                        class=" bg-gray-200 dark:bg-gray-700">{{ $transactions_debit > 0 ? number_format($transactions_debit, 3) : '-' }}</x-borderd-td>
+                    <x-borderd-td
+                        class=" bg-gray-200 dark:bg-gray-700">{{ $transactions_credit > 0 ? number_format($transactions_credit, 3) : '-' }}</x-borderd-td>
+                    <x-borderd-td>{{ $closing_debit > 0 ? number_format($closing_debit, 3) : '-' }}</x-borderd-td>
+                    <x-borderd-td>{{ $closing_credit > 0 ? number_format($closing_credit, 3) : '-' }}</x-borderd-td>
+                </x-tr>
             @endforeach
 
             <x-tfoot>
                 <tr>
                     <x-borderd-th>{{ __('messages.total') }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_opening_debit > 0 ? number_format($total_opening_debit,3) : '-' }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_opening_credit > 0 ? number_format($total_opening_credit,3) : '-' }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_transactions_debit > 0 ? number_format($total_transactions_debit,3) : '-' }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_transactions_credit > 0 ? number_format($total_transactions_credit,3) : '-' }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_closing_debit > 0 ? number_format($total_closing_debit,3) : '-' }}</x-borderd-th>
-                    <x-borderd-th>{{ $total_closing_credit > 0 ? number_format($total_closing_credit,3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_opening_debit > 0 ? number_format($total_opening_debit, 3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_opening_credit > 0 ? number_format($total_opening_credit, 3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_transactions_debit > 0 ? number_format($total_transactions_debit, 3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_transactions_credit > 0 ? number_format($total_transactions_credit, 3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_closing_debit > 0 ? number_format($total_closing_debit, 3) : '-' }}</x-borderd-th>
+                    <x-borderd-th>{{ $total_closing_credit > 0 ? number_format($total_closing_credit, 3) : '-' }}</x-borderd-th>
                 </tr>
             </x-tfoot>
         </tbody>
