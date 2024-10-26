@@ -34,9 +34,9 @@ class AccountStatement extends Component
     #[Computed()]
     public function openning()
     {
-        $debit = $this->accountsVoucherDetails()->first()->voucher_details_sum_debit;
-        $credit = $this->accountsVoucherDetails()->first()->voucher_details_sum_credit;
-        $type = $this->accountsVoucherDetails()->first()->type;
+        $debit = $this->accountsVoucherDetails->first()->voucher_details_sum_debit;
+        $credit = $this->accountsVoucherDetails->first()->voucher_details_sum_credit;
+        $type = $this->accountsVoucherDetails->first()->type;
         $openning = [
             'debit' => $debit,
             'credit' => $credit,
