@@ -40,6 +40,24 @@
     @livewire('attachments.attachment-index')
     @livewire('attachments.attachment-form')
 
+    {{-- Filters --}}
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div>
+            <x-label for="search">{{ __('messages.search') }}</x-label>
+            <x-input id="search" type="text" wire:model.live="filters.search" class="w-full text-start py-0" />
+        </div>
+        <div>
+            <x-label for="document_type_id">{{ __('messages.document_type_id') }}</x-label>
+            <x-searchable-select class="!py-[5px]" id="document_type_id" :list="$this->documentTypes"
+                wire:model.live="filters.document_type_ids" multipule />
+        </div>
+        <div>
+            <x-label for="receiver_id">{{ __('messages.receiver_id') }}</x-label>
+            <x-searchable-select class="!py-[5px]" id="receiver_id" :list="$this->users"
+                wire:model.live="filters.receiver_ids" multipule />
+        </div>
+    </div>
+
     <x-table>
         <x-thead>
             <tr>

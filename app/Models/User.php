@@ -63,6 +63,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function documents() : HasMany {
+        return $this->hasMany(Document::class, 'receiver_id');
+    }
+
     public function quotations() : HasMany {
         return $this->hasMany(Quotation::class);
     }
