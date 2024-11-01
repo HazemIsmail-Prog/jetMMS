@@ -20,7 +20,7 @@ class RoleIndex extends Component
     {
         return Role::query()
             ->with('permissions')
-            ->paginate(15);
+            ->paginate(1500);
     }
 
     public function delete(Role $role)
