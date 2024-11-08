@@ -15,7 +15,7 @@ class UserForm extends Form
     public $password;
     public $title_id;
     public $department_id;
-    public $shift_id;
+    public int | null $shift_id;
     public bool $active = true;
     public $roles;
 
