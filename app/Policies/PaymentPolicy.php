@@ -33,6 +33,11 @@ class PaymentPolicy
         return $user->hasPermission('payments_collect');
     }
 
+    public function mass_collect(User $user): bool
+    {
+        return $user->hasPermission('payments_collect');
+    }
+
     public function uncollect(User $user, Payment $payment): bool
     {
         return $user->hasPermission('payments_uncollect');

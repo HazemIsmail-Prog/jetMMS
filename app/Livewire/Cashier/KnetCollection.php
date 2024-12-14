@@ -37,8 +37,8 @@ class KnetCollection extends Component
         $this->filters =
             [
                 'status' => '0',
-                'start_created_at' => '',
-                'end_created_at' => '',
+                'start_created_at' => '2024-04-28',
+                'end_created_at' => '2024-04-28',
                 'technician_id' => [],
                 'department_id' => [],
             ];
@@ -64,8 +64,7 @@ class KnetCollection extends Component
             ->get();
     }
 
-    #[Computed()]
-    public function payments()
+    public function getData()
     {
         return Payment::query()
             ->with('invoice.order.technician')
@@ -102,13 +101,25 @@ class KnetCollection extends Component
                 $q->whereDate('created_at', '<=', $this->filters['end_created_at']);
             })
 
-            ->orderBy('created_at', 'desc')
-            ->paginate($this->perPage);
+            ->orderBy('created_at', 'desc');
+    }
+
+    #[Computed()]
+    public function payments()
+    {
+        return $this->getData()->paginate($this->perPage);
     }
 
     public function technicianClicked($technician_id)
     {
         $this->filters['technician_id'] = [$technician_id];
+    }
+
+    public function mass_collect()
+    {
+        foreach($this->getData()->get() as $payment){
+            $this->collect_payment($payment);
+        }
     }
 
     public function collect_payment(Payment $payment)

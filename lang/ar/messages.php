@@ -691,6 +691,8 @@ return [
     'expired' => 'منتهي',
     'document_type_id' => 'نوع السند',
     'edit_document' => 'تعديل سند',
+    'mass_collect' => 'تحصيل الكل',
+    'collecting' => 'جاري التحصيل ...',
 
 
 
