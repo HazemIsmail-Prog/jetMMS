@@ -37,8 +37,8 @@ class KnetCollection extends Component
         $this->filters =
             [
                 'status' => '0',
-                'start_created_at' => '2024-04-28',
-                'end_created_at' => '2024-04-28',
+                'start_created_at' => '',
+                'end_created_at' => '',
                 'technician_id' => [],
                 'department_id' => [],
             ];
