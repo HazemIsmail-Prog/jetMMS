@@ -65,11 +65,11 @@ class CashCollection extends Component
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->orderBy('name')
-            ->whereHas('voucherDetails', function (Builder $q) {
-                $q->whereHas('voucher', function (Builder $q) {
-                    $q->whereBetween('date', [$this->filters['start_created_at'], $this->filters['end_created_at']]);
-                });
-            })
+            // ->whereHas('voucherDetails', function (Builder $q) {
+            //     $q->whereHas('voucher', function (Builder $q) {
+            //         $q->whereBetween('date', [$this->filters['start_created_at'], $this->filters['end_created_at']]);
+            //     });
+            // })
 
             // Cash Account
             ->withSum(['voucherDetails as cashAccountDebit' => function (Builder $q) use ($settings) {
