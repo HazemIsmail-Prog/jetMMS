@@ -99,14 +99,14 @@
                                 data: this.ordersCounter,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 4
+                                borderWidth: 1
                             },
                             {
                                 label: this.completedOrdersCountLabel,
                                 data: this.completedOrdersCounter,
                                 backgroundColor: 'rgba(46, 184, 92, 0.2)',
                                 borderColor: 'rgba(46, 184, 92, 1)',
-                                borderWidth: 4
+                                borderWidth: 1
                             }
                         ]
                     },
