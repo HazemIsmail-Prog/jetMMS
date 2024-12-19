@@ -12,15 +12,15 @@ class DailyStatistics extends Component
 
     #[Computed()]
     public function todaysCompletedOrdersCount() {
-        return Order::whereDate('completed_at',today())->count();
+        return Order::select('id')->whereDate('completed_at', today())->count();
     }
     #[Computed()]
     public function todaysCancelledOrdersCount() {
-        return Order::whereDate('cancelled_at',today())->count();
+        return Order::select('id')->whereDate('cancelled_at',today())->count();
     }
     #[Computed()]
     public function todaysCustomersCount() {
-        return Customer::whereDate('created_at',today())->count();
+        return Customer::select('id')->whereDate('created_at',today())->count();
     }
     public function render()
     {

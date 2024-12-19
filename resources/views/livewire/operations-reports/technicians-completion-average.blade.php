@@ -1,8 +1,8 @@
-<div x-data="customersChart()" class=" border dark:border-gray-700 rounded-lg p-4 h-[370px] flex flex-col">
+<div x-data="technicianCompletionAverage()" class=" border dark:border-gray-700 rounded-lg p-4 h-[370px] flex flex-col">
     <div class=" flex items-center justify-between">
         <div>
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('messages.customers') }}
+                {{ __('messages.average_completed_orders_for_technicians') }}
             </h2>
         </div>
 
@@ -35,20 +35,23 @@
                 d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
         </svg>
     </div>
-    <canvas class="h-full flex items-center justify-center overflow-hidden" x-show="!isloading" id="customerChart"></canvas>
+    <canvas x-show="!isloading" class="h-full flex items-center justify-center overflow-hidden"
+        id="technicianCompletionAverageChart"></canvas>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    function customersChart() {
+    function technicianCompletionAverage() {
         return {
             isloading: false,
-            customersCountLabel: '',
+            ordersCountLabel: '',
             years: [],
             selectedYear: new Date().getFullYear(),
-            customersCounter: [],
+            ordersCount: [],
+            totalTechnicians: [],
+            average: [],
             labels: [],
             chartInstance: null,
 
@@ -64,12 +67,14 @@
 
             getOrders() {
                 this.isloading = true;
-                axios.get(`/customersChart/${this.selectedYear}`)
+                axios.get(`/technicianCompletionAverage/${this.selectedYear}`)
                     .then(response => {
-                        this.years = response.data.years;                        
+                        this.years = response.data.years;
                         this.labels = response.data.labels;
-                        this.customersCounter = response.data.customersCount;
-                        this.customersCountLabel = response.data.customersCountLabel;
+                        this.ordersCount = response.data.ordersCount;
+                        this.totalTechnicians = response.data.totalTechnicians;
+                        this.average = response.data.average;
+                        this.ordersCountLabel = response.data.ordersCountLabel;
                         this.drawChart();
                     })
                     .catch(error => {
@@ -84,26 +89,49 @@
                     this.chartInstance.destroy();
                 }
 
-                var ctx = document.getElementById('customerChart').getContext('2d');
+                const ctx = document.getElementById('technicianCompletionAverageChart').getContext('2d');
+                const alpineInstance = this; // Preserve the Alpine.js instance
+
                 this.chartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: this.labels,
                         datasets: [{
-                                label: this.customersCountLabel,
-                                data: this.customersCounter,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 4
-                            }
-                        ]
+                            label: this.ordersCountLabel,
+                            data: this.ordersCount,
+                            backgroundColor: 'rgba(46, 184, 92, 0.2)',
+                            borderColor: 'rgba(46, 184, 92, 1)',
+                            borderWidth: 4
+                        }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false, // Disable
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        // Use the Alpine.js instance to get data
+                                        const index = tooltipItem.dataIndex;
+                                        const totalOrders = alpineInstance.ordersCount[index] || 0;
+                                        const totalTechnicians = alpineInstance.totalTechnicians[
+                                                index] ||
+                                            0;
+                                        const average = alpineInstance.average[index] || 0;
+
+                                        return [
+                                            `${@json(__('messages.completed_orders'))}: ${totalOrders}`,
+                                            `${@json(__('messages.total_technicians'))}: ${totalTechnicians}`,
+                                            `${@json(__('messages.average_completed_orders_for_technicians'))}: ${average}`
+                                        ];
+                                    }
+                                }
+                            }
+                        }
                     }
                 });
-            },
+            }
+
         }
 
     }

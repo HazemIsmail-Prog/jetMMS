@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\AccountingReports\AccountStatement;
@@ -105,9 +106,10 @@ Route::middleware([
     Route::group(['middleware' => 'no_technicians'], function () {
 
         // ========== Dashboard ==========
-        Route::get('/', function () {
-            return view('dashboard');
-        })->name('dashboard')->can('dashboard_menu', DummyModel::class);
+        Route::get('/',[DashboardController::class,'index'])->name('dashboard')->can('dashboard_menu', DummyModel::class);
+        Route::get('/ordersChart/{year}',[DashboardController::class,'ordersChart']);
+        Route::get('/customersChart/{year}',[DashboardController::class,'customersChart']);
+        Route::get('/technicianCompletionAverage/{year}',[DashboardController::class,'technicianCompletionAverage']);
 
         Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 

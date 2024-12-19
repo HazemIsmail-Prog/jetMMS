@@ -1,4 +1,4 @@
-<div class=" border dark:border-gray-700 rounded-lg p-4">
+<div x-data="ordersChart()" class=" border dark:border-gray-700 rounded-lg p-4 h-[370px] flex flex-col">
     <div class=" flex items-center justify-between">
         <div>
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
@@ -7,66 +7,116 @@
         </div>
 
         <!-- Filter Dropdown -->
-        {{-- <div class="relative">
+        <div class="relative">
             <x-dropdown width="48">
                 <x-slot name="trigger">
                     <x-badgeWithCounter>
-                        <x-svgs.ellipsis-horizontal class="h-6" />
+                        <span x-text="selectedYear" class="text-sm px-2 py-1"></span>
                     </x-badgeWithCounter>
                 </x-slot>
                 <x-slot name="content">
                     <div class="block px-4 py-2 text-xs text-gray-400">
                         {{ __('messages.year') }}
                     </div>
-                    @foreach ($years as $year)
-                        <div wire:click="changeYear({{ $year }})"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
-                            {{ $year }}
-                        </div>
-                    @endforeach
+                    <template x-for="year in years" :key="year">
+                        <div x-bind:selected="year == selectedYear" x-text="year"
+                            class="block w-full px-4 py-2 text-start cursor-pointer text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                            x-on:click="changeYear(year)"></div>
+                    </template>
                 </x-slot>
             </x-dropdown>
-        </div> --}}
+        </div>
     </div>
     <x-section-border />
-    <canvas id="orderChart"></canvas>
+    <div x-show="isloading" class="h-full flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-10 h-10 animate-spin">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+    </div>
+    <canvas class="h-full flex items-center justify-center overflow-hidden" x-show="!isloading"
+        id="orderChart"></canvas>
 
 </div>
 
-@assets
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@endassets
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-@script
-    <script>
-        $wire.on('ordersFetched', () => {
-            setTimeout(function() {
+<script>
+    function ordersChart() {
+        return {
+            isloading: false,
+            ordersCountLabel: '',
+            completedOrdersCountLabel: '',
+            years: [],
+            selectedYear: new Date().getFullYear(),
+            ordersCounter: [],
+            labels: [],
+            completedOrdersCounter: [],
+            chartInstance: null,
+
+            init() {
+                this.getOrders();
+            },
+
+            changeYear(year) {
+                if (this.selectedYear === year) return;
+                this.selectedYear = year;
+                this.getOrders();
+            },
+
+            getOrders() {
+                this.isloading = true;
+                axios.get(`/ordersChart/${this.selectedYear}`)
+                    .then(response => {
+                        this.years = response.data.years;
+                        this.labels = response.data.labels;
+                        this.ordersCounter = response.data.ordersCount;
+                        this.completedOrdersCounter = response.data.completedOrdersCount;
+                        this.ordersCountLabel = response.data.ordersCountLabel;
+                        this.completedOrdersCountLabel = response.data.completedOrdersCountLabel;
+                        this.drawChart();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    }).finally(() => {
+                        this.isloading = false;
+                    });
+            },
+
+            drawChart() {
+                if (this.chartInstance) {
+                    this.chartInstance.destroy();
+                }
+
                 var ctx = document.getElementById('orderChart').getContext('2d');
-                var chart = new Chart(ctx, {
+                this.chartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: @json(
-                            $orders->map(function ($order) {
-                                return $order->month . '-' . $order->year;
-                            })),
+                        labels: this.labels,
                         datasets: [{
-                                label: @json($title),
-                                data: @json($orders->pluck('total')),
+                                label: this.ordersCountLabel,
+                                data: this.ordersCounter,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 4
                             },
                             {
-                                label: @json($completed_title),
-                                data: @json($completed_orders->pluck('total')),
+                                label: this.completedOrdersCountLabel,
+                                data: this.completedOrdersCounter,
                                 backgroundColor: 'rgba(46, 184, 92, 0.2)',
                                 borderColor: 'rgba(46, 184, 92, 1)',
                                 borderWidth: 4
                             }
                         ]
                     },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Disable
+                    }
                 });
-            }, 10)
-        });
-    </script>
-@endscript
+            },
+        }
+
+    }
+</script>

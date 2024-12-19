@@ -10,13 +10,13 @@
             @livewire('operations-reports.daily-statistics', key('daily-statistics'.rand()))
         </div>
         <div class=" col-span-2">
-            @livewire('operations-reports.orders-chart', key('orders-chart'.rand()))
+            @include('livewire.operations-reports.orders-chart')
         </div>
         <div class=" col-span-2">
-            @livewire('operations-reports.customers-chart', key('customers-chart'.rand()))
+            @include('livewire.operations-reports.customers-chart')
         </div>
         <div class=" col-span-full">
-            @livewire('operations-reports.technicians-completetion-average', key('technicians-completetion-average'.rand()))
+            @include('livewire.operations-reports.technicians-completion-average')
         </div>
         <div class=" col-span-2">
             @livewire('operations-reports.orders-status-counter', key('orders-status-counter'.rand()))
