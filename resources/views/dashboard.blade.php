@@ -22,17 +22,14 @@
             @include('livewire.operations-reports.orders-status-counter')
         </div>
         <div class=" col-span-2">
-            @livewire('operations-reports.marketing-counter', key('marketing-counter'.rand()))
+            @include('livewire.operations-reports.orders-status-counter')
         </div>
         <div class=" col-span-2">
             @livewire('operations-reports.department-technician-counter', key('department-technician-counter'.rand()))
         </div>
         <div class=" col-span-2">
-            @livewire('operations-reports.deleted-invoices', key('deleted-invoices'.rand()))
+            @include('livewire.operations-reports.deleted-invoices')
         </div>
     </div>
-
-
-    {{-- <x-welcome /> --}}
 
 </x-app-layout>

@@ -60,7 +60,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        // 'profile_photo_url',
+        'name',
     ];
 
     public function documents() : HasMany {
@@ -191,13 +192,10 @@ class User extends Authenticatable
     }
 
 
+
     public function getNameAttribute()
     {
-        if (app()->getLocale() == 'ar') {
-            return $this->name_ar ?? $this->name_en;
-        } else {
-            return $this->name_en ?? $this->name_ar;
-        }
+        return $this->{'name_' . app()->getLocale()};
     }
 
     public function getStatusAttribute()

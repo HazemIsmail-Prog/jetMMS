@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\Marketing;
 use App\Models\Order;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -163,6 +166,77 @@ class DashboardController extends Controller
             'statuses' => $statuses,
             'dateFilter' => $dateFilter,
             'counters' => $counters,
+        ]);
+    }
+
+    public function marketingCounter(Request $request)
+    {
+
+        $selectedDate = $request->input('selectedDate');
+        $selectedMonth = explode('-', $selectedDate)[0];
+        $selectedYear = explode('-', $selectedDate)[1];
+
+        $dateFilter = Marketing::query()
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year')
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->get();
+
+        $types = Marketing::query()->pluck('type')->unique();
+
+        $types = $types->map(function ($type) {
+            return [
+                'id' => $type,
+                'name' => __('messages.' . $type), // Translate type name
+            ];
+        });
+
+        $counters = Marketing::query()
+            ->whereMonth('created_at', $selectedMonth)
+            ->whereYear('created_at', $selectedYear)
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count, type')
+            ->groupByRaw('DATE(created_at), type')
+            ->orderByDesc('date')
+            ->get();
+
+        $counters = $counters->groupBy('date')->map(function ($group) {
+            return $group->keyBy('type')->map->count->all();
+        });
+
+        return response()->json([
+            'types' => $types,
+            'dateFilter' => $dateFilter,
+            'counters' => $counters,
+        ]);
+    }
+
+    public function deletedInvoices(Request $request)
+    {
+        $selectedDate = $request->input('selectedDate');
+        $selectedMonth = explode('-', $selectedDate)[0];
+        $selectedYear = explode('-', $selectedDate)[1];
+
+        $dateFilter = Invoice::query()
+            ->onlyTrashed()
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year')
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->get();
+
+        $users = User::query()
+            ->select('id','name_ar','name_en')
+            ->whereHas('deletedInvoices', function ($q) use ($selectedMonth, $selectedYear) {
+                $q->whereMonth('created_at', $selectedMonth)
+                    ->whereYear('created_at', $selectedYear);
+            })
+            ->withCount(['deletedInvoices' => function ($q) use ($selectedMonth, $selectedYear) {
+                $q->whereMonth('created_at', $selectedMonth)
+                    ->whereYear('created_at', $selectedYear);
+            }])
+            ->get();
+
+
+        return response()->json([
+            'dateFilter' => $dateFilter,
+            'users' => $users,
         ]);
     }
 }
