@@ -91,7 +91,7 @@
             },
 
             columnTotal(statusId) {
-                return Object.values(this.counters).reduce((a, b) => a + b[statusId], 0);
+                return Object.values(this.counters).reduce((a, b) => a + (b[statusId] || 0), 0); 
             },
 
             weekDay(date) {
@@ -108,7 +108,6 @@
                         selectedDate: this.selectedDate
                     }
                 }).then(response => {
-                    console.log(response.data);
                     this.dateFilter = response.data.dateFilter;
                     this.statuses = response.data.statuses;
                     this.counters = response.data.counters;
