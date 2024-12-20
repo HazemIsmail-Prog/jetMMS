@@ -21,13 +21,10 @@ class Status extends Model
     const ARRIVED = 7;
 
     protected $guarded = [];
+    protected $appends = ['name'];
 
-    public function getNameAttribute($value)
+    public function getNameAttribute()
     {
-        if (App::getLocale() == 'ar') {
-            return $this->name_ar ?? $this->name_en;
-        } else {
-            return $this->name_en ?? $this->name_ar;
-        }
+        return $this->{'name_' . app()->getLocale()};
     }
 }

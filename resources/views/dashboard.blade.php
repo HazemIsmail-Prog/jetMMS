@@ -7,7 +7,7 @@
 
     <div class=" grid grid-flow-dense grid-cols-1 gap-y-3 lg:grid-cols-4 lg:gap-x-3">
         <div class=" col-span-full">
-            @livewire('operations-reports.daily-statistics', key('daily-statistics'.rand()))
+            @include('livewire.operations-reports.daily-statistics')
         </div>
         <div class=" col-span-2">
             @include('livewire.operations-reports.orders-chart')
@@ -19,7 +19,7 @@
             @include('livewire.operations-reports.technicians-completion-average')
         </div>
         <div class=" col-span-2">
-            @livewire('operations-reports.orders-status-counter', key('orders-status-counter'.rand()))
+            @include('livewire.operations-reports.orders-status-counter')
         </div>
         <div class=" col-span-2">
             @livewire('operations-reports.marketing-counter', key('marketing-counter'.rand()))

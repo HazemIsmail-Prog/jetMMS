@@ -1,67 +1,121 @@
-<div class=" border dark:border-gray-700 rounded-lg p-4">
+<div x-data="ordersStatusCounter()" class=" border dark:border-gray-700 rounded-lg p-4">
     <div class=" flex items-center justify-between">
         <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('messages.monthly_orders_statistics') }}
         </h2>
-        <x-select wire:model.live="selectedDate">
-            @foreach ($this->dateFilter as $date)
-            <option value="{{str_pad($date->month, 2, '0', STR_PAD_LEFT)}}-{{$date->year}}">{{str_pad($date->month, 2,
-                '0', STR_PAD_LEFT)}}-{{$date->year}}</option>
-            @endforeach
+        <x-select x-show="dateFilter.length" x-on:change="fetchData()" x-model="selectedDate" class=" px-2 py-1">
+            <template x-for="date in dateFilter" :key="`${date.month}-${date.year}`">
+                <option x-text="`${date.month}-${date.year}`" x-bind:value="`${date.month}-${date.year}`" x-bind:selected="selectedDate == `${date.month}-${date.year}`"></option>
+            </template>
         </x-select>
     </div>
 
 
     <x-section-border />
 
-    <x-table>
+    <div x-show="isLoading" class="h-[500px] flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-10 h-10 animate-spin">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+    </div>
+
+    <x-table x-show="!isLoading">
         <x-thead>
             <tr>
                 <x-th class=" !px-0.5">{{ __('messages.date') }}</x-th>
-                @foreach ($this->statuses as $status)
-                <x-th class=" !px-0.5 !text-center" width="7%">{{ $status->name }}</x-th>
-                @endforeach
+                <template x-for="status in statuses" :key="status.id">
+                    <x-th class=" !px-0.5 !text-center" width="7%" x-text="status.name"></x-th>
+                </template>
                 <x-th class=" !px-0.5 !text-center" width="7%">{{ __('messages.total') }}</x-th>
             </tr>
         </x-thead>
         <tbody class=" text-sm" wire:poll.30s>
-            @forelse ($this->counters->groupBy('date') as $row)
-            <x-tr>
-                <x-td class="!px-0.5">
-                    <div class=" whitespace-nowrap">{{ __('messages.' . date('l', strtotime($row[0]->date))) }}
-                    </div>
-                    <div class=" whitespace-nowrap">{{ date('d-m-Y', strtotime($row[0]->date)) }}</div>
-                </x-td>
-                @foreach ($this->statuses as $status)
-                <x-td class="!px-0.5 !text-center">
-                    {{ $row->where('status_id', $status->id)->pluck('count')->first() > 0?
-                    number_format($row->where('status_id', $status->id)->pluck('count')->first()): '-' }}
-                </x-td>
-                @endforeach
-                <x-td class="!px-0.5 !text-center">
-                    {{ $row->sum('count') > 0 ? number_format($row->sum('count')) : '-' }}
-                </x-td>
-            </x-tr>
-            @empty
-            <x-tr>
-                <td colspan="9" class=" text-center">{{ __('messages.no_orders') }}</td>
-            </x-tr>
-            @endforelse
+            <template x-for="(row,date) in counters" :key="date">
+                <x-tr>
+                    <x-td class=" !px-0.5">
+                        <div class=" whitespace-nowrap" x-text="weekDay(date)"></div>
+                        <div class=" whitespace-nowrap" x-text="date"></div>
+                    </x-td>
+                    <template x-for="status in statuses" :key="status.id">
+                        <x-td class=" !px-0.5 !text-center" x-text="formattedNumber(row[status.id])"></x-td>
+                    </template>
+                    <x-td class=" !px-0.5 !text-center" x-text="formattedNumber(rowTotal(row))"></x-td>
+                </x-tr>
+            </template>
         </tbody>
         <x-tfoot class="sticky bottom-0">
             <tr>
                 <x-th>{{ __('messages.total') }}</x-th>
-                @foreach ($this->statuses as $status)
+                <template x-for="status in statuses" :key="status.id">
+                    <x-th>
+                        <span x-text="formattedNumber(columnTotal(status.id))"></span>
+                    </x-th>
+                </template>
                 <x-th>
-                    {{ $this->counters->where('status_id', $status->id)->sum('count') > 0 ?
-                    number_format($this->counters->where('status_id', $status->id)->sum('count')) : '-' }}
-                </x-th>
-                @endforeach
-                <x-th>
-                    {{ $this->counters->sum('count') > 0 ? number_format($this->counters->sum('count')) : '-' }}
+                    <span x-text="formattedNumber(grandTotal())"></span>
                 </x-th>
             </tr>
         </x-tfoot>
     </x-table>
 
 </div>
+
+<script>
+    function ordersStatusCounter() {
+        return {
+            isLoading: false,
+            statuses: [],
+            selectedDate: new Date().getMonth() + 1 + '-' + new Date().getFullYear(),
+            dateFilter:[],
+            counters: [],
+
+            init() {
+                this.fetchData();
+            },
+
+            rowTotal(row) {
+                return Object.values(row).reduce((a, b) => a + b, 0);
+            },
+
+            grandTotal() {
+                return Object.values(this.counters).reduce((a, b) => a + this.rowTotal(b), 0);
+            },
+
+            formattedNumber(number) {
+                if (number === 0 || !number) {
+                    return '-';
+                }
+                return number.toLocaleString('en-US');
+            },
+
+            columnTotal(statusId) {
+                return Object.values(this.counters).reduce((a, b) => a + b[statusId], 0);
+            },
+
+            weekDay(date) {
+                const [day, month, year] = date.split('-');
+                return new Date(year, month - 1, day).toLocaleDateString('ar-EG', {
+                    weekday: 'long'
+                });
+            },
+
+            fetchData() {
+                this.isLoading = true;
+                axios.get('/ordersStatusCounter', {
+                    params: {
+                        selectedDate: this.selectedDate
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                    this.dateFilter = response.data.dateFilter;
+                    this.statuses = response.data.statuses;
+                    this.counters = response.data.counters;
+                }).finally(() => {
+                    this.isLoading = false;
+                });
+            },
+        }
+    }
+</script>
