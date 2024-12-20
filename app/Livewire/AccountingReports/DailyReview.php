@@ -53,6 +53,8 @@ class DailyReview extends Component
 
         return User::query()
 
+        ->with('department:id,name_en,name_ar', 'title:id,name_en,name_ar')
+
             ->join('orders', 'orders.technician_id', '=', 'users.id')
             ->join('invoices', function ($join) {
                 $join->on('invoices.order_id', '=', 'orders.id')
