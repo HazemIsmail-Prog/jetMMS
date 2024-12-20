@@ -114,6 +114,7 @@ Route::middleware([
         Route::get('/ordersStatusCounter',[DashboardController::class,'ordersStatusCounter']);
         Route::get('/marketingCounter',[DashboardController::class,'marketingCounter']);
         Route::get('/deletedInvoices',[DashboardController::class,'deletedInvoices']);
+        Route::get('/departmentTechnicianCounter',[DashboardController::class,'departmentTechnicianCounter']);
 
         Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\Marketing;
 use App\Models\Order;
@@ -222,7 +223,7 @@ class DashboardController extends Controller
             ->get();
 
         $users = User::query()
-            ->select('id','name_ar','name_en')
+            ->select('id', 'name_ar', 'name_en')
             ->whereHas('deletedInvoices', function ($q) use ($selectedMonth, $selectedYear) {
                 $q->whereMonth('created_at', $selectedMonth)
                     ->whereYear('created_at', $selectedYear);
@@ -237,6 +238,51 @@ class DashboardController extends Controller
         return response()->json([
             'dateFilter' => $dateFilter,
             'users' => $users,
+        ]);
+    }
+
+    public function departmentTechnicianCounter(Request $request)
+    {
+
+        $selectedDate = $request->input('selectedDate');
+        $selectedMonth = explode('-', $selectedDate)[0];
+        $selectedYear = explode('-', $selectedDate)[1];
+
+        $dateFilter = Order::query()
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year')
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->get();
+
+        $departments = Department::query()
+            ->where('is_service', 1)
+            ->select('id', 'name_ar', 'name_en', 'is_service')
+            ->with(['technicians' => function ($q) use ($selectedMonth, $selectedYear) {
+                $q->select('id', 'department_id', 'name_ar', 'name_en');
+                $q->whereHas('orders_technician', function ($q) use ($selectedMonth, $selectedYear) {
+                    $q->whereNotNull('completed_at');
+                    $q->whereMonth('completed_at', $selectedMonth);
+                    $q->whereYear('completed_at', $selectedYear);
+                });
+                $q->withCount(['orders_technician as completed_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
+                    $q->whereNotNull('completed_at');
+                    $q->whereMonth('completed_at', $selectedMonth);
+                    $q->whereYear('completed_at', $selectedYear);
+                }]);
+            }])
+            ->withCount(['orders as completed_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
+                $q->whereNotNull('completed_at');
+                $q->whereMonth('completed_at', $selectedMonth);
+                $q->whereYear('completed_at', $selectedYear);
+            }])
+            ->withCount(['orders as total_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
+                $q->whereMonth('created_at', $selectedMonth);
+                $q->whereYear('created_at', $selectedYear);
+            }])
+            ->get();
+
+        return response()->json([
+            'dateFilter' => $dateFilter,
+            'departments' => $departments,
         ]);
     }
 }

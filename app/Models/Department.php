@@ -38,12 +38,10 @@ class Department extends Model
         return $this->belongsTo(Account::class, 'cost_account_id');
     }
 
-    public function getNameAttribute($value)
+    protected $appends = ['name'];
+
+    public function getNameAttribute()
     {
-        if (App::getLocale() == 'ar') {
-            return $this->name_ar ?? $this->name_en;
-        } else {
-            return $this->name_en ?? $this->name_ar;
-        }
+        return $this->{'name_' . app()->getLocale()};
     }
 }
