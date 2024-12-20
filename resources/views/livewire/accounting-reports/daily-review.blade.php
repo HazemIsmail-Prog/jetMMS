@@ -1,13 +1,25 @@
 <div>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
-
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.daily_review') }}
             </h2>
-
+            <span id="excel"></span>
         </div>
     </x-slot>
+
+    @teleport('#excel')
+        <div>
+            <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+                wire:loading.attr="disabled">
+                <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden" wire:target="excel">
+                    {{ __('messages.exporting') }}
+                </span>
+                <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+            </x-button>
+        </div>
+    @endteleport
 
     <div class=" flex items-end gap-3 no-print">
 

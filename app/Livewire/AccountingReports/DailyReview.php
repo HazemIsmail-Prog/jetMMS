@@ -2,6 +2,7 @@
 
 namespace App\Livewire\AccountingReports;
 
+use App\Exports\DailyReviewExport;
 use App\Models\Department;
 use App\Models\Setting;
 use App\Models\Title;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class DailyReview extends Component
 {
@@ -252,6 +255,11 @@ class DailyReview extends Component
         return Title::query()
             ->whereIn('id', Title::TECHNICIANS_GROUP)
             ->get();
+    }
+
+    public function excel()
+    {
+        return Excel::download(new DailyReviewExport('livewire.accounting-reports.excel.daily-review', 'DailyReview', $this->technicians()), 'DailyReview.xlsx');  //Excel
     }
 
     public function render()
