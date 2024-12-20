@@ -5,7 +5,8 @@
         </h2>
         <x-select x-show="dateFilter.length" x-on:change="fetchData()" x-model="selectedDate" class=" px-2 py-1">
             <template x-for="date in dateFilter" :key="`${date.month}-${date.year}`">
-                <option x-text="`${date.month}-${date.year}`" x-bind:value="`${date.month}-${date.year}`" x-bind:selected="selectedDate == `${date.month}-${date.year}`"></option>
+                <option x-text="`${date.month}-${date.year}`" x-bind:value="`${date.month}-${date.year}`"
+                    x-bind:selected="selectedDate == `${date.month}-${date.year}`"></option>
             </template>
         </x-select>
     </div>
@@ -68,7 +69,7 @@
             isLoading: false,
             statuses: [],
             selectedDate: new Date().getMonth() + 1 + '-' + new Date().getFullYear(),
-            dateFilter:[],
+            dateFilter: [],
             counters: [],
 
             init() {
@@ -91,12 +92,12 @@
             },
 
             columnTotal(statusId) {
-                return Object.values(this.counters).reduce((a, b) => a + (b[statusId] || 0), 0); 
+                return Object.values(this.counters).reduce((a, b) => a + (b[statusId] || 0), 0);
             },
 
             weekDay(date) {
-                const [day, month, year] = date.split('-');
-                return new Date(year, month, day - 1).toLocaleDateString('ar-EG', {
+                const [year, month, day] = date.split('-');
+                return new Date(year, month - 1, day).toLocaleDateString('ar-EG', {
                     weekday: 'long'
                 });
             },

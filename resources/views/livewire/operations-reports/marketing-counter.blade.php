@@ -96,8 +96,8 @@
             },
 
             weekDay(date) {
-                const [day, month, year] = date.split('-');
-                return new Date(year, month, day - 1).toLocaleDateString('ar-EG', {
+                const [year, month, day] = date.split('-');
+                return new Date(year, month - 1, day).toLocaleDateString('ar-EG', {
                     weekday: 'long'
                 });
             },
