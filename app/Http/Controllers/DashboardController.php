@@ -260,19 +260,19 @@ class DashboardController extends Controller
                 $q->select('id', 'department_id', 'name_ar', 'name_en');
                 $q->whereHas('orders_technician', function ($q) use ($selectedMonth, $selectedYear) {
                     $q->whereNotNull('completed_at');
-                    $q->whereMonth('completed_at', $selectedMonth);
-                    $q->whereYear('completed_at', $selectedYear);
+                    $q->whereMonth('created_at', $selectedMonth);
+                    $q->whereYear('created_at', $selectedYear);
                 });
                 $q->withCount(['orders_technician as completed_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
                     $q->whereNotNull('completed_at');
-                    $q->whereMonth('completed_at', $selectedMonth);
-                    $q->whereYear('completed_at', $selectedYear);
+                    $q->whereMonth('created_at', $selectedMonth);
+                    $q->whereYear('created_at', $selectedYear);
                 }]);
             }])
             ->withCount(['orders as completed_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
                 $q->whereNotNull('completed_at');
-                $q->whereMonth('completed_at', $selectedMonth);
-                $q->whereYear('completed_at', $selectedYear);
+                $q->whereMonth('created_at', $selectedMonth);
+                $q->whereYear('created_at', $selectedYear);
             }])
             ->withCount(['orders as total_orders_count' => function ($q) use ($selectedMonth, $selectedYear) {
                 $q->whereMonth('created_at', $selectedMonth);
