@@ -204,10 +204,8 @@
             titles: [],
             technicians: [],
             orders: [],
-            start_date: '2024-06-01',
-            end_date: '2024-06-01',
-            // start_date: new Date().toISOString().split('T')[0], // today date
-            // end_date: new Date().toISOString().split('T')[0],
+            start_date: new Date().toISOString().split('T')[0], // today date
+            end_date: new Date().toISOString().split('T')[0],
             numberFormatter: new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 3,
                 maximumFractionDigits: 3
