@@ -135,6 +135,9 @@ Route::middleware([
             ->name('rating.index')
             ->can('viewAny', Rating::class);
 
+        Route::get('invoices/report',[InvoiceController::class, 'index'])->name('invoice.report');
+        Route::get('invoices/report/getData',[InvoiceController::class, 'getData']);
+
         Route::get('dispatch-panel/{department}', DispatchingIndex::class)
             ->name('dispatch-panel.index')
             ->can('canDispatch', DummyModel::class);

@@ -22,6 +22,11 @@ class InvoicePolicy
     {
         return $user->hasPermission('invoices_menu');
     }
+
+    public function viewReport(User $user): bool
+    {
+        return $user->hasPermission('invoices_per_technician_report');
+    }
     
     public function create(User $user): bool
     {

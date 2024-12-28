@@ -1,5 +1,6 @@
 <div>
-    <div id="sidebar" x-cloak class="
+    <div id="sidebar" x-cloak
+        class="
             fixed
             start-0
             top-0
@@ -31,186 +32,189 @@
         <ul class="space-y-1">
             <!-- Dashboard -->
             @can('dashboard_menu', App\Models\DummyModel::class)
-            <x-sidebar-item icon="chart-pie" route="dashboard" :title="__('messages.dashboard')" />
+                <x-sidebar-item icon="chart-pie" route="dashboard" :title="__('messages.dashboard')" />
             @endcan
             @can('alerts_menu', App\Models\DummyModel::class)
-            <x-sidebar-item icon="bell" route="alerts" :title="__('messages.alerts')" />
+                <x-sidebar-item icon="bell" route="alerts" :title="__('messages.alerts')" />
             @endcan
             {{-- Operations --}}
             @can('operations_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.operations') }}
-            </h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.operations') }}
+                </h3>
             @endcan
             @can('viewAny', App\Models\Customer::class)
-            <x-sidebar-item icon="users" route="customer.index" :title="__('messages.customers')" />
+                <x-sidebar-item icon="users" route="customer.index" :title="__('messages.customers')" />
             @endcan
             @can('viewAny', App\Models\Order::class)
-            <x-sidebar-item icon="list-bullet" route="order.index" :title="__('messages.orders')" />
+                <x-sidebar-item icon="list-bullet" route="order.index" :title="__('messages.orders')" />
             @endcan
             @can('viewAny', App\Models\Marketing::class)
-            <x-sidebar-item icon="arrow-trending-up" route="marketing.index" :title="__('messages.marketing')" />
+                <x-sidebar-item icon="arrow-trending-up" route="marketing.index" :title="__('messages.marketing')" />
             @endcan
             @can('viewAny', App\Models\Rating::class)
-            <x-sidebar-item icon="star" route="rating.index" :title="__('messages.ratings')" />
+                <x-sidebar-item icon="star" route="rating.index" :title="__('messages.ratings')" />
             @endcan
             @can('viewAny', App\Models\Invoice::class)
-            <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
+                <x-sidebar-item icon="circle-stack" route="invoice.index" :title="__('messages.invoices')" />
             @endcan
+
             @can('operations_reports', App\Models\DummyModel::class)
-            <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
-                @can('expected_invoices_deletion_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="expected_invoices_deletion"
-                    :title="__('messages.expected_invoices_deletion')" />
-                @endcan
-            </x-sidebar-dropdown>
+                <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
+                    @can('expected_invoices_deletion_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="expected_invoices_deletion" :title="__('messages.expected_invoices_deletion')" />
+                    @endcan
+                    @can('viewReport', App\Models\Invoice::class)
+                        <x-nested-sidebar-item route="invoice.report" :title="__('messages.invoices_per_technician_report')" />
+                    @endcan
+                </x-sidebar-dropdown>
             @endcan
             @can('canDispatch', App\Models\DummyModel::class)
 
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.dispatching') }}
-            </h3>
-            @foreach ($this->departments as $department)
-            <x-sidebar-item icon="truck" route="dispatch-panel.index" :param="$department->id"
-                :title="$department->name" />
-            @endforeach
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.dispatching') }}
+                </h3>
+                @foreach ($this->departments as $department)
+                    <x-sidebar-item icon="truck" route="dispatch-panel.index" :param="$department->id" :title="$department->name" />
+                @endforeach
 
             @endcan
 
             {{-- Contracts --}}
             @can('contracts_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.contracts') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.contracts') }}</h3>
             @endcan
             @can('viewConstructionContracts', App\Models\Contract::class)
-            <x-sidebar-item icon="document-text" route="construction.contracts" :title="__('messages.construction_contracts')" />
+                <x-sidebar-item icon="document-text" route="construction.contracts" :title="__('messages.construction_contracts')" />
             @endcan
             @can('viewSubscriptionContracts', App\Models\Contract::class)
-            <x-sidebar-item icon="document-text" route="subscription.contracts" :title="__('messages.subscription_contracts')" />
+                <x-sidebar-item icon="document-text" route="subscription.contracts" :title="__('messages.subscription_contracts')" />
             @endcan
 
             @can('viewAny', App\Models\Quotation::class)
-            <x-sidebar-item icon="document-text" route="quotations" :title="__('messages.quotations')" />
+                <x-sidebar-item icon="document-text" route="quotations" :title="__('messages.quotations')" />
             @endcan
 
 
 
             {{-- Cashier --}}
             @can('cashier_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.cashier') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.cashier') }}</h3>
             @endcan
             @can('cash_collection_menu', App\Models\DummyModel::class)
-            <x-sidebar-item icon="banknotes" route="cash_collection" :title="__('messages.cash_collection')" />
+                <x-sidebar-item icon="banknotes" route="cash_collection" :title="__('messages.cash_collection')" />
             @endcan
             @can('knet_collection_menu', App\Models\DummyModel::class)
-            <x-sidebar-item icon="credit-card" route="knet_collection" :title="__('messages.knet_collection')" />
+                <x-sidebar-item icon="credit-card" route="knet_collection" :title="__('messages.knet_collection')" />
             @endcan
             @can('viewAny', App\Models\PartInvoice::class)
-            <x-sidebar-item icon="document-text" route="part_invoice" :title="__('messages.part_invoices')" />
+                <x-sidebar-item icon="document-text" route="part_invoice" :title="__('messages.part_invoices')" />
             @endcan
             @can('targets_menu', App\Models\DummyModel::class)
-            <x-sidebar-item icon="banknotes" route="targets" :title="__('messages.targets')" />
+                <x-sidebar-item icon="banknotes" route="targets" :title="__('messages.targets')" />
             @endcan
             {{-- Accounting --}}
             @can('accounting_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.accounting') }}
-            </h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.accounting') }}
+                </h3>
             @endcan
             @can('viewAny', App\Models\Account::class)
-            <x-sidebar-item icon="bars-3-bottom-left" route="account.index" :title="__('messages.accounts')" />
+                <x-sidebar-item icon="bars-3-bottom-left" route="account.index" :title="__('messages.accounts')" />
             @endcan
             @can('viewAny', App\Models\Voucher::class)
-            <x-sidebar-item icon="document-text" route="voucher.index" :title="__('messages.journal_vouchers')" />
+                <x-sidebar-item icon="document-text" route="voucher.index" :title="__('messages.journal_vouchers')" />
             @endcan
             @can('accounting_reports', App\Models\DummyModel::class)
-            <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
-                @can('daily_review_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
-                @endcan
-                @can('collection_statement_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="collection_statement" :title="__('messages.collection_statement')" />
-                @endcan
-                @can('target_statement_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="target_statement" :title="__('messages.target_statement')" />
-                @endcan
-                @can('shift_target_statement_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="shift_target_statement" :title="__('messages.shift_target_statement')" />
-                @endcan
-                @can('users_receivables_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="users_receivables" :title="__('messages.users_receivables')" />
-                @endcan
-                @can('pending_payments_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="pending_payments" :title="__('messages.pending_invoices_report')" />
-                @endcan
-                @can('account_statement_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
-                @endcan
-                @can('balance_sheet_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="balance_sheet" :title="__('messages.balance_sheet')" />
-                @endcan
-                @can('trial_balance_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="trial_balance" :title="__('messages.trial_balance')" />
-                @endcan
-                @can('profit_loss_report', App\Models\DummyModel::class)
-                <x-nested-sidebar-item route="profit_loss" :title="__('messages.profit_loss')" />
-                @endcan
-            </x-sidebar-dropdown>
+                <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
+                    @can('daily_review_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
+                    @endcan
+                    @can('collection_statement_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="collection_statement" :title="__('messages.collection_statement')" />
+                    @endcan
+                    @can('target_statement_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="target_statement" :title="__('messages.target_statement')" />
+                    @endcan
+                    @can('shift_target_statement_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="shift_target_statement" :title="__('messages.shift_target_statement')" />
+                    @endcan
+                    @can('users_receivables_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="users_receivables" :title="__('messages.users_receivables')" />
+                    @endcan
+                    @can('pending_payments_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="pending_payments" :title="__('messages.pending_invoices_report')" />
+                    @endcan
+                    @can('account_statement_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="account_statement" :title="__('messages.account_statement')" />
+                    @endcan
+                    @can('balance_sheet_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="balance_sheet" :title="__('messages.balance_sheet')" />
+                    @endcan
+                    @can('trial_balance_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="trial_balance" :title="__('messages.trial_balance')" />
+                    @endcan
+                    @can('profit_loss_report', App\Models\DummyModel::class)
+                        <x-nested-sidebar-item route="profit_loss" :title="__('messages.profit_loss')" />
+                    @endcan
+                </x-sidebar-dropdown>
             @endcan
             {{-- HR --}}
             @can('hr_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.hr') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.hr') }}</h3>
             @endcan
             @can('viewAny', App\Models\Employee::class)
-            <x-sidebar-item icon="users" route="employee.index" :title="__('messages.employees')" />
+                <x-sidebar-item icon="users" route="employee.index" :title="__('messages.employees')" />
             @endcan
             @can('hr_reports')
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
             @endcan
             {{-- Assets --}}
             @can('assets_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.assets') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.assets') }}</h3>
             @endcan
             @can('viewAny', App\Models\Car::class)
-            <x-sidebar-item icon="truck" route="car.index" :title="__('messages.cars')" />
+                <x-sidebar-item icon="truck" route="car.index" :title="__('messages.cars')" />
             @endcan
             @can('viewAny', App\Models\PhoneDevice::class)
-            <x-sidebar-item icon="truck" route="phone_device.index" :title="__('messages.phone_devices')" />
+                <x-sidebar-item icon="truck" route="phone_device.index" :title="__('messages.phone_devices')" />
             @endcan
             @can('viewAny', App\Models\DocumentType::class)
-            <x-sidebar-item icon="truck" route="document_type.index" :title="__('messages.document_types')" />
+                <x-sidebar-item icon="truck" route="document_type.index" :title="__('messages.document_types')" />
             @endcan
             @can('viewAny', App\Models\Document::class)
-            <x-sidebar-item icon="truck" route="document.index" :title="__('messages.documents')" />
+                <x-sidebar-item icon="truck" route="document.index" :title="__('messages.documents')" />
             @endcan
             @can('assets_reports')
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
-            {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
+                {{-- --}}
             @endcan
 
 
 
             {{-- Administration --}}
             @can('administration_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.administration') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.administration') }}
+                </h3>
             @endcan
             @can('viewAny', App\Models\CompanyContract::class)
-            <x-sidebar-item icon="truck" route="company_contract.index" :title="__('messages.company_contracts')" />
+                <x-sidebar-item icon="truck" route="company_contract.index" :title="__('messages.company_contracts')" />
             @endcan
             @can('viewAny', App\Models\CompanyBudget::class)
-            <x-sidebar-item icon="truck" route="company_budget.index" :title="__('messages.company_budgets')" />
+                <x-sidebar-item icon="truck" route="company_budget.index" :title="__('messages.company_budgets')" />
             @endcan
 
 
@@ -218,46 +222,46 @@
 
             {{-- Admin --}}
             @can('admin_title', App\Models\DummyModel::class)
-            <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
+                <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
             @endcan
             @can('viewAny', App\Models\Supplier::class)
-            <x-sidebar-item icon="chart-pie" route="supplier.index" :title="__('messages.suppliers')" />
+                <x-sidebar-item icon="chart-pie" route="supplier.index" :title="__('messages.suppliers')" />
             @endcan
             @can('viewAny', App\Models\CostCenter::class)
-            <x-sidebar-item icon="chart-pie" route="cost_center.index" :title="__('messages.cost_centers')" />
+                <x-sidebar-item icon="chart-pie" route="cost_center.index" :title="__('messages.cost_centers')" />
             @endcan
             @can('viewAny', App\Models\Role::class)
-            <x-sidebar-item icon="chart-pie" route="role.index" :title="__('messages.roles')" />
+                <x-sidebar-item icon="chart-pie" route="role.index" :title="__('messages.roles')" />
             @endcan
             @can('viewAny', App\Models\Permission::class)
-            <x-sidebar-item icon="chart-pie" route="permission.index" :title="__('messages.permissions')" />
+                <x-sidebar-item icon="chart-pie" route="permission.index" :title="__('messages.permissions')" />
             @endcan
             @can('viewAny', App\Models\User::class)
-            <x-sidebar-item icon="users" route="user.index" :title="__('messages.users')" />
+                <x-sidebar-item icon="users" route="user.index" :title="__('messages.users')" />
             @endcan
             @can('viewAny', App\Models\Title::class)
-            <x-sidebar-item icon="chart-pie" route="title.index" :title="__('messages.titles')" />
+                <x-sidebar-item icon="chart-pie" route="title.index" :title="__('messages.titles')" />
             @endcan
             @can('viewAny', App\Models\Status::class)
-            <x-sidebar-item icon="chart-pie" route="status.index" :title="__('messages.statuses')" />
+                <x-sidebar-item icon="chart-pie" route="status.index" :title="__('messages.statuses')" />
             @endcan
             @can('viewAny', App\Models\Department::class)
-            <x-sidebar-item icon="chart-pie" route="department.index" :title="__('messages.departments')" />
+                <x-sidebar-item icon="chart-pie" route="department.index" :title="__('messages.departments')" />
             @endcan
             @can('viewAny', App\Models\Company::class)
-            <x-sidebar-item icon="chart-pie" route="company.index" :title="__('messages.companies')" />
+                <x-sidebar-item icon="chart-pie" route="company.index" :title="__('messages.companies')" />
             @endcan
             @can('viewAny', App\Models\Shift::class)
-            <x-sidebar-item icon="chart-pie" route="shift.index" :title="__('messages.shifts')" />
+                <x-sidebar-item icon="chart-pie" route="shift.index" :title="__('messages.shifts')" />
             @endcan
             @can('viewAny', App\Models\Area::class)
-            <x-sidebar-item icon="chart-pie" route="area.index" :title="__('messages.areas')" />
+                <x-sidebar-item icon="chart-pie" route="area.index" :title="__('messages.areas')" />
             @endcan
             @can('viewAny', App\Models\Service::class)
-            <x-sidebar-item icon="chart-pie" route="service.index" :title="__('messages.services')" />
+                <x-sidebar-item icon="chart-pie" route="service.index" :title="__('messages.services')" />
             @endcan
             @can('viewAny', App\Models\Setting::class)
-            <x-sidebar-item icon="settings" route="settings.form" :title="__('messages.settings')" />
+                <x-sidebar-item icon="settings" route="settings.form" :title="__('messages.settings')" />
             @endcan
         </ul>
     </div>

@@ -51,7 +51,7 @@ class DummyModelPolicy
     {
         return
             $user->hasPermission('expected_invoices_deletion_report')
-            // || $user->hasPermission('collection_statement_report')
+            || $user->hasPermission('invoices_per_technician_report')
             ;
     }
 

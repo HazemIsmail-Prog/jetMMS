@@ -693,6 +693,7 @@ return [
     'edit_document' => 'تعديل سند',
     'mass_collect' => 'تحصيل الكل',
     'collecting' => 'جاري التحصيل ...',
+    'invoices_per_technician_report' => 'الفواتير حسب الفنيين خلال فترة',
 
 
 
