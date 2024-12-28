@@ -26,6 +26,11 @@ class InvoiceController extends Controller
             ->where('is_service', true)
             ->get();
 
+        $titles = Title::query()
+            ->select('id', 'name_ar', 'name_en')
+            ->whereIn('id', Title::TECHNICIANS_GROUP)
+            ->get();
+
         $technicians = User::query()
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->whereHas('orders_technician', function ($q) use ($request) {
@@ -33,7 +38,7 @@ class InvoiceController extends Controller
                 $q->whereDate('completed_at', '<=', $request->end_date);
             })
             ->select('id', 'name_ar', 'name_en', 'title_id', 'department_id')
-            ->orderBy('department_id')
+            ->orderBy('title_id')
             ->orderBy('name_ar')
             ->get();
 
@@ -85,6 +90,7 @@ class InvoiceController extends Controller
             'technicians' => $technicians,
             'orders' => $orders,
             'invoices' => $invoices,
+            'titles' => $titles,
         ]);
     }
 
