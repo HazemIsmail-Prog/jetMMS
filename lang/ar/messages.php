@@ -698,4 +698,18 @@ return [
 
 
 
+    'profit_loss_report' => 'تقرير الارباح والخسائر',
+    'incomes' => 'الايرادات',
+    'costs' => 'التكاليف',
+    'expenses' => 'المصروفات',
+    'total_incomes' => 'اجمالي الايرادات',
+    'total_costs' => 'اجمالي التكاليف',
+    'total_expenses' => 'اجمالي المصروفات',
+    'profit' => 'الربح',
+    'loss' => 'الخسارة',
+    'summary' => 'الملخص',
+
+
+
+
 ];

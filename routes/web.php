@@ -82,7 +82,7 @@ use App\Models\User;
 use App\Models\Voucher;
 use App\Policies\ContractPolicy;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ProfitLossController;
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
 Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
@@ -231,7 +231,7 @@ Route::middleware([
             ->name('trial_balance')
             ->can('trial_balance_report', DummyModel::class);
 
-        Route::get('accounts/reports/profit_loss', AccountStatement::class) // TODO:change class to its new page
+        Route::get('accounts/reports/profit_loss', [ProfitLossController::class, 'index']) // TODO:change class to its new page
             ->name('profit_loss')
             ->can('profit_loss_report', DummyModel::class);
 
