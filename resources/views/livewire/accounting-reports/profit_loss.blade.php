@@ -141,7 +141,7 @@
                 },
 
                 profitLoss() {
-                    let value = this.table_data[0]?.total - this.table_data[1]?.total - this.table_data[2]?.total ?? 0;
+                    let value = this.table_data[0].total - this.table_data[1].total - this.table_data[2].total;
                     return {
                         'profit': value > 0 ? value : 0,
                         'loss': value < 0 ? value : 0
