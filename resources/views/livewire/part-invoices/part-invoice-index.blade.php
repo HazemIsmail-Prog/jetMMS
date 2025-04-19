@@ -66,7 +66,12 @@
     @livewire('part_invoices.part_invoice-form')
 
     {{-- Filters --}}
-    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+    <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+
+        <div>
+            <x-label for="search">{{ __('messages.search') }}</x-label>
+            <x-input class="w-full text-center py-0" type="text" id="search" wire:model.live="filters.search" />
+        </div>
 
         <div>
             <x-label for="supplier">{{ __('messages.supplier') }}</x-label>
@@ -108,6 +113,7 @@
                 <x-th>{{ __('messages.discount') }}</x-th>
                 <x-th>{{ __('messages.cost_amount') }}</x-th>
                 <x-th>{{ __('messages.sales_amount') }}</x-th>
+                <x-th>{{ __('messages.notes') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -123,6 +129,7 @@
                     <x-td>{{ $part_invoice->formated_discount_amount }}</x-td>
                     <x-td>{{ $part_invoice->formated_cost_amount }}</x-td>
                     <x-td>{{ $part_invoice->formated_sales_amount }}</x-td>
+                    <x-td>{{ $part_invoice->notes }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
                             @can('update', $part_invoice)
@@ -155,6 +162,7 @@
                 <x-th>{{ number_format($this->part_invoices->sum('discount_amount'), 3) }}</x-th>
                 <x-th>{{ number_format($this->part_invoices->sum('cost_amount'), 3) }}</x-th>
                 <x-th>{{ number_format($this->part_invoices->sum('sales_amount'), 3) }}</x-th>
+                <x-th></x-th>
                 <x-th></x-th>
             </tr>
         </x-tfoot>

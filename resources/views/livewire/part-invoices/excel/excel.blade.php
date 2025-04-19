@@ -10,6 +10,7 @@
                 <th>{{ __('messages.discount') }}</th>
                 <th>{{ __('messages.cost_amount') }}</th>
                 <th>{{ __('messages.sales_amount') }}</th>
+                <th>{{ __('messages.notes') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                     <td>{{ $part_invoice->formated_discount_amount }}</td>
                     <td>{{ $part_invoice->formated_cost_amount }}</td>
                     <td>{{ $part_invoice->formated_sales_amount }}</td>
+                    <td>{{ $part_invoice->notes }}</td>
                 </tr>
             @endforeach
         </tbody>

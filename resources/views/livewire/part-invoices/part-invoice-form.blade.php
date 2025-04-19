@@ -62,6 +62,13 @@
                             <x-input-error for="form.sales_amount" />
                         </div>
 
+                        <div>
+                            <x-label for="notes">{{ __('messages.notes') }}</x-label>
+                            <x-input dir="rtl" class="w-full py-0" wire:model="form.notes" autocomplete="off"
+                                type="text" id="notes" />
+                            <x-input-error for="form.notes" />
+                        </div>
+
                     </div>
                     <div class="mt-3">
                         <x-button>{{ __('messages.save') }}</x-button>

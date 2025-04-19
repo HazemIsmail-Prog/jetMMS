@@ -17,6 +17,7 @@ class PartInvoiceForm extends Form
     public float $discount_amount = 0;
     public float $cost_amount = 0;
     public float $sales_amount = 0;
+    public string|null $notes = null;
 
     public function rules()
     {
@@ -30,6 +31,7 @@ class PartInvoiceForm extends Form
             'discount_amount' => 'required',
             'cost_amount' => 'required|numeric|gt:0',
             'sales_amount' => 'required',
+            'notes' => 'nullable',
         ];
     }
 

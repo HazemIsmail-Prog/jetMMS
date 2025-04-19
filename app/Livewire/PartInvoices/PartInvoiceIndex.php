@@ -51,6 +51,7 @@ class PartInvoiceIndex extends Component
     {
         $this->filters =
             [
+                'search' => '',
                 'start_date' => '',
                 'end_date' => '',
                 'technician_id' => [],
@@ -95,6 +96,9 @@ class PartInvoiceIndex extends Component
         return PartInvoice::query()
             ->with('supplier')
             ->with('contact')
+            ->when($this->filters['search'], function (Builder $q) {
+                $q->where('notes', 'like', '%' . $this->filters['search'] . '%');
+            })
             ->when($this->filters['technician_id'], function (Builder $q) {
                 $q->whereIn('contact_id', $this->filters['technician_id']);
             })
