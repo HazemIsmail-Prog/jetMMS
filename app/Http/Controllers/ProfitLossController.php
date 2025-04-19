@@ -19,7 +19,6 @@ class ProfitLossController extends Controller
             $accounts = Account::query()
                 ->select('id', 'name_ar', 'account_id')
                 ->whereIn('account_id', [176, 259, 283,383,198])
-                ->orderBy('name_ar')
                 ->get();
 
 

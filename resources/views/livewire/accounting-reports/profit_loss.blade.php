@@ -64,15 +64,15 @@
                 <tbody>
                     <x-tr>
                         <x-td>{{ __('messages.total_incomes') }}</x-td>
-                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[0].total)"></x-td>
+                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[0]?.total ?? 0)"></x-td>
                     </x-tr>
                     <x-tr>
                         <x-td>{{ __('messages.total_costs') }}</x-td>
-                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[1].total)"></x-td>
+                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[1]?.total ?? 0)"></x-td>
                     </x-tr>
                     <x-tr>
                         <x-td>{{ __('messages.total_expenses') }}</x-td>
-                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[2].total)"></x-td>
+                        <x-td class="text-right !w-[200px] !text-xs" x-text="roundAndFormatNumber(table_data[2]?.total ?? 0)"></x-td>
                     </x-tr>
                 </tbody>
                 <x-tfoot>
@@ -111,7 +111,6 @@
                         params: this.filters
                     })
                         .then(response => {
-                            console.log(response.data);
                             this.income_data = response.data.income_data;
                             this.cost_data = response.data.cost_data;
                             this.expense_data = response.data.expense_data;
@@ -132,18 +131,17 @@
                                     total: Object.values(this.expense_data).reduce((acc, curr) => acc + curr.total, 0)
                                 }
                             ];
-                            console.log(this.table_data);
                         }).finally(() => {
                             this.isLoading = false;
                         });
                 },
 
                 roundAndFormatNumber(value) {
-                    return value.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                    return value > 0 ? value.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : 0;
                 },
 
                 profitLoss() {
-                    let value = this.table_data[0].total - this.table_data[1].total - this.table_data[2].total;
+                    let value = this.table_data[0]?.total - this.table_data[1]?.total - this.table_data[2]?.total ?? 0;
                     return {
                         'profit': value > 0 ? value : 0,
                         'loss': value < 0 ? value : 0
