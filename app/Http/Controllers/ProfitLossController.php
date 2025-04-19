@@ -18,7 +18,7 @@ class ProfitLossController extends Controller
 
             $accounts = Account::query()
                 ->select('id', 'name_ar', 'account_id')
-                ->whereIn('account_id', [176, 259, 283])
+                ->whereIn('account_id', [176, 259, 283,383,198])
                 ->get();
 
 
@@ -31,7 +31,7 @@ class ProfitLossController extends Controller
                 ->get();
 
 
-                $income_accounts = $accounts->where('account_id', 176);
+                $income_accounts = $accounts->whereIn('account_id', [176,198]);
                 $income_voucher_details = $voucher_details->whereIn('account_id', $income_accounts->pluck('id'));
 
             $income_data = [];
@@ -45,7 +45,7 @@ class ProfitLossController extends Controller
 
 
 
-            $cost_accounts = $accounts->where('account_id', 259);
+            $cost_accounts = $accounts->whereIn('account_id', [259,383]);
             $cost_voucher_details = $voucher_details->whereIn('account_id', $cost_accounts->pluck('id'));
 
             $cost_data = [];
