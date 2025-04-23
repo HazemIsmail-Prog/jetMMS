@@ -92,6 +92,7 @@
                 <x-th>{{ __('messages.customer_name') }}</x-th>
                 <x-th>{{ __('messages.amount') }}</x-th>
                 <x-th>{{ __('messages.description') }}</x-th>
+                <x-th>{{ __('messages.created_at') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -102,6 +103,7 @@
                 <x-td>{{ $quotation->customer_name }}</x-td>
                 <x-td>{{ $quotation->amount }}</x-td>
                 <x-td>{{ $quotation->description }}</x-td>
+                <x-td>{{ $quotation->created_at->format('d/m/Y') }}</x-td>
 
                 <x-td>
                     <div class=" flex items-center justify-end gap-2">
