@@ -42,7 +42,8 @@ class QuotationIndex extends Component
         return Quotation::query()
             ->with('user:id,name_ar,name_en')
             ->withCount('attachments')
-            ->orderBy('quotation_number', 'desc')
+            // ->orderBy('quotation_number', 'desc')
+            ->latest()
 
             ->when($this->filters['customer_name'], function (Builder $q) {
                 $q->where('customer_name', 'like', '%' . $this->filters['customer_name'] . '%');
