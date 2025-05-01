@@ -178,6 +178,7 @@
                 <x-th>{{ __('messages.department') }}</x-th>
                 <x-th>{{ __('messages.technician') }}</x-th>
                 <x-th>{{ __('messages.completed_date') }}</x-th>
+                <x-th>{{ __('messages.cancel_reason') }}</x-th>
                 <x-th>{{ __('messages.customer') }}</x-th>
                 {{-- <x-th>{{ __('messages.remaining_amount') }}</x-th> --}}
                 <x-th></x-th>
@@ -209,6 +210,9 @@
                         $order->cancelled_at->format("d-m-Y") : '' )}}</div>
                     <div class="text-[0.7rem]">{{ $order->completed_at ? $order->completed_at->format("H:i") :
                         ($order->cancelled_at ? $order->cancelled_at->format("H:i") : '' )}}</div>
+                </x-td>
+                <x-td>
+                    {{ $order->reason }}
                 </x-td>
                 <x-td>
                     <div class=" flex items-start gap-1">

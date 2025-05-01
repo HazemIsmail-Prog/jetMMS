@@ -13,8 +13,10 @@ class CancelReasonModal extends Component
     public $showModal = false;
     public $modalTitle = '';
     public $modalDescription = '';
-    #[Rule('required|string|min:5')]
+    #[Rule('required|string')]
     public $reason = '';
+    #[Rule('required_if:reason,اسباب أخرى|string|min:5')]
+    public $otherReason = '';
     public Order $order;
 
     #[On('showCancelReasonModal')]
@@ -35,15 +37,16 @@ class CancelReasonModal extends Component
     public function save()
     {
         $this->validate();
+        $reason = $this->reason == 'اسباب أخرى' ? $this->reason . ' - ' . $this->otherReason : $this->reason;
         $this->order->technician_id = null;
         $this->order->status_id = Status::CANCELLED;
         $this->order->cancelled_at = now();
-        $this->order->reason = $this->reason;
+        $this->order->reason = $reason;
         $this->order->save();
-        $this->order->update(['reason' => null]);
+        // $this->order->update(['reason' => null]);
 
         $this->dispatch('holdOrCancelReasonUpdated');
-        $this->reset('reason', 'order');
+        $this->reset('reason', 'otherReason', 'order');
         $this->showModal = false;
     }
 

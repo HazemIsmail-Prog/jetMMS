@@ -708,6 +708,7 @@ return [
     'profit' => 'الربح',
     'loss' => 'الخسارة',
     'summary' => 'الملخص',
+    'cancel_reason' => 'سبب الالغاء',
 
 
 
