@@ -74,20 +74,25 @@
         </x-thead>
         <tbody>
             @foreach ($this->invoices as $invoice)
-            <x-tr wire:key="payment-{{$invoice->id}}-{{rand()}}">
+            @php
+                $amount = (round(($invoice->queryServicesAmount - $invoice->discount) + $invoice->delivery
+                + $invoice->queryPartsAmountFromDetails + $invoice->queryPartsAmountFromParts -
+                $invoice->queryPaymentsAmount,3));
+            @endphp
+            @if($amount > 0)
+                <x-tr wire:key="payment-{{$invoice->id}}-{{rand()}}">
 
-                <x-td>{!! $invoice->formated_created_at !!}</x-td>
-                <x-td> <a target="_blank" class="btn"
-                        href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{
-                        $invoice->formated_id }}</a>
-                </x-td>
-                <x-td>{{ $invoice->order_number }}</x-td>
-                <x-td>{{ $invoice->department_name }}</x-td>
-                <x-td>{{ $invoice->technician_name }}</x-td>
-                <x-td>{{ number_format((round(($invoice->queryServicesAmount - $invoice->discount) + $invoice->delivery
-                    + $invoice->queryPartsAmountFromDetails + $invoice->queryPartsAmountFromParts -
-                    $invoice->queryPaymentsAmount,3)),3) }}</x-td>
-            </x-tr>
+                    <x-td>{!! $invoice->formated_created_at !!}</x-td>
+                    <x-td> <a target="_blank" class="btn"
+                            href="{{ route('invoice.detailed_pdf', encrypt($invoice->id)) }}">{{
+                            $invoice->formated_id }}</a>
+                    </x-td>
+                    <x-td>{{ $invoice->order_number }}</x-td>
+                    <x-td>{{ $invoice->department_name }}</x-td>
+                    <x-td>{{ $invoice->technician_name }}</x-td>
+                    <x-td>{{ number_format($amount,3) }}</x-td>
+                </x-tr>
+            @endif
             @endforeach
         </tbody>
         <x-tfoot>
