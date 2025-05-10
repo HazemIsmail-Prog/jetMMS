@@ -53,7 +53,12 @@ class PartInvoiceForm extends Component
         $this->modalTitle = $this->part_invoice->id ? __('messages.edit_part_invoice') . ' ' . $this->part_invoice->id : __('messages.add_part_invoice');
         $this->form->fill($this->part_invoice);
         if(!$this->form->id){
-            $this->form->date = today()->format('Y-m-d');
+            // if the current time is 3:59 am, set the date to yesterday else set it to today
+            if(now()->hour < 3 || (now()->hour == 3 && now()->minute < 59)){
+                $this->form->date = today()->subDay()->format('Y-m-d');
+            }else{
+                $this->form->date = today()->format('Y-m-d');
+            }
         }
     }
 

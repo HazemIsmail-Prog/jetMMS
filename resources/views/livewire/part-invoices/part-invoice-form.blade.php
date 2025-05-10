@@ -19,7 +19,7 @@
                         </div>
                         <div>
                             <x-label for="date">{{ __('messages.date') }}</x-label>
-                            <x-input required class="w-full py-0" wire:model="form.date" autocomplete="off"
+                            <x-input required readonly class="w-full py-0" wire:model="form.date" autocomplete="off"
                                 type="date" id="date" />
                             <x-input-error for="form.date" />
                         </div>
