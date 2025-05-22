@@ -25,13 +25,13 @@
                         <div>
                             <x-label for="min_price">{{ __('messages.min_price') }}</x-label>
                             <x-input required class="w-full py-0" wire:model="form.min_price" autocomplete="off"
-                                type="number" id="min_price" />
+                                type="number" step="0.01" id="min_price" />
                             <x-input-error for="form.min_price" />
                         </div>
                         <div>
                             <x-label for="max_price">{{ __('messages.max_price') }}</x-label>
                             <x-input required class="w-full py-0" wire:model="form.max_price" autocomplete="off"
-                                type="number" id="max_price" />
+                                type="number" step="0.01" id="max_price" />
                             <x-input-error for="form.max_price" />
                         </div>
                         <div>
