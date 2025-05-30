@@ -86,14 +86,14 @@
                                                 <x-svgs.view class="w-4 h-4" />
                                             </x-badgeWithCounter>
                                         </a>
-                                        <template x-if="selectedModel.can_update_attachment">
+                                        <template x-if="selectedModel?.can_update_attachment">
                                             <x-badgeWithCounter
                                                 title="{{ __('messages.edit') }}"
                                                 @click="$dispatch('open-attachment-form-modal',{modelId: selectedModelId, type: selectedModelType, attachment: attachment})">
                                                 <x-svgs.edit class="w-4 h-4" />
                                             </x-badgeWithCounter>
                                         </template>
-                                        <template x-if="selectedModel.can_delete_attachment">
+                                        <template x-if="selectedModel?.can_delete_attachment">
                                             <x-badgeWithCounter wire:confirm="{{ __('messages.are_u_sure') }}"
                                                 title="{{ __('messages.delete') }}"
                                                 @click="deleteAttachment(attachment.id)">
