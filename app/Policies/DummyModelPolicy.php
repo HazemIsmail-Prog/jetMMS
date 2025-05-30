@@ -201,6 +201,7 @@ class DummyModelPolicy
         return
             $user->hasPermission('company_contracts_menu')
             || $user->hasPermission('company_budgets_menu')
+            || $user->hasPermission('letters_menu')
             // || Add More if Needed
         ;
     }
