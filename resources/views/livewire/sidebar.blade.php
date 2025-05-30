@@ -216,6 +216,10 @@
             @can('viewAny', App\Models\CompanyBudget::class)
                 <x-sidebar-item icon="truck" route="company_budget.index" :title="__('messages.company_budgets')" />
             @endcan
+            @can('viewAny', App\Models\Letter::class)
+                <x-sidebar-item icon="document-text" route="letters.index" :title="__('messages.letters')" />
+            @endcan
+
 
 
 

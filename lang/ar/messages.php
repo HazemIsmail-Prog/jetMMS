@@ -710,7 +710,30 @@ return [
     'summary' => 'الملخص',
     'cancel_reason' => 'سبب الالغاء',
 
-
-
-
+    'letters' => 'المراسلات',
+    'select_type' => 'اختر النوع',
+    'incoming' => 'وارد',
+    'outgoing' => 'صادر',
+    'reference' => 'المرجع',
+    'subject' => 'الموضوع',
+    'sender' => 'المرسل',
+    'receiver' => 'المستلم',
+    'date' => 'التاريخ',
+    'type' => 'النوع',
+    'delete' => 'حذف',
+    'type_required' => 'يجب اختيار نوع المراسلة',
+    'sender_required' => 'يجب ادخال المرسل',
+    'receiver_required' => 'يجب ادخال المستلم',
+    'subject_required' => 'يجب ادخال الموضوع',
+    'edit_letter' => 'تعديل المراسلة',
+    'add_letter' => 'اضافة مراسلة',
+    'load_more' => 'تحميل المزيد',
+    'no_attachments' => 'لا يوجد مرفقات',
+    'description_ar_required' => 'يجب ادخال الوصف بالعربي',
+    'description_en_required' => 'يجب ادخال الوصف بالانجليزي',
+    'file_required' => 'يجب ادخال الملف',
+    'file_file' => 'يجب ان يكون الملف ملف',
+    'file_mimes' => 'يجب ان يكون الملف من نوع pdf,doc,docx,xls,xlsx,ppt,pptx',
+    'edit_attachment' => 'تعديل مرفق',
+    
 ];

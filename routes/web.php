@@ -22,6 +22,7 @@ use App\Livewire\Companies\CompanyIndex;
 use App\Livewire\Companies\Contracts\ContractIndex as ContractsContractIndex;
 use App\Livewire\Contracts\ContractIndex;
 use App\Livewire\CostCenters\CostCenterIndex;
+use App\Http\Controllers\LetterController;
 use App\Livewire\CustomerPage;
 use App\Livewire\Customers\CustomerIndex;
 use App\Livewire\Departments\DepartmentIndex;
@@ -83,6 +84,7 @@ use App\Models\Voucher;
 use App\Policies\ContractPolicy;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfitLossController;
+use App\Http\Controllers\AttachmentController;
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
 Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
@@ -117,6 +119,9 @@ Route::middleware([
         Route::get('/departmentTechnicianCounter',[DashboardController::class,'departmentTechnicianCounter']);
 
         Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
+
+
+        Route::apiResource('attachments', AttachmentController::class);
 
         // ========== Operations ==========
         Route::get('customers', CustomerIndex::class)
@@ -278,6 +283,9 @@ Route::middleware([
         Route::get('company_budgets', BudgetIndex::class)
             ->name('company_budget.index')
             ->can('viewAny', CompanyBudget::class);
+
+        Route::apiResource('letters', LetterController::class);
+
 
         // ========== Admin Settings ==========
         Route::get('suppliers', SupplierIndex::class)
