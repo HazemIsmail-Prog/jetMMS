@@ -201,7 +201,6 @@
                 },
                 refreshRowById(event) {
                     const id = event.detail;
-                    console.log(id);
                     const index = this.letters.findIndex(l => l.id === id);
                     if (index !== -1) {
                         axios.get(`/letters/${id}`)
