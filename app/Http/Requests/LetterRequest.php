@@ -11,7 +11,7 @@ class LetterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('create', Letter::class) || auth()->user()->can('update', Letter::class);
+        return true;
     }
 
     /**
