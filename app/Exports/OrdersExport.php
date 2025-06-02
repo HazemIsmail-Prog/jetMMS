@@ -42,7 +42,7 @@ class OrdersExport implements FromView, WithTitle, ShouldAutoSize, WithStyles,Sh
         if (app()->getLocale() == 'ar') {
             $sheet->setRightToLeft(true);
         }
-        $sheet->setAutoFilter('A1:N1');
+        $sheet->setAutoFilter('A1:O1');
 
         return [
             // Style the first row as bold text.
