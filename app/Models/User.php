@@ -191,7 +191,7 @@ class User extends Authenticatable
         // return false;
 
 
-        $permissions = $this->roles->flatMap(function($role) {
+        $permissions = $this->roles->load('permissions')->flatMap(function($role) {
             return $role->permissions->pluck('name');
         });
 
