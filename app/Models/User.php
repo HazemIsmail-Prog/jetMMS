@@ -165,27 +165,38 @@ class User extends Authenticatable
         return $this->hasManyMerged(Message::class, ['sender_user_id', 'receiver_user_id']);
     }
 
-    public function permissions()
-    {
-        $permissionList = [];
+    // public function permissions()
+    // {
+    //     $permissionList = [];
 
-        foreach ($this->roles as $role) {
-            foreach ($role->load('permissions')->permissions as $permission) {
-                if (!in_array($permission->name, $permissionList)) {
-                    $permissionList[] = $permission->name;
-                }
-            }
-        }
+    //     foreach ($this->roles as $role) {
+    //         foreach ($role->load('permissions')->permissions as $permission) {
+    //             if (!in_array($permission->name, $permissionList)) {
+    //                 $permissionList[] = $permission->name;
+    //             }
+    //         }
+    //     }
 
-        return $permissionList;
-    }
+    //     return $permissionList;
+    // }
 
     public function hasPermission($permission)
     {
-        if ($this->permissions()) {
-            if (in_array($permission, $this->permissions())) {
-                return true;
-            }
+        // if ($this->permissions()) {
+        //     if (in_array($permission, $this->permissions())) {
+        //         return true;
+        //     }
+        // }
+
+        // return false;
+
+
+        $permissions = $this->roles->flatMap(function($role) {
+            return $role->permissions->pluck('name');
+        });
+
+        if ($permissions->contains($permission)) {
+            return true;
         }
 
         return false;
