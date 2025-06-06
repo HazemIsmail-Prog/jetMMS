@@ -30,4 +30,12 @@ class Role extends Model
             return $this->name_en ?? $this->name_ar;
         }
     }
+
+    public function clearPermissionCache()
+    {
+        // clear cache for all users in this role
+        foreach ($this->users as $user) {
+            $user->clearPermissionCache();
+        }
+    }
 }

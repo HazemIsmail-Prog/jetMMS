@@ -1,12 +1,17 @@
 @props(['route', 'param' => null, 'title', 'icon'])
 
 @php
+
     if ($param) {
-        $active = request()->is(explode('.', $route)[0] . '/' . $param);
+
+        $currentParam = collect(request()->route()->parameters())->first()->id ?? null;
+        $active = request()->route()->getName() == $route && $param == $currentParam;
     } else {
         $active = request()->route()->getName() == $route;
     }
+
 @endphp
+
 
 <li class="px-3 py-2 rounded-lg mb-0.5 last:mb-0 @if ($active) {{ 'bg-slate-900' }} @endif">
     <a wire:navigate class="block truncate transition duration-150" href="{{ route($route, $param) }}">

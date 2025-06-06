@@ -14,6 +14,7 @@ use Korridor\LaravelHasManyMerged\HasManyMergedRelation;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\PermissionService;
 
 class User extends Authenticatable
 {
@@ -124,32 +125,6 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'technician_id');
     }
 
-    // this function to prevent eager loading for get attributes
-    // public function newQuery($excludeDeleted = true)
-    // {
-    //     return parent::newQuery($excludeDeleted)->with([
-    //         'orders_technician',
-    //     ]);
-    // }
-
-    // public function getTodaysCompletedOrdersCountAttribute()
-    // {
-
-    //     return Order::query()
-    //         ->where('technician_id', $this->id)
-    //         ->where('status_id', Status::COMPLETED)
-    //         ->whereDate('completed_at', today())
-    //         ->count();
-    // }
-
-    // public function getCurrentOrdersCountAttribute()
-    // {
-    //     return Order::query()
-    //         ->where('technician_id', $this->id)
-    //         ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
-    //         ->count();
-    // }
-
     public function orders_creator()
     {
         return $this->hasMany(Order::class, 'created_by');
@@ -165,44 +140,20 @@ class User extends Authenticatable
         return $this->hasManyMerged(Message::class, ['sender_user_id', 'receiver_user_id']);
     }
 
-    // public function permissions()
-    // {
-    //     $permissionList = [];
-
-    //     foreach ($this->roles as $role) {
-    //         foreach ($role->load('permissions')->permissions as $permission) {
-    //             if (!in_array($permission->name, $permissionList)) {
-    //                 $permissionList[] = $permission->name;
-    //             }
-    //         }
-    //     }
-
-    //     return $permissionList;
-    // }
+    public function permissions()
+    {
+        return app(PermissionService::class)->getUserPermissions($this);
+    }
 
     public function hasPermission($permission)
     {
-        // if ($this->permissions()) {
-        //     if (in_array($permission, $this->permissions())) {
-        //         return true;
-        //     }
-        // }
-
-        // return false;
-
-
-        $permissions = $this->roles->load('permissions')->flatMap(function($role) {
-            return $role->permissions->pluck('name');
-        });
-
-        if ($permissions->contains($permission)) {
-            return true;
-        }
-
-        return false;
+        return app(PermissionService::class)->hasPermission($this, $permission);
     }
 
-
+    public function clearPermissionCache()
+    {
+        app(PermissionService::class)->clearUserPermissionsCache($this);
+    }
 
     public function getNameAttribute()
     {

@@ -26,5 +26,6 @@ class RoleForm extends Form
         $this->validate();
         $role = Role::updateOrCreate(['id' => $this->id], $this->except('permissions'));
         $role->permissions()->sync($this->permissions);
+        $role->clearPermissionCache();
     }
 }
