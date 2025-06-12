@@ -125,7 +125,7 @@
 
     {{-- Discount Button --}}
     <!-- if the invoice is in same day, show the discount button -->
-    @if ($invoice->can_apply_discount)
+    @if ($invoice->can_apply_discount && $invoice->created_at->isToday())
         <div class=" text-center">
             <x-button type="button"
                 wire:click="$dispatch('showDiscountFormModal',{invoice:{{ $invoice }}})">{{ __('messages.edit_discount') }}</x-button>
