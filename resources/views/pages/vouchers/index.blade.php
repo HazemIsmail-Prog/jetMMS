@@ -67,10 +67,14 @@
             <tbody>
                 <template x-for="voucher in vouchers" :key="voucher.id">
                     <x-tr>
-                        <x-td x-text="voucher.id"></x-td>
+                        <x-td 
+                            @dblclick="voucher.can_edit ? $dispatch('open-voucher-form-modal', {voucher: voucher}) : null" 
+                            x-text="voucher.id"
+                            class="cursor-pointer select-none"
+                        ></x-td>
                         <x-td x-text="voucher.manual_id"></x-td>
                         <x-td x-text="voucher.formatted_date"></x-td>
-                        <x-td x-text="voucher.notes"></x-td>
+                        <x-td class="!whitespace-normal" x-text="voucher.notes"></x-td>
                         <x-td x-text="formatNumber(voucher.amount)"></x-td>
                         <x-td x-text="voucher.creator.name"></x-td>
                         <x-td>
@@ -82,12 +86,6 @@
                                     >
                                         <x-svgs.attachment class="h-4 w-4" />
                                         <span x-show="voucher.attachments_count > 0" style="font-size: 0.6rem;" x-text="voucher.attachments_count"></span>
-                                    </x-badgeWithCounter>
-                                </template>
-                                <template x-if="voucher.can_edit">
-                                    <x-badgeWithCounter  title="{{ __('messages.edit') }}"
-                                        @click="$dispatch('open-voucher-form-modal', {voucher: voucher})">
-                                        <x-svgs.edit class="h-4 w-4" />
                                     </x-badgeWithCounter>
                                 </template>
                                 <template x-if="voucher.can_create">
