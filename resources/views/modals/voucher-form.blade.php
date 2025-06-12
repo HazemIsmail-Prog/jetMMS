@@ -314,6 +314,11 @@
                     const totalDebit = parseFloat(this.totalDebit);
                     const totalCredit = parseFloat(this.totalCredit);
 
+                    console.log('totalDebit before parseFloat', this.totalDebit);
+                    console.log('totalCredit before parseFloat', this.totalCredit);
+                    console.log('totalDebit after parseFloat', totalDebit);
+                    console.log('totalCredit after parseFloat', totalCredit);
+
                     if (totalDebit === 0 || totalCredit === 0) {
                         alert('Total debit and credit amounts cannot be zero');
                         return false;
