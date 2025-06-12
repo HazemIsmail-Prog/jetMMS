@@ -85,6 +85,7 @@ use App\Policies\ContractPolicy;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\VoucherController;
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
 Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
@@ -246,9 +247,15 @@ Route::middleware([
             ->can('viewAny', Invoice::class);
 
         // Vouchers
-        Route::get('vouchers', VoucherIndex::class)
-            ->name('voucher.index')
-            ->can('viewAny', Voucher::class);
+        Route::get('vouchers', [VoucherController::class,'index'])->name('vouchers.index');
+        Route::post('vouchers', [VoucherController::class,'store']);
+        Route::put('vouchers/{voucher}', [VoucherController::class,'update']);
+        Route::get('getVoucherDetails/{voucher}', [VoucherController::class,'getVoucherDetails']);
+
+        // Vouchers (old with Livewire)
+        // Route::get('vouchers', VoucherIndex::class)
+        //     ->name('voucher.index')
+        //     ->can('viewAny', Voucher::class);
 
 
         // ========== HR ==========

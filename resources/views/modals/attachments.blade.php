@@ -2,7 +2,7 @@
 <div 
     x-data="attachmentsComponent" 
     x-show="showModal"
-    x-on:open-attachment-index-modal.window="openModal($event.detail)" 
+    x-on:open-attachment-index-modal.window="openModal" 
     x-on:attachments-updated.window="getAttachments"
     x-on:close.stop="hideModal" 
     x-on:keydown.escape.window="hideModal" 
@@ -131,10 +131,10 @@
                     alert(error.response.data.message);
                 });
         },
-        openModal(detail) {
-            this.selectedModel = detail.model;
-            this.selectedModelId = detail.model.id;
-            this.selectedModelType = detail.type;
+        openModal(e) {
+            this.selectedModel = e.detail.model;
+            this.selectedModelId = e.detail.model.id;
+            this.selectedModelType = e.detail.type;
             this.getAttachments();
             this.showModal = true;
         },
@@ -149,8 +149,8 @@
             if (confirm('{{ __('messages.are_u_sure') }}')) {
                 axios.delete(`/attachments/${id}`)
                     .then(response => {
-                        this.getAttachments();
                         this.$dispatch('attachments-updated', this.selectedModelId);
+                        this.$dispatch('attachments-count-updated', {modelId: this.selectedModelId, method: 'delete'});
                     })
                     .catch(error => {
                         alert(error.response.data.message);

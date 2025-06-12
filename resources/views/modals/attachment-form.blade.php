@@ -204,6 +204,9 @@
                     })
                     .then(response => {
                         this.$dispatch('attachments-updated', this.selectedModelId);
+                        if(method === 'post') {
+                            this.$dispatch('attachments-count-updated', {modelId: this.selectedModelId, method: 'create'});
+                        }
                         this.hideModal();
                     })
                     .catch(error => {

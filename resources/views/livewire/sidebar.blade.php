@@ -120,7 +120,7 @@
                 <x-sidebar-item icon="bars-3-bottom-left" route="account.index" :title="__('messages.accounts')" />
             @endcan
             @can('viewAny', App\Models\Voucher::class)
-                <x-sidebar-item icon="document-text" route="voucher.index" :title="__('messages.journal_vouchers')" />
+                <x-sidebar-item icon="document-text" route="vouchers.index" :title="__('messages.journal_vouchers')" />
             @endcan
             @can('accounting_reports', App\Models\DummyModel::class)
                 <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">

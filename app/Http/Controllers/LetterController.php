@@ -22,7 +22,7 @@ class LetterController extends Controller
                 ->paginate(30);
             return LetterResource::collection($letters);
         }
-        return view('livewire.letters.index');
+        return view('pages.letters.index');
     }
 
     public function store(LetterRequest $request)

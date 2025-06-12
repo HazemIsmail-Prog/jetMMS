@@ -1,9 +1,11 @@
 <div>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight truncate">
-            {{ $department->name }}
-            <span id="counter"></span>
-        </h2>
+        <div class="flex items-center gap-2">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ $department->name }}
+            </h2>
+            <div id="counter"></div>
+        </div>
     </x-slot>
 
     @livewire('orders.cancel-reason-modal')

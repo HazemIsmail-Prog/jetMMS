@@ -5,9 +5,13 @@
         </h2>
     </x-slot>
 
+
+    @include('modals.attachments')
+    @include('modals.attachment-form')
+
     <div
         x-data="lettersComponent"
-        x-on:attachments-updated="refreshRowById"
+        x-on:attachments-count-updated.window="updateAttachmentsCount"
     >
         <div class="flex justify-end mb-4">
             <x-select class="w-full max-w-xs" x-model="filters.type">
@@ -167,14 +171,6 @@
                 </form>
             </div>
         </div>
-
-
-        <x-attachment-modal />
-        <x-attachment-form-modal />
-
-
-
-
     </div>
 
 
@@ -199,16 +195,7 @@
                         this.getLetters(1);
                     });
                 },
-                refreshRowById(event) {
-                    const id = event.detail;
-                    const index = this.letters.findIndex(l => l.id === id);
-                    if (index !== -1) {
-                        axios.get(`/letters/${id}`)
-                            .then(response => {
-                                this.letters[index] = response.data.data;
-                            });
-                    }
-                },
+
                 getEmptyForm() {
                     return {
                         type: '',
@@ -286,6 +273,20 @@
                     if (this.currentPage == this.lastPage) return;                    
                     this.currentPage = (this.currentPage || 1) + 1;
                     this.getLetters(this.currentPage);
+                },
+                updateAttachmentsCount(e) {
+                    if(e.detail.method === 'delete') {
+                        const index = this.letters.findIndex(letter => letter.id === e.detail.modelId);
+                        if(index !== -1) {
+                            this.letters[index].attachments_count--;
+                        }
+                    }
+                    if(e.detail.method === 'create') {
+                        const index = this.letters.findIndex(letter => letter.id === e.detail.modelId);
+                        if(index !== -1) {
+                            this.letters[index].attachments_count++;
+                        }
+                    }
                 }
             }
         }
