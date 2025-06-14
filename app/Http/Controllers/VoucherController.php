@@ -102,8 +102,8 @@ class VoucherController extends Controller
             }
 
             // add to total debit and credit
-            $total_debit += $detail['debit'];
-            $total_credit += $detail['credit'];
+            $total_debit += (float)$detail['debit'];
+            $total_credit += (float)$detail['credit'];
         }
 
         // check if total debit and credit are not 0
@@ -111,8 +111,12 @@ class VoucherController extends Controller
             return response()->json(['error' => 'total debit and credit must be greater than 0'], 400);
         }
 
+        // Format numbers to 3 decimal places for comparison
+        $total_debit = round($total_debit, 3);
+        $total_credit = round($total_credit, 3);
+
         // check if total debit is not equal to total credit
-        if($total_debit != $total_credit) {
+        if(abs($total_debit - $total_credit) > 0.001) {
             return response()->json(['error' => 'total debit must be equal to total credit'], 400);
         }
 
@@ -167,8 +171,8 @@ class VoucherController extends Controller
             }
 
             // add to total debit and credit
-            $total_debit += $detail['debit'];
-            $total_credit += $detail['credit'];
+            $total_debit += (float)$detail['debit'];
+            $total_credit += (float)$detail['credit'];
         }
 
         // check if total debit and credit are not 0
@@ -176,8 +180,12 @@ class VoucherController extends Controller
             return response()->json(['error' => 'total debit and credit must be greater than 0'], 400);
         }
 
+        // Format numbers to 3 decimal places for comparison
+        $total_debit = round($total_debit, 3);
+        $total_credit = round($total_credit, 3);
+
         // check if total debit is not equal to total credit
-        if($total_debit != $total_credit) {
+        if(abs($total_debit - $total_credit) > 0.001) {
             return response()->json(['error' => 'total debit must be equal to total credit'], 400);
         }
 
