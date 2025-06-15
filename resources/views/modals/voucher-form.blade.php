@@ -249,7 +249,7 @@
                             account_id: null,
                             cost_center_id: null,
                             user_id: null,
-                            narration: null,
+                            narration: this.form.notes,
                             debit: null,
                             credit: null,
                         });
