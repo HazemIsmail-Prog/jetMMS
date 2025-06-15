@@ -146,7 +146,6 @@ class VoucherController extends Controller
 
         $validated_voucher_details_data = $request->validate([
             'details' => 'required|array',
-            'details.*.id' => 'nullable|exists:voucher_details,id',
             'details.*.account_id' => 'required|exists:accounts,id',
             'details.*.cost_center_id' => 'nullable|exists:cost_centers,id',
             'details.*.user_id' => 'nullable|exists:users,id',
