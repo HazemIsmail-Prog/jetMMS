@@ -1,6 +1,7 @@
 <div 
     x-data="voucherFormModal"
     x-on:open-voucher-form-modal.window="openModal"
+    x-on:keydown.window="if($event.ctrlKey && $event.key === '/') addRow(1)"
 >
     <!-- Modal -->
     <div x-on:close.stop="hideModal" x-on:keydown.escape.window="dismissible ? hideModal() : null" x-show="showModal"
@@ -154,11 +155,12 @@
                             </template>
 
                             <!-- Add Entry Button -->
-                            <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
                                 <button type="button" @click="addRow(1)" class="inline-flex items-center px-4 py-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
                                     <x-svgs.plus class="w-5 h-5 mr-2 text-gray-400" />
                                     <span class="text-gray-600 dark:text-gray-400">{{ __('messages.add_line') }}</span>
                                 </button>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Press Ctrl + / to add a new line</span>
                             </div>
                         </div>
 
