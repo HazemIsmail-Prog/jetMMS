@@ -103,7 +103,7 @@
                                     </div>
                                     <!-- end area searchable select -->
                                 </template>
-                                <template x-if="selectedCustomer && inProgressOrders?.length > 0">
+                                <template x-if="inProgressOrders?.length > 0">
                                     <p class="text-sm text-yellow-800 dark:text-yellow-300" x-text="`{{ __('messages.Duplicate Order', ['department' => '${getDepartmentName(form.department_id)}']) }}`"></p>
                                 </template>
                             </div>
@@ -267,7 +267,7 @@
                 },
 
                 getDepartmentName(id) {
-                    return this.departments.find(department => department.id == id).name;
+                    return this.departments.find(department => department.id == id)?.name || '';
                 },
             }
         }
