@@ -56,7 +56,7 @@
                     </template>
 
                     <template x-if="selectedOrder.view_order_invoices">
-                        <template x-if="selectedOrder.status_id == 4 || selectedOrder.status_id == 7">
+                        <template x-if="selectedOrder?.status_id == 4 || selectedOrder?.status_id == 7">
                             @include('includes.order-invoices-section')
                         </template>
                     </template>
