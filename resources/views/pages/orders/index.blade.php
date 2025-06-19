@@ -10,19 +10,10 @@
     </x-slot>
 
     @include('modals.single-order')
-    <!-- cutomer form modal -->
     @include('modals.customer-form')
-
-    <!-- order form modal -->
     @include('modals.order-form')
-
-    <!-- invoice form modal -->
     @include('modals.invoice-form')
-
-    <!-- discount form modal -->
     @include('modals.discount-form')
-
-    <!-- payment form modal -->
     @include('modals.payment-form')
 
 
@@ -365,16 +356,6 @@
                                     <x-svgs.list class="h-4 w-4" />
                                 </x-badgeWithCounter>
                             </template>
-
-                            <!-- <template x-if="order.can_cancel_order">
-                                <x-badgeWithCounter 
-                                    class="hover:bg-red-100 dark:hover:bg-red-900/30"
-                                    @click="$dispatch('showCancelReasonModal',{order:order})">
-                                    <x-svgs.trash class="h-3 w-3" />
-                                </x-badgeWithCounter>
-                            </template> -->
-
-
                         </div>
                     </div>
                 </div>
@@ -386,25 +367,159 @@
         <div class="flex justify-center mt-4" x-show="currentPage < lastPage">
             <x-button @click="loadMore">{{__('messages.load_more')}}</x-button>
         </div>
-        
-        <script>
-            function ordersComponent() {
-                return {
-                    loading: false,
-                    exporting: false,
-                    maxExportSize: 5000,
-                    orders: [],
-                    areas: @js($globalAreasResource),
-                    statuses: @js($globalStatusesResource),
-                    departments: @js($departments),
-                    technicians: @js($technicians),
-                    creators: @js($creators),
-                    showModal: false,
-                    currentPage: 1,
-                    lastPage: 1,
-                    totalRecords: 0,
-                    showFilters: false,
-                    filters: {
+
+    </div>
+
+    <script>
+        function ordersComponent() {
+            return {
+                loading: false,
+                exporting: false,
+                maxExportSize: 5000,
+                orders: [],
+                areas: @js($globalAreasResource),
+                statuses: @js($globalStatusesResource),
+                departments: @js($departments),
+                technicians: @js($technicians),
+                creators: @js($creators),
+                showModal: false,
+                currentPage: 1,
+                lastPage: 1,
+                totalRecords: 0,
+                showFilters: false,
+                filters: {
+                    customer_name: '',
+                    customer_phone: '',
+                    area_ids: [],
+                    block: '',
+                    street: '',
+                    jadda: '',
+                    building: '',
+                    order_number: '',
+                    creator_ids: [],
+                    status_ids: [],
+                    technician_ids: [],
+                    department_ids: [],
+                    tags: '',
+                    start_created_at: '',
+                    end_created_at: '',
+                    start_completed_at: '',
+                    end_completed_at: '',
+                    start_cancelled_at: '',
+                    end_cancelled_at: '',
+                },
+                init() {
+                    axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
+                    this.$watch('filters', () => {
+                        // this will run also when the page is loaded
+                        this.getOrders(1);
+                    });
+                    this.initListeners();
+                },
+
+                formatNumber(number) {
+                    if(number > 0) {
+                        return number.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+                    }
+                    return '-';
+                },
+
+                getInvoicesRemainingBalance(order) {
+                    return order.invoices.reduce((acc, invoice) => acc + invoice.remaining_balance, 0);
+                },
+
+                getDepartmentNameById(id) {
+                    return this.departments.find(department => department.id === id)?.name;
+                },
+
+                getTechnicianNameById(id) {
+                    return this.technicians.find(technician => technician.id === id)?.name;
+                },
+
+                getCreatorNameById(id) {
+                    return this.creators.find(creator => creator.id === id)?.name;
+                },
+
+                getStatusNameById(id) {
+                    return this.statuses.find(status => status.id === id)?.name;
+                },
+
+                getStatusColorById(id) {
+                    return this.statuses.find(status => status.id === id)?.color;
+                },
+
+                openOrderModal(order) {
+                    this.$dispatch('order-selected', {order: order});
+                },
+
+
+                getOrders(page=1) {
+                    this.loading = true;
+                    axios.get('/orders?page=' + page, {params: this.filters})
+                        .then(response => {
+                            if (page === 1) {
+                                this.orders = [];
+                                this.orders = response.data.data;
+                            } else {
+                                this.orders = [...this.orders, ...response.data.data];
+                            }
+                            this.currentPage = response.data.meta.current_page;
+                            this.lastPage = response.data.meta.last_page;
+                            this.totalRecords = response.data.meta.total;
+                        })
+
+                        .catch(error => {
+                            alert(error.response.data.message);
+                        })                        
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                },
+
+                loadMore() {
+                    if (this.currentPage == this.lastPage || this.loading) return;                    
+                    this.currentPage = (this.currentPage || 1) + 1;
+                    this.getOrders(this.currentPage);
+                },
+
+                handleOrderUpdatedEvent(e) {
+                    const index = this.orders.findIndex(order => order.id === e.detail.order.id);
+                    if(index !== -1) {
+                        this.orders[index] = e.detail.order;
+                    }
+                },
+
+                handleOrderCreatedEvent(e) {
+                    this.orders.unshift(e.detail.order);
+                },
+
+                async getOrderResource(orderId) {
+                    const response = await axios.get(`/orders/${orderId}`);
+                    return response.data.data;
+                },
+                
+                initListeners() {
+                    var channel = Echo.channel('orders');
+                    channel.listen('OrderCreatedEvent', async (data) => {
+                        const orderResource = await this.getOrderResource(data.order.id);
+                        this.orders.unshift(orderResource);
+                        this.totalRecords++;
+                    });
+                    channel.listen('OrderUpdatedEvent', async (data) => {
+                        const index = this.orders.findIndex(order => order.id === data.order.id);
+                        if (index !== -1) {
+                            const orderResource = await this.getOrderResource(data.order.id);
+                            this.orders[index] = orderResource;
+                        }
+                    });
+                },
+
+                checkFilters() {
+                    return Object.values(this.filters).every(value => value === '');
+                },
+
+                resetFilters() {
+                    this.filters = {
                         customer_name: '',
                         customer_phone: '',
                         area_ids: [],
@@ -424,173 +539,40 @@
                         end_completed_at: '',
                         start_cancelled_at: '',
                         end_cancelled_at: '',
-                    },
-                    init() {
-                        axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
-                        this.$watch('filters', () => {
-                            // this will run also when the page is loaded
-                            this.getOrders(1);
-                        });
-                        this.initListeners();
-                    },
+                    };
+                    this.getOrders(1);
+                },
 
-                    formatNumber(number) {
-                        if(number > 0) {
-                            return number.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-                        }
-                        return '-';
-                    },
-
-                    getInvoicesRemainingBalance(order) {
-                        return order.invoices.reduce((acc, invoice) => acc + invoice.remaining_balance, 0);
-                    },
-
-                    getDepartmentNameById(id) {
-                        return this.departments.find(department => department.id === id)?.name;
-                    },
-
-                    getTechnicianNameById(id) {
-                        return this.technicians.find(technician => technician.id === id)?.name;
-                    },
-
-                    getCreatorNameById(id) {
-                        return this.creators.find(creator => creator.id === id)?.name;
-                    },
-
-                    getStatusNameById(id) {
-                        return this.statuses.find(status => status.id === id)?.name;
-                    },
-
-                    getStatusColorById(id) {
-                        return this.statuses.find(status => status.id === id)?.color;
-                    },
-
-                    openOrderModal(order) {
-                        this.$dispatch('order-selected', {order: order});
-                    },
-
-
-                    getOrders(page=1) {
-                        this.loading = true;
-                        axios.get('/orders?page=' + page, {params: this.filters})
-                            .then(response => {
-                                if (page === 1) {
-                                    this.orders = [];
-                                    this.orders = response.data.data;
-                                } else {
-                                    this.orders = [...this.orders, ...response.data.data];
-                                }
-                                this.currentPage = response.data.meta.current_page;
-                                this.lastPage = response.data.meta.last_page;
-                                this.totalRecords = response.data.meta.total;
-                            })
-
-                            .catch(error => {
-                                alert(error.response.data.message);
-                            })                        
-                            .finally(() => {
-                                this.loading = false;
-                            });
-                    },
-
-                    loadMore() {
-                        if (this.currentPage == this.lastPage || this.loading) return;                    
-                        this.currentPage = (this.currentPage || 1) + 1;
-                        this.getOrders(this.currentPage);
-                    },
-
-                    handleOrderUpdatedEvent(e) {
-                        const index = this.orders.findIndex(order => order.id === e.detail.order.id);
-                        if(index !== -1) {
-                            this.orders[index] = e.detail.order;
-                        }
-                    },
-
-                    handleOrderCreatedEvent(e) {
-                        this.orders.unshift(e.detail.order);
-                    },
-
-                    async getOrderResource(orderId) {
-                        const response = await axios.get(`/orders/${orderId}`);
-                        return response.data.data;
-                    },
-                    
-                    initListeners() {
-                        var channel = Echo.channel('orders');
-                        channel.listen('OrderCreatedEvent', async (data) => {
-                            const orderResource = await this.getOrderResource(data.order.id);
-                            this.orders.unshift(orderResource);
-                            this.totalRecords++;
-                        });
-                        channel.listen('OrderUpdatedEvent', async (data) => {
-                            const index = this.orders.findIndex(order => order.id === data.order.id);
-                            if (index !== -1) {
-                                const orderResource = await this.getOrderResource(data.order.id);
-                                this.orders[index] = orderResource;
-                            }
-                        });
-                    },
-
-                    checkFilters() {
-                        return Object.values(this.filters).every(value => value === '');
-                    },
-
-                    resetFilters() {
-                        this.filters = {
-                            customer_name: '',
-                            customer_phone: '',
-                            area_ids: [],
-                            block: '',
-                            street: '',
-                            jadda: '',
-                            building: '',
-                            order_number: '',
-                            creator_ids: [],
-                            status_ids: [],
-                            technician_ids: [],
-                            department_ids: [],
-                            tags: '',
-                            start_created_at: '',
-                            end_created_at: '',
-                            start_completed_at: '',
-                            end_completed_at: '',
-                            start_cancelled_at: '',
-                            end_cancelled_at: '',
-                        };
-                        this.getOrders(1);
-                    },
-
-                    exportToExcel() {
-                        if(this.totalRecords > this.maxExportSize) {
-                            alert('You can only export up to 5000 records');
-                            return;
-                        }
-                        this.exporting = true;
-                        axios.get('/orders/exportToExcel', {
-                            params: this.filters,
-                            responseType: 'blob'
-                        })
-                        .then(response => {
-                            const url = window.URL.createObjectURL(new Blob([response.data]));
-                            const link = document.createElement('a');
-                            link.href = url;
-                            link.setAttribute('download', 'Orders.xlsx');
-                            document.body.appendChild(link);
-                            link.click();
-                            link.remove();
-                            window.URL.revokeObjectURL(url);
-                        })
-                        .catch(error => {
-                            alert('Error downloading file: ' + error.message);
-                        })
-                        .finally(() => {
-                            this.exporting = false;
-                        });
-                    },
-                }
+                exportToExcel() {
+                    if(this.totalRecords > this.maxExportSize) {
+                        alert('You can only export up to 5000 records');
+                        return;
+                    }
+                    this.exporting = true;
+                    axios.get('/orders/exportToExcel', {
+                        params: this.filters,
+                        responseType: 'blob'
+                    })
+                    .then(response => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'Orders.xlsx');
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        alert('Error downloading file: ' + error.message);
+                    })
+                    .finally(() => {
+                        this.exporting = false;
+                    });
+                },
             }
-        </script>
-    </div>
+        }
+    </script>
 
 
 </x-app-layout>
