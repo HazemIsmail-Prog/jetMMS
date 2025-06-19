@@ -173,7 +173,7 @@
                     this.selectedContract = e.detail.contract;
                     this.showModal = true;
                     this.$nextTick(() => {
-                        this.form.address_id = this.selectedCustomer.formatted_addresses.length < 2 ? this.selectedCustomer.formatted_addresses[0].id : null;
+                        this.form.address_id = this.selectedCustomer.addresses.length < 2 ? this.selectedCustomer.addresses[0].id : null;
                     });
                 },
 
