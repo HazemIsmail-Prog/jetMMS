@@ -15,6 +15,8 @@ use App\Http\Resources\CostCenterResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
+use App\Services\ActionsLog;
 
 class VoucherController extends Controller
 {
@@ -126,6 +128,7 @@ class VoucherController extends Controller
             $voucher = Voucher::create($validated_voucher_data);
             $voucher->voucherDetails()->createMany($validated_voucher_details_data['details']);
             DB::commit();
+            ActionsLog::logAction('Voucher', 'Create', $voucher->id, 'Voucher created successfully', $voucher->load('voucherDetails')->toArray());
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
@@ -188,13 +191,15 @@ class VoucherController extends Controller
             return response()->json(['error' => 'total debit must be equal to total credit'], 400);
         }
 
-
+        // save voucher and voucher details before update
+        $old_voucher = $voucher->load('voucherDetails')->toArray();
         DB::beginTransaction();
         try {
             $voucher->update($validated_voucher_data);
             $voucher->voucherDetails()->forceDelete();
             $voucher->voucherDetails()->createMany($validated_voucher_details_data['details']);
             DB::commit();
+            ActionsLog::logAction('Voucher', 'Update', $voucher->id, 'Voucher updated successfully', $voucher->load('voucherDetails')->toArray(), $old_voucher);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);

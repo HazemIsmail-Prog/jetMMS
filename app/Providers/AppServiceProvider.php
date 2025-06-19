@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\AreaResource;
+use App\Http\Resources\StatusResource;
+use App\Models\Area;
 use App\Models\Setting;
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +29,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        View::share('globalAreasResource', Cache::rememberForever('globalAreasResource', function() {
+            return AreaResource::collection(Area::all());
+        }));
+
+        View::share('globalStatusesResource', Cache::rememberForever('globalStatusesResource', function() {
+            return StatusResource::collection(Status::all());
+        }));
+
         Model::preventLazyLoading(!app()->isProduction());
 
         $this->cleanupOldUploads();

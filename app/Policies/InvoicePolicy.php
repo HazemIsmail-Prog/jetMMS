@@ -42,6 +42,11 @@ class InvoicePolicy
     {
         return $user->hasPermission('invoices_discount');
     }
+
+    public function createPayment(User $user, Invoice $invoice): bool
+    {
+        return $user->hasPermission('payments_create');
+    }
  
     public function restore(User $user, Invoice $invoice): bool
     {

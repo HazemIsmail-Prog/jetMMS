@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Observers\OrderObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+// use App\Observers\OrderObserver;
+// use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 
-#[ObservedBy(OrderObserver::class)]
+// #[ObservedBy(OrderObserver::class)]
 class Order extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $guarded = [];
 
@@ -124,24 +124,24 @@ class Order extends Model
         return $this->completed_at->diff($this->latest_received->created_at)->format('%H:%I');
     }
 
-    public function getWhatsappMessageAttribute()
-    {
+    // public function getWhatsappMessageAttribute()
+    // {
 
-        // 'https://api.whatsapp.com/send?phone=447777333333&text=Message%0awith%0anewlines'
+    //     // 'https://api.whatsapp.com/send?phone=447777333333&text=Message%0awith%0anewlines'
 
-        $line1 = '*مسك الدار للمقاولات العامة للمباني*';
-        $line2 = '%0a';
-        $line3 = 'تم تنفيذ طلبكم رقم ' . $this->getFormatedIdAttribute();;
-        $line4 = '%0a';
-        $line5 = 'يمكنك تقييم الطلب وتحميل الفواتير من خلال الرابط التالي';
-        $line6 = '%0a';
-        $line7 = '%0a';
-        $welcomeMessage = $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . $line7;
-        // $number = '96599589018';
-        $number = '965' . $this->phone->number;
-        $encryptedOrderId = route('customer.page', encrypt($this->id));
-        return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
-    }
+    //     $line1 = '*مسك الدار للمقاولات العامة للمباني*';
+    //     $line2 = '%0a';
+    //     $line3 = 'تم تنفيذ طلبكم رقم ' . $this->getFormatedIdAttribute();;
+    //     $line4 = '%0a';
+    //     $line5 = 'يمكنك تقييم الطلب وتحميل الفواتير من خلال الرابط التالي';
+    //     $line6 = '%0a';
+    //     $line7 = '%0a';
+    //     $welcomeMessage = $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . $line7;
+    //     // $number = '96599589018';
+    //     $number = '965' . $this->phone->number;
+    //     $encryptedOrderId = route('customer.page', encrypt($this->id));
+    //     return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
+    // }
 
 
     public function getCanViewOrderInvoicesAttribute()

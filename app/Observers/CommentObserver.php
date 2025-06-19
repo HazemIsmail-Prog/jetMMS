@@ -13,8 +13,8 @@ class CommentObserver
      */
     public function created(Comment $comment): void
     {
-        broadcast(new RefreshOrderCommentsScreenEvent($comment->order_id))->toOthers();
-        broadcast(new RefreshDepartmentScreenEvent($comment->order->department_id, $comment->order_id))->toOthers();
+        // broadcast(new RefreshOrderCommentsScreenEvent($comment->order_id))->toOthers();
+        // broadcast(new RefreshDepartmentScreenEvent($comment->order->department_id, $comment->order_id))->toOthers();
     }
 
     /**

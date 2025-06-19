@@ -10,6 +10,9 @@ class OrderStatus extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
 
     public function status()
     {

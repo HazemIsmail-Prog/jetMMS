@@ -1,0 +1,105 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+class InvoiceResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+
+        $invoiceDetailsAmount = $this->whenLoaded('invoice_details', function() {
+            return InvoiceDetailResource::collection($this->invoice_details)->sum('total');
+        }, 0);
+
+        $invoicePartDetailsAmount = $this->whenLoaded('invoice_part_details', function() {
+            return InvoicePartDetailResource::collection($this->invoice_part_details)->sum('total');
+        }, 0);
+
+        $paymentsAmount = $this->whenLoaded('payments', function() {
+            return PaymentResource::collection($this->payments)->sum('amount');
+        }, 0);
+
+        $invoiceDetailsServicesAmount = $this->whenLoaded('invoice_details', function() {
+            return InvoiceDetailResource::collection($this->invoice_details)
+                ->sum(function($detail) { 
+                    return $detail->service?->type === 'service' ? $detail->total : 0;
+                });
+        }, 0);
+
+        $invoiceDetailsPartsAmount = $this->whenLoaded('invoice_details', function() {
+            return InvoiceDetailResource::collection($this->invoice_details)
+                ->sum(function($detail) {
+                    return $detail->service?->type === 'part' ? $detail->total : 0;
+                });
+        }, 0);
+
+        $deliveryAmount = $this->delivery ?? 0;
+        $discountAmount = $this->discount ?? 0;
+        $remainingBalance = $invoiceDetailsAmount 
+            + $invoicePartDetailsAmount
+            + $deliveryAmount 
+            - $discountAmount
+            - $paymentsAmount;
+
+        $user = auth()->user();
+
+        $can_discount = $user->hasPermission('invoices_discount');
+        $can_deleted = $user->hasPermission('invoices_delete');
+        $can_create_payments = $user->hasPermission('payments_create');
+
+        return [
+
+            // Basic
+            'id' => $this->id,
+            'order_id' => $this->order_id,
+            'created_at' => $this->created_at,
+            'delivery' => $this->delivery,
+            'discount' => $this->discount,
+
+            // Formatted
+            'formatted_id' => str_pad($this->id, 8, '0', STR_PAD_LEFT),
+
+            // Relations
+            'invoice_details' => InvoiceDetailResource::collection($this->whenLoaded('invoice_details')),
+
+            'invoice_details_services' => $this->whenLoaded('invoice_details', function() {
+                return InvoiceDetailResource::collection(
+                    $this->invoice_details->filter(function($detail) {
+                        return $detail->service?->type === 'service';
+                    })
+                );
+            }),
+            
+            'invoice_details_parts' => $this->whenLoaded('invoice_details', function() {
+                return InvoiceDetailResource::collection(
+                    $this->invoice_details->filter(function($detail) {
+                        return $detail->service?->type === 'part';
+                    })
+                );
+            }),
+            'invoice_part_details' => InvoicePartDetailResource::collection($this->whenLoaded('invoice_part_details')),
+            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
+
+            // Amounts
+            'invoice_details_amount' => $invoiceDetailsAmount,
+            'invoice_part_details_amount' => $invoicePartDetailsAmount,
+            'invoice_details_services_amount' => $invoiceDetailsServicesAmount,
+            'invoice_details_parts_amount' => $invoiceDetailsPartsAmount,
+            'payments_amount' => $paymentsAmount,
+            'remaining_balance' => $remainingBalance,
+
+            // Permissions
+            'can_discount' => $this->created_at->isToday() && $can_discount && $this->payments->count() == 0,
+            'can_deleted' => $can_deleted,
+            'can_view_payments' => $can_create_payments,
+            'can_create_payments' => $can_create_payments,
+        ];
+    }
+}

@@ -86,6 +86,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DispatchingPageController;
+use App\Http\Controllers\TechnicianPageController;
+use App\Http\Controllers\CustomerContractController;
+use App\Http\Middleware\NoTechnicians;
+
+
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
 Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
@@ -101,12 +110,20 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
+    // Technician Page (new routes for Alpine JS Version)
+    Route::get('/technicianPage', [TechnicianPageController::class,'index'])->name('technicianPage.index');
+    Route::get('/technicianPage/getCurrentOrderForTechnician', [TechnicianPageController::class,'getCurrentOrderForTechnician']);   
+
+    // Technician Page (old routes for Livewire Version)
+    // Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
 
 
 
 
     Route::group(['middleware' => 'no_technicians'], function () {
+
+        // Activity Log
+        Route::get('/activityLog', ActivityLogController::class)->name('actions-log.index');
 
         // ========== Dashboard ==========
         Route::get('/',[DashboardController::class,'index'])->name('dashboard')->can('dashboard_menu', DummyModel::class);
@@ -125,13 +142,64 @@ Route::middleware([
         Route::apiResource('attachments', AttachmentController::class);
 
         // ========== Operations ==========
-        Route::get('customers', CustomerIndex::class)
-            ->name('customer.index')
-            ->can('viewAny', Customer::class);
 
-        Route::get('orders', OrderIndex::class)
-            ->name('order.index')
-            ->can('viewAny', Order::class);
+
+        // Customers (new routes for Alpine JS Version)
+        Route::get('/customers/{customer}/getAllOrders', [CustomerController::class, 'getAllOrders']);
+        Route::get('/customers/{customer}/getInProgressOrders', [CustomerController::class, 'getInProgressOrders']);
+        Route::get('/customers/{customer}/getDepartmentInProgressOrders/{department}', [CustomerController::class, 'getDepartmentInProgressOrders']);
+        Route::apiResource('/customers', CustomerController::class);
+
+        // Customers (old routes for Livewire Version)
+        // Route::get('customers', CustomerIndex::class)
+        //     ->name('customer.index')
+        //     ->can('viewAny', Customer::class);
+
+
+        // Orders (new routes for Alpine JS Version)
+        Route::controller(OrderController::class)->group(function () {
+            Route::get      ('/orders/exportToExcel', 'exportToExcel');
+            Route::get      ('/orders', 'index')->name('orders.index');
+            Route::post     ('/orders/{customer}', 'store');
+            Route::put      ('/orders/{order}', 'update');
+            Route::get      ('/orders/{order}', 'show');
+            Route::put      ('/orders/{order}/changeTechnician', 'changeTechnician');
+            Route::put      ('/orders/{order}/setPending', 'setPending');
+            Route::put      ('/orders/{order}/changeIndex', 'changeIndex');
+            Route::put      ('/orders/{order}/setHold', 'setHold');
+            Route::put      ('/orders/{order}/setCancelled', 'setCancelled');
+            Route::put      ('/orders/{order}/setReceived', 'setReceived')->withoutMiddleware(NoTechnicians::class);
+            Route::put      ('/orders/{order}/setArrived', 'setArrived')->withoutMiddleware(NoTechnicians::class);
+            Route::put      ('/orders/{order}/setCompleted', 'setCompleted')->withoutMiddleware(NoTechnicians::class);
+            Route::get      ('/orders/{order}/getOrderStatuses', 'getOrderStatuses');
+
+            // Invoices
+            Route::get      ('/orders/{order}/invoices','getInvoices')->withoutMiddleware(NoTechnicians::class);
+            Route::post     ('/orders/{order}/invoices','storeInvoice')->withoutMiddleware(NoTechnicians::class);
+            Route::put      ('/orders/{order}/invoices/{invoice}','updateInvoice'); // for discount
+            Route::get      ('/orders/{order}/invoices/{invoice}','showInvoice')->withoutMiddleware(NoTechnicians::class);
+            Route::delete   ('/orders/{order}/invoices/{invoice}','destroyInvoice');
+
+            // Payments
+            Route::get      ('/orders/{order}/invoices/{invoice}/payments','getPayments')->withoutMiddleware(NoTechnicians::class);
+            Route::post     ('/orders/{order}/invoices/{invoice}/payments','storePayment')->withoutMiddleware(NoTechnicians::class);
+            Route::get      ('/orders/{order}/invoices/{invoice}/payments/{payment}','showPayment')->withoutMiddleware(NoTechnicians::class);
+            Route::delete   ('/orders/{order}/invoices/{invoice}/payments/{payment}','destroyPayment');
+
+            // Comments
+            Route::get      ('/orders/{order}/comments','getComments')->withoutMiddleware(NoTechnicians::class);
+            Route::post     ('/orders/{order}/comments','storeComment')->withoutMiddleware(NoTechnicians::class);
+            Route::get      ('/orders/{order}/comments/{comment}','showComment')->withoutMiddleware(NoTechnicians::class);
+
+
+            // get department services for invoice form
+            Route::get      ('/orders/{order}/getDepartmentServices', 'getDepartmentServices')->withoutMiddleware(NoTechnicians::class);
+        });
+
+        // Orders (old routes for Livewire Version)
+        // Route::get('orders', OrderIndex::class)
+        //     ->name('order.index')
+        //     ->can('viewAny', Order::class);
 
         Route::get('marketings', MarketingIndex::class)
             ->name('marketing.index')
@@ -144,9 +212,14 @@ Route::middleware([
         Route::get('invoices/report',[InvoiceController::class, 'index'])->name('invoice.report');
         Route::get('invoices/report/getData',[InvoiceController::class, 'getData']);
 
-        Route::get('dispatch-panel/{department}', DispatchingIndex::class)
-            ->name('dispatch-panel.index')
-            ->can('canDispatch', DummyModel::class);
+        // Dispatching (New routes for Alpine JS Version)
+        Route::get('/dispatching/{department}', [DispatchingPageController::class,'index'])->name('dispatch-panel.index');
+        Route::get('/dispatching/getTodaysCompletedOrdersForTechnician/{user}', [DispatchingPageController::class,'getTodaysCompletedOrdersForTechnician']);
+
+        // Dispatching (old routes for Livewire Version)
+        // Route::get('dispatch-panel/{department}', DispatchingIndex::class)
+        //     ->name('dispatch-panel.index')
+        //     ->can('canDispatch', DummyModel::class);
 
         Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
             ->name('expected_invoices_deletion')
@@ -156,6 +229,10 @@ Route::middleware([
 
 
         // ========== Contracts ==========
+
+        // New routes for Alpine JS Version
+        Route::post('/createCustomerContract/{customer}', [CustomerContractController::class,'createCustomerContract']);
+
 
         Route::get('construction-contracts',ContractIndex::class)
             ->name('construction.contracts')

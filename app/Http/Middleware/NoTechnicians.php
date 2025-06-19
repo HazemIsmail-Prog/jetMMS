@@ -17,7 +17,7 @@ class NoTechnicians
     public function handle(Request $request, Closure $next)
     {
         if (in_array($request->user()->title_id,Title::TECHNICIANS_GROUP)) {
-            return redirect()->route('technician_page');
+            return redirect()->route('technicianPage.index');
         }
 
         return $next($request);

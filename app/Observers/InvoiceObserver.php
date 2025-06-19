@@ -6,6 +6,9 @@ use App\Events\RefreshDepartmentScreenEvent;
 use App\Events\RefreshOrderInvoicesScreenEvent;
 use App\Events\RefreshTechnicianScreenEvent;
 use App\Models\Invoice;
+use App\Events\OrderInvoiceDeletedEvent;
+use App\Events\OrderInvoiceUpdatedEvent;
+use App\Events\OrderInvoiceCreatedEvent;
 use App\Services\CreateInvoiceVoucher;
 
 class InvoiceObserver
@@ -16,8 +19,9 @@ class InvoiceObserver
     public function created(Invoice $invoice): void
     {
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
-        broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
-        broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
+        broadcast(new OrderInvoiceCreatedEvent($invoice))->toOthers();
+        // broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+        // broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
     }
 
     /**
@@ -25,14 +29,16 @@ class InvoiceObserver
      */
     public function updated(Invoice $invoice): void
     {
-        if ($invoice->isDirty('discount')) {
+        // if ($invoice->isDirty('discount')) {
             // This check for old invoices which not have vouchers
-            $voucher = $invoice->vouchers()->where('type', 'inv')->first(); // get only inv voucher because invoice may have cost voucher also
-            $voucher->voucherDetails()->forceDelete();
-            CreateInvoiceVoucher::createVoucherDetails($invoice, $voucher);
+            // $voucher = $invoice->vouchers()->where('type', 'inv')->first(); // get only inv voucher because invoice may have cost voucher also
+            // $voucher->voucherDetails()->forceDelete();
+            // CreateInvoiceVoucher::createVoucherDetails($invoice, $voucher);
             broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
-            broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
-        }
+            broadcast(new OrderInvoiceUpdatedEvent($invoice))->toOthers();
+
+            // broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
+        // }
     }
 
     /**
@@ -45,8 +51,9 @@ class InvoiceObserver
         }
 
         broadcast(new RefreshOrderInvoicesScreenEvent($invoice->order_id))->toOthers();
-        broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
-        broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
+        broadcast(new OrderInvoiceDeletedEvent($invoice->order))->toOthers();
+        // broadcast(new RefreshDepartmentScreenEvent($invoice->order->department_id, $invoice->order_id))->toOthers();
+        // broadcast(new RefreshTechnicianScreenEvent($invoice->order->technician_id))->toOthers();
     }
 
     /**

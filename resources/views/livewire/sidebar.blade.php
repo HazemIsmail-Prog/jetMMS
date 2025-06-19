@@ -30,6 +30,9 @@
         <!-- Links -->
         <!-- Pages group -->
         <ul class="space-y-1">
+            @if(auth()->id() == 1)
+                <x-sidebar-item icon="truck" route="actions-log.index" :title="__('messages.actions_log')" />
+            @endif
             <!-- Dashboard -->
             @can('dashboard_menu', App\Models\DummyModel::class)
                 <x-sidebar-item icon="chart-pie" route="dashboard" :title="__('messages.dashboard')" />
@@ -43,10 +46,10 @@
                 </h3>
             @endcan
             @can('viewAny', App\Models\Customer::class)
-                <x-sidebar-item icon="users" route="customer.index" :title="__('messages.customers')" />
+                <x-sidebar-item icon="users" route="customers.index" :title="__('messages.customers')" />
             @endcan
             @can('viewAny', App\Models\Order::class)
-                <x-sidebar-item icon="list-bullet" route="order.index" :title="__('messages.orders')" />
+                <x-sidebar-item icon="list-bullet" route="orders.index" :title="__('messages.orders')" />
             @endcan
             @can('viewAny', App\Models\Marketing::class)
                 <x-sidebar-item icon="arrow-trending-up" route="marketing.index" :title="__('messages.marketing')" />

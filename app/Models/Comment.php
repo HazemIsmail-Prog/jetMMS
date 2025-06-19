@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-use App\Observers\CommentObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+// use App\Observers\CommentObserver;
+// use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[ObservedBy(CommentObserver::class)]
+// #[ObservedBy(CommentObserver::class)]
 class Comment extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
 
     public function user()
     {

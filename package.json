@@ -18,6 +18,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@alpinejs/sort": "^3.14.9",
         "puppeteer": "^22.5.0"
     }
 }
