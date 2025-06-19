@@ -17,7 +17,7 @@ class InvoicePartDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'invoice_id' => $this->invoice_id,
-            'part_id' => $this->part_id,
+            'name' => $this->name,
             'quantity' => $this->quantity,
             'price' => $this->price,
             'total' => $this->quantity * $this->price,
