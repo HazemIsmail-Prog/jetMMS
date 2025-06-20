@@ -92,9 +92,18 @@
 
                                         <x-td x-text="formatNumber(getRemainingBalance(order))"></x-td>
                                         <x-td>
-                                            <x-badgeWithCounter @click="openOrderModal(order)">
-                                                <x-svgs.list class="h-4 w-4" />
-                                            </x-badgeWithCounter>
+                                            <div class="flex items-center justify-end gap-1">
+                                                <template x-if="order.can_edit_order">
+                                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                                        class="hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                        @click="$dispatch('open-order-form-modal',{order:order,customer:order.customer})">
+                                                        <x-svgs.edit class="h-4 w-4" />
+                                                    </x-badgeWithCounter>
+                                                </template>
+                                                <x-badgeWithCounter @click="openOrderModal(order)">
+                                                    <x-svgs.list class="h-4 w-4" />
+                                                </x-badgeWithCounter>
+                                            </div>
                                         </x-td>
                                     </x-tr>
                                 </template>

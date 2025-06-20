@@ -15,6 +15,8 @@ use App\Events\CustomerDeletedEvent;
 use App\Events\CustomerUpdatedEvent;
 use App\Services\ActionsLog;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class CustomerController extends Controller
 {
@@ -61,8 +63,10 @@ class CustomerController extends Controller
                 ->paginate(10);
             return CustomerResource::collection($customers);
         }
-        $departments = DepartmentResource::collection(Department::where('active', 1)->where('is_service', 1)->get());
-        return view('pages.customers.index', compact('departments'));
+        return view('pages.customers.index',[
+            'departments' => DepartmentResource::collection(Department::where('active', 1)->where('is_service', 1)->get()),
+            'technicians' => UserResource::collection(User::whereHas('orders_technician')->get()),
+        ]);
     }
 
     public function store(Request $request)

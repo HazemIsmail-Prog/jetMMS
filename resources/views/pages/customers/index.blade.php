@@ -14,10 +14,11 @@
     </x-slot>
 
     @include('modals.customer-form')
-    @include('modals.order-form')
     @include('modals.customer-contract-form')
     @include('modals.in-progress-orders-for-customer')
     @include('modals.all-orders-for-customer')
+    @include('modals.single-order')
+    @include('modals.order-form')
 
     <div
         x-data="customersComponent()"
