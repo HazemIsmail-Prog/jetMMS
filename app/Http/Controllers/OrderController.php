@@ -756,7 +756,7 @@ class OrderController extends Controller
 
     public function getDepartmentServices(Order $order)
     {
-        $services = Service::where('department_id', $order->department_id)->get();
+        $services = Service::where('department_id', $order->department_id)->where('active', 1)->get();
         return ServiceResource::collection($services);
     }
 
