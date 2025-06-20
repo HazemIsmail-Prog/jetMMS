@@ -41,6 +41,7 @@
                     this.getOrderStatuses();
                 },
                 getOrderStatuses() {
+                    if(!this.selectedOrder) return;
                     axios.get('/orders/' + this.selectedOrder.id + '/getOrderStatuses')
                         .then(response => {
                             this.orderStatuses = response.data.data;
