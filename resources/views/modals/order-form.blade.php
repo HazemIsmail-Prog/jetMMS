@@ -112,6 +112,30 @@
                                 <x-label for="estimated_start_date" :value="__('messages.estimated_start_date')" />
                                 <x-input id="estimated_start_date" class="w-full" x-model="form.estimated_start_date" type="date" />
                             </div>
+
+                            @if(auth()->user()->hasPermission('dispatching_menu'))
+                                <template x-if="!selectedOrder && form.department_id">
+                                    <div class="flex flex-col">
+                                        <x-label for="technician" :value="__('messages.technician')" />
+                                        <template x-if="selectedOrder">
+                                            <p class="text-sm text-gray-600 dark:text-gray-400" x-text="selectedOrder?.technician.name ?? '-'"></p>
+                                        </template>
+                                        <!-- start area searchable select -->
+                                        <div 
+                                            x-data="{
+                                                get items() { return technicians.filter(technician => technician.department_id == form.department_id && technician.active) },
+                                                selectedItemId:form.technician_id,
+                                                placeholder: '---'
+                                            }"
+                                            x-model="selectedItemId"
+                                            x-modelable="form.technician_id"
+                                        >
+                                            <x-single-searchable-select />
+                                        </div>
+                                        <!-- end area searchable select -->
+                                    </div>
+                                </template>
+                            @endif
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -150,6 +174,7 @@
         function orderFormModal() {
             return {
                 departments: @js($departments),
+                technicians: @js($technicians),
                 dismissible: true,
                 selectedCustomer: null,
                 selectedOrder: null,
@@ -191,7 +216,11 @@
 
                     this.$watch('form.department_id', (newVal) => {
                         if(this.selectedCustomer){
+                            // Reset technician selection when department changes
+                            this.form.technician_id = null;
+                            
                             this.inProgressOrders = [];
+                            if(!newVal) return;
                             axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${newVal}`)
                             .then(response => {
                                     this.inProgressOrders = response.data.in_progress_orders;
@@ -216,6 +245,7 @@
                         phone_id: null,
                         address_id: null,
                         department_id: null,
+                        technician_id: null,
                         estimated_start_date: new Date().toISOString().split('T')[0],
                         notes: null,
                         order_description: null,

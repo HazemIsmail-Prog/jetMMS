@@ -17,6 +17,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => app()->getLocale() == 'ar' ? $this->name_ar : $this->name_en,
+            'department_id' => $this->department_id,
+            'active' => $this->active,
         ];
     }
 }

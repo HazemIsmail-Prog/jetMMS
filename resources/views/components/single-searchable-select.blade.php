@@ -54,6 +54,20 @@
                     this.filteredItems = this.items;
                     this.highlightedIndex = -1;
                 });
+                
+                // Watch for changes in items array
+                this.$watch('items', () => {
+                    this.filteredItems = this.items;
+                    this.highlightedIndex = -1;
+                    
+                    // Check if currently selected item still exists in the new items array
+                    if (this.selectedItemId && !this.items.find(item => item.id == this.selectedItemId)) {
+                        this.selectedItemId = null;
+                        this.search = '';
+                    } else if (this.selectedItemId) {
+                        this.search = this.items.find(a => a.id == this.selectedItemId)?.name || '';
+                    }
+                });
             },
             
             handleSearch() {

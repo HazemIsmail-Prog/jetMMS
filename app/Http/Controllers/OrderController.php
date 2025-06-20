@@ -145,26 +145,84 @@ class OrderController extends Controller
         $validatedData['created_by'] = auth()->id();
         $validatedData['updated_by'] = auth()->id();
 
-        $validatedData['index'] = Order::query()
-        ->where('department_id', $validatedData['department_id'])
-        ->where('status_id', Status::CREATED)
-        ->min('index')
-        - 10;
+        if($request->technician_id) {
+            // check if user has permission to dispatch orders
+            if(!auth()->user()->hasPermission('dispatching_menu')) {
+                return response()->json(['error' => __('messages.you_dont_have_permission_to_dispatch_orders')], 403);
+            }
+
+            // check if technician is valid
+            $technician = User::find($request->technician_id);
+            // check if technician is active
+            if($technician->active == 0) {
+                return response()->json(['error' => __('messages.technician_is_not_active')], 400);
+            }
+    
+            // check if technician is in the same department as the order
+            if($technician->department_id != $validatedData['department_id']) {
+                return response()->json(['error' => __('messages.technician_is_not_in_the_same_department_as_the_order')], 400);
+            }
+
+            // get the index of the order
+            $index = Order::query()
+                ->where('department_id', $validatedData['department_id'])
+                ->where('technician_id', $request->technician_id)
+                ->where('status_id','!=', Status::COMPLETED)
+                ->max('index') + 10;
+
+            $validatedData['index'] = $index;
+        }else{
+            // get the index of the order
+            $validatedData['index'] = Order::query()
+            ->where('department_id', $validatedData['department_id'])
+            ->where('status_id', Status::CREATED)
+            ->min('index')
+            - 10;
+        }
+
 
         DB::beginTransaction();
 
             try {
+                // create the order
                 $order = $customer->orders()->create($validatedData);
+
+                // create the order status
                 $this->createOrderStatus($order);
+
+                // if technician is provided, update the order status to destributed and set the technician id
+                if($request->technician_id) {
+                    // update the order status to destributed and set the technician id
+                    $order->update([
+                        'status_id' => Status::DESTRIBUTED,
+                        'technician_id' => $request->technician_id,
+                    ]);
+                    // create the order status
+                    $this->createOrderStatus($order);
+                }
+
+                // commit the transaction
                 DB::commit();
+
+                // log the action
+                ActionsLog::logAction('Order', 'Created', $order->id, 'Order created successfully', $order->fresh()->toArray());
+
+                // broadcast created event to current channels
+                broadcast(new OrderCreatedEvent($order))->toOthers();
+
+                // if technician is provided, broadcast updated event to current channels
+                if($request->technician_id) {
+                    broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
+                }
+
+                // return the order resource
+                return new OrderResource($order);
+                
             } catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json(['error' => __('messages.error_creating_order')], 500);
             }
 
-        ActionsLog::logAction('Order', 'Created', $order->id, 'Order created successfully', $order->fresh()->toArray());
-        broadcast(new OrderCreatedEvent($order))->toOthers();
-        return new OrderResource($order);
     }
 
     public function update(Request $request, Order $order)
@@ -232,6 +290,7 @@ class OrderController extends Controller
         }
 
         $technician = User::find($request->technician_id);
+        // check if technician is active
         if($technician->active == 0) {
             return response()->json(['error' => __('messages.technician_is_not_active')], 400);
         }
