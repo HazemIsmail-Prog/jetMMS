@@ -65,6 +65,8 @@ class InvoiceResource extends JsonResource
 
             // Formatted
             'formatted_id' => str_pad($this->id, 8, '0', STR_PAD_LEFT),
+            'detailed_pdf_url' => route('invoice.detailed_pdf', encrypt($this->id)),
+            'pdf_url' => route('invoice.pdf', encrypt($this->id)),
 
             // Relations
             'invoice_details' => InvoiceDetailResource::collection($this->whenLoaded('invoice_details')),

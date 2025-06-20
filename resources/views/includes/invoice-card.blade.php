@@ -23,10 +23,10 @@
                                 {{ __('messages.print_invoice') }}
                             </div>
                             <x-dropdown-link target="_blank"
-                                href="#">
+                                x-bind:href="invoice.detailed_pdf_url">
                                 {{ __('messages.print_detailed_invoice') }}
                             </x-dropdown-link>
-                            <x-dropdown-link target="_blank" href="#">
+                            <x-dropdown-link target="_blank" x-bind:href="invoice.pdf_url">
                                 {{ __('messages.print_non_detailed_invoice') }}
                             </x-dropdown-link>
                         </x-slot>

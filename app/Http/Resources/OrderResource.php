@@ -25,7 +25,7 @@ class OrderResource extends JsonResource
         $userCanViewComments = $user->hasPermission('orders_comments');
         $userCanViewInvoices = $user->hasPermission('orders_invoices');
         $userCanEditCustomer = $user->hasPermission('customers_edit');
-        $userCanEditOrder = $user->hasPermission('orders_edit');
+        $userCanEditOrder = $user->hasPermission('orders_edit') || $this->created_by == $user->id;
         $userCanViewOrderDetails = true;
         $userCanSendSurvey = $user->hasPermission('orders_send_survey');
         $formatted_id = str_pad($this->id, 8, '0', STR_PAD_LEFT);

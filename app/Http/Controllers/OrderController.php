@@ -169,8 +169,8 @@ class OrderController extends Controller
 
     public function update(Request $request, Order $order)
     {
-        // check if auth user has permission to update the order
-        if(!auth()->user()->hasPermission('orders_edit')) {
+        // check if auth user has permission to update the order or is the creator of the order
+        if(!auth()->user()->hasPermission('orders_edit') && $order->created_by != auth()->id()) {
             return response()->json(['error' => __('messages.you_dont_have_permission_to_update_order')], 403);
         }
 
