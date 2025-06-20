@@ -358,9 +358,9 @@
                     this.orders[index].order_color = this.statuses.find(status => status.id === 5).color;
                     if(e.detail.mode === 'fromHoldButton') {
                         // this will run if user clicks the hold button
-                        // get max index of hold orders and add 10 to it
-                        const maxIndex = this.orders.filter(order => order.status_id === 5).reduce((max, order) => Math.max(max, order.index), 0);
-                        this.orders[index].index = maxIndex + 10;
+                        // get min index of hold orders and subtract 10 from it
+                        const minIndex = this.orders.filter(order => order.status_id === 5).reduce((min, order) => Math.min(min, order.index), 0);
+                        this.orders[index].index = minIndex - 10;
                     }else{
                         // this will run if user drags the order to the hold box
                         this.orders[index].index = this.getNewIndex(e.detail.orderId, e.detail.upperSiblingId, e.detail.lowerSiblingId);
