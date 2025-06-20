@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Status;
 use App\Http\Resources\OrderResource;
+use App\Models\Title;
 
 class TechnicianPageController extends Controller
 {
     public function index()
     {
+        // abort if user is not a technician
+        if(!in_array(auth()->user()->title_id, Title::TECHNICIANS_GROUP)) {
+            abort(403);
+        }
         return view('pages.technician.index');
     }
 
