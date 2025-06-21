@@ -506,8 +506,11 @@
                     var channel = Echo.channel('orders');
                     channel.listen('OrderCreatedEvent', async (data) => {
                         const orderResource = await this.getOrderResource(data.order.id);
-                        this.orders.unshift(orderResource);
-                        this.totalRecords++;
+                        if(this.checkFilters()) {
+                            // this will prevent the order from being added to the orders array if there are filters applied
+                            this.orders.unshift(orderResource);
+                            this.totalRecords++;
+                        }
                     });
                     channel.listen('OrderUpdatedEvent', async (data) => {
                         const index = this.orders.findIndex(order => order.id === data.order.id);
@@ -519,7 +522,8 @@
                 },
 
                 checkFilters() {
-                    return Object.values(this.filters).every(value => value === '');
+                    // check if all filters string values are empty and array values are empty
+                    return Object.values(this.filters).every(value => value === '') && Object.values(this.filters).every(value => value.length === 0);
                 },
 
                 resetFilters() {
