@@ -155,9 +155,10 @@
                                                 </div>
                                             </div>
         
-                                            <div class="grid grid-cols-2 gap-2">
+                                            <div class="grid grid-cols-3 gap-2">
                                                 <x-input x-model="address.jadda" placeholder="{{ __('messages.jadda') }}" class="w-full" />
                                                 <x-input x-model="address.building" placeholder="{{ __('messages.building') }}" class="w-full" />
+                                                <x-input x-model="address.floor" placeholder="{{ __('messages.floor') }}" class="w-full" />
                                             </div>
         
                                             <div class="grid grid-cols-2 gap-2">
@@ -242,7 +243,8 @@
                                 block: address.block || null,
                                 street: address.street || null,
                                 jadda: address.jadda || null,
-                                building: address.building || null, 
+                                building: address.building || null,
+                                floor: address.floor || null,
                                 apartment: address.apartment || null,
                                 notes: address.notes || null,
                             });
@@ -289,6 +291,7 @@
                         street: null,
                         jadda: null,
                         building: null,
+                        floor: null,
                         apartment: null,
                         notes: null,
                     });

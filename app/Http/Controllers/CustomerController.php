@@ -94,6 +94,7 @@ class CustomerController extends Controller
             'addresses.*.street' => 'required|string|max:255',
             'addresses.*.jadda' => 'nullable|string|max:255',
             'addresses.*.building' => 'nullable|string|max:255',
+            'addresses.*.floor' => 'nullable|string|max:255',
             'addresses.*.apartment' => 'nullable|string|max:255',
             'addresses.*.notes' => 'nullable|string|max:255',
         ]);
@@ -185,6 +186,7 @@ class CustomerController extends Controller
             'addresses.*.street' => 'required|string|max:255',
             'addresses.*.jadda' => 'nullable|string|max:255',
             'addresses.*.building' => 'nullable|string|max:255',
+            'addresses.*.floor' => 'nullable|string|max:255',
             'addresses.*.apartment' => 'nullable|string|max:255',
             'addresses.*.notes' => 'nullable|string|max:255',
         ]);
