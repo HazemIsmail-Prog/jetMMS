@@ -102,6 +102,7 @@
                                                 dir="ltr"
                                                 required 
                                                 class="w-full"
+                                                x-bind:min="service.min_price" 
                                                 x-bind:max="service.max_price" 
                                                 x-model="service.price"
                                                 x-bind:placeholder="`${service.min_price} - ${service.max_price}`" />
@@ -325,7 +326,7 @@
                     }
 
                     // Check if any selected services have invalid quantities or prices
-                    if (this.selected_services.some(service => service.quantity <= 0 || service.price <= 0)) {
+                    if (this.selected_services.some(service => service.quantity <= 0)) {
                         alert('All services must have valid quantities and prices');
                         return false;
                     }
