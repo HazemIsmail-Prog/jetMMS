@@ -440,101 +440,40 @@
                     channel.listen('OrderCreatedEvent', async (data) => {
                         const orderResource = await this.getOrderResource(data.order.id);
                         this.orders.push(orderResource);
-                        // const notification = {
-                        //     id: 'order-' + orderResource.id,
-                        //     title: '{{ __('messages.new_order_received') }}',
-                        //     related_id: orderResource.id,
-                        //     sender: orderResource.creator.name,
-                        //     body: orderResource.customer.name,
-                        //     date: orderResource.formatted_creation_date,
-                        //     time: orderResource.formatted_creation_time,
-                        //     show: false,
-                        //     onClick: () => {
-                        //         const order = this.orders.find(order => order.id == orderResource.id);
-                        //         this.openOrderModal(order);
-                        //     }
-                        // };
-                        // this.notifications.push(notification);
-                        // this.$nextTick(() => {
-                        //     this.notifications.find(n => n.id == notification.id).show = true;
-                        //     // Wait for Vue to update the DOM after showing notification
-                        //     setTimeout(() => {
-                        //         this.$refs.notificationsContainer.scrollTo({
-                        //             top: this.$refs.notificationsContainer.scrollHeight,
-                        //             behavior: 'smooth'
-                        //         });
-                        //     }, 100); // Small delay to ensure notification is rendered
-                        // });
                     });
 
                     // OrderUpdatedEvent
-
                     channel.listen('OrderUpdatedEvent', async (data) => {
                         // first get the order resource
                         const orderResource = await this.getOrderResource(data.order.id);
-                        // then check if the order is visible in the orders array
+                        // then check if the order is visible on the screen
                         const index = this.orders.findIndex(order => order.id == orderResource.id);
                         if(index != -1) {
-                            // that means the order is visible in the orders array
-                            // if data.order.department_id is not the same as the selected department id and the order is in cancelled or completed, then remove the order from the orders array
-                            if(orderResource.department_id !== this.selectedDepartmentId || orderResource.status_id == 6 || orderResource.status_id == 4) {
-                                // that means that the order is moved to a different department or it is cancelled or completed
+                            // that means the order is visible on the screen
+                            // if data.order.department_id is not the same as the selected department id or the updated order is cancelled, then remove the order from the orders array
+                            if(orderResource.department_id !== this.selectedDepartmentId || orderResource.status_id == 6) {
+                                // that means that the updated order is moved to a different department or it is cancelled
                                 // so we need to remove the order from the orders array
                                 this.orders.splice(index, 1);
                             }else{
-                                // that means the order has been updated without changing the department
-                                // so we need to update the order in the orders array
+                                // that means the updated order has been updated without changing the department or it is not cancelled
+                                // so we need to update the order on the screen
                                 this.orders[index] = orderResource;
                             }
+
+                            // dispatch the updated order to all listeners components
+                            this.$dispatch('order-updated', {order: orderResource});
+
                         }else{
-                            // that means the order is not visible in the orders array
-                            // check if the order is not in cancelled or completed
-                            if(orderResource.status_id !== 6 && orderResource.status_id !== 4) {
-                                // that means that the order department has been changed to the selected department
+                            // if all previous conditions are false, that means the order is not visible on the screen
+                            // this case means that the updated order moved to this department
+                            // check if the updated order is in the selected department
+                            if(orderResource.department_id == this.selectedDepartmentId) {
+                                // that means that the updated order is in the selected department
                                 // so we need to add the order to the orders array
                                 this.orders.push(orderResource);
-                                const notification = {
-                                    id: 'order-' + orderResource.id,
-                                    title: '{{ __('messages.new_order_received') }}',
-                                    related_id: orderResource.id,
-                                    sender: orderResource.creator.name,
-                                    body: orderResource.customer.name,
-                                    date: orderResource.formatted_creation_date,
-                                    time: orderResource.formatted_creation_time,
-                                    show: false,
-                                    onClick: () => {
-                                        const order = this.orders.find(order => order.id == orderResource.id);
-                                        this.openOrderModal(order);
-                                    }
-                                };
-                                this.notifications.push(notification);
-                                this.$nextTick(() => {
-                                    this.notifications.find(n => n.id == notification.id).show = true;
-                                    // Wait for Vue to update the DOM after showing notification
-                                    setTimeout(() => {
-                                        this.$refs.notificationsContainer.scrollTo({
-                                            top: this.$refs.notificationsContainer.scrollHeight,
-                                            behavior: 'smooth'
-                                        });
-                                    }, 100); // Small delay to ensure notification is rendered
-                                });
                             }
                         }
-                    });
-
-
-                    channel.listen('OrderUpdatedEvent', async (data) => {
-                        // remove the order from the orders array
-                        const orderResource = await this.getOrderResource(data.order.id);
-                        const index = this.orders.findIndex(order => order.id == orderResource.id);
-                            if (index != -1) {
-                                if (orderResource.status_id !== 6 && orderResource.status_id !== 4) {
-                                    this.orders[index] = orderResource;
-                                }else{
-                                    this.orders.splice(index, 1);
-                                }
-                            }
-                        this.$dispatch('order-updated', {order: orderResource});
                     });
 
                     // OrderCommentCreatedEvent
@@ -565,21 +504,6 @@
                                 });
                             }, 100); // Small delay to ensure notification is rendered
                         });
-                    });
-
-                    // OrderInvoiceCreatedEvent
-                    channel.listen('OrderInvoiceCreatedEvent', async (data) => {
-                        const orderResource = await this.getOrderResource(data.invoice.order_id);
-                        const index = this.orders.findIndex(order => order.id == orderResource.id);
-                        if (index != -1) {
-                            this.orders[index] = orderResource;
-                        }
-                    });
-
-                    // OrderCompletedEvent
-                    channel.listen('OrderCompletedEvent', async (data) => {
-                        const orderResource = await this.getOrderResource(data.order.id);
-                        this.orders.push(orderResource);
                     });
                 },
 
