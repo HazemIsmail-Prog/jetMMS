@@ -440,31 +440,31 @@
                     channel.listen('OrderCreatedEvent', async (data) => {
                         const orderResource = await this.getOrderResource(data.order.id);
                         this.orders.push(orderResource);
-                        const notification = {
-                            id: 'order-' + orderResource.id,
-                            title: '{{ __('messages.new_order_received') }}',
-                            related_id: orderResource.id,
-                            sender: orderResource.creator.name,
-                            body: orderResource.customer.name,
-                            date: orderResource.formatted_creation_date,
-                            time: orderResource.formatted_creation_time,
-                            show: false,
-                            onClick: () => {
-                                const order = this.orders.find(order => order.id == orderResource.id);
-                                this.openOrderModal(order);
-                            }
-                        };
-                        this.notifications.push(notification);
-                        this.$nextTick(() => {
-                            this.notifications.find(n => n.id == notification.id).show = true;
-                            // Wait for Vue to update the DOM after showing notification
-                            setTimeout(() => {
-                                this.$refs.notificationsContainer.scrollTo({
-                                    top: this.$refs.notificationsContainer.scrollHeight,
-                                    behavior: 'smooth'
-                                });
-                            }, 100); // Small delay to ensure notification is rendered
-                        });
+                        // const notification = {
+                        //     id: 'order-' + orderResource.id,
+                        //     title: '{{ __('messages.new_order_received') }}',
+                        //     related_id: orderResource.id,
+                        //     sender: orderResource.creator.name,
+                        //     body: orderResource.customer.name,
+                        //     date: orderResource.formatted_creation_date,
+                        //     time: orderResource.formatted_creation_time,
+                        //     show: false,
+                        //     onClick: () => {
+                        //         const order = this.orders.find(order => order.id == orderResource.id);
+                        //         this.openOrderModal(order);
+                        //     }
+                        // };
+                        // this.notifications.push(notification);
+                        // this.$nextTick(() => {
+                        //     this.notifications.find(n => n.id == notification.id).show = true;
+                        //     // Wait for Vue to update the DOM after showing notification
+                        //     setTimeout(() => {
+                        //         this.$refs.notificationsContainer.scrollTo({
+                        //             top: this.$refs.notificationsContainer.scrollHeight,
+                        //             behavior: 'smooth'
+                        //         });
+                        //     }, 100); // Small delay to ensure notification is rendered
+                        // });
                     });
 
                     // OrderUpdatedEvent
