@@ -83,7 +83,7 @@
                     x-sort:config="{onEnd: handleOnEnd}"
                     class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-218px)]"
                 >
-                    <template x-for="order in pendingOrders" :key="order.id + ' - ' + order.status_id">
+                    <template x-for="order in pendingOrders" :key="`pending-order-${order.id}-${order.status_id}-${order.index}`">
                         @include('includes.order-card')
                     </template>
                 </div>
@@ -102,7 +102,7 @@
                     x-sort:config="{onEnd: handleOnEnd}"
                     class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-218px)]"
                 >
-                    <template x-for="order in onHoldOrders" :key="order.id + ' - ' + order.status_id">
+                    <template x-for="order in onHoldOrders" :key="`onhold-order-${order.id}-${order.status_id}-${order.index}`">
                         @include('includes.order-card')
                     </template>
                 </div>
@@ -143,7 +143,7 @@
                                             }"
                                             class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-262px)]"
                                         >
-                                            <template x-for="order in techniciansOrders(technician.id)" :key="order.id + ' - ' + order.status_id">
+                                            <template x-for="order in techniciansOrders(technician.id)" :key="`technician-${technician.id}-order-${order.id}-${order.status_id}-${order.index}`">
                                                 @include('includes.order-card')
                                             </template>
                                         </div>
