@@ -270,7 +270,7 @@
                         })
                         .catch(error => {
                             console.error('Error creating customer contract:', error);
-                            alert(error.response?.data?.message || 'An error occurred while creating the customer contract');
+                            alert(error.response?.data?.error);
                         })
                         .finally(() => {
                             this.loading = false;

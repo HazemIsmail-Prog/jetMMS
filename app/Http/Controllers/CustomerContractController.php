@@ -13,7 +13,7 @@ class CustomerContractController extends Controller
     public function createCustomerContract(Request $request, Customer $customer)
     {
         // check if user has permission to create customer contract
-        if(!auth()->user()->hasPermission('customer_contracts_create')) {
+        if(!auth()->user()->hasPermission('contracts_create')) {
             return response()->json(['error' => __('messages.you_dont_have_permission_to_create_customer_contract')], 403);
         }
 
