@@ -202,7 +202,7 @@
                     this.$nextTick(async () => {
                         if(!this.selectedVoucher) {
                             // create mode
-                            this.addRow(2);
+                            // this.addRow(2);
                         }else{
                             this.form.manual_id = this.selectedVoucher.manual_id;
                             this.form.date = this.selectedVoucher.date;
