@@ -556,7 +556,7 @@
                     });
 
                     channel.listen('CustomerUpdatedEvent', async (data) => {
-                       this.handleCustomerUpdatedEvent({detail: {customer: data.customer}});
+                       await this.handleCustomerUpdatedEvent({detail: {customer: data.customer}});
                     });
                 },
 
