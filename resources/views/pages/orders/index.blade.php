@@ -25,6 +25,7 @@
         x-data="ordersComponent"
         @order-updated.window="handleOrderUpdatedEvent"
         @order-created.window="handleOrderCreatedEvent"
+        @customer-updated.window="handleCustomerUpdatedEvent"
     >
 
         <template x-teleport="#counter">
@@ -506,8 +507,33 @@
                     this.orders.unshift(e.detail.order);
                 },
 
+                async handleCustomerUpdatedEvent(e) {
+                    const customerResource = await this.getCustomerResource(e.detail.customer.id);
+                    const orders = this.orders.filter(order => order.customer.id === e.detail.customer.id);
+                    orders.forEach(order => {
+                        order.customer = customerResource;
+                        // find the phone number which has the same id of the order phone_id
+                        // then update the phone number in the order
+                        const phone = customerResource.phones.find(phone => phone.id === order.phone_id);
+                        if(phone) {
+                            order.phone.number = phone.number;
+                        }
+                        // find the address which has the same id of the order address_id
+                        // then update the address in the order
+                        const address = customerResource.addresses.find(address => address.id === order.address_id);
+                        if(address) {
+                            order.address.full_address = address.full_address;
+                        }
+                    });
+                },
+
                 async getOrderResource(orderId) {
                     const response = await axios.get(`/orders/${orderId}`);
+                    return response.data.data;
+                },
+
+                async getCustomerResource(customerId) {
+                    const response = await axios.get(`/customers/${customerId}`);
                     return response.data.data;
                 },
                 
@@ -527,6 +553,10 @@
                             const orderResource = await this.getOrderResource(data.order.id);
                             this.orders[index] = orderResource;
                         }
+                    });
+
+                    channel.listen('CustomerUpdatedEvent', async (data) => {
+                       this.handleCustomerUpdatedEvent({detail: {customer: data.customer}});
                     });
                 },
 

@@ -32,6 +32,7 @@ class CustomerUpdatedEvent implements ShouldBroadcast
     {
         return [
             new Channel('customers'),
+            new Channel('orders'),
         ];
     }
 }
