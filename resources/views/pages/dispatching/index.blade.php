@@ -448,6 +448,10 @@
                     // OrderCreatedEvent
                     channel.listen('OrderCreatedEvent', async (data) => {
                         const orderResource = await this.getOrderResource(data.order.id);
+                        // check if the order is already in the orders array
+                        if(this.orders.find(order => order.id == orderResource.id)) {
+                            return;
+                        }
                         this.orders.push(orderResource);
                     });
 
