@@ -23,10 +23,11 @@
         @reorder-orders-in-same-box.window="reorderOrdersInSameBox"
     >
         <template x-teleport="#counter">
-        <span
-            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-            x-text="unCompletedOrders.length"
-        ></span>
+            <div class="flex items-center gap-2">
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300" x-text="unCompletedOrders.length"></span>
+                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300" x-text="completedOrders.length"></span>
+                <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-700 dark:text-red-300" x-text="cancelledOrders.length"></span>
+            </div>
         </template>
 
         <!-- notifications -->
@@ -246,6 +247,14 @@
                     return this.orders.filter(order => order.status_id !== 6 && order.status_id !== 4);
                 },
 
+                get cancelledOrders() {
+                    return this.orders.filter(order => order.status_id === 6);
+                },
+
+                get completedOrders() {
+                    return this.orders.filter(order => order.status_id === 4);
+                },
+
                 get sortedOrders() {
                     return this.unCompletedOrders.sort((a, b) => a.index - b.index);
                 },
@@ -381,7 +390,7 @@
                     const index = this.orders.findIndex(order => order.id == e.detail.orderId);
                     this.orders[index].status_id = 6;
                     this.orders[index].technician_id = null;
-                    this.orders.splice(index, 1);
+                    // this.orders.splice(index, 1);
                     // backend exist in cancel-reason-modal
                 },
 
@@ -450,13 +459,13 @@
                         const index = this.orders.findIndex(order => order.id == orderResource.id);
                         if(index != -1) {
                             // that means the order is visible on the screen
-                            // if data.order.department_id is not the same as the selected department id or the updated order is cancelled, then remove the order from the orders array
-                            if(orderResource.department_id !== this.selectedDepartmentId || orderResource.status_id == 6) {
-                                // that means that the updated order is moved to a different department or it is cancelled
+                            // if data.order.department_id is not the same as the selected department id, then remove the order from the orders array
+                            if(orderResource.department_id !== this.selectedDepartmentId) {
+                                // that means that the updated order is moved to a different department
                                 // so we need to remove the order from the orders array
                                 this.orders.splice(index, 1);
                             }else{
-                                // that means the updated order has been updated without changing the department or it is not cancelled
+                                // that means the updated order has been updated without changing the department
                                 // so we need to update the order on the screen
                                 this.orders[index] = orderResource;
                             }

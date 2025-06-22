@@ -38,6 +38,12 @@ class DispatchingPageController extends Controller
                     ->where('department_id', $department->id)
                     ->whereDate('completed_at', today());
             })
+            ->orWhere(function($query) use ($department) {
+                $query
+                    ->where('status_id', Status::CANCELLED)
+                    ->where('department_id', $department->id)
+                    ->whereDate('cancelled_at', today());
+            })
             ->get();
 
         return view('pages.dispatching.index', [
