@@ -210,7 +210,12 @@
                         </div>
                         <div>
                             <x-label for="tags" class="text-sm">{{ __('messages.orderTag') }}</x-label>
-                            <x-input class="w-full text-sm" id="tags" x-model="filters.tags" />
+                            <x-select class="w-full text-sm" id="tags" x-model="filters.tags">
+                                <option value="">---</option>
+                                <template x-for="tag in tags" :key="tag">
+                                    <option :value="tag" x-text="tag"></option>
+                                </template>
+                            </x-select>
                         </div>
                     </div>
                 </div>
@@ -386,6 +391,7 @@
                 departments: @js($departments),
                 technicians: @js($technicians),
                 creators: @js($creators),
+                tags: @js($tags),
                 showModal: false,
                 currentPage: 1,
                 lastPage: 1,

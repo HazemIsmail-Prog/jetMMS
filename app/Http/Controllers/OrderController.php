@@ -93,7 +93,7 @@ class OrderController extends Controller
                     $query->whereIn('department_id', $request->department_ids);
                 })
                 ->when($request->tags, function($query) use ($request) {    
-                    $query->where('tags', 'like', '%' . $request->tags . '%');
+                    $query->where('tag', 'like', '%' . $request->tags . '%');
                 })
                 ->when($request->start_created_at, function($query) use ($request) {
                     $query->whereDate('created_at', '>=', $request->start_created_at);
@@ -119,6 +119,7 @@ class OrderController extends Controller
         }
 
         return view('pages.orders.index', [
+            'tags' => Order::select('tag')->distinct()->whereNotNull('tag')->where('tag', '!=', '')->get()->pluck('tag')->unique()->values(),
             'departments' => DepartmentResource::collection(Department::where('is_service', true)->get()),
             'technicians' => UserResource::collection(User::whereHas('orders_technician')->get()),
             'creators' => UserResource::collection(User::whereHas('orders_creator')->get()),
