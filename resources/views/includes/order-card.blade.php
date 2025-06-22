@@ -55,6 +55,11 @@
                 <x-badgeWithCounter @click="openOrderModal(order)">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
+                <template x-if="isFirstOrNextOrderButtonVisible()">
+                    <x-badgeWithCounter @click="setAsFirstOrNextOrder(order.id)">
+                        <x-svgs.arrow-up class="h-4 w-4" />
+                    </x-badgeWithCounter>
+                </template>
     
                 <x-badgeWithCounter
                     x-show="order.unread_comments_count > 0"
@@ -100,6 +105,29 @@
                 handleOrderCancel(order) {
                     this.$dispatch('open-order-cancel-reason-modal',{order:order});
                 },
+                setAsFirstOrNextOrder(id) {
+                    if(!confirm('{{ __('messages.this_will_set_this_order_as_first_order') }}')) {
+                        return;
+                    }
+                    this.$dispatch('set-as-first-or-next-order',{orderId:id});
+                },
+
+                isFirstOrNextOrderButtonVisible() {
+                    // wanna hide this button if the order status is not 2
+                    // or if it is already the first
+                    // or if it is the second order and the first order is received or arrived
+                    if(this.order.status_id !== 2) return false;
+                    const technicianOrders = this.techniciansOrders(this.order.technician_id);
+                    const filteredOrders = technicianOrders.filter(order => order.status_id !== 4);
+                    const firstOrder = filteredOrders.sort((a, b) => a.index - b.index)[0];
+                    if (firstOrder.id === this.order.id) return false;
+                    if (firstOrder.status_id === 3 || firstOrder.status_id === 7) {
+                        const secondOrder = filteredOrders.sort((a, b) => a.index - b.index)[1];
+                        if (!secondOrder) return true;
+                        return secondOrder.id !== this.order.id;
+                    }
+                    return true;
+                }
             }
         }
     </script>

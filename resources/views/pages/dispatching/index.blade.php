@@ -21,6 +21,7 @@
         @order-pending.window="setOrderOnPending"
         @technician-selected.window="setTechnician"
         @reorder-orders-in-same-box.window="reorderOrdersInSameBox"
+        @set-as-first-or-next-order.window="setAsFirstOrNextOrder"
     >
         <template x-teleport="#counter">
             <div class="flex items-center gap-2">
@@ -419,6 +420,53 @@
                         .catch(error => {
                             alert(error.response.data.error);
                             window.location.reload();
+                        });
+                },
+
+                setAsFirstOrNextOrder(e) {
+
+                    // get the index of the order
+                    const index = this.orders.findIndex(order => order.id == e.detail.orderId);
+                    const selectedOrder = this.orders[index];
+
+                    // check if the selected order has a technician
+                    if(!selectedOrder.technician_id) return;
+
+                    // exclude any completed orders and store the result in filteredOrders
+                    const filteredOrders = this.techniciansOrders(selectedOrder.technician_id).filter(order => order.status_id !== 4);
+
+                    // get the first order of the technician
+                    const firstOrder = filteredOrders.sort((a, b) => a.index - b.index)[0];
+
+                    // check if there is first order
+                    if(firstOrder) {
+                        // check if it is received or arrived
+                        if(firstOrder.status_id === 3 || firstOrder.status_id === 7) {
+                            // get the second order
+                            const secondOrder = filteredOrders.sort((a, b) => a.index - b.index)[1];
+                            // check if there is second order
+                            if(secondOrder) {
+                                // check if the selected order is the second order
+                                if(selectedOrder.id === secondOrder.id) {
+                                    return;
+                                }
+                                // set the index to be between the first and second order
+                                this.orders[index].index = (firstOrder.index + secondOrder.index) / 2;
+                            }
+                        }else{
+                            // check if the selected order is the first order
+                            if(selectedOrder.id === firstOrder.id) {
+                                return;
+                            }
+                            // set the index to be before the first order
+                            this.orders[index].index = firstOrder.index - 10;
+                        }
+                    }
+
+                    // Update backend
+                    axios.put(`/orders/${this.orders[index].id}/changeIndex`, this.orders[index])
+                        .then(response => {
+                            console.log('success');
                         });
                 },
 
