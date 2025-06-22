@@ -50,6 +50,7 @@ class OrderResource extends JsonResource
 
             // Basic
             'id' => $this->id,
+            'tag' => $this->tag,
             'notes' => $this->notes,
             'index' => $this->index,
             'reason' => $this->reason,
