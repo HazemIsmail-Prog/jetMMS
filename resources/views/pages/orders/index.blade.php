@@ -471,6 +471,9 @@
                                 this.orders = [];
                                 this.orders = response.data.data;
                             } else {
+                                // first remove duplicates
+                                this.orders = this.orders.filter(order => !response.data.data.some(o => o.id === order.id));
+                                // then add new orders
                                 this.orders = [...this.orders, ...response.data.data];
                             }
                             this.currentPage = response.data.meta.current_page;
@@ -512,7 +515,7 @@
                     var channel = Echo.channel('orders');
                     channel.listen('OrderCreatedEvent', async (data) => {
                         const orderResource = await this.getOrderResource(data.order.id);
-                        if(this.checkFilters()) {
+                        if(this.isEmptyFilters()) {
                             // this will prevent the order from being added to the orders array if there are filters applied
                             this.orders.unshift(orderResource);
                             this.totalRecords++;
@@ -527,9 +530,14 @@
                     });
                 },
 
-                checkFilters() {
+                isEmptyFilters() {
                     // check if all filters string values are empty and array values are empty
-                    return Object.values(this.filters).every(value => value === '') && Object.values(this.filters).every(value => value.length === 0);
+                    return Object.values(this.filters).every(value => {
+                        if (Array.isArray(value)) {
+                            return value.length === 0;
+                        }
+                        return value === '';
+                    });
                 },
 
                 resetFilters() {
