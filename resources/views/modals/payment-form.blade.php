@@ -57,7 +57,7 @@
                         <div class=" space-y-3">
                             <div>
                                 <x-label for="amount">{{ __('messages.amount') }}</x-label>
-                                <x-input class="w-full" required type="number" x-model="form.amount" id="amount" dir="ltr"
+                                <x-input class="w-full" required type="number" x-model.number="form.amount" id="amount" dir="ltr"
                                     min="0" step="0.001" x-bind:max="calculatedRemainingAmount" />
                                 <x-input-error for="form.amount" />
                             </div>
@@ -155,7 +155,8 @@
                 },
 
                 get calculatedRemainingAmount() {
-                    return this.calculatedAmount - this.selectedInvoice.payments_amount;
+                    // round to 3 decimal places
+                    return Number((this.calculatedAmount - this.selectedInvoice.payments_amount).toFixed(3));
                 },
 
                 save() {

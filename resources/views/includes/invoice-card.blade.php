@@ -210,7 +210,7 @@
                 },
 
                 get calculatedRemainingAmount() {
-                    return this.calculatedAmount - this.invoice.payments_amount;
+                    return Number((this.calculatedAmount - this.invoice.payments_amount).toFixed(3));
                 },
 
                 deleteInvoice() {
