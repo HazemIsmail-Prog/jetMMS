@@ -34,7 +34,7 @@ class PaymentResource extends JsonResource
             'formatted_time' => $this->created_at->format('H:i'),
 
             // Permissions
-            'can_delete' => auth()->user()->can('delete', $this->resource),
+            'can_delete' => auth()->user()->hasPermission('payments_delete'),
         ];
     }
 }

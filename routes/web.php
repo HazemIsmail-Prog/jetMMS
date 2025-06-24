@@ -93,6 +93,9 @@ use App\Http\Controllers\DispatchingPageController;
 use App\Http\Controllers\TechnicianPageController;
 use App\Http\Controllers\CustomerContractController;
 use App\Http\Middleware\NoTechnicians;
+use App\Http\Controllers\ReportController;
+
+
 
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
@@ -108,118 +111,117 @@ Route::middleware([
     'active',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
+    ])->group(function () {
+        
+        // Technician Page (new routes for Alpine JS Version)
+        Route::get('/technicianPage', [TechnicianPageController::class,'index'])->name('technicianPage.index');
+        Route::get('/technicianPage/getCurrentOrderForTechnician', [TechnicianPageController::class,'getCurrentOrderForTechnician']);   
 
-    // Technician Page (new routes for Alpine JS Version)
-    Route::get('/technicianPage', [TechnicianPageController::class,'index'])->name('technicianPage.index');
-    Route::get('/technicianPage/getCurrentOrderForTechnician', [TechnicianPageController::class,'getCurrentOrderForTechnician']);   
-
-    // Technician Page (old routes for Livewire Version)
-    // Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
-
-
+        // Technician Page (old routes for Livewire Version)
+        // Route::get('/technician_page', TechnicianPage::class)->name('technician_page');
 
 
-    Route::group(['middleware' => 'no_technicians'], function () {
-
-        // Activity Log
-        Route::get('/activityLog', ActivityLogController::class)->name('actions-log.index');
-
-        // ========== Dashboard ==========
-        Route::get('/',[DashboardController::class,'index'])->name('dashboard')->can('dashboard_menu', DummyModel::class);
-        Route::get('/ordersChart/{year}',[DashboardController::class,'ordersChart']);
-        Route::get('/customersChart/{year}',[DashboardController::class,'customersChart']);
-        Route::get('/technicianCompletionAverage/{year}',[DashboardController::class,'technicianCompletionAverage']);
-        Route::get('/dailyStatistics',[DashboardController::class,'dailyStatistics']);
-        Route::get('/ordersStatusCounter',[DashboardController::class,'ordersStatusCounter']);
-        Route::get('/marketingCounter',[DashboardController::class,'marketingCounter']);
-        Route::get('/deletedInvoices',[DashboardController::class,'deletedInvoices']);
-        Route::get('/departmentTechnicianCounter',[DashboardController::class,'departmentTechnicianCounter']);
-
-        Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 
 
-        Route::apiResource('attachments', AttachmentController::class);
+        Route::group(['middleware' => 'no_technicians'], function () {
 
-        // ========== Operations ==========
+            // Activity Log
+            Route::get('/activityLog', ActivityLogController::class)->name('actions-log.index');
 
+            // ========== Dashboard ==========
+            Route::get('/',[DashboardController::class,'index'])->name('dashboard')->can('dashboard_menu', DummyModel::class);
+            Route::get('/ordersChart/{year}',[DashboardController::class,'ordersChart']);
+            Route::get('/customersChart/{year}',[DashboardController::class,'customersChart']);
+            Route::get('/technicianCompletionAverage/{year}',[DashboardController::class,'technicianCompletionAverage']);
+            Route::get('/dailyStatistics',[DashboardController::class,'dailyStatistics']);
+            Route::get('/ordersStatusCounter',[DashboardController::class,'ordersStatusCounter']);
+            Route::get('/marketingCounter',[DashboardController::class,'marketingCounter']);
+            Route::get('/deletedInvoices',[DashboardController::class,'deletedInvoices']);
+            Route::get('/departmentTechnicianCounter',[DashboardController::class,'departmentTechnicianCounter']);
 
-        // Customers (new routes for Alpine JS Version)
-        Route::get('/customers/{customer}/getAllOrders', [CustomerController::class, 'getAllOrders']);
-        Route::get('/customers/{customer}/getInProgressOrders', [CustomerController::class, 'getInProgressOrders']);
-        Route::get('/customers/{customer}/getDepartmentInProgressOrders/{department}', [CustomerController::class, 'getDepartmentInProgressOrders']);
-        Route::apiResource('/customers', CustomerController::class);
-
-        // Customers (old routes for Livewire Version)
-        // Route::get('customers', CustomerIndex::class)
-        //     ->name('customer.index')
-        //     ->can('viewAny', Customer::class);
-
-
-        // Orders (new routes for Alpine JS Version)
-        Route::controller(OrderController::class)->group(function () {
-            Route::get      ('/orders/exportToExcel', 'exportToExcel');
-            Route::get      ('/orders', 'index')->name('orders.index');
-            Route::post     ('/orders/{customer}', 'store');
-            Route::put      ('/orders/{order}', 'update');
-            Route::get      ('/orders/{order}', 'show');
-            Route::put      ('/orders/{order}/changeTechnician', 'changeTechnician');
-            Route::put      ('/orders/{order}/setPending', 'setPending');
-            Route::put      ('/orders/{order}/changeIndex', 'changeIndex');
-            Route::put      ('/orders/{order}/setHold', 'setHold');
-            Route::put      ('/orders/{order}/setCancelled', 'setCancelled');
-            Route::put      ('/orders/{order}/setReceived', 'setReceived')->withoutMiddleware(NoTechnicians::class);
-            Route::put      ('/orders/{order}/setArrived', 'setArrived')->withoutMiddleware(NoTechnicians::class);
-            Route::put      ('/orders/{order}/setCompleted', 'setCompleted')->withoutMiddleware(NoTechnicians::class);
-            Route::get      ('/orders/{order}/getOrderStatuses', 'getOrderStatuses');
-
-            // Invoices
-            Route::get      ('/orders/{order}/invoices','getInvoices')->withoutMiddleware(NoTechnicians::class);
-            Route::post     ('/orders/{order}/invoices','storeInvoice')->withoutMiddleware(NoTechnicians::class);
-            Route::put      ('/orders/{order}/invoices/{invoice}','updateInvoice'); // for discount
-            Route::get      ('/orders/{order}/invoices/{invoice}','showInvoice')->withoutMiddleware(NoTechnicians::class);
-            Route::delete   ('/orders/{order}/invoices/{invoice}','destroyInvoice');
-
-            // Payments
-            Route::get      ('/orders/{order}/invoices/{invoice}/payments','getPayments')->withoutMiddleware(NoTechnicians::class);
-            Route::post     ('/orders/{order}/invoices/{invoice}/payments','storePayment')->withoutMiddleware(NoTechnicians::class);
-            Route::get      ('/orders/{order}/invoices/{invoice}/payments/{payment}','showPayment')->withoutMiddleware(NoTechnicians::class);
-            Route::delete   ('/orders/{order}/invoices/{invoice}/payments/{payment}','destroyPayment');
-
-            // Comments
-            Route::get      ('/orders/{order}/comments','getComments')->withoutMiddleware(NoTechnicians::class);
-            Route::post     ('/orders/{order}/comments','storeComment')->withoutMiddleware(NoTechnicians::class);
-            Route::get      ('/orders/{order}/comments/{comment}','showComment')->withoutMiddleware(NoTechnicians::class);
+            Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 
 
-            // get department services for invoice form
-            Route::get      ('/orders/{order}/getDepartmentServices', 'getDepartmentServices')->withoutMiddleware(NoTechnicians::class);
-        });
+            Route::apiResource('attachments', AttachmentController::class);
 
-        // Orders (old routes for Livewire Version)
-        // Route::get('orders', OrderIndex::class)
-        //     ->name('order.index')
-        //     ->can('viewAny', Order::class);
+            // ========== Operations ==========
 
-        Route::get('marketings', MarketingIndex::class)
-            ->name('marketing.index')
-            ->can('viewAny', Marketing::class);
 
-        Route::get('ratings', RatingIndex::class)
-            ->name('rating.index')
-            ->can('viewAny', Rating::class);
+            // Customers (new routes for Alpine JS Version)
+            Route::get('/customers/{customer}/getAllOrders', [CustomerController::class, 'getAllOrders']);
+            Route::get('/customers/{customer}/getInProgressOrders', [CustomerController::class, 'getInProgressOrders']);
+            Route::get('/customers/{customer}/getDepartmentInProgressOrders/{department}', [CustomerController::class, 'getDepartmentInProgressOrders']);
+            Route::apiResource('/customers', CustomerController::class);
 
-        Route::get('invoices/report',[InvoiceController::class, 'index'])->name('invoice.report');
-        Route::get('invoices/report/getData',[InvoiceController::class, 'getData']);
+            // Customers (old routes for Livewire Version)
+            // Route::get('customers', CustomerIndex::class)
+            //     ->name('customer.index')
+            //     ->can('viewAny', Customer::class);
 
-        // Dispatching (New routes for Alpine JS Version)
-        Route::get('/dispatching/{department}', [DispatchingPageController::class,'index'])->name('dispatch-panel.index');
-        Route::get('/dispatching/getTodaysCompletedOrdersForTechnician/{user}', [DispatchingPageController::class,'getTodaysCompletedOrdersForTechnician']);
 
-        // Dispatching (old routes for Livewire Version)
-        // Route::get('dispatch-panel/{department}', DispatchingIndex::class)
-        //     ->name('dispatch-panel.index')
-        //     ->can('canDispatch', DummyModel::class);
+            // Orders (new routes for Alpine JS Version)
+            Route::controller(OrderController::class)->group(function () {
+                Route::get      ('/orders/exportToExcel', 'exportToExcel');
+                Route::get      ('/orders', 'index')->name('orders.index');
+                Route::post     ('/orders/{customer}', 'store');
+                Route::put      ('/orders/{order}', 'update');
+                Route::get      ('/orders/{order}', 'show');
+                Route::put      ('/orders/{order}/changeTechnician', 'changeTechnician');
+                Route::put      ('/orders/{order}/setPending', 'setPending');
+                Route::put      ('/orders/{order}/changeIndex', 'changeIndex');
+                Route::put      ('/orders/{order}/setHold', 'setHold');
+                Route::put      ('/orders/{order}/setCancelled', 'setCancelled');
+                Route::put      ('/orders/{order}/setReceived', 'setReceived')->withoutMiddleware(NoTechnicians::class);
+                Route::put      ('/orders/{order}/setArrived', 'setArrived')->withoutMiddleware(NoTechnicians::class);
+                Route::put      ('/orders/{order}/setCompleted', 'setCompleted')->withoutMiddleware(NoTechnicians::class);
+                Route::get      ('/orders/{order}/getOrderStatuses', 'getOrderStatuses');
+
+                // Invoices
+                Route::get      ('/orders/{order}/invoices','getInvoices')->withoutMiddleware(NoTechnicians::class);
+                Route::post     ('/orders/{order}/invoices','storeInvoice')->withoutMiddleware(NoTechnicians::class);
+                Route::put      ('/orders/{order}/invoices/{invoice}','updateInvoice'); // for discount
+                Route::get      ('/orders/{order}/invoices/{invoice}','showInvoice')->withoutMiddleware(NoTechnicians::class);
+                Route::delete   ('/orders/{order}/invoices/{invoice}','destroyInvoice');
+
+                // Payments
+                Route::get      ('/orders/{order}/invoices/{invoice}/payments','getPayments')->withoutMiddleware(NoTechnicians::class);
+                Route::post     ('/orders/{order}/invoices/{invoice}/payments','storePayment')->withoutMiddleware(NoTechnicians::class);
+                Route::get      ('/orders/{order}/invoices/{invoice}/payments/{payment}','showPayment')->withoutMiddleware(NoTechnicians::class);
+                Route::delete   ('/orders/{order}/invoices/{invoice}/payments/{payment}','destroyPayment');
+
+                // Comments
+                Route::get      ('/orders/{order}/comments','getComments')->withoutMiddleware(NoTechnicians::class);
+                Route::post     ('/orders/{order}/comments','storeComment')->withoutMiddleware(NoTechnicians::class);
+                Route::get      ('/orders/{order}/comments/{comment}','showComment')->withoutMiddleware(NoTechnicians::class);
+
+
+                // get department services for invoice form
+                Route::get      ('/orders/{order}/getDepartmentServices', 'getDepartmentServices')->withoutMiddleware(NoTechnicians::class);
+            });
+
+            // Orders (old routes for Livewire Version)
+            // Route::get('orders', OrderIndex::class)
+            //     ->name('order.index')
+            //     ->can('viewAny', Order::class);
+
+            Route::get('marketings', MarketingIndex::class)
+                ->name('marketing.index')
+                ->can('viewAny', Marketing::class);
+
+            Route::get('ratings', RatingIndex::class)
+                ->name('rating.index')
+                ->can('viewAny', Rating::class);
+
+
+
+            // Dispatching (New routes for Alpine JS Version)
+            Route::get('/dispatching/{department}', [DispatchingPageController::class,'index'])->name('dispatch-panel.index');
+            Route::get('/dispatching/getTodaysCompletedOrdersForTechnician/{user}', [DispatchingPageController::class,'getTodaysCompletedOrdersForTechnician']);
+
+            // Dispatching (old routes for Livewire Version)
+            // Route::get('dispatch-panel/{department}', DispatchingIndex::class)
+            //     ->name('dispatch-panel.index')
+            //     ->can('canDispatch', DummyModel::class);
 
             // I Temporary disabled this route because it's not used for now
             // Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
@@ -229,200 +231,207 @@ Route::middleware([
 
 
 
-        // ========== Contracts ==========
+            // ========== Contracts ==========
 
-        // New routes for Alpine JS Version
-        Route::post('/createCustomerContract/{customer}', [CustomerContractController::class,'createCustomerContract']);
-
-
-        Route::get('construction-contracts',ContractIndex::class)
-            ->name('construction.contracts')
-            ->can('viewConstructionContracts',Contract::class);
-
-        Route::get('subscription-contracts',ContractIndex::class)
-            ->name('subscription.contracts')
-            ->can('viewSubscriptionContracts',Contract::class);
-
-        Route::get('quotations',QuotationIndex::class)
-            ->name('quotations')
-            ->can('viewAny',Quotation::class);
+            // New routes for Alpine JS Version
+            Route::post('/createCustomerContract/{customer}', [CustomerContractController::class,'createCustomerContract']);
 
 
+            Route::get('construction-contracts',ContractIndex::class)
+                ->name('construction.contracts')
+                ->can('viewConstructionContracts',Contract::class);
 
-        // ========== Cashier ==========
+            Route::get('subscription-contracts',ContractIndex::class)
+                ->name('subscription.contracts')
+                ->can('viewSubscriptionContracts',Contract::class);
 
-        Route::get('cash-collection', CashCollection::class)
-            ->name('cash_collection')
-            ->can('cash_collection_menu', DummyModel::class);
-
-        Route::get('knet-collection', KnetCollection::class)
-            ->name('knet_collection')
-            ->can('knet_collection_menu', DummyModel::class);
-
-        Route::get('part-invoices', PartInvoiceIndex::class)
-            ->name('part_invoice')
-            ->can('viewAny', PartInvoice::class);
-
-        Route::get('targets',TargetForm::class)
-            ->name('targets')
-            ->can('targets_menu', DummyModel::class);
-
-        // ========== Accounting ==========
-
-        // Accounts
-        Route::get('accounts', AccountIndex::class)
-            ->name('account.index')
-            ->can('viewAny', Account::class);
-
-        Route::get('accounts/reports/daily_review', DailyReview::class)
-            ->name('daily_review')
-            ->can('daily_review_report', DummyModel::class)
-            ;
-
-        Route::get('accounts/reports/collection_statement', CollectionStatement::class)
-            ->name('collection_statement')
-            ->can('collection_statement_report', DummyModel::class)
-            ;
-
-        Route::get('accounts/reports/target_statement', TargetStatement::class)
-            ->name('target_statement')
-            ->can('target_statement_report', DummyModel::class)
-            ;
-        Route::get('accounts/reports/shift_target_statement', ShiftTargetStatement::class)
-            ->name('shift_target_statement')
-            ->can('shift_target_statement_report', DummyModel::class)
-            ;
-
-        Route::get('accounts/reports/users_receivables', UsersReceivables::class)
-            ->name('users_receivables')
-            ->can('users_receivables_report', DummyModel::class)
-            ;
-
-        Route::get('accounts/reports/pending_payments', PendingPayments::class)
-            ->name('pending_payments')
-            ->can('pending_payments_report', DummyModel::class)
-            ;
-
-        Route::get('accounts/reports/account_statement', AccountStatement::class)
-            ->name('account_statement')
-            ->can('account_statement_report', DummyModel::class);
-
-        Route::get('accounts/reports/balance_sheet', AccountStatement::class) // TODO:change class to its new page
-            ->name('balance_sheet')
-            ->can('balance_sheet_report', DummyModel::class);
-
-        Route::get('accounts/reports/trial_balance', TrialBalance::class)
-            ->name('trial_balance')
-            ->can('trial_balance_report', DummyModel::class);
-
-        Route::get('accounts/reports/profit_loss', [ProfitLossController::class, 'index']) // TODO:change class to its new page
-            ->name('profit_loss')
-            ->can('profit_loss_report', DummyModel::class);
-
-        // Invoices
-        Route::get('invoices', InvoiceIndex::class)
-            ->name('invoice.index')
-            ->can('viewAny', Invoice::class);
-
-        // Vouchers
-        Route::get('vouchers', [VoucherController::class,'index'])->name('vouchers.index');
-        Route::post('vouchers', [VoucherController::class,'store']);
-        Route::put('vouchers/{voucher}', [VoucherController::class,'update']);
-        Route::get('getVoucherDetails/{voucher}', [VoucherController::class,'getVoucherDetails']);
-
-        // Vouchers (old with Livewire)
-        // Route::get('vouchers', VoucherIndex::class)
-        //     ->name('voucher.index')
-        //     ->can('viewAny', Voucher::class);
+            Route::get('quotations',QuotationIndex::class)
+                ->name('quotations')
+                ->can('viewAny',Quotation::class);
 
 
-        // ========== HR ==========
 
-        // Employees
-        Route::get('employees', EmployeeIndex::class)
-            ->name('employee.index')
-            ->can('viewAny', Employee::class);
+            // ========== Cashier ==========
 
-        // ========== Assets ==========
-        Route::get('cars', CarIndex::class)
-            ->name('car.index')
-            ->can('viewAny', Car::class);
+            Route::get('cash-collection', CashCollection::class)
+                ->name('cash_collection')
+                ->can('cash_collection_menu', DummyModel::class);
 
-        Route::get('phone_devices', DeviceIndex::class)
-        ->name('phone_device.index')
-        ->can('viewAny', PhoneDevice::class);
+            Route::get('knet-collection', KnetCollection::class)
+                ->name('knet_collection')
+                ->can('knet_collection_menu', DummyModel::class);
 
-        Route::get('document_types', DocumentTypeIndex::class)
-        ->name('document_type.index')
-        ->can('viewAny', DocumentType::class);
+            Route::get('part-invoices', PartInvoiceIndex::class)
+                ->name('part_invoice')
+                ->can('viewAny', PartInvoice::class);
 
-        Route::get('documents', DocumentIndex::class)
-        ->name('document.index')
-        ->can('viewAny', Document::class);
+            Route::get('targets',TargetForm::class)
+                ->name('targets')
+                ->can('targets_menu', DummyModel::class);
 
-        // ========== Administration ==========
-        Route::get('company_contracts', ContractsContractIndex::class)
-            ->name('company_contract.index')
-            ->can('viewAny', CompanyContract::class);
+            // ========== Accounting ==========
 
-        Route::get('company_budgets', BudgetIndex::class)
-            ->name('company_budget.index')
-            ->can('viewAny', CompanyBudget::class);
+            // Accounts
+            Route::get('accounts', AccountIndex::class)
+                ->name('account.index')
+                ->can('viewAny', Account::class);
 
-        Route::apiResource('letters', LetterController::class);
+            Route::get('accounts/reports/daily_review', DailyReview::class)
+                ->name('daily_review')
+                ->can('daily_review_report', DummyModel::class)
+                ;
+
+            Route::get('accounts/reports/collection_statement', CollectionStatement::class)
+                ->name('collection_statement')
+                ->can('collection_statement_report', DummyModel::class)
+                ;
+
+            Route::get('accounts/reports/target_statement', TargetStatement::class)
+                ->name('target_statement')
+                ->can('target_statement_report', DummyModel::class)
+                ;
+            Route::get('accounts/reports/shift_target_statement', ShiftTargetStatement::class)
+                ->name('shift_target_statement')
+                ->can('shift_target_statement_report', DummyModel::class)
+                ;
+
+            Route::get('accounts/reports/users_receivables', UsersReceivables::class)
+                ->name('users_receivables')
+                ->can('users_receivables_report', DummyModel::class)
+                ;
+
+            Route::get('accounts/reports/pending_payments', PendingPayments::class)
+                ->name('pending_payments')
+                ->can('pending_payments_report', DummyModel::class)
+                ;
+
+            Route::get('accounts/reports/account_statement', AccountStatement::class)
+                ->name('account_statement')
+                ->can('account_statement_report', DummyModel::class);
+
+            Route::get('accounts/reports/balance_sheet', AccountStatement::class) // TODO:change class to its new page
+                ->name('balance_sheet')
+                ->can('balance_sheet_report', DummyModel::class);
+
+            Route::get('accounts/reports/trial_balance', TrialBalance::class)
+                ->name('trial_balance')
+                ->can('trial_balance_report', DummyModel::class);
+
+            Route::get('accounts/reports/profit_loss', [ProfitLossController::class, 'index']) // TODO:change class to its new page
+                ->name('profit_loss')
+                ->can('profit_loss_report', DummyModel::class);
+
+            // Invoices
+            Route::get('invoices/report',[ReportController::class, 'invoices'])->name('invoice.report');
+            Route::get('invoices/report/getData',[ReportController::class, 'getData']);
+
+            // new routes for Alpine JS Version
+            Route::get('invoices/exportToExcel', [InvoiceController::class, 'exportToExcel']);
+            Route::get('invoices', [InvoiceController::class, 'index'])->name('invoice.index');
+            // old routes for Livewire Version
+            // Route::get('invoices', InvoiceIndex::class)
+            //     ->name('invoice.index')
+            //     ->can('viewAny', Invoice::class);
+
+            // Vouchers
+            Route::get('vouchers', [VoucherController::class,'index'])->name('vouchers.index');
+            Route::post('vouchers', [VoucherController::class,'store']);
+            Route::put('vouchers/{voucher}', [VoucherController::class,'update']);
+            Route::get('getVoucherDetails/{voucher}', [VoucherController::class,'getVoucherDetails']);
+
+            // Vouchers (old with Livewire)
+            // Route::get('vouchers', VoucherIndex::class)
+            //     ->name('voucher.index')
+            //     ->can('viewAny', Voucher::class);
 
 
-        // ========== Admin Settings ==========
-        Route::get('suppliers', SupplierIndex::class)
-            ->name('supplier.index')
-            ->can('viewAny', Supplier::class);
+            // ========== HR ==========
 
-        Route::get('cost_centers', CostCenterIndex::class)
-            ->name('cost_center.index')
-            ->can('viewAny', CostCenter::class);
+            // Employees
+            Route::get('employees', EmployeeIndex::class)
+                ->name('employee.index')
+                ->can('viewAny', Employee::class);
 
-        Route::get('roles', RoleIndex::class)
-            ->name('role.index')
-            ->can('viewAny', Role::class);
+            // ========== Assets ==========
+            Route::get('cars', CarIndex::class)
+                ->name('car.index')
+                ->can('viewAny', Car::class);
 
-        Route::get('permissions', PermissionIndex::class)
-            ->name('permission.index')
-            ->can('viewAny', Permission::class);
+            Route::get('phone_devices', DeviceIndex::class)
+            ->name('phone_device.index')
+            ->can('viewAny', PhoneDevice::class);
 
-        Route::get('users', UserIndex::class)
-            ->name('user.index')
-            ->can('viewAny', User::class);
+            Route::get('document_types', DocumentTypeIndex::class)
+            ->name('document_type.index')
+            ->can('viewAny', DocumentType::class);
 
-        Route::get('titles', TitleIndex::class)
-            ->name('title.index')
-            ->can('viewAny', Title::class);
+            Route::get('documents', DocumentIndex::class)
+            ->name('document.index')
+            ->can('viewAny', Document::class);
 
-        Route::get('statuses', StatusIndex::class)
-            ->name('status.index')
-            ->can('viewAny', Status::class);
+            // ========== Administration ==========
+            Route::get('company_contracts', ContractsContractIndex::class)
+                ->name('company_contract.index')
+                ->can('viewAny', CompanyContract::class);
 
-        Route::get('departments', DepartmentIndex::class)
-            ->name('department.index')
-            ->can('viewAny', Department::class);
+            Route::get('company_budgets', BudgetIndex::class)
+                ->name('company_budget.index')
+                ->can('viewAny', CompanyBudget::class);
 
-        Route::get('companies', CompanyIndex::class)
-            ->name('company.index')
-            ->can('viewAny', Company::class);
+            Route::apiResource('letters', LetterController::class);
 
-        Route::get('shifts', ShiftIndex::class)
-            ->name('shift.index')
-            ->can('viewAny', Shift::class);
 
-        Route::get('areas', AreaIndex::class)
-            ->name('area.index')
-            ->can('viewAny', Area::class);
+            // ========== Admin Settings ==========
+            Route::get('suppliers', SupplierIndex::class)
+                ->name('supplier.index')
+                ->can('viewAny', Supplier::class);
 
-        Route::get('services', ServiceIndex::class)
-            ->name('service.index')
-            ->can('viewAny', Service::class);
+            Route::get('cost_centers', CostCenterIndex::class)
+                ->name('cost_center.index')
+                ->can('viewAny', CostCenter::class);
 
-        Route::get('settings', SettingsForm::class)
-            ->name('settings.form')
-            ->can('viewAny', Setting::class);
-    });
+            Route::get('roles', RoleIndex::class)
+                ->name('role.index')
+                ->can('viewAny', Role::class);
+
+            Route::get('permissions', PermissionIndex::class)
+                ->name('permission.index')
+                ->can('viewAny', Permission::class);
+
+            Route::get('users', UserIndex::class)
+                ->name('user.index')
+                ->can('viewAny', User::class);
+
+            Route::get('titles', TitleIndex::class)
+                ->name('title.index')
+                ->can('viewAny', Title::class);
+
+            Route::get('statuses', StatusIndex::class)
+                ->name('status.index')
+                ->can('viewAny', Status::class);
+
+            Route::get('departments', DepartmentIndex::class)
+                ->name('department.index')
+                ->can('viewAny', Department::class);
+
+            Route::get('companies', CompanyIndex::class)
+                ->name('company.index')
+                ->can('viewAny', Company::class);
+
+            Route::get('shifts', ShiftIndex::class)
+                ->name('shift.index')
+                ->can('viewAny', Shift::class);
+
+            Route::get('areas', AreaIndex::class)
+                ->name('area.index')
+                ->can('viewAny', Area::class);
+
+            Route::get('services', ServiceIndex::class)
+                ->name('service.index')
+                ->can('viewAny', Service::class);
+
+            Route::get('settings', SettingsForm::class)
+                ->name('settings.form')
+                ->can('viewAny', Setting::class);
+        });
 });

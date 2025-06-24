@@ -26,6 +26,18 @@ class InvoiceResource extends JsonResource
             return PaymentResource::collection($this->payments)->sum('amount');
         }, 0);
 
+        $cashPaymentsAmount = $this->whenLoaded('payments', function() {
+            return PaymentResource::collection($this->payments)->sum(function($payment) {
+                return $payment->method === 'cash' ? $payment->amount : 0;
+            });
+        }, 0);
+
+        $knetPaymentsAmount = $this->whenLoaded('payments', function() {
+            return PaymentResource::collection($this->payments)->sum(function($payment) {
+                return $payment->method === 'knet' ? $payment->amount : 0;
+            });
+        }, 0);
+
         $invoiceDetailsServicesAmount = $this->whenLoaded('invoice_details', function() {
             return InvoiceDetailResource::collection($this->invoice_details)
                 ->sum(function($detail) { 
@@ -42,11 +54,8 @@ class InvoiceResource extends JsonResource
 
         $deliveryAmount = $this->delivery ?? 0;
         $discountAmount = $this->discount ?? 0;
-        $remainingBalance = $invoiceDetailsAmount 
-            + $invoicePartDetailsAmount
-            + $deliveryAmount 
-            - $discountAmount
-            - $paymentsAmount;
+        $totalAmount = $invoiceDetailsAmount + $invoicePartDetailsAmount + $deliveryAmount;
+        $remainingBalance = $totalAmount - $discountAmount - $paymentsAmount;
 
         $user = auth()->user();
 
@@ -62,13 +71,19 @@ class InvoiceResource extends JsonResource
             'created_at' => $this->created_at,
             'delivery' => $this->delivery,
             'discount' => $this->discount,
+            'deleted_at' => $this->deleted_at,
+            'order_invoices_count' => $this->order_invoices_count,
 
             // Formatted
             'formatted_id' => str_pad($this->id, 8, '0', STR_PAD_LEFT),
+            'formatted_order_id' => str_pad($this->order_id, 8, '0', STR_PAD_LEFT),
+            'formatted_created_at' => $this->created_at->format('d-m-Y | H:i'),
             'detailed_pdf_url' => route('invoice.detailed_pdf', encrypt($this->id)),
             'pdf_url' => route('invoice.pdf', encrypt($this->id)),
+            'payment_status' => $this->payment_status->title(),
 
             // Relations
+            'order' => new OrderResource($this->whenLoaded('order')),
             'invoice_details' => InvoiceDetailResource::collection($this->whenLoaded('invoice_details')),
 
             'invoice_details_services' => $this->whenLoaded('invoice_details', function() {
@@ -96,7 +111,9 @@ class InvoiceResource extends JsonResource
             'invoice_details_parts_amount' => $invoiceDetailsPartsAmount,
             'payments_amount' => $paymentsAmount,
             'remaining_balance' => $remainingBalance,
-
+            'total_amount' => $totalAmount,
+            'cash_payments_amount' => $cashPaymentsAmount,
+            'knet_payments_amount' => $knetPaymentsAmount,
             // Permissions
             'can_discount' => $this->created_at->isToday() && $can_discount && $this->payments->count() == 0,
             'can_deleted' => $can_deleted,
