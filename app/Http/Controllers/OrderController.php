@@ -619,7 +619,7 @@ class OrderController extends Controller
         }
         ActionsLog::logAction('Order', 'Completed', $order->id, 'Order completed successfully', $order->fresh()->toArray(), $oldOrder);
         broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
-        broadcast(new OrderCompletedEvent($order))->toOthers();
+        // broadcast(new OrderCompletedEvent($order))->toOthers();
         return new OrderResource($order->loadCount('invoices'));
     }
 
@@ -648,6 +648,23 @@ class OrderController extends Controller
     {
         if(!auth()->user()->can('create', Invoice::class)) {
             return response()->json(['error' => __('messages.you_dont_have_permission_to_create_invoice')], 403);
+        }
+
+        // check if user is a technician
+        if(in_array(auth()->user()->title_id, Title::TECHNICIANS_GROUP)) {
+            // this means that the user is a technician
+            // so we need to check if the order is the current technician's order
+            // get order with min index
+            $currentTechnicianOrder = Order::query()
+                ->where('technician_id', auth()->user()->id)
+                ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
+                ->orderBy('index', 'asc')
+                ->first();
+
+            // if the order is not the current technician's order, return an error
+            if($currentTechnicianOrder->id != $order->id) {
+                return response()->json(['error' => __('messages.this_order_is_not_your_current_order, refresh_the_page_and_try_again')], 403);
+            }
         }
 
         $prepared_invoice = [
@@ -693,6 +710,8 @@ class OrderController extends Controller
             DB::commit();
             ActionsLog::logAction('Order', 'Invoice Created', $order->id, 'Invoice created successfully', $invoice->fresh()->load('invoice_details', 'invoice_part_details')->toArray());
             broadcast(new OrderInvoiceCreatedEvent($invoice))->toOthers();
+            broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
+
             return response()->json(['success' => 'Invoice created successfully']);
 
         } catch (\Exception $e) {
@@ -837,6 +856,23 @@ class OrderController extends Controller
             return response()->json(['error' => __('messages.you_dont_have_permission_to_create_payment')], 403);
         }
 
+        // check if user is a technician
+        if(in_array(auth()->user()->title_id, Title::TECHNICIANS_GROUP)) {
+            // this means that the user is a technician
+            // so we need to check if the order is the current technician's order
+            // get order with min index
+            $currentTechnicianOrder = Order::query()
+                ->where('technician_id', auth()->user()->id)
+                ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
+                ->orderBy('index', 'asc')
+                ->first();
+
+            // if the order is not the current technician's order, return an error
+            if($currentTechnicianOrder->id != $order->id) {
+                return response()->json(['error' => __('messages.this_order_is_not_your_current_order, refresh_the_page_and_try_again')], 403);
+            }
+        }
+
         // check if amount is negative or zero
         if($request->amount <= 0) {
             return response()->json(['error' => __('messages.amount_cannot_be_negative_or_zero')], 400);
@@ -903,6 +939,27 @@ class OrderController extends Controller
 
     public function storeComment(Request $request, Order $order)
     {
+
+        $request->validate([
+            'comment' => 'required|string|max:255',
+        ]);
+
+        if(in_array(auth()->user()->title_id, Title::TECHNICIANS_GROUP)) {
+            // this means that the user is a technician
+            // so we need to check if the order is the current technician's order
+            // get order with min index
+            $currentTechnicianOrder = Order::query()
+                ->where('technician_id', auth()->user()->id)
+                ->whereIn('status_id', [Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED])
+                ->orderBy('index', 'asc')
+                ->first();
+
+            // if the order is not the current technician's order, return an error
+            if($currentTechnicianOrder->id != $order->id) {
+                return response()->json(['error' => __('messages.this_order_is_not_your_current_order, refresh_the_page_and_try_again')], 403);
+            }
+        }
+
         $comment = Comment::create([
             'order_id' => $order->id,
             'comment' => $request->comment,
