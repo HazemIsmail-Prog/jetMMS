@@ -249,8 +249,8 @@
                     customer_name: '',
                     customer_phone: '',
                     payment_status: '',
-                    start_created_at: null,
-                    end_created_at: null,
+                    start_created_at: new Date().toISOString().split('T')[0],
+                    end_created_at: new Date().toISOString().split('T')[0], 
                 },
 
                 init() {
