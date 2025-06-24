@@ -55,7 +55,7 @@ class InvoiceResource extends JsonResource
         $deliveryAmount = $this->delivery ?? 0;
         $discountAmount = $this->discount ?? 0;
         $totalAmount = $invoiceDetailsAmount + $invoicePartDetailsAmount + $deliveryAmount - $discountAmount;
-        $remainingBalance = $totalAmount - $discountAmount - $paymentsAmount;
+        $remainingBalance = $totalAmount - $paymentsAmount;
 
         $user = auth()->user();
 
