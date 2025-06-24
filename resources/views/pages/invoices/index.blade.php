@@ -152,7 +152,9 @@
                         '!text-yellow-700': invoice.order.status_id !== 4,
                         '!text-red-500': invoice.deleted_at !== null
                     }">
-                        <x-td x-text="invoice.formatted_id"></x-td>
+                        <x-td>
+                            <a :href="invoice.detailed_pdf_url" target="_blank" x-text="invoice.formatted_id"></a>
+                        </x-td>
                         <x-td>
                             <x-badgeWithCounter
                                 title="{{ __('messages.view_order') }}"
@@ -162,9 +164,9 @@
                             </x-badgeWithCounter>
                         </x-td>
                         <x-td dir="ltr" x-text="invoice.formatted_created_at"></x-td>
-                        <x-td x-text="getDepartmentName(invoice.order.department_id)"></x-td>
-                        <x-td x-text="getTechnicianName(invoice.order.technician_id)"></x-td>
-                        <x-td x-text="invoice.order.customer.name"></x-td>
+                        <x-td class="!min-w-[200px] max-w-[200px] !whitespace-normal cursor-pointer" @click="addDepartmentToFilters(invoice.order.department_id)" x-text="getDepartmentName(invoice.order.department_id)"></x-td>
+                        <x-td class="!min-w-[200px] max-w-[200px] !whitespace-normal cursor-pointer" @click="addTechnicianToFilters(invoice.order.technician_id)" x-text="getTechnicianName(invoice.order.technician_id)"></x-td>
+                        <x-td class="!min-w-[200px] max-w-[200px] !whitespace-normal" x-text="invoice.order.customer.name"></x-td>
                         <x-td x-text="invoice.order.phone.number"></x-td>
                         <x-td x-text="formatNumber(invoice.invoice_details_services_amount)"></x-td>
                         <x-td x-text="formatNumber(invoice.discount)"></x-td>
@@ -309,6 +311,16 @@
 
                 getTechnicianName(id) {
                     return this.technicians.find(technician => technician.id === id)?.name;
+                },
+
+                addTechnicianToFilters(id) {
+                    if(this.filters.technician_ids.includes(id)) return;
+                    this.filters.technician_ids = [id];
+                },
+
+                addDepartmentToFilters(id) {
+                    if(this.filters.department_ids.includes(id)) return;
+                    this.filters.department_ids = [id];
                 },
 
                 formatNumber(number) {
