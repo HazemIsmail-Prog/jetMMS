@@ -64,7 +64,7 @@
             @can('operations_reports', App\Models\DummyModel::class)
                 <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
                     @can('expected_invoices_deletion_report', App\Models\DummyModel::class)
-                        <x-nested-sidebar-item route="expected_invoices_deletion" :title="__('messages.expected_invoices_deletion')" />
+                        <!-- <x-nested-sidebar-item route="expected_invoices_deletion" :title="__('messages.expected_invoices_deletion')" /> -->
                     @endcan
                     @can('viewReport', App\Models\Invoice::class)
                         <x-nested-sidebar-item route="invoice.report" :title="__('messages.invoices_per_technician_report')" />

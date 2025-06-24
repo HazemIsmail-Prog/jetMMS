@@ -221,9 +221,10 @@ Route::middleware([
         //     ->name('dispatch-panel.index')
         //     ->can('canDispatch', DummyModel::class);
 
-        Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
-            ->name('expected_invoices_deletion')
-            ->can('expected_invoices_deletion_report', DummyModel::class);
+            // I Temporary disabled this route because it's not used for now
+            // Route::get('operations/reports/expected_invoices_deletion', ExpectedInvoicesDeletion::class)
+            //     ->name('expected_invoices_deletion')
+            //     ->can('expected_invoices_deletion_report', DummyModel::class);
 
 
 
