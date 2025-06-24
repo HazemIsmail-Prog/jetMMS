@@ -64,7 +64,7 @@ class InvoiceController extends Controller
                     )
                 )
                 ->when($request->payment_status, fn($query) => 
-                    $query->where('payment_status   ', $request->payment_status)
+                    $query->where('payment_status', $request->payment_status)
                 )
                 ->when($request->start_created_at, fn($query) => 
                     $query->whereDate('created_at', '>=', $request->start_created_at)
