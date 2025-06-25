@@ -218,10 +218,10 @@
                                 type="submit"
                                 x-bind:disabled="loading"
                                 x-bind:class="{'opacity-75 cursor-not-allowed': loading}">
-                                <template x-if="loading">
-                                    <div class="mr-2 spinner"></div>
-                                </template>
                                 {{ __('messages.save') }}
+                                <template x-if="loading">
+                                    <div class="ms-2 spinner"></div>
+                                </template>
                             </x-button>
                         </div>
                     </form>
@@ -286,7 +286,6 @@
                     this.selected_services = [];
                     this.parts = [];
                     this.delivery = 0;
-                    this.loading = false;
                 },
 
                 save() {
@@ -302,18 +301,20 @@
                         order_id: this.selectedOrder.id,
                         services: this.selected_services,
                         parts: this.parts,
-                        delivery: this.delivery
+                        delivery: this.delivery ? this.delivery : 0
                     };
 
                     axios.post(`/orders/${this.selectedOrder.id}/invoices`, formData)
                         .then(response => {
                             this.$dispatch('invoice-created');
                             this.hideModal();
+                            // Set loading to false after modal is completely hidden (300ms delay)
+                            setTimeout(() => {
+                                this.loading = false;
+                            }, 350);
                         })
                         .catch(error => {
                             alert(error.response?.data?.error);
-                        })
-                        .finally(() => {
                             this.loading = false;
                         });
                 },
