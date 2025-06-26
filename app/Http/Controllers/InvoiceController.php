@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\Order;
 use App\Http\Resources\InvoiceResource;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,11 +33,21 @@ class InvoiceController extends Controller
             }
 
             $invoices = Invoice::query()
-                ->with('order.customer')
-                ->with('order.phone')
-                ->with('invoice_details')
-                ->with('invoice_part_details')
-                ->with('payments')
+                ->with([
+                    'order' => [
+                        'customer',
+                        'phone',
+                        'address',
+                        'department',
+                    ],
+                    'invoice_details',
+                    'invoice_part_details', 
+                    'payments',
+                    'reconciliations'
+                ])
+                ->with('order', function($query) {
+                    $query->withCount('invoices');
+                })
                 ->when($request->invoice_number, fn($query) => 
                     $query->where('id', 'like', '%' . $request->invoice_number . '%')
                 )
@@ -72,21 +83,11 @@ class InvoiceController extends Controller
                 ->when($request->end_created_at, fn($query) => 
                     $query->whereDate('created_at', '<=', $request->end_created_at)
                 )
+
                 // ->withTrashed()
                 ->orderBy('id', 'desc')
                 ->paginate(100);
 
-                $counters = Invoice::query()
-                    ->whereIn('id', $invoices->pluck('id'))
-                    ->select('order_id', DB::raw('COUNT(*) as count'))
-                    ->groupBy('order_id')
-                    ->get();
-
-                $invoices->each(function($invoice) use ($counters) {
-                    $invoice->order_invoices_count = $counters->where('order_id', $invoice->order_id)->first()->count;
-                });
-
-            // dd($invoices);
             return InvoiceResource::collection($invoices);
         }
 
@@ -98,9 +99,14 @@ class InvoiceController extends Controller
         $technicians = User::query()
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->get();
+
+        $users = User::query()
+            ->get();
+
         return view('pages.invoices.index', [
             'departments' => DepartmentResource::collection($departments),
             'technicians' => UserResource::collection($technicians),
+            'users' => UserResource::collection($users),
         ]);
     }
 
@@ -114,6 +120,7 @@ class InvoiceController extends Controller
             ->with('invoice_details')
             ->with('invoice_part_details')
             ->with('payments')
+            ->with('reconciliations')
             ->when($request->invoice_number, fn($query) => 
                 $query->where('id', 'like', '%' . $request->invoice_number . '%')
             )
@@ -182,6 +189,7 @@ class InvoiceController extends Controller
         $mpdf->WriteHTML($body); //should be before output directly
         $mpdf->Output($file_name, 'I');
     }
+
     public function detailed_pdf($encryptedOrderId)
     {
         $invoice = Invoice::find(decrypt($encryptedOrderId));

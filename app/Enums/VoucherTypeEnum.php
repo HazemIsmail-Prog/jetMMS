@@ -10,6 +10,7 @@ enum VoucherTypeEnum:string
     case INVOICE_KNET_PAYMENT = 'invoice_knet_payment';
     case PART_INVOICE = 'part_invoice';
     case COST = 'cost';
+    case RECONCILIATION = 'reconciliation';
 
     public function title() : string {
         return match($this){
@@ -19,6 +20,7 @@ enum VoucherTypeEnum:string
             VoucherTypeEnum::INVOICE_KNET_PAYMENT => __('messages.invoice_knet_payment_voucher'),
             VoucherTypeEnum::PART_INVOICE => __('messages.part_invoice_voucher'),
             VoucherTypeEnum::COST => __('messages.cost_voucher'),
+            VoucherTypeEnum::RECONCILIATION => __('messages.reconciliation_voucher'),
         };
     }
 
@@ -31,6 +33,7 @@ enum VoucherTypeEnum:string
             VoucherTypeEnum::INVOICE_KNET_PAYMENT => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-300',
             VoucherTypeEnum::PART_INVOICE => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-300',
             VoucherTypeEnum::COST => 'bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-300',
+            VoucherTypeEnum::RECONCILIATION => 'bg-purple-100 text-purple-800 dark:bg-purple-700 dark:text-purple-300',
         };
     }
 }

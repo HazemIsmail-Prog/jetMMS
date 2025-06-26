@@ -26,6 +26,12 @@ class InvoiceResource extends JsonResource
             return PaymentResource::collection($this->payments)->sum('amount');
         }, 0);
 
+        $reconciliationsAmount = $this->whenLoaded('reconciliations', function() {
+            return ReconciliationResource::collection($this->reconciliations)->sum('amount');
+        }, 0);
+
+
+
         $cashPaymentsAmount = $this->whenLoaded('payments', function() {
             return PaymentResource::collection($this->payments)->sum(function($payment) {
                 return $payment->method === 'cash' ? $payment->amount : 0;
@@ -55,14 +61,14 @@ class InvoiceResource extends JsonResource
         $deliveryAmount = $this->delivery ?? 0;
         $discountAmount = $this->discount ?? 0;
         $totalAmount = $invoiceDetailsAmount + $invoicePartDetailsAmount + $deliveryAmount - $discountAmount;
-        $remainingBalance = $totalAmount - $paymentsAmount;
+        $remainingBalance = $totalAmount - $paymentsAmount - $reconciliationsAmount;
 
         $user = auth()->user();
 
         $can_discount = $user->hasPermission('invoices_discount');
         $can_deleted = $user->hasPermission('invoices_delete');
         $can_create_payments = $user->hasPermission('payments_create');
-
+        $user_can_add_reconciliation = $user->hasPermission('reconciliations_create');
         return [
 
             // Basic
@@ -72,7 +78,6 @@ class InvoiceResource extends JsonResource
             'delivery' => $this->delivery,
             'discount' => $this->discount,
             'deleted_at' => $this->deleted_at,
-            'order_invoices_count' => $this->order_invoices_count,
 
             // Formatted
             'formatted_id' => str_pad($this->id, 8, '0', STR_PAD_LEFT),
@@ -114,11 +119,13 @@ class InvoiceResource extends JsonResource
             'total_amount' => $totalAmount,
             'cash_payments_amount' => $cashPaymentsAmount,
             'knet_payments_amount' => $knetPaymentsAmount,
+            'reconciliations_amount' => $reconciliationsAmount,
             // Permissions
             'can_discount' => $this->created_at->isToday() && $can_discount && $this->payments->count() == 0,
             'can_deleted' => $can_deleted,
             'can_view_payments' => $can_create_payments,
             'can_create_payments' => $can_create_payments,
+            'user_can_add_reconciliation' => $user_can_add_reconciliation,
         ];
     }
 }

@@ -94,6 +94,7 @@ use App\Http\Controllers\TechnicianPageController;
 use App\Http\Controllers\CustomerContractController;
 use App\Http\Middleware\NoTechnicians;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReconciliationController;
 
 
 
@@ -332,6 +333,9 @@ Route::middleware([
             // Route::get('invoices', InvoiceIndex::class)
             //     ->name('invoice.index')
             //     ->can('viewAny', Invoice::class);
+
+
+            Route::post('reconciliations/{invoice}', [ReconciliationController::class, 'store']);
 
             // Vouchers
             Route::get('vouchers', [VoucherController::class,'index'])->name('vouchers.index');

@@ -13,8 +13,10 @@ use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Comment;
+use App\Models\Voucher;
 use App\Models\Service;
 use App\Models\OrderStatus;
+use App\Models\VoucherDetail;
 use App\Models\InvoiceDetails;
 use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\OrderResource;
@@ -784,7 +786,24 @@ class OrderController extends Controller
 
     public function showInvoice(Order $order, Invoice $invoice)
     {
-        return new InvoiceResource($invoice->load('invoice_details', 'invoice_part_details', 'payments.user'));
+        $invoice = Invoice::query()
+            ->with([
+                'order' => [
+                    'customer',
+                    'phone',
+                    'address',
+                    'department',
+                ],
+                'invoice_details',
+                'invoice_part_details',
+                'payments.user',
+                'reconciliations'
+            ])
+            ->with('order', function($query) {
+                $query->withCount('invoices');
+            })
+            ->findOrFail($invoice->id);
+        return new InvoiceResource($invoice);
     }
 
     public function destroyInvoice(Order $order, Invoice $invoice)
@@ -799,6 +818,11 @@ class OrderController extends Controller
             return response()->json(['error' => __('messages.order_has_only_one_invoice_you_cant_delete_it')], 400);
         }
 
+        // check if invoice has reconciliations
+        if($invoice->reconciliations->count() > 0) {
+            return response()->json(['error' => __('messages.invoice_has_reconciliations_you_cant_delete_it')], 400);
+        }
+
         // check if invoice has collected payments
         if($invoice->payments->where('is_collected', true)->count() > 0) {
             return response()->json(['error' => __('messages.invoice_has_collected_payments_you_cant_delete_it')], 400);
@@ -809,18 +833,22 @@ class OrderController extends Controller
         DB::beginTransaction();
         try {
 
+            // get all related vouchers of the invoice
+            $vouchers = Voucher::where('invoice_id', $invoice->id)->get();
+
+            // force delete all voucher details of the vouchers
+            VoucherDetail::whereIn('voucher_id', $vouchers->pluck('id'))->forceDelete();
+
+            // force delete all vouchers of the invoice
+            foreach ($vouchers as $voucher) {
+                $voucher->forceDelete();
+            }
+
             // delete all payments of the invoice
             $invoice->payments()->delete();
 
             // Soft delete invoice
             $invoice->delete(); // this is soft delete
-
-            // delete all vouchers of the invoice
-            // this delete voucher must be via foreach because voucher has observer and it will not work if we use delete()
-            foreach ($invoice->vouchers as $voucher) {
-                $voucher->delete();
-            }
-
 
             DB::commit();
             ActionsLog::logAction('Order', 'Invoice Deleted', $invoice->id, 'Invoice deleted successfully', $invoice->fresh()->toArray(), $oldInvoice);

@@ -800,4 +800,10 @@ return [
     'order_is_already_completed_or_cancelled_or_received_or_arrived' => 'الطلب منفذ أو ملغي أو مستلم أو وصل',
     'you_dont_have_permission_to_create_customer_contract' => 'ليس لديك صلاحية لإنشاء عقد عميل',
     'this_will_set_this_order_as_first_order' => 'سيتم تعيين هذا الطلب كأول طلب للفني - هل أنت متأكد؟',
+    'technician_refund' => 'مردودات - فنيين',
+    'contractor_refund' => 'مردودات - مقاولين',
+    'costs' => 'تكاليف تشغيل',
+    'deduct_from_employee' => 'خصم على الموظف',
+    'add_reconciliation' => 'اضافة تسوية',
+    'reconciliations' => 'تسويات',
 ];

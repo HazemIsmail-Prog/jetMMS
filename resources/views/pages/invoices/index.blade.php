@@ -25,9 +25,13 @@
      <!-- payment form modal -->
      @include('modals.payment-form')
 
+     <!-- reconciliation form modal -->
+     @include('modals.reconciliation-form')
 
     <div
         x-data="invoicesComponent()"
+        x-on:invoice-payments-updated.window="handleInvoiceUpdated"
+        x-on:invoice-reconciliations-updated.window="handleInvoiceUpdated"
     >
 
         <template x-teleport="#counter">
@@ -139,6 +143,7 @@
                     <x-th>{{ __('messages.amount') }}</x-th>
                     <x-th>{{ __('messages.cash') }}</x-th>
                     <x-th>{{ __('messages.knet') }}</x-th>
+                    <x-th>{{ __('messages.reconciliations') }}</x-th>
                     <x-th>{{ __('messages.paid_amount') }}</x-th>
                     <x-th>{{ __('messages.remaining_amount') }}</x-th>
                     <x-th>{{ __('messages.payment_status') }}</x-th>
@@ -160,7 +165,7 @@
                                 title="{{ __('messages.view_order') }}"
                                 @click="$dispatch('order-selected', {order: invoice.order})">
                                     <span x-text="invoice.formatted_order_id"></span>
-                                    <span class="text-xs text-gray-500" x-show="invoice.order_invoices_count > 1" x-text="invoice.order_invoices_count"></span>
+                                    <span class="text-xs text-gray-500" x-show="invoice.order.invoices_count > 1" x-text="invoice.order.invoices_count"></span>
                             </x-badgeWithCounter>
                         </x-td>
                         <x-td dir="ltr" x-text="invoice.formatted_created_at"></x-td>
@@ -177,12 +182,20 @@
                         <x-td x-text="formatNumber(invoice.total_amount)"></x-td>
                         <x-td x-text="formatNumber(invoice.cash_payments_amount)"></x-td>
                         <x-td x-text="formatNumber(invoice.knet_payments_amount)"></x-td>
+                        <x-td x-text="formatNumber(invoice.reconciliations_amount)"></x-td>
                         <x-td x-text="formatNumber(invoice.payments_amount)"></x-td>
                         <x-td x-text="formatNumber(invoice.remaining_balance)"></x-td>
                         <x-td x-text="invoice.payment_status"></x-td>
                         <x-td>
                             <div class="flex justify-end gap-2">
-                                <template x-if="invoice.order_invoices_count > 1 && invoice.can_deleted && invoice.deleted_at === null">
+                                <template x-if="invoice.remaining_balance > 0 && invoice.user_can_add_reconciliation">
+                                    <x-badgeWithCounter
+                                        title="{{ __('messages.add_reconciliation') }}"
+                                        @click="$dispatch('open-invoice-reconciliation-form-modal', {invoice: invoice})">
+                                        {{ __('messages.add_reconciliation') }}
+                                    </x-badgeWithCounter>
+                                </template>
+                                <template x-if="invoice.order.invoices_count > 1 && invoice.can_deleted && invoice.deleted_at === null">
                                     <x-badgeWithCounter
                                         class="px-2 border-red-500 dark:border-red-500 text-red-500 dark:text-red-500 hover:bg-red-500 hover:text-white"
                                         title="{{ __('messages.delete') }}"
@@ -213,6 +226,7 @@
                 <x-th class="!text-right" x-text="formatNumber(totalInvoiceTotalAmount)"></x-th>
                 <x-th class="!text-right" x-text="formatNumber(totalInvoiceCashAmount)"></x-th>
                 <x-th class="!text-right" x-text="formatNumber(totalInvoiceKnetAmount)"></x-th>
+                <x-th class="!text-right" x-text="formatNumber(totalInvoiceReconciliationsAmount)"></x-th>
                 <x-th class="!text-right" x-text="formatNumber(totalInvoicePaymentsAmount)"></x-th>
                 <x-th class="!text-right" x-text="formatNumber(totalInvoiceRemainingBalance)"></x-th>
                 <x-th></x-th>
@@ -249,8 +263,8 @@
                     customer_name: '',
                     customer_phone: '',
                     payment_status: '',
-                    start_created_at: new Date().toISOString().split('T')[0],
-                    end_created_at: new Date().toISOString().split('T')[0], 
+                    start_created_at: null,
+                    end_created_at: null, 
                 },
 
                 init() {
@@ -259,6 +273,18 @@
                         this.getInvoices(1);
                     });
                     this.initListeners();
+                },
+
+                async getInvoiceResource(invoice) {
+                    const response = await axios.get(`/orders/${invoice.order_id}/invoices/${invoice.id}`);
+                    return response.data.data;
+                },
+
+                async handleInvoiceUpdated(e) {
+                    const index = this.invoices.findIndex(invoice => invoice.id === e.detail.invoice.id);
+                    if(index !== -1) {
+                        this.invoices[index] = await this.getInvoiceResource(e.detail.invoice);
+                    }
                 },
 
                 get totalInvoiceDetailsServicesAmount() {
@@ -291,6 +317,10 @@
 
                 get totalInvoiceKnetAmount() {
                     return this.invoices.reduce((acc, invoice) => acc + invoice.knet_payments_amount, 0);
+                },
+
+                get totalInvoiceReconciliationsAmount() {
+                    return this.invoices.reduce((acc, invoice) => acc + invoice.reconciliations_amount, 0);
                 },
 
                 get totalInvoicePaymentsAmount() {

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Enums\PaymentStatusEnum;
-use App\Observers\InvoiceObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
-#[ObservedBy(InvoiceObserver::class)]
 class Invoice extends Model
 {
     use HasFactory, SoftDeletes;
@@ -47,6 +44,11 @@ class Invoice extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function reconciliations(): HasMany
+    {
+        return $this->hasMany(Reconciliation::class);
     }
 
     public function getServicesAmountAttribute(): float|null

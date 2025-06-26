@@ -208,7 +208,7 @@
                     this.vouchers = this.vouchers.filter(voucher => voucher.id !== id);
                     this.totalRecords--;
 
-                    axios.delete(`/test/deleteVoucher/${id}`)
+                    axios.delete(`/vouchers/${id}`)
                         .then(response => {
                             console.log('success');
                         })
