@@ -18,6 +18,9 @@
     @include('modals.in-progress-orders-for-customer')
     @include('modals.all-orders-for-customer')
     @include('modals.single-order')
+    @include('modals.invoice-form')
+    @include('modals.discount-form')
+    @include('modals.payment-form')
     @include('modals.order-form')
 
     <div
