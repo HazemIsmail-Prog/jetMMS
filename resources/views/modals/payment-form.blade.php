@@ -57,7 +57,7 @@
                         <div class=" space-y-3">
                             <div>
                                 <x-label for="amount">{{ __('messages.amount') }}</x-label>
-                                <x-input class="w-full" required type="number" x-model.number="form.amount" id="amount" dir="ltr"
+                                <x-input x-ref="amountInput" class="w-full" required type="number" x-model.number="form.amount" id="amount" dir="ltr"
                                     min="0" step="0.001" x-bind:max="calculatedRemainingAmount" />
                                 <x-input-error for="form.amount" />
                             </div>
@@ -106,6 +106,9 @@
                     this.resetForm();
                     this.selectedInvoice = e.detail.invoice;
                     this.showModal = true;
+                    this.$nextTick(() => {
+                        this.$refs.amountInput.focus();
+                    });
                 },
 
                 hideModal() {
