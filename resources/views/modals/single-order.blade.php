@@ -125,22 +125,34 @@
                     // invoices
                     var invoicesChannel = Echo.channel('order-invoices.' + this.selectedOrder.id);
                     invoicesChannel.listen('OrderInvoiceCreatedEvent', async (data) => {
+                        if(this.selectedOrder.id != data.invoice.order_id) {
+                            return;
+                        }
                         const invoiceResource = await this.getInvoiceResource(data.invoice.id);
                         this.$dispatch('invoice-created', {invoice: invoiceResource});
                     });
 
                     invoicesChannel.listen('OrderInvoiceUpdatedEvent', async (data) => {
+                        if(this.selectedOrder.id != data.invoice.order_id) {
+                            return;
+                        }
                         const invoiceResource = await this.getInvoiceResource(data.invoice.id);
                         this.$dispatch('invoice-discount-updated', {invoice: invoiceResource});
                         
                     });
 
                     invoicesChannel.listen('InvoicePaymentsUpdatedEvent', async (data) => {
+                        if(this.selectedOrder.id != data.invoice.order_id) {
+                            return;
+                        }
                         const invoiceResource = await this.getInvoiceResource(data.invoice.id);
                         this.$dispatch('invoice-payments-updated', {invoice: invoiceResource});
                     });
 
                     invoicesChannel.listen('OrderInvoiceDeletedEvent', async (data) => {
+                        if(this.selectedOrder.id != data.order.id) {
+                            return;
+                        }
                         const orderResource = await this.getOrderResource(data.order.id);
                         this.$dispatch('invoice-deleted', {order: orderResource});
                     });
@@ -148,6 +160,9 @@
                     // comments
                     var commentsChannel = Echo.channel('order-comments.' + this.selectedOrder.id);
                     commentsChannel.listen('OrderCommentCreatedEvent', async (data) => {
+                        if(this.selectedOrder.id != data.comment.order_id) {
+                            return;
+                        }
                         const commentResource = await this.getCommentResource(data.comment.id);
                         this.$dispatch('order-comment-created', {comment: commentResource});
                     });
