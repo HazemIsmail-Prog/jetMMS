@@ -90,6 +90,11 @@
                     axios.delete(`/orders/${this.invoice.order_id}/invoices/${this.invoice.id}/payments/${payment.id}`)
                         .then(response => {
                             this.invoice = response.data.data;
+                            window.dispatchEvent(new CustomEvent('invoice-payments-updated', {
+                                detail: {
+                                    invoice: response.data.data
+                                }
+                            }));
                         })
                         .catch(error => {
                             alert(error.response.data.error);

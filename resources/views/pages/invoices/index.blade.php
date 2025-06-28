@@ -209,30 +209,53 @@
                 </template>
             </tbody>
             <x-tfoot>
-            <tr>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceDetailsServicesAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceDiscountAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceServicesAfterDiscountAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoicePartDetailsAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceDetailsPartsAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceDeliveryAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceTotalAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceCashAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceKnetAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceReconciliationsAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoicePaymentsAmount)"></x-th>
-                <x-th class="!text-right" x-text="formatNumber(totalInvoiceRemainingBalance)"></x-th>
-                <x-th></x-th>
-                <x-th></x-th>
-            </tr>
-        </x-tfoot>
+                <tr>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th>{{ __('messages.services') }}</x-th>
+                    <x-th>{{ __('messages.discount') }}</x-th>
+                    <x-th>{{ __('messages.services_after_discount') }}</x-th>
+                    <x-th>{{ __('messages.internal_parts') }}</x-th>
+                    <x-th>{{ __('messages.external_parts') }}</x-th>
+                    <x-th>{{ __('messages.delivery') }}</x-th>
+                    <x-th>{{ __('messages.amount') }}</x-th>
+                    <x-th>{{ __('messages.cash') }}</x-th>
+                    <x-th>{{ __('messages.knet') }}</x-th>
+                    <x-th>{{ __('messages.reconciliations') }}</x-th>
+                    <x-th>{{ __('messages.paid_amount') }}</x-th>
+                    <x-th>{{ __('messages.remaining_amount') }}</x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                </tr>
+                <tr>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceDetailsServicesAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceDiscountAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceServicesAfterDiscountAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoicePartDetailsAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceDetailsPartsAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceDeliveryAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceTotalAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceCashAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceKnetAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceReconciliationsAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoicePaymentsAmount)"></x-th>
+                    <x-th class="!text-right" x-text="formatNumber(totalInvoiceRemainingBalance)"></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                </tr>
+            </x-tfoot>
 
         </x-table>
 
