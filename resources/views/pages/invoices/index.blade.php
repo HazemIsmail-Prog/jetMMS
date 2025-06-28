@@ -396,7 +396,8 @@
                                 this.invoices = [];
                                 this.invoices = response.data.data;
                             } else {
-                                this.invoices = [...this.invoices, ...response.data.data];
+                                // remove duplicates before adding new invoices
+                                this.invoices = [...this.invoices, ...response.data.data.filter(invoice => !this.invoices.some(i => i.id === invoice.id))];
                             }
                             this.currentPage = response.data.meta.current_page;
                             this.lastPage = response.data.meta.last_page;
