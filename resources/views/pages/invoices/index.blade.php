@@ -108,12 +108,19 @@
             </div>
             <div>
                 <x-label for="payment_status">{{ __('messages.payment_status') }}</x-label>
-                <x-select id="payment_status" x-model="filters.payment_status" class=" w-full py-0">
-                    <option value="">---</option>
-                    @foreach (App\Enums\PaymentStatusEnum::cases() as $status)
-                        <option value="{{ $status->value }}">{{ $status->title() }}</option>
-                    @endforeach
-                </x-select>
+                <!-- start searchable select -->
+                <div 
+                    x-data="{
+                        items:paymentStatuses,
+                        selectedItemIds:filters.payment_statuses,
+                        placeholder: '{{ __('messages.search') }}'
+                    }"
+                    x-model="selectedItemIds"
+                    x-modelable="filters.payment_statuses"
+                >
+                    <x-multipule-searchable-select />
+                </div>
+                <!-- end searchable select -->
             </div>
             <div>
                 <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
@@ -271,6 +278,7 @@
             return {
                 departments: @js($departments),
                 technicians: @js($technicians),
+                paymentStatuses: @js($paymentStatuses),
                 loading: false,
                 exporting: false,
                 maxExportSize: 5000,
@@ -285,7 +293,7 @@
                     technician_ids: [],
                     customer_name: '',
                     customer_phone: '',
-                    payment_status: '',
+                    payment_statuses: [],
                     start_created_at: null,
                     end_created_at: null, 
                 },

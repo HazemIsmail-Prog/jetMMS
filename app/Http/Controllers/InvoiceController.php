@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\InvoicesExport;
 use App\Services\ActionsLog;
+use App\Enums\PaymentStatusEnum;
 use Mpdf\Mpdf;
 
 class InvoiceController extends Controller
@@ -74,8 +75,8 @@ class InvoiceController extends Controller
                         $q->where('number', 'like', '%' . $request->customer_phone . '%')
                     )
                 )
-                ->when($request->payment_status, fn($query) => 
-                    $query->where('payment_status', $request->payment_status)
+                ->when($request->payment_statuses, fn($query) => 
+                    $query->whereIn('payment_status', $request->payment_statuses)
                 )
                 ->when($request->start_created_at, fn($query) => 
                     $query->whereDate('created_at', '>=', $request->start_created_at)
@@ -103,10 +104,18 @@ class InvoiceController extends Controller
         $users = User::query()
             ->get();
 
+        // for Filter
+        $paymentStatuses = collect(PaymentStatusEnum::cases())->map(fn($status) => [
+            'id' => $status->value,
+            'name' => $status->title()
+        ])->toArray();
+
+
         return view('pages.invoices.index', [
             'departments' => DepartmentResource::collection($departments),
             'technicians' => UserResource::collection($technicians),
             'users' => UserResource::collection($users),
+            'paymentStatuses' => $paymentStatuses,
         ]);
     }
 
