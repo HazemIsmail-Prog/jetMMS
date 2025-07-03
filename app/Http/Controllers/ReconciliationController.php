@@ -21,7 +21,9 @@ class ReconciliationController extends Controller
         }
 
         // get invoice remaining balance from invoiceResource
-        $invoiceRemainingBalance = new InvoiceResource($invoice->load('invoice_details','invoice_part_details','payments','reconciliations'))->toArray(request())['remaining_balance'];
+        $invoiceResource = new InvoiceResource($invoice->load('invoice_details','invoice_part_details','payments','reconciliations'));
+        $invoiceArray = $invoiceResource->toArray(request());
+        $invoiceRemainingBalance = $invoiceArray['remaining_balance'];
 
         // check if reconciliation amount is greater than invoice remaining balance
         if ($request->amount > $invoiceRemainingBalance) {
