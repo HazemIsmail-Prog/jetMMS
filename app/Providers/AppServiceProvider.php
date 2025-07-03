@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        // \Debugbar::enable();
+        \Debugbar::disable();
+
         View::share('globalAreasResource', Cache::rememberForever('globalAreasResource', function() {
             return AreaResource::collection(Area::all());
         }));
