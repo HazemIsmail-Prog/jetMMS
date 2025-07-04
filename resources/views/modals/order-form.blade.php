@@ -98,6 +98,7 @@
                                         }"
                                         x-model="selectedItemId"
                                         x-modelable="form.department_id"
+                                        x-effect="handleDepartmentChange"
                                     >
                                         <x-single-searchable-select />
                                     </div>
@@ -216,24 +217,7 @@
                         });
                     }
 
-                    this.$watch('form.department_id', async (newVal) => {
-                        if(this.selectedCustomer){
-                            // Reset technician selection when department changes
-                            this.form.technician_id = null;
-                            this.inProgressOrders = [];
 
-                            if(!newVal) return;
-                            this.technicians = await this.getAvailableTechnicians(newVal);
-                            axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${newVal}`)
-                            .then(response => {
-                                    this.inProgressOrders = response.data.in_progress_orders;
-                                    // if selected order is in inProgressOrders, then remove it
-                                    if(this.selectedOrder && this.inProgressOrders.find(order => order.id == this.selectedOrder.id)) {
-                                        this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
-                                    }
-                                });
-                        }
-                    });
                 },
 
                 hideModal() {
@@ -301,6 +285,23 @@
 
                 getDepartmentName(id) {
                     return this.departments.find(department => department.id == id)?.name || '';
+                },
+
+                async handleDepartmentChange() {
+                    // Reset technician selection and inProgressOrders once department changes
+                    this.form.technician_id = null;
+                    this.inProgressOrders = [];
+
+                    if(!this.form.department_id) return;
+                    this.technicians = await this.getAvailableTechnicians(this.form.department_id);
+                    axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${this.form.department_id}`)
+                    .then(response => {
+                            this.inProgressOrders = response.data.in_progress_orders;
+                            // if selected order is in inProgressOrders, then remove it
+                            if(this.selectedOrder && this.inProgressOrders.find(order => order.id == this.selectedOrder.id)) {
+                                this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
+                            }
+                        });
                 },
             }
         }
