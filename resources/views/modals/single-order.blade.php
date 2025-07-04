@@ -70,8 +70,8 @@
                 showModal: false,
                 selectedOrder: null,
                 statuses: @json($globalStatusesResource),
-                technicians: @json($technicians),
-                openModal(event) {
+                
+                async openModal(event) {
                     this.showModal = true;
                     this.selectedOrder = await this.getOrderResource(event.detail.order.id);
                     this.initListeners();
