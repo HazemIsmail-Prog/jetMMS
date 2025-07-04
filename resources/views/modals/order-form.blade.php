@@ -299,7 +299,6 @@
                             this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
                         }
                     });
-                    console.log(this.form.department_id);
                 },
             }
         }
