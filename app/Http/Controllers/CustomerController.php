@@ -17,6 +17,7 @@ use App\Services\ActionsLog;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Title;
 
 class CustomerController extends Controller
 {
@@ -63,9 +64,9 @@ class CustomerController extends Controller
                 ->paginate(10);
             return CustomerResource::collection($customers);
         }
+
         return view('pages.customers.index',[
             'departments' => DepartmentResource::collection(Department::where('active', 1)->where('is_service', 1)->get()),
-            'technicians' => UserResource::collection(User::whereHas('orders_technician')->get()),
         ]);
     }
 
@@ -291,5 +292,20 @@ class CustomerController extends Controller
                 }])
             );
         return $customerResource;
+    }
+
+    public function getAvailableTechnicians(Department $department)
+    {
+        $technicians = User::query()
+            ->where('active', 1)
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->where('department_id', $department->id)
+            ->whereDoesntHave('orders_technician', function($query) {
+                $query->whereIn('status_id', [Status::CREATED, Status::DESTRIBUTED, Status::RECEIVED, Status::ARRIVED]);
+            })
+            ->orderBy('name_ar', 'asc')
+            ->get();
+
+        return UserResource::collection($technicians);
     }
 }

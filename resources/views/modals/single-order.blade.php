@@ -73,7 +73,7 @@
                 technicians: @json($technicians),
                 openModal(event) {
                     this.showModal = true;
-                    this.selectedOrder = event.detail.order;
+                    this.selectedOrder = await this.getOrderResource(event.detail.order.id);
                     this.initListeners();
                 },
 

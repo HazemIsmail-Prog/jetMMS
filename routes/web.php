@@ -152,6 +152,7 @@ Route::middleware([
             Route::get('/customers/{customer}/getAllOrders', [CustomerController::class, 'getAllOrders']);
             Route::get('/customers/{customer}/getInProgressOrders', [CustomerController::class, 'getInProgressOrders']);
             Route::get('/customers/{customer}/getDepartmentInProgressOrders/{department}', [CustomerController::class, 'getDepartmentInProgressOrders']);
+            Route::get('/customers/getAvailableTechnicians/{department}', [CustomerController::class, 'getAvailableTechnicians']);
             Route::apiResource('/customers', CustomerController::class);
 
             // Customers (old routes for Livewire Version)

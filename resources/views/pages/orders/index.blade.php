@@ -540,9 +540,13 @@
                 initListeners() {
                     var channel = Echo.channel('orders');
                     channel.listen('OrderCreatedEvent', async (data) => {
-                        const orderResource = await this.getOrderResource(data.order.id);
                         if(this.isEmptyFilters()) {
                             // this will prevent the order from being added to the orders array if there are filters applied
+                            // check if the order is already in the orders array
+                            if(this.orders.some(order => order.id === data.order.id)) {
+                                return;
+                            }
+                            const orderResource = await this.getOrderResource(data.order.id);
                             this.orders.unshift(orderResource);
                             this.totalRecords++;
                         }

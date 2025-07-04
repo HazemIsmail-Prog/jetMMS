@@ -34,7 +34,7 @@
         </x-tr>
         <x-tr>
             <x-th>{{ __('messages.technician') }}</x-th>
-            <x-td class=" !whitespace-normal" x-text="selectedOrder.technician_id ? getTechnicianNameById(selectedOrder.technician_id) : '-'"></x-td>
+            <x-td class=" !whitespace-normal" x-text="selectedOrder.technician?.name || '-'"></x-td>
         </x-tr>
         <x-tr>
             <x-th>{{ __('messages.order_description') }}</x-th>

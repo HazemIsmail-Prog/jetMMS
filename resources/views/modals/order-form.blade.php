@@ -117,9 +117,6 @@
                                 <template x-if="!selectedOrder && form.department_id">
                                     <div class="flex flex-col">
                                         <x-label for="technician" :value="__('messages.technician')" />
-                                        <template x-if="selectedOrder">
-                                            <p class="text-sm text-gray-600 dark:text-gray-400" x-text="selectedOrder?.technician.name ?? '-'"></p>
-                                        </template>
                                         <!-- start area searchable select -->
                                         <div 
                                             x-data="{
@@ -174,7 +171,7 @@
         function orderFormModal() {
             return {
                 departments: @js($departments),
-                technicians: @js($technicians),
+                technicians: [],
                 dismissible: true,
                 selectedCustomer: null,
                 selectedOrder: null,
@@ -191,6 +188,11 @@
 
                 async getCustomerRequest(id) {
                     const response = await axios.get(`/customers/${id}`);
+                    return response.data.data;
+                },
+
+                async getAvailableTechnicians(department_id) {
+                    const response = await axios.get(`/customers/getAvailableTechnicians/${department_id}`);
                     return response.data.data;
                 },
 
@@ -214,13 +216,14 @@
                         });
                     }
 
-                    this.$watch('form.department_id', (newVal) => {
+                    this.$watch('form.department_id', async (newVal) => {
                         if(this.selectedCustomer){
                             // Reset technician selection when department changes
                             this.form.technician_id = null;
-                            
                             this.inProgressOrders = [];
+
                             if(!newVal) return;
+                            this.technicians = await this.getAvailableTechnicians(newVal);
                             axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${newVal}`)
                             .then(response => {
                                     this.inProgressOrders = response.data.in_progress_orders;
