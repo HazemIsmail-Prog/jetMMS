@@ -291,17 +291,18 @@
                     // Reset technician selection and inProgressOrders once department changes
                     this.form.technician_id = null;
                     this.inProgressOrders = [];
-
+                    
                     if(!this.form.department_id) return;
                     this.technicians = await this.getAvailableTechnicians(this.form.department_id);
                     axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${this.form.department_id}`)
                     .then(response => {
-                            this.inProgressOrders = response.data.in_progress_orders;
-                            // if selected order is in inProgressOrders, then remove it
-                            if(this.selectedOrder && this.inProgressOrders.find(order => order.id == this.selectedOrder.id)) {
-                                this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
-                            }
-                        });
+                        this.inProgressOrders = response.data.in_progress_orders;
+                        // if selected order is in inProgressOrders, then remove it
+                        if(this.selectedOrder && this.inProgressOrders.find(order => order.id == this.selectedOrder.id)) {
+                            this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
+                        }
+                    });
+                    console.log(this.form.department_id);
                 },
             }
         }
