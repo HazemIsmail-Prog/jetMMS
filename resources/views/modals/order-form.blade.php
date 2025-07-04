@@ -92,7 +92,7 @@
                                     <!-- start area searchable select -->
                                     <div 
                                         x-data="{
-                                            items:departments,
+                                            get items() { return departments },
                                             selectedItemId:form.department_id,
                                             placeholder: ''
                                         }"
