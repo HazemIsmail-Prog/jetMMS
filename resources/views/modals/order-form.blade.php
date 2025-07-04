@@ -92,7 +92,7 @@
                                     <!-- start area searchable select -->
                                     <div 
                                         x-data="{
-                                            get items() { return departments },
+                                            items: departments,
                                             selectedItemId:form.department_id,
                                             placeholder: ''
                                         }"
@@ -181,6 +181,7 @@
                 saving: false,
                 getingData: false,
                 inProgressOrders: [],
+                lastFetchedDepartmentId: null,
 
                 async getOrderRequest(id) {
                     const response = await axios.get(`/orders/${id}`);
@@ -240,6 +241,7 @@
                     };
                     this.saving = false;
                     this.inProgressOrders = [];
+                    this.lastFetchedDepartmentId = null;
                 },
 
                 validateForm() {
@@ -291,8 +293,8 @@
                     // Reset technician selection and inProgressOrders once department changes
                     this.form.technician_id = null;
                     this.inProgressOrders = [];
-                    
                     if(!this.form.department_id) return;
+                    if(this.lastFetchedDepartmentId == this.form.department_id) return;
                     this.technicians = await this.getAvailableTechnicians(this.form.department_id);
                     axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${this.form.department_id}`)
                     .then(response => {
@@ -302,6 +304,7 @@
                             this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
                         }
                     });
+                    this.lastFetchedDepartmentId = this.form.department_id;
                     console.log(this.form.department_id);
                 },
             }
