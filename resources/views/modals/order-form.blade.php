@@ -88,22 +88,20 @@
                                 <template x-if="selectedOrder?.status_id !== 1">
                                     <p class="text-sm text-gray-600 dark:text-gray-400" x-text="selectedOrder?.department.name"></p>
                                 </template>
-                                <template x-if="!selectedOrder || selectedOrder?.status_id === 1">
-                                    <!-- start area searchable select -->
-                                    <div 
-                                        x-data="{
-                                            items: departments,
-                                            selectedItemId:form.department_id,
-                                            placeholder: ''
-                                        }"
-                                        x-model="selectedItemId"
-                                        x-modelable="form.department_id"
-                                        x-effect="handleDepartmentChange"
-                                    >
-                                        <x-single-searchable-select />
-                                    </div>
-                                    <!-- end area searchable select -->
-                                </template>
+                                <!-- start area searchable select -->
+                                <div  x-show="!selectedOrder || selectedOrder?.status_id === 1"
+                                    x-data="{
+                                        items: departments,
+                                        selectedItemId:form.department_id,
+                                        placeholder: ''
+                                    }"
+                                    x-model="selectedItemId"
+                                    x-modelable="form.department_id"
+                                    x-effect="handleDepartmentChange"
+                                >
+                                    <x-single-searchable-select />
+                                </div>
+                                <!-- end area searchable select -->
                                 <template x-if="inProgressOrders?.length > 0">
                                     <p class="text-sm text-yellow-800 dark:text-yellow-300" x-text="`{{ __('messages.Duplicate Order', ['department' => '${getDepartmentName(form.department_id)}']) }}`"></p>
                                 </template>
@@ -181,7 +179,6 @@
                 saving: false,
                 getingData: false,
                 inProgressOrders: [],
-                lastFetchedDepartmentId: null,
 
                 async getOrderRequest(id) {
                     const response = await axios.get(`/orders/${id}`);
@@ -241,7 +238,6 @@
                     };
                     this.saving = false;
                     this.inProgressOrders = [];
-                    this.lastFetchedDepartmentId = null;
                 },
 
                 validateForm() {
@@ -294,7 +290,6 @@
                     this.form.technician_id = null;
                     this.inProgressOrders = [];
                     if(!this.form.department_id) return;
-                    if(this.lastFetchedDepartmentId == this.form.department_id) return;
                     this.technicians = await this.getAvailableTechnicians(this.form.department_id);
                     axios.get(`/customers/${this.selectedCustomer.id}/getDepartmentInProgressOrders/${this.form.department_id}`)
                     .then(response => {
@@ -304,7 +299,6 @@
                             this.inProgressOrders = this.inProgressOrders.filter(order => order.id != this.selectedOrder.id);
                         }
                     });
-                    this.lastFetchedDepartmentId = this.form.department_id;
                     console.log(this.form.department_id);
                 },
             }
