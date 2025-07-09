@@ -139,6 +139,8 @@ Route::middleware([
             Route::get('/marketingCounter',[DashboardController::class,'marketingCounter']);
             Route::get('/deletedInvoices',[DashboardController::class,'deletedInvoices']);
             Route::get('/departmentTechnicianCounter',[DashboardController::class,'departmentTechnicianCounter']);
+            Route::get('/customersWithNoOrders/{year}', [DashboardController::class, 'customersWithNoOrders']);
+            Route::get('/customersCompletedOrdersStatistics/{year}/{operator}/{count}', [DashboardController::class, 'customersCompletedOrdersStatistics']);
 
             Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 

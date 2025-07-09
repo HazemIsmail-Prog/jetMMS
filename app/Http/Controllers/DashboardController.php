@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -285,4 +287,91 @@ class DashboardController extends Controller
             'departments' => $departments,
         ]);
     }
+
+    // create a function to get customers with no orders for given year grouped by orders months
+    public function customersWithNoOrders($year)
+    {
+
+        // Get all available labels for the filter 2025-01 2025-02 2025-03 ...
+        $labels = Order::distinct()
+            ->whereNotNull('created_at')
+            ->whereYear('created_at', $year)
+            ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month')
+            ->get();
+
+        // Generate labels for all months across all years
+        $customersWithNoOrdersData = [];
+        
+        foreach ($labels as $label) {
+            $year = $label->year;
+            $month = $label->month;
+            $startDate = Carbon::createFromDate($year, $month, 1);
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+                
+                $count = Customer::query()
+                    ->whereDoesntHave('orders', function ($q) use ($startDate, $endDate) {
+                        $q->whereBetween('created_at', [$startDate, $endDate]);
+                    })
+                    ->count();
+                
+                $customersWithNoOrdersData[] = $count;
+            }
+
+            $formattedLabels = [];
+            foreach ($labels as $label) {
+                $formattedLabels[] = $label->year . '-' . $label->month;
+            }
+
+            $years = Order::distinct()
+                ->whereNotNull('created_at')
+                ->selectRaw('YEAR(created_at) as year')
+                ->get()->pluck('year');
+
+        return response()->json([
+            'customersWithNoOrdersLabel' => __('messages.customers_with_no_orders'),
+            'customersWithNoOrdersCount' => $customersWithNoOrdersData,
+            'labels' => $formattedLabels,
+            'years' => $years,
+        ]);
+    }
+
+    public function customersCompletedOrdersStatistics($year, $operator = '=', $count = 1)
+    {
+        // Get customers with exactly one completed order per month using a more efficient approach
+        $customersWithOnlyOneOrderData = DB::table('orders')
+            ->selectRaw('MONTH(created_at) as month, customer_id')
+            ->whereYear('created_at', $year)
+            ->whereNotNull('completed_at')
+            ->groupBy('month', 'customer_id')
+            ->havingRaw('COUNT(*) ' . $operator . ' ' . $count)
+            ->get()
+            ->groupBy('month')
+            ->map(function($group) {
+                return $group->count();
+            });
+
+        $months = $customersWithOnlyOneOrderData->keys();
+
+        $translatedMonths = [];
+        foreach ($months as $month) {
+            $translatedMonths[] = __('messages.months.' . $month);
+        }
+
+        $customersWithOnlyOneOrderData = $customersWithOnlyOneOrderData->values();
+
+
+        // Get available years for filter
+        $years = Order::distinct()
+            ->whereNotNull('created_at')
+            ->selectRaw('YEAR(created_at) as year')
+            ->pluck('year');
+
+        return response()->json([
+            'customersCompletedOrdersStatisticsLabel' => __('messages.customers_completed_orders_statistics'),
+            'customersCompletedOrdersStatisticsCount' => $customersWithOnlyOneOrderData,
+            'labels' => $translatedMonths,
+            'years' => $years,
+        ]);
+    }
+
 }

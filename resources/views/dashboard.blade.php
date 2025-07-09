@@ -10,6 +10,12 @@
             @include('livewire.operations-reports.daily-statistics')
         </div>
         <div class=" col-span-2">
+            @include('livewire.operations-reports.customers-with-no-orders-chart')
+        </div>
+        <div class=" col-span-2">
+            @include('livewire.operations-reports.customers-completed-orders-chart')
+        </div>
+        <div class=" col-span-2">
             @include('livewire.operations-reports.orders-chart')
         </div>
         <div class=" col-span-2">
