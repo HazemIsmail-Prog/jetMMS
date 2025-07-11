@@ -72,7 +72,7 @@ class VoucherController extends Controller
         $validated_voucher_data = $request->validate([
             'manual_id' => 'nullable|string|max:255',
             'date' => 'required|date',
-            'notes' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
         ]);
 
         $validated_voucher_data['created_by'] = auth()->user()->id;
@@ -85,7 +85,7 @@ class VoucherController extends Controller
             'details.*.user_id' => 'nullable|exists:users,id',
             'details.*.debit' => 'required|numeric|min:0',
             'details.*.credit' => 'required|numeric|min:0',
-            'details.*.narration' => 'nullable|string|max:255',
+            'details.*.narration' => 'nullable|string',
         ]);
 
         // get total debit and credit
@@ -144,7 +144,7 @@ class VoucherController extends Controller
         $validated_voucher_data = $request->validate([
             'manual_id' => 'nullable|string|max:255',
             'date' => 'required|date',
-            'notes' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
         ]);
 
         $validated_voucher_details_data = $request->validate([
@@ -154,7 +154,7 @@ class VoucherController extends Controller
             'details.*.user_id' => 'nullable|exists:users,id',
             'details.*.debit' => 'required|numeric|min:0',
             'details.*.credit' => 'required|numeric|min:0',
-            'details.*.narration' => 'nullable|string|max:255',
+            'details.*.narration' => 'nullable|string',
         ]);
 
         // get total debit and credit
