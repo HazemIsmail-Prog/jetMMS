@@ -243,9 +243,9 @@
             @can('viewAny', App\Models\Permission::class)
                 <x-sidebar-item icon="chart-pie" route="permission.index" :title="__('messages.permissions')" />
             @endcan
-            @can('viewAny', App\Models\User::class)
-                <x-sidebar-item icon="users" route="user.index" :title="__('messages.users')" />
-            @endcan
+            @if(auth()->user()->hasPermission('users_menu'))
+                <x-sidebar-item icon="users" route="users.index" :title="__('messages.users')" />
+            @endif
             @can('viewAny', App\Models\Title::class)
                 <x-sidebar-item icon="chart-pie" route="title.index" :title="__('messages.titles')" />
             @endcan

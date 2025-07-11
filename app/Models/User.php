@@ -140,6 +140,11 @@ class User extends Authenticatable
         return $this->hasManyMerged(Message::class, ['sender_user_id', 'receiver_user_id']);
     }
 
+    public function directPermissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
+    }
+
     public function permissions()
     {
         return app(PermissionService::class)->getUserPermissions($this);

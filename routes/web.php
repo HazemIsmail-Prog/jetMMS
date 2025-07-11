@@ -94,6 +94,7 @@ use App\Http\Controllers\TechnicianPageController;
 use App\Http\Controllers\CustomerContractController;
 use App\Http\Middleware\NoTechnicians;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReconciliationController;
 
 
@@ -405,9 +406,22 @@ Route::middleware([
                 ->name('permission.index')
                 ->can('viewAny', Permission::class);
 
-            Route::get('users', UserIndex::class)
-                ->name('user.index')
-                ->can('viewAny', User::class);
+            // Users
+            // new routes for Alpine JS Version
+            Route::controller(UserController::class)->group(function () {
+                Route::get('users/generate-username', 'generateUsername');
+                Route::put('users/{user}/change-status', 'changeStatus');
+                Route::post('users', 'store');
+                Route::put('users/{user}', 'update');
+                Route::delete('users/{user}', 'destroy');
+                Route::get('users/{user}', 'show');
+                Route::get('users', 'index')->name('users.index');
+            });
+
+            // Users (old routes for Livewire Version)
+            // Route::get('users', UserIndex::class)
+            //     ->name('user.index')
+            //     ->can('viewAny', User::class);
 
             Route::get('titles', TitleIndex::class)
                 ->name('title.index')

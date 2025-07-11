@@ -44,12 +44,22 @@ class PermissionService
      */
     private function loadUserPermissions(User $user): Collection
     {
-        return $user->roles()
+        // get all direct permissions + roles permissions
+        $directPermissions = $user->directPermissions()
+            ->get()
+            ->pluck('name')
+            ->unique()
+            ->values();
+
+        $rolesPermissions = $user->roles()
             ->with('permissions:id,name')
             ->get()
             ->flatMap(fn ($role) => $role->permissions->pluck('name'))
             ->unique()
             ->values();
+
+        return $directPermissions->merge($rolesPermissions)->unique();
+
     }
 
     /**

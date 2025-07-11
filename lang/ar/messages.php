@@ -828,4 +828,8 @@ return [
     'greater_than_or_equal_to' => 'اكبر من او يساوي',
     'less_than' => 'اصغر من',
     'less_than_or_equal_to' => 'اصغر من او يساوي',
+    'direct_permissions' => 'الصلاحيات المباشرة',
+    'you_dont_have_permission_to_change_user_status' => 'ليس لديك صلاحية لتعديل حالة الموظف',
+    'user_has_in_progress_orders' => 'الموظف لديه طلبات قيد التنفيذ',
+    'you_dont_have_permission_to_edit_user' => 'ليس لديك صلاحية لتعديل الموظف',
 ];
