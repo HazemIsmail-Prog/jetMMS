@@ -12,7 +12,7 @@ class Sidebar extends Component
     #[Computed(cache: true, key: 'sidebar-departments')]
     public function departments()
     {
-        return Department::where('is_service', true)->get();
+        return Department::where('is_service', true)->where('active', true)->get();
     }
 
     public function render()
