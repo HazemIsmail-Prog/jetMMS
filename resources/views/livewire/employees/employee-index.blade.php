@@ -58,8 +58,8 @@
             <x-searchable-select class=" !py-[5px]" id="department" :list="$this->departments" wire:model.live="filters.department_id" multipule />
         </div>
         <div>
-            <x-label for="shift">{{ __('messages.shift') }}</x-label>
-            <x-searchable-select class=" !py-[5px]" id="shift" :list="$this->shifts" wire:model.live="filters.shift_id" multipule />
+            <x-label for="company">{{ __('messages.company') }}</x-label>
+            <x-searchable-select class=" !py-[5px]" id="company" :list="$this->companies" wire:model.live="filters.company_id" multipule />
         </div>
         <div>
             <x-label for="status">{{ __('messages.status') }}</x-label>
@@ -79,7 +79,7 @@
                 <x-th>{{ __('messages.name') }}</x-th>
                 <x-th>{{ __('messages.title') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
-                <x-th>{{ __('messages.shift') }}</x-th>
+                <x-th>{{ __('messages.company') }}</x-th>
                 <x-th>{{ __('messages.status') }}</x-th>
                 <x-th>{{ __('messages.joinDate') }}</x-th>
                 <x-th>{{ __('messages.salary') }}</x-th>
@@ -96,7 +96,7 @@
                     <x-td>{{ $employee->user->name }}</x-td>
                     <x-td>{{ $employee->user->title->name }}</x-td>
                     <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
-                    <x-td>{{ $employee->user->shift->name ?? '-' }}</x-td>
+                    <x-td>{{ $employee->company->name ?? '-' }}</x-td>
                     <x-td>{!! $employee->formated_status !!}</x-td>
                     <x-td>{!! $employee->formated_join_date !!}</x-td>
                     <x-td>{{ $employee->formated_salary }}</x-td>

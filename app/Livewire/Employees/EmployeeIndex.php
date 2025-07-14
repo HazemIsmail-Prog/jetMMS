@@ -4,7 +4,7 @@ namespace App\Livewire\Employees;
 
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Shift;
+use App\Models\Company;
 use App\Models\Title;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -22,7 +22,7 @@ class EmployeeIndex extends Component
         'name' => null,
         'title_id' => [],
         'department_id' => [],
-        'shift_id' => [],
+        'company_id' => [],
         'status' => '',
     ];
 
@@ -50,9 +50,9 @@ class EmployeeIndex extends Component
     }
 
     #[Computed()]
-    public function shifts()
+    public function companies()
     {
-        return Shift::query()
+        return Company::query()
             ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
             ->orderBy('name')
             ->get();
@@ -67,7 +67,7 @@ class EmployeeIndex extends Component
 
             ->with('user.title')
             ->with('user.department')
-            ->with('user.shift')
+            ->with('company')
             ->withCount('attachments')
             ->when($this->filters['name'], function (Builder $q) {
                 $q->whereRelation('user', 'name_ar', 'like', '%' . $this->filters["name"] . '%');
@@ -84,9 +84,9 @@ class EmployeeIndex extends Component
                     $q->whereIn('department_id', $this->filters["department_id"]);
                 });
             })
-            ->when($this->filters['shift_id'], function (Builder $q) {
-                $q->whereHas('user', function (Builder $q) {
-                    $q->whereIn('shift_id', $this->filters["shift_id"]);
+            ->when($this->filters['company_id'], function (Builder $q) {
+                $q->whereHas('company', function (Builder $q) {
+                    $q->whereIn('company_id', $this->filters["company_id"]);
                 });
             })
 
