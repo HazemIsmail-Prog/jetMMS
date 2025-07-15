@@ -23,6 +23,9 @@
     @include('modals.payment-form')
     @include('modals.order-form')
 
+    @include('modals.attachments')
+    @include('modals.attachment-form')
+
     <div
         x-data="customersComponent()"
         x-on:customer-created.window="addNewCustomer"

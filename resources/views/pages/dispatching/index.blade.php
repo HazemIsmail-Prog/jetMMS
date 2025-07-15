@@ -176,6 +176,9 @@
     <!-- cancel reason modal -->
     @include('modals.cancel-reason-form')
 
+    @include('modals.attachments')
+    @include('modals.attachment-form')
+
 
 
 

@@ -19,6 +19,8 @@
     @include('modals.invoice-form')
     @include('modals.discount-form')
     @include('modals.payment-form')
+    @include('modals.attachments')
+    @include('modals.attachment-form')
 
 
     <div 

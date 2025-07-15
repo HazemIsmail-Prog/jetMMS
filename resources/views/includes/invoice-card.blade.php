@@ -9,6 +9,15 @@
             <h3 class="font-semibold text-gray-900 dark:text-white" x-text="invoice.formatted_id"></h3>
     
             <div class=" flex items-center gap-2">
+                <template x-if="invoice.can_list_attachments">
+                    <x-badgeWithCounter
+                        title="{{ __('messages.view_invoice_attachment') }}"
+                        @click="$dispatch('open-attachment-index-modal', {model: invoice, type: 'Invoice'})"
+                    >
+                        <x-svgs.attachment class="h-4 w-4" />
+                            <span x-show="invoice.attachments_count > 0" style="font-size: 0.6rem;" x-text="invoice.attachments_count"></span>
+                    </x-badgeWithCounter>
+                </template>
                 <!-- Print Dropdown -->
                 <div class="relative">
                     <x-dropdown width="48">
