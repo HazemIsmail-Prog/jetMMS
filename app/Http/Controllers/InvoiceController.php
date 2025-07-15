@@ -46,6 +46,7 @@ class InvoiceController extends Controller
                     'payments',
                     'reconciliations'
                 ])
+                ->withCount('attachments')
                 ->with('order', function($query) {
                     $query->withCount('invoices');
                 })

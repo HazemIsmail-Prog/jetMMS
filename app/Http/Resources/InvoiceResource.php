@@ -69,6 +69,10 @@ class InvoiceResource extends JsonResource
         $can_deleted = $user->hasPermission('invoices_delete');
         $can_create_payments = $user->hasPermission('payments_create');
         $user_can_add_reconciliation = $user->hasPermission('reconciliations_create');
+        $can_list_attachments = $user->hasPermission('invoices_attachments_list');
+        $can_create_attachments = $user->hasPermission('invoices_attachments_create');
+        $can_update_attachments = $user->hasPermission('invoices_attachments_update');
+        $can_delete_attachments = $user->hasPermission('invoices_attachments_delete');
         return [
 
             // Basic
@@ -126,6 +130,11 @@ class InvoiceResource extends JsonResource
             'can_view_payments' => $can_create_payments,
             'can_create_payments' => $can_create_payments,
             'user_can_add_reconciliation' => $user_can_add_reconciliation,
+            'can_list_attachments' => $can_list_attachments,
+            'can_create_attachment' => $can_create_attachments,
+            'can_update_attachment' => $can_update_attachments,
+            'can_delete_attachment' => $can_delete_attachments,
+            'attachments_count' => $this->whenCounted('attachments'),
         ];
     }
 }

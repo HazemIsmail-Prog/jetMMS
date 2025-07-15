@@ -799,6 +799,7 @@ class OrderController extends Controller
                 'payments.user',
                 'reconciliations'
             ])
+            ->withCount('attachments')
             ->with('order', function($query) {
                 $query->withCount('invoices');
             })
@@ -809,8 +810,13 @@ class OrderController extends Controller
     public function destroyInvoice(Order $order, Invoice $invoice)
     {
         // check if user has permission to delete invoice
-        if(!auth()->user()->can('delete', $invoice)) {
+        if(!auth()->user()->hasPermission('invoices_delete')) {
             return response()->json(['error' => __('messages.you_dont_have_permission_to_delete_this_invoice')], 403);
+        }
+
+        // check if invoice has attachments
+        if($invoice->attachments->count() > 0) {
+            return response()->json(['error' => __('messages.invoice_has_attachments_you_cant_delete_it')], 400);
         }
 
         // check if order has only one invoice

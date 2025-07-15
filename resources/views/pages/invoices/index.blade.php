@@ -28,10 +28,14 @@
      <!-- reconciliation form modal -->
      @include('modals.reconciliation-form')
 
+     @include('modals.attachments')
+     @include('modals.attachment-form')
+
     <div
         x-data="invoicesComponent()"
         x-on:invoice-payments-updated.window="handleInvoiceUpdated"
         x-on:invoice-reconciliations-updated.window="handleInvoiceUpdated"
+        x-on:attachments-count-updated.window="updateAttachmentsCount"
     >
 
         <template x-teleport="#counter">
@@ -202,6 +206,15 @@
                                         {{ __('messages.add_reconciliation') }}
                                     </x-badgeWithCounter>
                                 </template>
+                                <template x-if="invoice.can_list_attachments">
+                                    <x-badgeWithCounter
+                                        title="{{ __('messages.view_invoice_attachment') }}"
+                                        @click="$dispatch('open-attachment-index-modal', {model: invoice, type: 'Invoice'})"
+                                    >
+                                        <x-svgs.attachment class="h-4 w-4" />
+                                            <span x-show="invoice.attachments_count > 0" style="font-size: 0.6rem;" x-text="invoice.attachments_count"></span>
+                                    </x-badgeWithCounter>
+                                </template>
                                 <template x-if="invoice.order.invoices_count > 1 && invoice.can_deleted && invoice.deleted_at === null">
                                     <x-badgeWithCounter
                                         class="px-2 border-red-500 dark:border-red-500 text-red-500 dark:text-red-500 hover:bg-red-500 hover:text-white"
@@ -318,6 +331,21 @@
                     }
                 },
 
+                updateAttachmentsCount(e) {
+                    if(e.detail.method === 'delete') {
+                        const index = this.invoices.findIndex(invoice => invoice.id === e.detail.modelId);
+                        if(index !== -1) {
+                            this.invoices[index].attachments_count--;
+                        }
+                    }
+
+                    if(e.detail.method === 'create') {
+                        const index = this.invoices.findIndex(invoice => invoice.id === e.detail.modelId);
+                        if(index !== -1) {
+                            this.invoices[index].attachments_count++;
+                        }
+                    }
+                },
                 get totalInvoiceDetailsServicesAmount() {
                     return this.invoices.reduce((acc, invoice) => acc + invoice.invoice_details_services_amount, 0);
                 },
