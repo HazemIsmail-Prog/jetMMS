@@ -8,6 +8,7 @@ use App\Http\Resources\AttachmentResource;
 use App\Http\Requests\AttachmentRequest;
 use App\Services\S3;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ActionsLog;
 class AttachmentController extends Controller
 {
     public function index(Request $request)
@@ -27,12 +28,14 @@ class AttachmentController extends Controller
         if ($path) {
             $attachment->file = $path;
             $attachment->save();
+            ActionsLog::logAction('Attachment', 'Create', $attachment->attachable_id, 'Attachment created successfully', $attachment->fresh()->toArray(), null);
             return new AttachmentResource($attachment);
         }
     }
 
     public function update(AttachmentRequest $request, Attachment $attachment)
     {
+        $old_attachment = $attachment->toArray();
         $attachment->update($request->except('file'));
         if ($request->file) {
             $path = S3::saveToS3($request->file, $attachment->attachable, $attachment->file);
@@ -41,16 +44,19 @@ class AttachmentController extends Controller
                 $attachment->save();
             }
         }
+        ActionsLog::logAction('Attachment', 'Update', $attachment->attachable_id, 'Attachment updated successfully', $attachment->toArray(), $old_attachment);
         return new AttachmentResource($attachment);
     }
 
     public function destroy(Attachment $attachment)
     {
+        $old_attachment = $attachment->toArray();
         try {
             if (Storage::disk('s3')->exists($attachment->file)) {
                 Storage::disk('s3')->delete($attachment->file);
             }
             $attachment->delete();
+            ActionsLog::logAction('Attachment', 'Delete', $attachment->attachable_id, 'Attachment deleted successfully', null, $old_attachment);
             return response()->json(['message' => 'Attachment deleted successfully']);
 
         } catch (\Throwable $th) {
