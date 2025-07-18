@@ -25,7 +25,7 @@
 
 <body class="{{ app()->getLocale() == 'ar' ? 'font-lateef' : ' font-Nunito' }}  antialiased overflow-hidden">
 
-    <div class="flex flex-col h-screen dark:bg-gray-900">
+    <div class="flex flex-col dark:bg-gray-900" style="height: 100dvh;">
 
         <!-- Content area -->
 
