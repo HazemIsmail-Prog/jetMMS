@@ -30,51 +30,49 @@
         @customer-updated.window="handleCustomerUpdatedEvent"
     >
         <template x-if="surveysList.length > 0">
-            <!-- <div class="fixed z-10 pointer-events-auto top-0 bottom-0 end-2 h-screen bg-transparent flex justify-center items-center"> -->
-                <div class="fixed z-10 bottom-1 end-1 space-y-2 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-6 border-2 border-indigo-100 dark:border-gray-700">
-                    <h3 class="text-lg font-medium text-indigo-900 dark:text-white">{{ __('messages.surveys') }}</h3>
-                    <div class="flex gap-2">
-                        <x-button @click="sendSurveys" x-bind:disabled="surveySending">
-                            {{ __('messages.send') }} (<span x-text="surveysList.length"></span>)
-                            <span x-show="surveySending" class="spinner ms-2"></span>
-                        </x-button>
-                        <x-secondary-button @click="surveysList = []">
-                            {{ __('messages.cancel') }}
-                        </x-secondary-button>
-                    </div>
-                    <div class="overflow-y-auto max-h-[300px]">
-                        <x-table>
-                            <x-thead>
-                                <x-tr>
-                                    <x-th>{{ __('messages.order_number') }}</x-th>
-                                    <x-th>{{ __('messages.customer_phone') }}</x-th>
-                                    <x-th>{{ __('messages.status') }}</x-th>
-                                    <x-th></x-th>
-                                </x-tr>
-                            </x-thead>
-                            <tbody>
-                                <template x-for="order in surveysList" :key="order.id">
-                                    <x-tr>
-                                        <x-td x-text="order.id"></x-td>
-                                        <x-td x-text="order.phone.number"></x-td>
-                                        <x-td>
-                                            <span class="px-2 py-0.5 pb-1 text-xs rounded-full flex items-center" 
-                                                :style="{ backgroundColor: getStatusColorById(order.status_id) + '20', color: getStatusColorById(order.status_id) }"
-                                                x-text="getStatusNameById(order.status_id)">
-                                            </span>
-                                        </x-td>
-                                        <x-td>
-                                            <button @click="toggleSurveyInList(order)" class="text-red-500">
-                                                <x-svgs.trash class="h-4 w-4" />
-                                            </button>
-                                        </x-td>
-                                    </x-tr>
-                                </template>
-                            </tbody>
-                        </x-table>
-                    </div>
+            <div class="fixed z-10 bottom-1 end-1 space-y-2 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-6 border-2 border-indigo-100 dark:border-gray-700">
+                <h3 class="text-lg font-medium text-indigo-900 dark:text-white">{{ __('messages.surveys') }}</h3>
+                <div class="flex gap-2">
+                    <x-button @click="sendSurveys" x-bind:disabled="surveySending">
+                        {{ __('messages.send') }} (<span x-text="surveysList.length"></span>)
+                        <span x-show="surveySending" class="spinner ms-2"></span>
+                    </x-button>
+                    <x-secondary-button @click="surveysList = []">
+                        {{ __('messages.cancel') }}
+                    </x-secondary-button>
                 </div>
-            <!-- </div> -->
+                <div class="overflow-y-auto max-h-[300px]">
+                    <x-table>
+                        <x-thead>
+                            <x-tr>
+                                <x-th>{{ __('messages.order_number') }}</x-th>
+                                <x-th>{{ __('messages.customer_phone') }}</x-th>
+                                <x-th>{{ __('messages.status') }}</x-th>
+                                <x-th></x-th>
+                            </x-tr>
+                        </x-thead>
+                        <tbody>
+                            <template x-for="order in surveysList" :key="order.id">
+                                <x-tr>
+                                    <x-td x-text="order.id"></x-td>
+                                    <x-td x-text="order.phone.number"></x-td>
+                                    <x-td>
+                                        <span class="px-2 py-0.5 pb-1 text-xs rounded-full flex items-center" 
+                                            :style="{ backgroundColor: getStatusColorById(order.status_id) + '20', color: getStatusColorById(order.status_id) }"
+                                            x-text="getStatusNameById(order.status_id)">
+                                        </span>
+                                    </x-td>
+                                    <x-td>
+                                        <button @click="toggleSurveyInList(order)" class="text-red-500">
+                                            <x-svgs.trash class="h-4 w-4" />
+                                        </button>
+                                    </x-td>
+                                </x-tr>
+                            </template>
+                        </tbody>
+                    </x-table>
+                </div>
+            </div>
         </template>
         <template x-teleport="#counter">
             <span 
