@@ -446,6 +446,8 @@
                 lastPage: 1,
                 totalRecords: 0,
                 showFilters: false,
+                surveysList: [],
+                surveySending: false,
                 filters: {
                     customer_name: '',
                     customer_phone: '',
