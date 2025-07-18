@@ -95,6 +95,7 @@ use App\Http\Controllers\CustomerContractController;
 use App\Http\Middleware\NoTechnicians;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ReconciliationController;
 
 
