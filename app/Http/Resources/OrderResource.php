@@ -30,10 +30,6 @@ class OrderResource extends JsonResource
         $userCanSendSurvey = $user->hasPermission('orders_send_survey');
         $formatted_id = str_pad($this->id, 8, '0', STR_PAD_LEFT);
 
-        $phone = $this->whenLoaded('phone') ? new PhoneResource($this->whenLoaded('phone')) : null;
-        $whatsapp_message = $userCanSendSurvey && $this->status_id == Status::COMPLETED && isset($phone->number) ? $this->whatsappMessage($formatted_id, $phone->number, $this->id) : null;
-        
-
 
         return [
 
@@ -89,7 +85,6 @@ class OrderResource extends JsonResource
             'is_future' => $this->estimated_start_date->isFuture(),
             'in_progress' => $this->status_id == Status::RECEIVED || $this->status_id == Status::ARRIVED,
             'is_draggable' => $this->status_id !== Status::RECEIVED && $this->status_id !== Status::ARRIVED,
-            'whatsapp_message' => $whatsapp_message,
 
             // Belongs to Relations
             'invoices_count' => $this->whenCounted('invoices'),
@@ -98,27 +93,11 @@ class OrderResource extends JsonResource
             'customer' => new CustomerResource($this->whenLoaded('customer')),
             'department' => new DepartmentResource($this->whenLoaded('department')),
             'technician' => new UserResource($this->whenLoaded('technician')),
-            'phone' => $phone,
+            'phone' => new PhoneResource($this->whenLoaded('phone')),
             'address' => new AddressResource($this->whenLoaded('address')),
 
             // Has Many Relations
             'invoices' => InvoiceResource::collection($this->whenLoaded('invoices')),
         ];
-    }
-
-
-    public function whatsappMessage($formatted_id, $phone_number,$id)
-    {
-        $line1 = '*مسك الدار للمقاولات العامة للمباني*';
-        $line2 = '%0a';
-        $line3 = 'تم تنفيذ طلبكم رقم ' . $formatted_id;
-        $line4 = '%0a';
-        $line5 = 'يمكنك تقييم الطلب وتحميل الفواتير من خلال الرابط التالي';
-        $line6 = '%0a';
-        $line7 = '%0a';
-        $welcomeMessage = $line1 . $line2 . $line3 . $line4 . $line5 . $line6 . $line7;
-        $number = '965' . $phone_number;
-        $encryptedOrderId = route('customer.page', encrypt($id));
-        return 'https://api.whatsapp.com/send?phone=' . $number . '&text=' . $welcomeMessage . $encryptedOrderId;
     }
 }

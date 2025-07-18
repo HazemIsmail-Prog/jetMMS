@@ -644,6 +644,29 @@ return [
     'expiration_date' => 'Expiration Date',
     'edit_company_contract' => 'Edit Company Contract',
 
+    'cancel_survey_message_title' => 'Order Cancellation Survey',
+
+    'cancel_survey_message' => [
+        'line_1' => 'Based on your request, order has been canceled',
+        'line_2' => 'We are committed to improving your experience',
+        'line_3' => 'Please select the reason for canceling the order',
+    ],
+
+    'delayed_arrival' => 'Delayed Arrival',
+    'unsuitable_prices' => 'Unsuitable Prices',
+    'issue_self_resolved' => 'Issue Self Resolved',
+    'no_response_communication' => 'No Response Communication',
+    'other_reason' => 'Other Reason',
+    'submit_feedback' => 'Submit Feedback',
+    'other_reason_placeholder' => 'Please explain',
+    'add_to_survey_list' => 'Add to Survey List',
+    'remove_from_survey_list' => 'Remove from Survey List',
+    'surveys' => 'Surveys',
+    'survey_messages_sent_successfully' => 'Survey Messages Sent Successfully',
+    'cancel_reason_required' => 'Please select one option',
+    'already_submitted_survey' => 'Your survey for this order has been received',
+    'thank_you_feedback' => 'Thank you for your feedback',
+
 
 
 

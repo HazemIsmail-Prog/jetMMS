@@ -69,6 +69,9 @@
                     @can('viewReport', App\Models\Invoice::class)
                         <x-nested-sidebar-item route="invoice.report" :title="__('messages.invoices_per_technician_report')" />
                     @endcan
+                    @if(auth()->user()->hasPermission('cancel_surveys_menu'))
+                        <x-nested-sidebar-item route="cancel-surveys.index" :title="__('messages.cancel_surveys')" />
+                    @endif
                 </x-sidebar-dropdown>
             @endcan
             @can('canDispatch', App\Models\DummyModel::class)

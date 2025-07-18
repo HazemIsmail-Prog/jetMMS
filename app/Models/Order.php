@@ -78,7 +78,10 @@ class Order extends Model
     }
 
 
-
+    public function cancelSurvey()
+    {
+        return $this->hasOne(CancelSurvey::class);
+    }
 
 
 

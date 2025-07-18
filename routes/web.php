@@ -102,6 +102,8 @@ use App\Http\Controllers\ReconciliationController;
 
 Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.swith');
 
+Route::get('cancel-survey/{encryptedOrderId}',[SurveyController::class, 'cancelSurveyPage'])->name('cancel.survey.page');
+Route::post('cancel-survey/{order}',[SurveyController::class, 'storeCancelSurvey']);
 Route::get('customer-page/{encryptedOrderId}',CustomerPage::class)->name('customer.page');
 
 Route::get('/invoice/pdf/{encryptedInvoiceId}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
@@ -203,6 +205,10 @@ Route::middleware([
                 // get department services for invoice form
                 Route::get      ('/orders/{order}/getDepartmentServices', 'getDepartmentServices')->withoutMiddleware(NoTechnicians::class);
             });
+
+            Route::post('/send-multiple-survey-message', [SurveyController::class, 'sendMultipleSurveyMessage']);
+            Route::get('cancel-surveys', [SurveyController::class, 'cancelSurveyIndex'])->name('cancel-surveys.index');
+
 
             // Orders (old routes for Livewire Version)
             // Route::get('orders', OrderIndex::class)

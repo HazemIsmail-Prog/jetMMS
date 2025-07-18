@@ -1,4 +1,4 @@
-<div class=" space-y-4">
+<div class=" space-y-4 max-w-2xl mx-auto">
     @livewire('ratings.rating-form')
 
     <div class="font-semibold text-xl  text-gray-800 dark:text-gray-200">

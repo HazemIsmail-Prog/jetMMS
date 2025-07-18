@@ -29,7 +29,53 @@
         @order-created.window="handleOrderCreatedEvent"
         @customer-updated.window="handleCustomerUpdatedEvent"
     >
-
+        <template x-if="surveysList.length > 0">
+            <!-- <div class="fixed z-10 pointer-events-auto top-0 bottom-0 end-2 h-screen bg-transparent flex justify-center items-center"> -->
+                <div class="fixed z-10 bottom-1 end-1 space-y-2 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-6 border-2 border-indigo-100 dark:border-gray-700">
+                    <h3 class="text-lg font-medium text-indigo-900 dark:text-white">{{ __('messages.surveys') }}</h3>
+                    <div class="flex gap-2">
+                        <x-button @click="sendSurveys" x-bind:disabled="surveySending">
+                            {{ __('messages.send') }} (<span x-text="surveysList.length"></span>)
+                            <span x-show="surveySending" class="spinner ms-2"></span>
+                        </x-button>
+                        <x-secondary-button @click="surveysList = []">
+                            {{ __('messages.cancel') }}
+                        </x-secondary-button>
+                    </div>
+                    <div class="overflow-y-auto max-h-[300px]">
+                        <x-table>
+                            <x-thead>
+                                <x-tr>
+                                    <x-th>{{ __('messages.order_number') }}</x-th>
+                                    <x-th>{{ __('messages.customer_phone') }}</x-th>
+                                    <x-th>{{ __('messages.status') }}</x-th>
+                                    <x-th></x-th>
+                                </x-tr>
+                            </x-thead>
+                            <tbody>
+                                <template x-for="order in surveysList" :key="order.id">
+                                    <x-tr>
+                                        <x-td x-text="order.id"></x-td>
+                                        <x-td x-text="order.phone.number"></x-td>
+                                        <x-td>
+                                            <span class="px-2 py-0.5 pb-1 text-xs rounded-full flex items-center" 
+                                                :style="{ backgroundColor: getStatusColorById(order.status_id) + '20', color: getStatusColorById(order.status_id) }"
+                                                x-text="getStatusNameById(order.status_id)">
+                                            </span>
+                                        </x-td>
+                                        <x-td>
+                                            <button @click="toggleSurveyInList(order)" class="text-red-500">
+                                                <x-svgs.trash class="h-4 w-4" />
+                                            </button>
+                                        </x-td>
+                                    </x-tr>
+                                </template>
+                            </tbody>
+                        </x-table>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </template>
         <template x-teleport="#counter">
             <span 
                 class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
@@ -345,12 +391,14 @@
                     <!-- Actions Footer -->
                     <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
                         <div class="flex flex-wrap items-center gap-1">
-                            <template x-if="order.can_send_survey && order.status_id == 4">
-                                <a class="inline-flex items-center px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" 
-                                   target="__blank" 
-                                   :href="order.whatsapp_message">
-                                    {{ __('messages.send_survey') }}
-                                </a>
+                            <template x-if="order.can_send_survey && (order.status_id == 4 || order.status_id == 6)">
+                                <button
+                                    class="inline-flex items-center px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded text-gray-700 dark:text-gray-300" 
+                                    :class="{ 'bg-red-100 dark:bg-red-700': surveysList.find(o => o.id === order.id) }"
+                                    @click="toggleSurveyInList(order)"
+                                >
+                                    <span x-text="surveysList.find(o => o.id === order.id) ? '{{ __('messages.remove_from_survey_list') }}' : '{{ __('messages.add_to_survey_list') }}'"></span>
+                                </button>
                             </template>
 
                             <template x-if="order.can_edit_order">
@@ -428,6 +476,29 @@
                         this.getOrders(1);
                     });
                     this.initListeners();
+                },
+
+                toggleSurveyInList(order) {
+                    if(this.surveysList.find(o => o.id === order.id)) {
+                        this.surveysList = this.surveysList.filter(o => o.id !== order.id);
+                    } else {
+                        this.surveysList.push(order);
+                    }
+                },
+
+                sendSurveys() {
+                    this.surveySending = true;
+                    axios.post('/send-multiple-survey-message', {surveys: this.surveysList})
+                        .then(response => {
+                            this.surveysList = [];
+                            alert(response.data.message);
+                        })
+                        .catch(error => {
+                            alert(error.response.data.error);
+                        })
+                        .finally(() => {
+                            this.surveySending = false;
+                        });
                 },
 
                 formatNumber(number) {
@@ -631,6 +702,22 @@
             }
         }
     </script>
+
+    <style>
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 2px solid #3498db;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 
 
 </x-app-layout>

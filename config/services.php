@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'wati' => [
+        'base_url' => env('WATI_BASE_URL'),
+        'bearer_token' => env('WATI_BEARER_TOKEN'),
+    ],
+
 ];
