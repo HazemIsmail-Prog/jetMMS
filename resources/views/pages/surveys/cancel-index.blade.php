@@ -47,6 +47,22 @@
                 </div>
                 <!-- end area searchable select -->
             </div>
+            <div>
+                <x-label for="department">{{ __('messages.department') }}</x-label>
+                <!-- start area searchable select -->
+                <div 
+                    x-data="{
+                        items:departments,
+                        selectedItemIds:filters.department_ids,
+                        placeholder: '{{ __('messages.search') }}'
+                    }"
+                    x-model="selectedItemIds"
+                    x-modelable="filters.department_ids"
+                >
+                    <x-multipule-searchable-select />
+                </div>
+                <!-- end area searchable select -->
+            </div>
 
             <div>
                 <x-label for="start_created_at">{{ __('messages.created_at') }}</x-label>
@@ -62,6 +78,7 @@
                 <tr>
                     <x-th>{{__('messages.order_number')}}</x-th>
                     <x-th>{{__('messages.cancel_reason')}}</x-th>
+                    <x-th>{{__('messages.department')}}</x-th>
                     <x-th>{{__('messages.customer_name')}}</x-th>
                     <x-th>{{__('messages.customer_phone')}}</x-th>
                     <x-th>{{__('messages.created_at')}}</x-th>
@@ -76,6 +93,7 @@
                             <div x-text="survey.translated_cancel_reason"></div>
                             <div class="text-sm text-gray-500 dark:text-gray-400" x-text="survey.other_reason"></div>
                         </x-td>
+                        <x-td x-text="survey.order.department.name"></x-td>
                         <x-td x-text="survey.order.customer.name"></x-td>
                         <x-td x-text="survey.order.phone.number"></x-td>
                         <x-td>
@@ -102,6 +120,7 @@
             return {
                 loading: false,
                 reasons: @js($reasons),
+                departments: @js($departments),
                 surveys: [],
                 currentPage: 1,
                 lastPage: 1,
@@ -109,6 +128,7 @@
                 filters: {
                     order_id: '',
                     reasons: [],
+                    department_ids: [],
                     start_created_at: '',
                     end_created_at: '',
                 },

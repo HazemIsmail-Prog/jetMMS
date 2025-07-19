@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Department;
 use App\Models\Status;
 use App\Models\CancelSurvey;
 use Illuminate\Http\Request;
 use App\Enums\CancelReasonEnum;
+use App\Http\Resources\DepartmentResource;
 use App\Http\Resources\CancelSurveyResource;
 
 class SurveyController extends Controller
@@ -23,11 +25,17 @@ class SurveyController extends Controller
             $surveys = CancelSurvey::query()
                 ->with('order.customer')
                 ->with('order.phone')
+                ->with('order.department')
                 ->when($request->order_id, function ($query) use ($request) {
                     $query->where('order_id', $request->order_id);
                 })
                 ->when($request->reasons, function ($query) use ($request) {
                     $query->whereIn('cancel_reason', $request->reasons);
+                })
+                ->when($request->department_ids, function ($query) use ($request) {
+                    $query->whereHas('order', function ($query) use ($request) {
+                        $query->whereIn('department_id', $request->department_ids);
+                    });
                 })
                 ->when($request->start_created_at, function ($query) use ($request) {
                     $query->whereDate('created_at', '>=', $request->start_created_at);
@@ -46,7 +54,9 @@ class SurveyController extends Controller
             'name' => $status->title()
         ])->toArray();
 
-        return view('pages.surveys.cancel-index', compact('reasons'));
+        $departments = DepartmentResource::collection(Department::where('is_service', 1)->get());
+
+        return view('pages.surveys.cancel-index', compact('reasons', 'departments'));
     }
 
     public function cancelSurveyPage($encryptedOrderId)
