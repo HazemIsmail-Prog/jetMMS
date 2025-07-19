@@ -15,7 +15,7 @@
 
     <div
         x-data="dispatchingComponent"
-        class="overflow-hidden"
+        class="overflow-scroll lg:overflow-hidden hidden-scrollbar"
         @order-holded.window="setOrderOnHold"
         @order-canceled.window="setOrderOnCancel"
         @order-pending.window="setOrderOnPending"
@@ -70,7 +70,7 @@
             </div>
         </template>
 
-        <div class="flex gap-1 h-[calc(100vh-174px)] overflow-hidden">
+        <div class="flex gap-1 h-[calc(100vh-110px)] lg:h-[calc(100vh-174px)]">
 
             <!-- unassigned orders -->
             <div class="w-64 shrink-0 space-y-1 overflow-hidden z-20">
@@ -82,8 +82,12 @@
                     x-bind:id="`pendingOrders`"
                     x-sort.ghost
                     x-sort:group="orders"
-                    x-sort:config="{onEnd: handleOnEnd}"
-                    class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-218px)]"
+                    x-sort:config="{
+                        onEnd: handleOnEnd,
+                        delayOnTouchOnly: true,
+                        delay: 500
+                    }"
+                    class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-154px)] lg:h-[calc(100vh-218px)]"
                 >
                     <template x-for="order in pendingOrders" :key="`pending-order-${order.id}-${order.status_id}-${order.index}`">
                         @include('includes.order-card')
@@ -101,8 +105,12 @@
                     x-bind:id="`onHoldOrders`"
                     x-sort.ghost
                     x-sort:group="orders"
-                    x-sort:config="{onEnd: handleOnEnd}"
-                    class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-218px)]"
+                    x-sort:config="{
+                        onEnd: handleOnEnd,
+                        delayOnTouchOnly: true,
+                        delay: 500
+                    }"
+                    class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-154px)] lg:h-[calc(100vh-218px)]"
                 >
                     <template x-for="order in onHoldOrders" :key="`onhold-order-${order.id}-${order.status_id}-${order.index}`">
                         @include('includes.order-card')
@@ -111,7 +119,7 @@
             </div>
 
             <!-- titles -->
-            <div class="flex-1 flex gap-1 overflow-x-auto hidden-scrollbar z-10">
+            <div class="flex gap-1 lg:overflow-x-auto hidden-scrollbar z-10">
                 <template x-for="title in titles" :key="title.id">
                     <template x-if="techniciansByTitle(title.id).length > 0">
                         <div class="shrink-0 space-y-1 overflow-hidden">
@@ -142,8 +150,10 @@
                                             x-sort:config="{
                                                 onEnd: handleOnEnd,
                                                 draggable: '.draggable',
+                                                delayOnTouchOnly: true,
+                                                delay: 500
                                             }"
-                                            class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-262px)]"
+                                            class="pointer-events-auto flex flex-col gap-2 border border-gray-400 dark:border-gray-700 p-2 rounded-md overflow-y-auto hidden-scrollbar h-[calc(100vh-198px)] lg:h-[calc(100vh-262px)]"
                                         >
                                             <template x-for="order in techniciansOrders(technician.id)" :key="`technician-${technician.id}-order-${order.id}-${order.status_id}-${order.index}`">
                                                 @include('includes.order-card')
