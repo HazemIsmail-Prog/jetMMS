@@ -733,7 +733,7 @@ class OrderController extends Controller
         }
 
         // check if invoice date is today
-        if(!$invoice->created_at->isToday()) {
+        if($invoice->created_at->endOfDay()->addHours(4)->isPast()) {
             return response()->json(['error' => __('messages.you_cant_apply_discount_to_old_invoices')], 400);
         }
 

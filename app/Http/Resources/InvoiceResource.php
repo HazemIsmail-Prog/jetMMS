@@ -73,6 +73,8 @@ class InvoiceResource extends JsonResource
         $can_create_attachments = $user->hasPermission('invoices_attachments_create');
         $can_update_attachments = $user->hasPermission('invoices_attachments_update');
         $can_delete_attachments = $user->hasPermission('invoices_attachments_delete');
+
+        $can_discount_until = $this->created_at->endOfDay()->addHours(4);
         return [
 
             // Basic
@@ -125,7 +127,7 @@ class InvoiceResource extends JsonResource
             'knet_payments_amount' => $knetPaymentsAmount,
             'reconciliations_amount' => $reconciliationsAmount,
             // Permissions
-            'can_discount' => $this->created_at->isToday() && $can_discount && $this->payments->count() == 0,
+            'can_discount' => !$can_discount_until->isPast() && $can_discount && $this->payments->count() == 0,
             'can_deleted' => $can_deleted,
             'can_view_payments' => $can_create_payments,
             'can_create_payments' => $can_create_payments,
