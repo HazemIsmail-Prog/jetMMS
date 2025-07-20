@@ -44,16 +44,13 @@ class ActionsLog
         ], JSON_UNESCAPED_UNICODE));
     }
 
-    public static function getLogs()
+    public static function getLogs($file = null)
     {
         // Get all logs from the actions log file
         // get each file starts with actions-
         
-        $files = glob(storage_path('logs/actions*.log'));
-        $logs = '';
-        foreach ($files as $file) {
-            $logs .= file_get_contents($file);
-        }
+        // $files = glob(storage_path('logs/actions*.log'));
+        $logs = file_get_contents($file);
         $logs = array_map(function($line) {
             // Extract JSON from log line by removing timestamp and log level
             if (preg_match('/\[.*?\]\s+\w+\.\w+:\s+(.*)/', $line, $matches)) {

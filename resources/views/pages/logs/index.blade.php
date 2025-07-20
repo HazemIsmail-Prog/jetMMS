@@ -19,6 +19,15 @@
             <span x-text="filteredLogs.length"></span>
         </template>
 
+        <x-select x-model="selectedFile">
+            <option value="">Select File</option>
+            <template x-for="file in files" :key="file">
+                <option x-bind:value="file" x-text="file"></option>
+            </template>
+        </x-select>
+
+        <x-button @click="getLogs(selectedFile)">Get Logs</x-button>
+
         <!-- filters -->
         <div class="grid grid-cols-7 gap-2 items-center text-sm text-gray-500 dark:text-gray-400 py-2 px-4 bg-gray-50 dark:bg-gray-700/50 rounded-md mb-2">
             <div>Timestamp</div>
@@ -90,7 +99,9 @@
     <script>
         function logsComponent() {
             return {
-                logs: @json($logs),
+                files: @json($files),
+                selectedFile: null,
+                logs: [],
                 selectedLog: null,
                 filters: {
                     search: '',
@@ -165,6 +176,16 @@
                         user: '',
                         action: '',
                     };
+                },
+
+                getLogs(file) {
+                    axios.get("/activityLog",{
+                        params: {
+                            file: file
+                        }
+                    }).then(response => {
+                        this.logs = response.data;
+                    });
                 }
             }
         }
