@@ -104,7 +104,7 @@ class SurveyController extends Controller
         $errors = [];
 
         if (!empty($receivers['cancelled'])) {
-            $response = $this->sendSurveyMessages($receivers['cancelled'], 'cancel_survey_2');
+            $response = $this->sendSurveyMessages($receivers['cancelled'], 'cancel_survey_3');
             $jsonResponse = json_decode($response);
             if ($jsonResponse->error) {
                 $errors[] = $jsonResponse->error;
@@ -112,7 +112,7 @@ class SurveyController extends Controller
         }
 
         if (!empty($receivers['completed'])) {
-            $response = $this->sendSurveyMessages($receivers['completed'], 'completed_survey');
+            $response = $this->sendSurveyMessages($receivers['completed'], 'completed_survey_3');
             $jsonResponse = json_decode($response);
             if ($jsonResponse->error) {
                 $errors[] = $jsonResponse->error;
