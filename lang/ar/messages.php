@@ -858,4 +858,6 @@ return [
     'thank_you_feedback' => 'نشكركم لحسن تعاونكم',
     'cancel_reason_required' => 'يرجى اختيار سبب الغاء الطلب',
     'cancel_surveys' => 'استبيانات الطلبات الملغية',
+
+    'missed_call' => 'مكالمة فائتة',
 ];

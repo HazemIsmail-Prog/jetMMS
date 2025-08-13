@@ -35,8 +35,8 @@
                                 <option value="">---</option>
                                 <option value="marketing">{{ __('messages.marketing') }}</option>
                                 <option value="information">{{ __('messages.information') }}</option>
-                                <option value="service_not_available">{{ __('messages.service_not_available') }}
-                                </option>
+                                <option value="service_not_available">{{ __('messages.service_not_available') }}</option>
+                                <option value="missed_call">{{ __('messages.missed_call') }}</option>
                             </x-select>
                             <x-input-error for="form.type" />
                         </div>
