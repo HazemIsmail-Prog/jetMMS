@@ -76,9 +76,8 @@ class RatingIndex extends Component
             ->with('customer')
             ->with('phone')
 
-            // sort by rating id descending if rating is not null
-            ->orderBy(function($query){
-                $query->select('rating')
+            ->orderByDesc(function($query){
+                $query->select('id')
                     ->from('ratings')
                     ->whereColumn('order_id', 'orders.id')
                     ->orderBy('id', 'desc')
