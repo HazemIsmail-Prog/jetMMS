@@ -325,9 +325,13 @@ Route::middleware([
                 ->name('balance_sheet')
                 ->can('balance_sheet_report', DummyModel::class);
 
-            Route::get('accounts/reports/trial_balance', TrialBalance::class)
-                ->name('trial_balance')
-                ->can('trial_balance_report', DummyModel::class);
+
+            Route::get('accounts/reports/trial_balance', [ReportController::class, 'trial_balance'])
+                ->name('trial_balance');
+
+            // Route::get('accounts/reports/trial_balance', TrialBalance::class)
+            //     ->name('trial_balance')
+            //     ->can('trial_balance_report', DummyModel::class);
 
             Route::get('accounts/reports/profit_loss', [ProfitLossController::class, 'index']) // TODO:change class to its new page
                 ->name('profit_loss')

@@ -9,6 +9,9 @@ use App\Models\Title;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Account;
+use App\Models\VoucherDetail;
+use App\Http\Resources\AccountResource;
 
 class ReportController extends Controller
 {
@@ -90,5 +93,63 @@ class ReportController extends Controller
             'invoices' => $invoices,
             'titles' => $titles,
         ]);
+    }
+
+    public function trial_balance(Request $request)
+    {
+
+        abort_if(!auth()->user()->hasPermission('trial_balance_report'), 403);
+
+        
+        
+        if($request->wantsJson()){
+
+            $start_date = $request->start_date;
+
+            $end_date = $request->end_date;
+
+            $opening_voucher_details = VoucherDetail::query()
+                ->select(
+                    'account_id', 
+                    DB::raw('SUM(debit) as opening_debit'),
+                    DB::raw('SUM(credit) as opening_credit'),
+                    
+                    )
+                ->whereHas('voucher', function ($query) use ($start_date) {
+                    $query->where('date', '<', $start_date);
+                })
+                ->groupBy('account_id')
+                ->get()->toArray();
+
+          
+            $transactions_voucher_details = VoucherDetail::query()
+                ->select(
+                    'account_id', 
+                    DB::raw('SUM(debit) as transactions_debit'),
+                    DB::raw('SUM(credit) as transactions_credit'),
+                    
+                    )
+                ->whereHas('voucher', function ($query) use ($start_date,$end_date) {
+                    $query->where('date', '>=', $start_date);
+                    $query->where('date', '<=', $end_date);
+                })
+                ->groupBy('account_id')
+                ->get()->toArray();
+
+
+         
+            $accounts = Account::query()
+                ->where('level', 3)
+                ->orderBy('account_id')
+                ->get()
+        ;
+
+            return [
+                'accounts' => AccountResource::collection($accounts),
+                'opening_voucher_details' => $opening_voucher_details,
+                'transactions_voucher_details' => $transactions_voucher_details,
+            ];
+        }
+        return view('pages.reports.trial_balance');
     }
 }
