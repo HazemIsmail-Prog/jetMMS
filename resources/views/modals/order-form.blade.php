@@ -169,7 +169,7 @@
     <script>
         function orderFormModal() {
             return {
-                departments: @js($departments),
+                departments: @js($departments).filter(department => !department.active),
                 technicians: [],
                 dismissible: true,
                 selectedCustomer: null,
