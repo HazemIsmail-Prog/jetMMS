@@ -91,7 +91,7 @@
                                 <!-- start area searchable select -->
                                 <div  x-show="!selectedOrder || selectedOrder?.status_id === 1"
                                     x-data="{
-                                        items: departments,
+                                        items: departments.filter(department => department.active),
                                         selectedItemId:form.department_id,
                                         placeholder: ''
                                     }"
@@ -169,7 +169,7 @@
     <script>
         function orderFormModal() {
             return {
-                departments: @js($departments).filter(department => !department.active),
+                departments: @js($departments),
                 technicians: [],
                 dismissible: true,
                 selectedCustomer: null,
