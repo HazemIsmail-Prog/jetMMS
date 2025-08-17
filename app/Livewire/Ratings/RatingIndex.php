@@ -75,7 +75,15 @@ class RatingIndex extends Component
             ->with('technician')
             ->with('customer')
             ->with('phone')
-            ->orderBy('id', 'desc')
+
+            // sort by rating id descending if rating is not null
+            ->orderBy(function($query){
+                $query->select('rating')
+                    ->from('ratings')
+                    ->whereColumn('order_id', 'orders.id')
+                    ->orderBy('id', 'desc')
+                    ->limit(1);
+            })
 
             ->when($this->filters['customer_name'], function (Builder $q) {
                 $q->whereRelation('customer', 'name', 'like', '%' . $this->filters['customer_name'] . '%');
