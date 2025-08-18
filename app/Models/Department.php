@@ -38,6 +38,26 @@ class Department extends Model
         return $this->belongsTo(Account::class, 'cost_account_id');
     }
 
+    public function cashAccount() : BelongsTo {
+        return $this->belongsTo(Account::class, 'cash_account_id');
+    }
+
+    public function receivablesAccount() : BelongsTo {
+        return $this->belongsTo(Account::class, 'receivables_account_id');
+    }
+
+    public function bankAccount() : BelongsTo {
+        return $this->belongsTo(Account::class, 'bank_account_id');
+    }
+
+    public function bankChargesAccount() : BelongsTo {
+        return $this->belongsTo(Account::class, 'bank_charges_account_id');
+    }
+
+    public function internalPartsAccount() : BelongsTo {
+        return $this->belongsTo(Account::class, 'internal_parts_account_id');
+    }
+
     protected $appends = ['name'];
 
     public function getNameAttribute()

@@ -21,6 +21,11 @@ class DepartmentIndex extends Component
         return Department::query()
         ->with('incomeAccount')
         ->with('costAccount')
+        ->with('cashAccount')
+        ->with('receivablesAccount')
+        ->with('bankAccount')
+        ->with('bankChargesAccount')
+        ->with('internalPartsAccount')
             ->paginate(1500);
     }
 

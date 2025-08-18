@@ -13,6 +13,11 @@ class DepartmentForm extends Form
     public $name_en;
     public $income_account_id;
     public $cost_account_id;
+    public $cash_account_id;
+    public $receivables_account_id;
+    public $bank_account_id;
+    public $bank_charges_account_id;
+    public $internal_parts_account_id;
 
     public function rules()
     {
@@ -22,6 +27,11 @@ class DepartmentForm extends Form
             'name_en' => 'required',
             'income_account_id' => 'nullable',
             'cost_account_id' => 'nullable',
+            'cash_account_id' => 'nullable',
+            'receivables_account_id' => 'nullable',
+            'bank_account_id' => 'nullable',
+            'bank_charges_account_id' => 'nullable',
+            'internal_parts_account_id' => 'nullable',
         ];
     }
 

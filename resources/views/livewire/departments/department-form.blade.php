@@ -32,6 +32,31 @@
                             <x-searchable-select id="cost_account_id" :list="$this->accounts" wire:model="form.cost_account_id" />
                             <x-input-error for="form.cost_account_id" />
                         </div>
+                        <div>
+                            <x-label for="cash_account_id">{{ __('messages.cash_account_id') }}</x-label>
+                            <x-searchable-select id="cash_account_id" :list="$this->accounts" wire:model="form.cash_account_id" />
+                            <x-input-error for="form.cash_account_id" />
+                        </div>
+                        <div>
+                            <x-label for="receivables_account_id">{{ __('messages.receivables_account_id') }}</x-label>
+                            <x-searchable-select id="receivables_account_id" :list="$this->accounts" wire:model="form.receivables_account_id" />
+                            <x-input-error for="form.receivables_account_id" />
+                        </div>
+                        <div>
+                            <x-label for="bank_account_id">{{ __('messages.bank_account_id') }}</x-label>
+                            <x-searchable-select id="bank_account_id" :list="$this->accounts" wire:model="form.bank_account_id" />
+                            <x-input-error for="form.bank_account_id" />
+                        </div>
+                        <div>
+                            <x-label for="bank_charges_account_id">{{ __('messages.bank_charges_account_id') }}</x-label>
+                            <x-searchable-select id="bank_charges_account_id" :list="$this->accounts" wire:model="form.bank_charges_account_id" />
+                            <x-input-error for="form.bank_charges_account_id" />
+                        </div>
+                        <div>
+                            <x-label for="internal_parts_account_id">{{ __('messages.internal_parts_account_id') }}</x-label>
+                            <x-searchable-select id="internal_parts_account_id" :list="$this->accounts" wire:model="form.internal_parts_account_id" />
+                            <x-input-error for="form.internal_parts_account_id" />
+                        </div>
                     </div>
                     <div class="mt-3">
                         <x-button>{{ __('messages.save') }}</x-button>

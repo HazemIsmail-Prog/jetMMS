@@ -41,6 +41,11 @@
                 <x-th>{{ __('messages.name') }}</x-th>
                 <x-th>{{ __('messages.income_account_id') }}</x-th>
                 <x-th>{{ __('messages.cost_account_id') }}</x-th>
+                <x-th>{{ __('messages.cash_account_id') }}</x-th>
+                <x-th>{{ __('messages.receivables_account_id') }}</x-th>
+                <x-th>{{ __('messages.bank_account_id') }}</x-th>
+                <x-th>{{ __('messages.bank_charges_account_id') }}</x-th>
+                <x-th>{{ __('messages.internal_parts_account_id') }}</x-th>
                 <x-th></x-th>
             </tr>
         </x-thead>
@@ -50,6 +55,11 @@
                     <x-td>{{ $department->name }}</x-td>
                     <x-td>{{ $department->incomeAccount->name ?? '-' }}</x-td>
                     <x-td>{{ $department->costAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->cashAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->receivablesAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->bankAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->bankChargesAccount->name ?? '-' }}</x-td>
+                    <x-td>{{ $department->internalPartsAccount->name ?? '-' }}</x-td>
                     <x-td>
                         <div class="flex items-center justify-end gap-2">
 
