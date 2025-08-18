@@ -69,7 +69,7 @@ class CreatePartInvoiceVoucher
 
         $details[] =
             [
-                'account_id' => Setting::find(1)->internal_parts_account_id, // ذمم موظفين - بضاعة
+                'account_id' => $part_invoice->contact->department->internal_parts_account_id, // ذمم موظفين - بضاعة
                 'narration' => 'فاتورة بضاعة عهدة رقم ' . $part_invoice->id,
                 'cost_center_id' => CostCenter::PARTS,
                 'user_id' => $part_invoice->contact_id,

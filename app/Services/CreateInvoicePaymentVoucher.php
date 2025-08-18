@@ -27,7 +27,7 @@ class CreateInvoicePaymentVoucher
             $details = [];
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->cash_account_id, // الخزينة 1
+                    'account_id' => $payment->invoice->order->department->cash_account_id, // الخزينة 1
                     'narration' => 'دفع نقدي للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => $payment->amount,
@@ -36,7 +36,7 @@ class CreateInvoicePaymentVoucher
 
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
+                    'account_id' => $payment->invoice->order->department->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
                     'narration' => 'دفع نقدي للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => 0,
@@ -67,7 +67,7 @@ class CreateInvoicePaymentVoucher
             $details = [];
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->bank_account_id, // البنك
+                    'account_id' => $payment->invoice->order->department->bank_account_id, // البنك
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => $payment->amount - Setting::find(1)->knet_tax, // عمولة البنك
@@ -76,7 +76,7 @@ class CreateInvoicePaymentVoucher
 
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->bank_charges_account_id, // مصروف عمولات روابط بنكية
+                    'account_id' => $payment->invoice->order->department->bank_charges_account_id, // مصروف عمولات روابط بنكية
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => Setting::find(1)->knet_tax, // عمولة البنك
@@ -85,7 +85,7 @@ class CreateInvoicePaymentVoucher
 
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
+                    'account_id' => $payment->invoice->order->department->receivables_account_id,  // ذمم موظفيين - فواتير مؤجلة
                     'narration' => 'دفع K-Net للفاتورة رقم ' . $payment->invoice_id,
                     'user_id' => $payment->invoice->order->technician_id,
                     'debit' => 0,

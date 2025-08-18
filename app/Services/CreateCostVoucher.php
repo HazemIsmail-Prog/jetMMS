@@ -34,7 +34,7 @@ class CreateCostVoucher
 
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->cash_account_id, // الخزينة
+                    'account_id' => $invoice->order->department->cash_account_id, // الخزينة
                     'narration' => 'تكاليف بضاعة خارجية للفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
                     'debit' => 0,

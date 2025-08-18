@@ -33,7 +33,7 @@ class CreateInvoiceVoucher
         $details = [];
         $details[] =
             [
-                'account_id' => Setting::find(1)->receivables_account_id, // ذمم موظفين - فواتير مؤجلة
+                'account_id' => $invoice->order->department->receivables_account_id, // ذمم موظفين - فواتير مؤجلة
                 'narration' => 'الفاتورة رقم ' . $invoice->id,
                 'user_id' => $invoice->order->technician_id,
                 'debit' => $invoice->amount,
@@ -67,7 +67,7 @@ class CreateInvoiceVoucher
         if ($invoice->internal_parts_amount > 0) {
             $details[] =
                 [
-                    'account_id' => Setting::find(1)->internal_parts_account_id, // ذمم موظفين - بضاعة
+                    'account_id' => $invoice->order->department->internal_parts_account_id, // ذمم موظفين - بضاعة
                     'cost_center_id' => CostCenter::PARTS,
                     'narration' => 'الفاتورة رقم ' . $invoice->id,
                     'user_id' => $invoice->order->technician_id,
