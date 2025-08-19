@@ -127,10 +127,10 @@
             invoice_part_details:[],
             voucher_details:[],
             preparedTechniciansData:[],
-            start_date: '2024-08-18', // yesterday date
-            end_date: '2024-08-18',
-            // start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
-            // end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
+            // start_date: '2024-08-18', // yesterday date
+            // end_date: '2024-08-18',
+            start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
+            end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
             numberFormatter: new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 3,
                 maximumFractionDigits: 3
