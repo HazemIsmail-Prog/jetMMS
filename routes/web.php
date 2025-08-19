@@ -288,10 +288,15 @@ Route::middleware([
                 ->name('account.index')
                 ->can('viewAny', Account::class);
 
-            Route::get('accounts/reports/daily_review', DailyReview::class)
+            Route::get('accounts/reports/daily_review', [ReportController::class, 'daily_review'])
                 ->name('daily_review')
                 ->can('daily_review_report', DummyModel::class)
                 ;
+
+            // Route::get('accounts/reports/daily_review', DailyReview::class)
+            //     ->name('daily_review')
+            //     ->can('daily_review_report', DummyModel::class)
+            //     ;
 
             Route::get('accounts/reports/collection_statement', CollectionStatement::class)
                 ->name('collection_statement')

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Account;
 use App\Models\VoucherDetail;
 use App\Http\Resources\AccountResource;
+use App\Http\Resources\UserResource;
 
 class ReportController extends Controller
 {
@@ -151,5 +152,89 @@ class ReportController extends Controller
             ];
         }
         return view('pages.reports.trial_balance');
+    }
+
+    public function daily_review(Request $request)
+    {
+        abort_if(!auth()->user()->hasPermission('daily_review_report'), 403);
+
+        if($request->wantsJson()){
+
+            $departments = Department::query()
+                // ->where('id', 2) ////////////
+                ->where('is_service', true)
+                ->get()
+            ;
+
+            $titles = Title::query()
+                ->whereIn('id', Title::TECHNICIANS_GROUP)
+                ->orderBy('id')
+                ->get();
+
+            $technicians = User::query()
+                // ->where('id', 27) ////////////
+                ->whereIn('department_id', $departments->pluck('id'))
+                ->get();
+
+            $invoices = Invoice::query()
+                ->select(
+                    'id', 
+                    'created_at',
+                    'delivery',
+                    'discount',
+                    DB::raw('(SELECT technician_id FROM orders WHERE id = invoices.order_id) as technician_id'),
+                    )
+                // ->whereRaw('(SELECT technician_id FROM orders WHERE id = invoices.order_id) = 27') ////////////
+                ->whereDate('created_at', '>=', $request->start_date)
+                ->whereDate('created_at', '<=', $request->end_date)
+                ->whereNull('deleted_at')
+                ->get();
+
+            $invoice_details = DB::table('invoice_details')
+                ->select(
+                    'invoice_id', 
+                    DB::raw('SUM(quantity * price) as total_amount'),
+                    )
+                ->whereIn('invoice_id', $invoices->pluck('id'))
+                ->groupBy('invoice_id')
+                ->get();
+
+            $invoice_part_details = DB::table('invoice_part_details')
+                ->select(
+                    'invoice_id', 
+                    DB::raw('SUM(quantity * price) as total_amount'),
+                    )
+                ->whereIn('invoice_id', $invoices->pluck('id'))
+                ->groupBy('invoice_id')
+                ->get();
+
+
+            $voucher_details = DB::table('voucher_details')
+                ->select(
+                    'vouchers.id', 
+                    'account_id', 
+                    'cost_center_id',
+                    'user_id',
+                    'debit', 
+                    'credit',
+                )
+                ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
+                // ->whereNotNull('cost_center_id')
+                ->where('vouchers.date','>=', $request->start_date)
+                ->where('vouchers.date','<=', $request->end_date)
+                ->get();
+
+            return response()->json([
+                'departments' => $departments,
+                'titles' => $titles,
+                'technicians' => UserResource::collection($technicians),
+                'invoices' => $invoices,
+                'invoice_details' => $invoice_details,
+                'invoice_part_details' => $invoice_part_details,
+                'voucher_details' => $voucher_details,
+            ]);
+        }
+
+        return view('pages.reports.daily_review');
     }
 }
