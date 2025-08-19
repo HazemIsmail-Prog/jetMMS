@@ -35,12 +35,12 @@
 
         <template x-for="department in departments" :key="department.id">
             <div class="my-5" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.visible).length > 0">
-                <h3 class="mb-2 font-semibold text-xl" x-text="department.name"></h3>
+                <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100" x-text="department.name"></h3>
                 
                 <div class="rounded-lg overflow-clip">
 
                     <!-- header -->
-                    <div class="grid grid-cols-12 grid-rows-2 header-row">
+                    <div class="grid grid-cols-12 gap-1 grid-rows-2 header-row mb-1">
                         <div class="table-cell col-span-5 row-span-2">{{ __('messages.technician') }}</div>
                         <div class="table-cell col-span-2 col-start-6">{{ __('messages.invoices') }}</div>
                         <div class="table-cell col-span-3 col-start-8">{{ __('messages.cost_centers') }}</div>
@@ -58,10 +58,10 @@
                     <template x-for="title in titles" :key="title.id">
                         <div>
                             <template x-for="technician in preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id)" :key="technician.id">
-                                <div class="grid grid-cols-12" x-show="technician.visible">
+                                <div class="grid grid-cols-12 gap-1 mb-1" x-show="technician.visible">
                                     <div  class="table-cell col-span-5" x-text="technician.name"></div>
                                     <div  class="table-cell" x-text="formatNumber(technician.invoice_total)"></div>
-                                    <div  class="table-cell" x-bind:class="technician.internal_parts_vouchers_total < 0 ? 'text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
+                                    <div  class="table-cell" x-bind:class="technician.internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
                                     <div  class="table-cell" x-text="formatNumber(technician.services_vouchers_total)"></div>
                                     <div  class="table-cell" x-text="formatNumber(technician.parts_vouchers_total)"></div>
                                     <div  class="table-cell" x-text="formatNumber(technician.delivery_vouchers_total)"></div>
@@ -71,10 +71,10 @@
                             </template>
 
                             <!-- title -->
-                            <div class="grid grid-cols-12 divider-row" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id && technician.visible).length > 0">
+                            <div class="grid grid-cols-12 gap-1 divider-row mb-1" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id && technician.visible).length > 0">
                                 <div class="table-cell col-span-5" x-text="title.name_ar"></div>
                                 <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).invoice_total)"></div>
-                                <div class="table-cell" x-bind:class="getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total < 0 ? 'text-red-500' : ''" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total)"></div>
+                                <div class="table-cell" x-bind:class="getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total)"></div>
                                 <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).services_vouchers_total)"></div>
                                 <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).parts_vouchers_total)"></div>
                                 <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).delivery_vouchers_total)"></div>
@@ -86,10 +86,10 @@
 
 
                     <!-- department footer -->
-                    <div class="grid grid-cols-12 footer-row">
+                    <div class="grid grid-cols-12 gap-1 footer-row mb-1">
                         <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
                         <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).invoice_total)"></div>
-                        <div class="table-cell" x-bind:class="getDepartmentTotal(department.id).internal_parts_vouchers_total < 0 ? 'text-red-500' : ''" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_vouchers_total)"></div>
+                        <div class="table-cell" x-bind:class="getDepartmentTotal(department.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_vouchers_total)"></div>
                         <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).services_vouchers_total)"></div>
                         <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).parts_vouchers_total)"></div>
                         <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).delivery_vouchers_total)"></div>
@@ -99,6 +99,17 @@
                 </div>
             </div>
         </template>
+
+        <div x-show="preparedTechniciansData.length > 0" class="grid grid-cols-12 gap-1 footer-row rounded-lg overflow-clip">
+            <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().invoice_total)"></div>
+            <div class="table-cell" x-bind:class="getPageTotal().internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().services_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().parts_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().delivery_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().income_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().cost_vouchers_total)"></div>
+        </div>
     </div>
 </x-app-layout>
 
@@ -116,10 +127,10 @@
             invoice_part_details:[],
             voucher_details:[],
             preparedTechniciansData:[],
-            // start_date: '2024-08-18', // yesterday date
-            // end_date: '2024-08-18',
-            start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
-            end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
+            start_date: '2024-08-18', // yesterday date
+            end_date: '2024-08-18',
+            // start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
+            // end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
             numberFormatter: new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 3,
                 maximumFractionDigits: 3
@@ -165,6 +176,28 @@
 
             getDepartmentTechnicians(departmentId){
                 return this.technicians.filter(technician => technician.department_id === departmentId);
+            },
+
+            getPageTotal(){
+                let totals = {
+                    invoice_total: 0,
+                    services_vouchers_total: 0,
+                    parts_vouchers_total: 0,
+                    delivery_vouchers_total: 0,
+                    income_vouchers_total: 0,
+                    cost_vouchers_total: 0,
+                    internal_parts_vouchers_total: 0,
+                };
+                this.preparedTechniciansData.forEach(technician => {
+                    totals.invoice_total += technician.invoice_total;
+                    totals.services_vouchers_total += technician.services_vouchers_total;
+                    totals.parts_vouchers_total += technician.parts_vouchers_total;
+                    totals.delivery_vouchers_total += technician.delivery_vouchers_total;
+                    totals.income_vouchers_total += technician.income_vouchers_total;
+                    totals.cost_vouchers_total += technician.cost_vouchers_total;
+                    totals.internal_parts_vouchers_total += technician.internal_parts_vouchers_total;
+                });
+                return totals;
             },
 
             getDepartmentTotal(departmentId){
@@ -218,6 +251,7 @@
 
 
             getPreparedTechniciansData(){
+                this.isloading = true;
                 return this.technicians.map(technician => {
 
 
@@ -265,19 +299,21 @@
                         department_id: technician.department_id,
                         name: technician.name,
                         title_id: technician.title_id,
-                        invoice_total: Math.abs(invoice_total),
-                        services_vouchers_total: Math.abs(services_vouchers_total),
-                        parts_vouchers_total: Math.abs(parts_vouchers_total),
-                        delivery_vouchers_total: Math.abs(delivery_vouchers_total),
-                        income_vouchers_total: Math.abs(income_vouchers_total),
-                        cost_vouchers_total: Math.abs(cost_vouchers_total),
-                        internal_parts_vouchers_total: internal_parts_vouchers_total,
+                        invoice_total: Math.abs(Math.round(invoice_total * 1000) / 1000),
+                        services_vouchers_total: Math.abs(Math.round(services_vouchers_total * 1000) / 1000),
+                        parts_vouchers_total: Math.abs(Math.round(parts_vouchers_total * 1000) / 1000),
+                        delivery_vouchers_total: Math.abs(Math.round(delivery_vouchers_total * 1000) / 1000),
+                        income_vouchers_total: Math.abs(Math.round(income_vouchers_total * 1000) / 1000),
+                        cost_vouchers_total: Math.abs(Math.round(cost_vouchers_total * 1000) / 1000),
+                        internal_parts_vouchers_total: Math.round(internal_parts_vouchers_total * 1000) / 1000,
                         visible: visible,
                     }
                 });
+                this.isloading = false;
             },
 
             formatNumber(value) {
+                // return value;
                 if(value === 0){
                     return '-';
                 }

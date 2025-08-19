@@ -158,70 +158,76 @@ class ReportController extends Controller
     {
         abort_if(!auth()->user()->hasPermission('daily_review_report'), 403);
 
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
 
+            // Eager load related accounts for departments to avoid N+1 in frontend
             $departments = Department::query()
-                // ->where('id', 2) ////////////
                 ->where('is_service', true)
                 ->get()
             ;
 
+            // Get titles in one query, ordered
             $titles = Title::query()
                 ->whereIn('id', Title::TECHNICIANS_GROUP)
                 ->orderBy('id')
                 ->get();
 
+            // Get technicians in one query, only those in service departments and with relevant title
+            $departmentIds = $departments->pluck('id');
             $technicians = User::query()
-                // ->where('id', 27) ////////////
-                ->whereIn('department_id', $departments->pluck('id'))
+                ->whereIn('department_id', $departmentIds)
+                ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+                ->select('id', 'department_id', 'name_ar', 'name_en', 'title_id')
                 ->get();
 
+            // Get invoices in one query, join orders to get technician_id directly
             $invoices = Invoice::query()
                 ->select(
-                    'id', 
-                    'created_at',
-                    'delivery',
-                    'discount',
-                    DB::raw('(SELECT technician_id FROM orders WHERE id = invoices.order_id) as technician_id'),
-                    )
-                // ->whereRaw('(SELECT technician_id FROM orders WHERE id = invoices.order_id) = 27') ////////////
-                ->whereDate('created_at', '>=', $request->start_date)
-                ->whereDate('created_at', '<=', $request->end_date)
-                ->whereNull('deleted_at')
+                    'invoices.id',
+                    'invoices.created_at',
+                    'invoices.delivery',
+                    'invoices.discount',
+                    'orders.technician_id'
+                )
+                ->join('orders', 'orders.id', '=', 'invoices.order_id')
+                ->whereDate('invoices.created_at', '>=', $request->start_date)
+                ->whereDate('invoices.created_at', '<=', $request->end_date)
+                ->whereNull('invoices.deleted_at')
                 ->get();
 
+            $invoiceIds = $invoices->pluck('id');
+
+            // Get invoice_details and invoice_part_details in one query each, grouped
             $invoice_details = DB::table('invoice_details')
                 ->select(
-                    'invoice_id', 
-                    DB::raw('SUM(quantity * price) as total_amount'),
-                    )
-                ->whereIn('invoice_id', $invoices->pluck('id'))
+                    'invoice_id',
+                    DB::raw('SUM(quantity * price) as total_amount')
+                )
+                ->whereIn('invoice_id', $invoiceIds)
                 ->groupBy('invoice_id')
                 ->get();
 
             $invoice_part_details = DB::table('invoice_part_details')
                 ->select(
-                    'invoice_id', 
-                    DB::raw('SUM(quantity * price) as total_amount'),
-                    )
-                ->whereIn('invoice_id', $invoices->pluck('id'))
+                    'invoice_id',
+                    DB::raw('SUM(quantity * price) as total_amount')
+                )
+                ->whereIn('invoice_id', $invoiceIds)
                 ->groupBy('invoice_id')
                 ->get();
 
-
+            // Get voucher_details with join, only for relevant date range
             $voucher_details = DB::table('voucher_details')
                 ->select(
-                    'vouchers.id', 
-                    'account_id', 
+                    'vouchers.id',
+                    'account_id',
                     'cost_center_id',
                     'user_id',
-                    'debit', 
-                    'credit',
+                    'debit',
+                    'credit'
                 )
                 ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
-                // ->whereNotNull('cost_center_id')
-                ->where('vouchers.date','>=', $request->start_date)
-                ->where('vouchers.date','<=', $request->end_date)
+                ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
                 ->get();
 
             return response()->json([

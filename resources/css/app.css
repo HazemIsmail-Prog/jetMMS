@@ -30,13 +30,13 @@
     border: 1px solid #6b7280;
     display: flex;
     align-items: center;
-    @apply text-xs px-6 py-1;
+    @apply text-xs px-4 py-1 dark:text-gray-200;
 }
 
-.divider-row {
-    @apply bg-gray-100;
+.divider-row > .table-cell{
+    @apply bg-gray-100 dark:bg-gray-900;
 }
 
-.header-row, .footer-row {
-    @apply bg-gray-200 font-semibold;
+.header-row > .table-cell, .footer-row > .table-cell{
+    @apply bg-gray-200 font-semibold dark:bg-gray-600;
 }
