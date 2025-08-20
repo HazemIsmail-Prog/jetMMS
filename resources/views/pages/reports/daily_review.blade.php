@@ -295,7 +295,7 @@
                         title_id: technician.title_id,
                         invoice_total: Math.abs(Math.round(invoice_total * 1000) / 1000),
                         services_vouchers_total: Math.abs(Math.round(services_vouchers_total * 1000) / 1000),
-                        parts_vouchers_total: Math.abs(Math.round(parts_vouchers_total * 1000) / 1000),
+                        parts_vouchers_total: Math.abs(Math.round(parts_vouchers_total * 1000) / 1000) + (Math.round(internal_parts_vouchers_total * 1000) / 1000),
                         delivery_vouchers_total: Math.abs(Math.round(delivery_vouchers_total * 1000) / 1000),
                         income_vouchers_total: Math.abs(Math.round(income_vouchers_total * 1000) / 1000),
                         cost_vouchers_total: Math.abs(Math.round(cost_vouchers_total * 1000) / 1000),
