@@ -1,4 +1,7 @@
 <x-app-layout>
+    <x-slot name="title">
+        {{ __('messages.daily_review') }}
+    </x-slot>
     <x-slot name="header">
         <div class=" flex items-center justify-between">
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
@@ -54,7 +57,7 @@
                     <template x-for="title in titles" :key="title.id">
                         <div>
                             <template x-for="technician in preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id)" :key="technician.id">
-                                <div class="grid grid-cols-12 gap-1 mb-1" x-show="technician.visible">
+                                <div class="grid grid-cols-12 gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900" x-show="technician.visible">
                                     <div  class="table-cell col-span-5" x-text="technician.name"></div>
                                     <div  class="table-cell" x-text="formatNumber(technician.invoice_total)"></div>
                                     <div  class="table-cell" x-bind:class="technician.internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
