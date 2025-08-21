@@ -326,7 +326,7 @@ class ReportController extends Controller
 
 
 
-        $data = $technicians->map(function ($technician) use ($titles, $departments,$invoices,$voucher_details,$invoice_details,$invoice_part_details ) {
+        $technicians_data = $technicians->map(function ($technician) use ($titles, $departments,$invoices,$voucher_details,$invoice_details,$invoice_part_details ) {
 
             $technician_department = $departments->where('id', $technician->department_id)->first();
             $technician_title = $titles->where('id', $technician->title_id)->first();
@@ -392,6 +392,12 @@ class ReportController extends Controller
             ];
 
         });
+
+        $data = [
+            'technicians_data' => $technicians_data,
+            'titles' => $titles,
+            'departments' => $departments,
+        ];
 
 
         return Excel::download(new DailyReviewExport('excels.daily-review', 'DailyReview', $data), 'DailyReview.xlsx');  //Excel

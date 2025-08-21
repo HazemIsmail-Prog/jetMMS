@@ -44,7 +44,7 @@ class DailyReviewExport implements FromView, WithTitle, ShouldAutoSize, WithStyl
         if (app()->getLocale() == 'ar') {
             $sheet->setRightToLeft(true);
         }
-        $sheet->setAutoFilter('A1:J1');
+        $sheet->setAutoFilter('A1:I1');
 
         return [
             // Style the first row as bold text.
