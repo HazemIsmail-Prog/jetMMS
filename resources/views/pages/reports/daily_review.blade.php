@@ -16,7 +16,8 @@
 
     <template x-teleport="#excel">
         <x-button x-on:click="exportToExcel" x-bind:disabled="exporting" >
-            <span>{{ __('messages.export_to_excel') }}</span>
+            <span x-show="!exporting">{{ __('messages.export_to_excel') }}</span>
+            <span x-show="exporting" class="animate-pulse">{{ __('messages.loading') }}</span>
         </x-button>
     </template>
         <div class=" flex items-center justify-between mb-3">
