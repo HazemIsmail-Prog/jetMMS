@@ -7,14 +7,18 @@
             <h2 class="font-semibold text-xl flex gap-3 items-center text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.daily_review') }}
             </h2>
-            <x-button>
-                <span>{{ __('messages.export_to_excel') }}</span>
-            </x-button>
+            <span id="excel"></span>
         </div>
     </x-slot>
 
 
     <div x-data="dailyReviewReport()">
+
+    <template x-teleport="#excel">
+        <x-button x-on:click="exportToExcel" x-bind:disabled="exporting" >
+            <span>{{ __('messages.export_to_excel') }}</span>
+        </x-button>
+    </template>
         <div class=" flex items-center justify-between mb-3">
 
             <div class=" flex items-end gap-3 no-print">
@@ -118,6 +122,7 @@
     function dailyReviewReport() {
         return {
             isloading: false,
+            exporting: false,
             departments:[],
             titles:[],
             technicians:[],
@@ -141,6 +146,7 @@
 
             fetchData() {
                 this.isloading = true;
+                this.exporting = false;
                 this.departments = [];
                 this.technicians = [];
                 this.invoices = [];
@@ -314,6 +320,33 @@
                     return '-';
                 }
                 return this.numberFormatter.format(value);
+            },
+
+            exportToExcel() {
+                this.exporting = true;
+                axios.get('/accounts/reports/daily_review/exportToExcel', {
+                    params: {
+                        start_date: this.start_date,
+                        end_date: this.end_date,
+                    },
+                    responseType: 'blob'
+                })
+                .then(response => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Daily_Review.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    alert('Error downloading file: ' + error.message);
+                })
+                .finally(() => {
+                    this.exporting = false;
+                });
             },
 
 

@@ -13,6 +13,8 @@ use App\Models\Account;
 use App\Models\VoucherDetail;
 use App\Http\Resources\AccountResource;
 use App\Http\Resources\UserResource;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DailyReviewExport;
 
 class ReportController extends Controller
 {
@@ -242,5 +244,153 @@ class ReportController extends Controller
         }
 
         return view('pages.reports.daily_review');
+    }
+
+    public function daily_review_exportToExcel(Request $request)
+    {
+        abort_if(!auth()->user()->hasPermission('daily_review_report'), 403);
+
+        // Eager load related accounts for departments to avoid N+1 in frontend
+        $departments = Department::query()
+            ->where('is_service', true)
+            ->get()
+        ;
+
+        // Get titles in one query, ordered
+        $titles = Title::query()
+            ->whereIn('id', Title::TECHNICIANS_GROUP)
+            ->orderBy('id')
+            ->get();
+
+        // Get technicians in one query, only those in service departments and with relevant title
+        $departmentIds = $departments->pluck('id');
+        $technicians = User::query()
+            ->whereIn('department_id', $departmentIds)
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->select('id', 'department_id', 'name_ar', 'name_en', 'title_id')
+            ->get();
+
+        // Get invoices in one query, join orders to get technician_id directly
+        $invoices = Invoice::query()
+            ->select(
+                'invoices.id',
+                'invoices.created_at',
+                'invoices.delivery',
+                'invoices.discount',
+                'orders.technician_id'
+            )
+            ->join('orders', 'orders.id', '=', 'invoices.order_id')
+            ->whereDate('invoices.created_at', '>=', $request->start_date)
+            ->whereDate('invoices.created_at', '<=', $request->end_date)
+            ->whereNull('invoices.deleted_at')
+            ->get();
+
+        $invoiceIds = $invoices->pluck('id');
+
+        // Get invoice_details and invoice_part_details in one query each, grouped
+        $invoice_details = DB::table('invoice_details')
+            ->select(
+                'invoice_id',
+                DB::raw('SUM(quantity * price) as total_amount')
+            )
+            ->whereIn('invoice_id', $invoiceIds)
+            ->groupBy('invoice_id')
+            ->get();
+
+        $invoice_part_details = DB::table('invoice_part_details')
+            ->select(
+                'invoice_id',
+                DB::raw('SUM(quantity * price) as total_amount')
+            )
+            ->whereIn('invoice_id', $invoiceIds)
+            ->groupBy('invoice_id')
+            ->get();
+
+        // Get voucher_details with join, only for relevant date range
+        $voucher_details = DB::table('voucher_details')
+            ->select(
+                'vouchers.id',
+                'account_id',
+                'cost_center_id',
+                'user_id',
+                'debit',
+                'credit'
+            )
+            ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
+            ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
+            ->get();
+
+
+
+        $data = $technicians->map(function ($technician) use ($titles, $departments,$invoices,$voucher_details,$invoice_details,$invoice_part_details ) {
+
+            $technician_department = $departments->where('id', $technician->department_id)->first();
+            $technician_title = $titles->where('id', $technician->title_id)->first();
+
+            $technician_invoices = $invoices->where('technician_id', $technician->id)->pluck('id');
+            $technician_invoice_delivery = $invoices->where('technician_id', $technician->id)->sum('delivery');
+            $technician_invoice_discount = $invoices->where('technician_id', $technician->id)->sum('discount');
+
+            $technician_invoice_details = $invoice_details->whereIn('invoice_id', $technician_invoices)->sum('total_amount');
+            $technician_invoice_part_details = $invoice_part_details->whereIn('invoice_id', $technician_invoices)->sum('total_amount');
+            $technician_invoices_total = $technician_invoice_details + $technician_invoice_part_details + $technician_invoice_delivery - $technician_invoice_discount;
+
+            $income_account_id = $technician_department->income_account_id;
+            $cost_account_id = $technician_department->cost_account_id;
+            $internal_parts_account_id = $technician_department->internal_parts_account_id;
+
+            $technician_voucher_details = $voucher_details->where('user_id', $technician->id);
+
+            $technician_services_voucher_details_total_debit = $technician_voucher_details->where('cost_center_id', 1)->sum('debit');
+            $technician_services_voucher_details_total_credit = $technician_voucher_details->where('cost_center_id', 1)->sum('credit');
+            $technician_services_voucher_details_total = $technician_services_voucher_details_total_debit - $technician_services_voucher_details_total_credit;
+
+            $technician_parts_voucher_details_total_debit = $technician_voucher_details->where('cost_center_id', 2)->sum('debit');
+            $technician_parts_voucher_details_total_credit = $technician_voucher_details->where('cost_center_id', 2)->sum('credit');
+            $technician_parts_voucher_details_total = $technician_parts_voucher_details_total_debit - $technician_parts_voucher_details_total_credit;
+
+            $technician_delivery_voucher_details_total_debit = $technician_voucher_details->where('cost_center_id', 3)->sum('debit');
+            $technician_delivery_voucher_details_total_credit = $technician_voucher_details->where('cost_center_id', 3)->sum('credit');
+            $technician_delivery_voucher_details_total = $technician_delivery_voucher_details_total_debit - $technician_delivery_voucher_details_total_credit;
+
+
+            $technician_income_voucher_details_total_debit = $technician_voucher_details->where('account_id', $income_account_id)->sum('debit');
+            $technician_income_voucher_details_total_credit = $technician_voucher_details->where('account_id', $income_account_id)->sum('credit');
+            $technician_income_voucher_details_total = $technician_income_voucher_details_total_debit - $technician_income_voucher_details_total_credit;
+
+            $technician_cost_voucher_details_total_debit = $technician_voucher_details->where('account_id', $cost_account_id)->sum('debit');
+            $technician_cost_voucher_details_total_credit = $technician_voucher_details->where('account_id', $cost_account_id)->sum('credit');
+            $technician_cost_voucher_details_total = $technician_cost_voucher_details_total_debit - $technician_cost_voucher_details_total_credit;
+
+            $technician_internal_parts_voucher_details_total_debit = $technician_voucher_details->where('account_id', $internal_parts_account_id)->sum('debit');
+            $technician_internal_parts_voucher_details_total_credit = $technician_voucher_details->where('account_id', $internal_parts_account_id)->sum('credit');
+            $technician_internal_parts_voucher_details_total = $technician_internal_parts_voucher_details_total_debit - $technician_internal_parts_voucher_details_total_credit;
+
+
+
+            $technician_visible = $technician_invoices_total + $technician_services_voucher_details_total + $technician_parts_voucher_details_total + $technician_delivery_voucher_details_total + $technician_income_voucher_details_total + $technician_cost_voucher_details_total + $technician_internal_parts_voucher_details_total !== 0;
+
+
+            return [
+                'title_id' => $technician->title_id,
+                'department_id' => $technician->department_id,
+                'name' => $technician->name_ar,
+                'title' => $technician_title->name_ar,
+                'department' => $technician_department->name_ar,
+                'invoices_total' => round($technician_invoices_total,3),
+                'part_difference' => round($technician_internal_parts_voucher_details_total,3),
+                'services' => round(abs($technician_services_voucher_details_total),3),
+                'parts' => round(abs($technician_parts_voucher_details_total) + $technician_internal_parts_voucher_details_total,3),
+                'delivery' => round(abs($technician_delivery_voucher_details_total),3),
+                'income' => round(abs($technician_income_voucher_details_total),3),
+                'cost' => round(abs($technician_cost_voucher_details_total),3),
+                'visible' => $technician_visible,
+            ];
+
+        });
+
+
+        return Excel::download(new DailyReviewExport('excels.daily-review', 'DailyReview', $data), 'DailyReview.xlsx');  //Excel
+
     }
 }

@@ -282,11 +282,7 @@ Route::middleware([
                 ->can('targets_menu', DummyModel::class);
 
             // ========== Accounting ==========
-
-            // Accounts
-            Route::get('accounts', AccountIndex::class)
-                ->name('account.index')
-                ->can('viewAny', Account::class);
+            Route::get('accounts/reports/daily_review/exportToExcel', [ReportController::class, 'daily_review_exportToExcel'])->can('daily_review_report', DummyModel::class);
 
             Route::get('accounts/reports/daily_review', [ReportController::class, 'daily_review'])
                 ->name('daily_review')
