@@ -206,6 +206,7 @@ class ReportController extends Controller
                     DB::raw('SUM(quantity * price) as total_amount')
                 )
                 ->whereIn('invoice_id', $invoiceIds)
+                ->whereNull('invoice_details.deleted_at')
                 ->groupBy('invoice_id')
                 ->get();
 
@@ -230,6 +231,7 @@ class ReportController extends Controller
                 )
                 ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
                 ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
+                ->whereNull('voucher_details.deleted_at')
                 ->get();
 
             return response()->json([
@@ -294,6 +296,7 @@ class ReportController extends Controller
                 DB::raw('SUM(quantity * price) as total_amount')
             )
             ->whereIn('invoice_id', $invoiceIds)
+            ->whereNull('invoice_details.deleted_at')
             ->groupBy('invoice_id')
             ->get();
 
@@ -318,6 +321,7 @@ class ReportController extends Controller
             )
             ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
             ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
+            ->whereNull('voucher_details.deleted_at')
             ->get();
 
 
