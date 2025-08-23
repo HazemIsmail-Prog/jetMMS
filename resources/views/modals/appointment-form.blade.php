@@ -1,5 +1,5 @@
 <div 
-    x-data="orderCancelReasonModal"
+    x-data="orderAppointmentModal"
     x-on:open-order-appointment-modal.window="openModal"
 >
     <!-- Modal -->
@@ -77,7 +77,7 @@
     </div>
 
     <script>
-        function orderCancelReasonModal() {
+        function orderAppointmentModal() {
             return {
                 dismissible: true,
                 selectedOrder: null,
