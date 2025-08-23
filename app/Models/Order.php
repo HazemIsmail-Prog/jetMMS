@@ -24,6 +24,7 @@ class Order extends Model
         'created_at' => 'datetime',
         'completed_at' => 'datetime',
         'cancelled_at' => 'datetime',
+        'appointment' => 'datetime',
     ];
 
     public function rating(): HasOne

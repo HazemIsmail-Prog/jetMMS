@@ -49,7 +49,7 @@
         </div>
     
         <div
-            class="flex items-center justify-between w-full mt-px text-xs font-medium bg-white dark:bg-gray-800 p-2 rounded-b-lg text-gray-950 dark:text-gray-200"
+            class="flex items-center gap-2 justify-between w-full mt-px text-xs font-medium bg-white dark:bg-gray-800 p-2 rounded-b-lg text-gray-950 dark:text-gray-200"
         >
             <div class=" flex gap-2 items-center">
                 <x-badgeWithCounter @click="openOrderModal(order)">
@@ -68,8 +68,27 @@
                     <x-svgs.comment class="h-4 w-4" />
                 </x-badgeWithCounter>
             </div>
-    
+
+
+            <template x-if="order.appointment">
+                <div class="flex-1 flex justify-between items-center bg-amber-400 text-amber-900 rounded-lg py-0.5 px-2 gap-2">
+                    <div class="flex flex-col items-center flex-1">
+                        <div dir="ltr" x-text="order.formatted_appointment_time"></div>
+                        <div class="text-[9px]" x-text="order.formatted_appointment_date"></div>
+                    </div>
+                    <x-svgs.close @click="deleteAppointment(order)" class="h-3 w-3 cursor-pointer" />
+                </div>
+            </template>
+
             <div class=" flex gap-2 items-center">
+                <template x-if="!order.appointment">
+                    <x-badgeWithCounter 
+                        @click="handleSetAppointment(order)" 
+                        title="{{__('messages.set_appointment')}}" 
+                    >
+                        <x-svgs.calendar class="h-4 w-4" />
+                    </x-badgeWithCounter>
+                </template>
                 <template x-if="order.can_hold_order && order.status_id != 5">
                     <x-badgeWithCounter 
                         @click="setOrderOnHold(order.id)" 
@@ -96,6 +115,10 @@
         function orderCardComponent() {
             
             return {
+
+                handleSetAppointment(order) {
+                    this.$dispatch('open-order-appointment-modal',{order:order});
+                },
                 setOrderOnHold(id) {
                     this.$dispatch('order-holded',{orderId:id,mode:'fromHoldButton'});
                 },
@@ -127,6 +150,20 @@
                         return secondOrder.id !== this.order.id;
                     }
                     return true;
+                },
+
+                deleteAppointment(order) {
+                    if(!confirm('{{ __('messages.this_will_delete_the_appointment') }}')) {
+                        return;
+                    }
+                    order.appointment = null;
+                    axios.put(`/orders/${order.id}/deleteAppointment`)
+                    .then(response => {
+                        console.log('Success');
+                    })
+                    .catch(error => {
+                        alert(error.response.data.error);
+                    });
                 }
             }
         }

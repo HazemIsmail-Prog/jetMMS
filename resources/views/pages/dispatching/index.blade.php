@@ -18,6 +18,7 @@
         class="overflow-scroll lg:overflow-hidden hidden-scrollbar"
         @order-holded.window="setOrderOnHold"
         @order-canceled.window="setOrderOnCancel"
+        @order-appointment-set.window="setOrderAppointment"
         @order-pending.window="setOrderOnPending"
         @technician-selected.window="setTechnician"
         @reorder-orders-in-same-box.window="reorderOrdersInSameBox"
@@ -185,6 +186,7 @@
     @include('modals.payment-form')
     <!-- cancel reason modal -->
     @include('modals.cancel-reason-form')
+    @include('modals.appointment-form')
 
     @include('modals.attachments')
     @include('modals.attachment-form')
@@ -252,7 +254,61 @@
                 // initiators
                 init() {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
+
                     this.initListeners();
+                    this.appointmentsListener();
+                },
+
+                appointmentsListener() {
+                    setInterval(() => {
+                        const now = new Date();
+                        if (now.getSeconds() === 0) {
+                            this.unCompletedOrders.forEach(order => {
+                                if (order.appointment) {
+                                    // Parse appointment to Date object
+                                    let appointmentDate = new Date(order.appointment);
+                                    // Check if appointment matches current time (to the second)
+                                    if (
+                                        appointmentDate.getFullYear() === now.getFullYear() &&
+                                        appointmentDate.getMonth() === now.getMonth() &&
+                                        appointmentDate.getDate() === now.getDate() &&
+                                        appointmentDate.getHours() === now.getHours() &&
+                                        appointmentDate.getMinutes() === now.getMinutes() &&
+                                        appointmentDate.getSeconds() === now.getSeconds()
+                                    ) {
+                                        console.log('Appointment matches current time:', order.appointment);
+                                        console.log(now);
+                                        const notification = {
+                                            id: 'appointment-' + order.id,
+                                            title: '{{ __('messages.appointment_time_is_now') }}',
+                                            related_id: order.id,
+                                            sender: null,
+                                            body: '{{ __('messages.appointment_time_is_now') }}',
+                                            date: order.formatted_appointment_date,
+                                            time: order.formatted_appointment_time,
+                                            show: false,
+                                            onClick: () => {
+                                                const order = this.orders.find(order => order.id == order.id);
+                                                this.openOrderModal(order);
+                                            }
+                                        };
+                                        this.notifications.push(notification);
+
+                                        this.$nextTick(() => {
+                                            this.notifications.find(n => n.id == notification.id).show = true;
+                                            // Wait for Vue to update the DOM after showing notification
+                                            setTimeout(() => {
+                                                this.$refs.notificationsContainer.scrollTo({
+                                                    top: this.$refs.notificationsContainer.scrollHeight,
+                                                    behavior: 'smooth'
+                                                });
+                                            }, 100); // Small delay to ensure notification is rendered
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }, 1000); // every 1 second
                 },
 
                 // getters
@@ -406,6 +462,11 @@
                     this.orders[index].technician_id = null;
                     // this.orders.splice(index, 1);
                     // backend exist in cancel-reason-modal
+                },
+
+                async setOrderAppointment(e) {
+                    const index = this.orders.findIndex(order => order.id == e.detail.orderId);
+                    this.orders[index] = await this.getOrderResource(e.detail.orderId);
                 },
 
                 setTechnician(e) {

@@ -38,6 +38,7 @@ use App\Services\InvoiceService;
 use App\Services\CreateInvoiceVoucher;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -622,6 +623,30 @@ class OrderController extends Controller
         ActionsLog::logAction('Order', 'Completed', $order->id, 'Order completed successfully', $order->fresh()->toArray(), $oldOrder);
         broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
         // broadcast(new OrderCompletedEvent($order))->toOthers();
+        return new OrderResource($order->loadCount('invoices'));
+    }
+
+    public function setAppointment(Request $request, Order $order)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        $appointment = Carbon::parse($request->date . ' ' . $request->time);
+        $oldOrder = $order->fresh()->toArray();
+        $order->update(['appointment' => $appointment]);
+        ActionsLog::logAction('Order', 'Appointment Set', $order->id, 'Order appointment set successfully', $order->fresh()->toArray(), $oldOrder);
+        broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
+        return new OrderResource($order->loadCount('invoices'));
+    }
+
+    public function deleteAppointment(Order $order)
+    {
+        $oldOrder = $order->fresh()->toArray();
+        $order->update(['appointment' => null]);
+        ActionsLog::logAction('Order', 'Appointment Deleted', $order->id, 'Order appointment deleted successfully', $order->fresh()->toArray(), $oldOrder);
+        broadcast(new OrderUpdatedEvent(order:$order))->toOthers();
         return new OrderResource($order->loadCount('invoices'));
     }
 

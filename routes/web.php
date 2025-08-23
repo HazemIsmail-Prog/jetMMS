@@ -182,6 +182,8 @@ Route::middleware([
                 Route::put      ('/orders/{order}/setReceived', 'setReceived')->withoutMiddleware(NoTechnicians::class);
                 Route::put      ('/orders/{order}/setArrived', 'setArrived')->withoutMiddleware(NoTechnicians::class);
                 Route::put      ('/orders/{order}/setCompleted', 'setCompleted')->withoutMiddleware(NoTechnicians::class);
+                Route::put      ('/orders/{order}/setAppointment', 'setAppointment');
+                Route::put      ('/orders/{order}/deleteAppointment', 'deleteAppointment');
                 Route::get      ('/orders/{order}/getOrderStatuses', 'getOrderStatuses');
 
                 // Invoices

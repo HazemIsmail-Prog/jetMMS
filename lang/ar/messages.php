@@ -862,4 +862,7 @@ return [
     'missed_call' => 'مكالمة فائتة',
 
     'loading' => 'جاري التحميل ...',
+
+    'set_appointment' => 'تعيين موعد',
+    'appointment_time_is_now' => 'موعد استحقاق الطلب',
 ];

@@ -62,6 +62,9 @@ class OrderResource extends JsonResource
             'department_id' => $this->department_id,
             'order_description' => $this->order_description,
             'estimated_start_date' => $this->estimated_start_date->format('Y-m-d'),
+            'appointment' => $this->appointment,
+            'formatted_appointment_date' => $this->appointment?->format('d-m-Y') ?? null,
+            'formatted_appointment_time' => $this->appointment?->format('H:i A') ?? null,
             
             
             // Formated
