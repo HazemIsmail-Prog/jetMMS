@@ -276,8 +276,6 @@
                                         appointmentDate.getMinutes() === now.getMinutes() &&
                                         appointmentDate.getSeconds() === now.getSeconds()
                                     ) {
-                                        console.log('Appointment matches current time:', order.appointment);
-                                        console.log(now);
                                         const notification = {
                                             id: 'appointment-' + order.id,
                                             title: '{{ __('messages.appointment_time_is_now') }}',
@@ -288,10 +286,10 @@
                                             time: order.formatted_appointment_time,
                                             show: false,
                                             onClick: () => {
-                                                const order = this.orders.find(order => order.id == order.id);
                                                 this.openOrderModal(order);
                                             }
                                         };
+                                        
                                         this.notifications.push(notification);
 
                                         this.$nextTick(() => {
