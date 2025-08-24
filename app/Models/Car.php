@@ -24,6 +24,11 @@ class Car extends Model
         'active' => 'boolean',
     ];
 
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(CarBrand::class, 'car_brand_id');

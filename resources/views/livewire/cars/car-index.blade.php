@@ -58,8 +58,10 @@
                 <x-th>{{ __('messages.car_code') }}</x-th>
                 <x-th>{{ __('messages.brand') }}</x-th>
                 <x-th>{{ __('messages.car_type') }}</x-th>
+                <x-th>{{ __('messages.year') }}</x-th>
                 <x-th>{{ __('messages.receiver') }}</x-th>
                 <x-th>{{ __('messages.department') }}</x-th>
+                <x-th>{{ __('messages.company') }}</x-th>
                 <x-th>{{ __('messages.management_no') }}/{{ __('messages.plate_no') }}</x-th>
                 <x-th>{{ __('messages.insurance_expiration_date') }}</x-th>
                 <x-th>{{ __('messages.notes') }}</x-th>
@@ -73,8 +75,10 @@
                     <x-th>{{ $car->code }}</x-th>
                     <x-td>{{ $car->brand->name }}</x-td>
                     <x-td>{{ $car->type->name }}</x-td>
+                    <x-td>{{ $car->year }}</x-td>
                     <x-td>{{ $car->latest_car_action->to->name ?? '-' }}</x-td>
                     <x-td>{{ $car->latest_car_action->to->department->name ?? '-' }}</x-td>
+                    <x-td>{{ $car->company->name ?? '-' }}</x-td>
                     <x-td>{{ $car->management_no }}/{{ $car->plate_no }}</x-td>
                     <x-td>{!! $car->formated_insurance_expiration_date !!}</x-td>
                     <x-td>{{ $car->notes ?? '-' }}</x-td>

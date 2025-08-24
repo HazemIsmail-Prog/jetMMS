@@ -23,6 +23,7 @@ class CarIndex extends Component
     {
         return Car::query()
             ->with('brand')
+            ->with('company')
             ->with('type')
             ->with('latest_car_action.to.department')
             ->withCount('attachments')
@@ -33,7 +34,7 @@ class CarIndex extends Component
                 $q->where('code', $this->filters['car_code']);
             })
             ->orderBy('notes')
-            ->paginate(200);
+            ->paginate(500);
     }
 
     public function updatedFilters()
