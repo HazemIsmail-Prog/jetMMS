@@ -70,7 +70,7 @@
             </div>
 
 
-            <template x-if="order.appointment">
+            <template x-if="order.appointment && !order.appointmentIsInPast">
                 <div class="flex-1 flex justify-between items-center bg-amber-400 text-amber-900 rounded-lg py-0.5 px-2 gap-2">
                     <div class="flex flex-col items-center flex-1">
                         <div dir="ltr" x-text="order.formatted_appointment_time"></div>

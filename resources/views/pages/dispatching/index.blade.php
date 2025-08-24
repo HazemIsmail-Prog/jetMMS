@@ -276,6 +276,7 @@
                                         appointmentDate.getMinutes() === now.getMinutes() &&
                                         appointmentDate.getSeconds() === now.getSeconds()
                                     ) {
+                                        order.appointmentIsInPast = true;
                                         const notification = {
                                             id: 'appointment-' + order.id,
                                             title: '{{ __('messages.appointment_time_is_now') }}',
@@ -289,7 +290,8 @@
                                                 this.openOrderModal(order);
                                             }
                                         };
-                                        
+
+                                        if(this.notifications.find(n => n.id == notification.id)) return;
                                         this.notifications.push(notification);
 
                                         this.$nextTick(() => {

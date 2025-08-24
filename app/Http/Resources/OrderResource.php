@@ -65,6 +65,8 @@ class OrderResource extends JsonResource
             'appointment' => $this->appointment,
             'formatted_appointment_date' => $this->appointment?->format('d-m-Y') ?? null,
             'formatted_appointment_time' => $this->appointment?->format('H:i A') ?? null,
+
+            'appointmentIsInPast' => $this->appointment?->isPast(),
             
             
             // Formated
