@@ -15,7 +15,7 @@
 
                     <div>
                         <x-label for="quotation_number">{{ __('messages.quotation_number') }}</x-label>
-                        <x-input class="w-full py-0" dir="ltr" wire:model="form.quotation_number" autocomplete="off" type="number"
+                        <x-input class="w-full py-0" dir="ltr" wire:model="form.quotation_number" autocomplete="off" type="text"
                             id="quotation_number" />
                         <x-input-error for="form.quotation_number" />
                     </div>

@@ -64,7 +64,7 @@
 
         <div>
             <x-label for="quotation_number">{{ __('messages.quotation_number') }}</x-label>
-            <x-input id="quotation_number" wire:model.live="filters.quotation_number" type="number" dir="ltr"
+            <x-input id="quotation_number" wire:model.live="filters.quotation_number" type="text" dir="ltr"
                 class="w-36 min-w-full text-center py-0" />
         </div>
 
