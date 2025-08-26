@@ -278,7 +278,7 @@
                                     ) {
                                         order.appointmentIsInPast = true;
                                         const notification = {
-                                            id: 'appointment-' + order.id,
+                                            id: 'appointment-' + order.id + '-' + order.appointment,
                                             title: '{{ __('messages.appointment_time_is_now') }}',
                                             related_id: order.id,
                                             sender: null,

@@ -81,7 +81,7 @@
             </template>
 
             <div class=" flex gap-2 items-center">
-                <template x-if="!order.appointment">
+                <template x-if="!order.appointment || order.appointmentIsInPast">
                     <x-badgeWithCounter 
                         @click="handleSetAppointment(order)" 
                         title="{{__('messages.set_appointment')}}" 
