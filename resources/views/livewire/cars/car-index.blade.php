@@ -50,11 +50,20 @@
             <x-label for="car_code">{{ __('messages.car_code') }}</x-label>
             <x-input id="car_code" type="text" wire:model.live="filters.car_code" class="w-full text-start py-0" />
         </div>
+        <div>
+            <x-label for="year">{{ __('messages.year') }}</x-label>
+            <x-input id="year" type="text" wire:model.live="filters.year" class="w-full text-start py-0" />
+        </div>
+        <div>
+            <x-label for="company">{{ __('messages.company') }}</x-label>
+            <x-searchable-select class=" !py-[5px]" id="company" :list="$this->companies" wire:model.live="filters.company_id" multipule />
+        </div>
     </div>
 
     <x-table>
         <x-thead>
             <tr>
+                <x-th>#</x-th>
                 <x-th>{{ __('messages.car_code') }}</x-th>
                 <x-th>{{ __('messages.brand') }}</x-th>
                 <x-th>{{ __('messages.car_type') }}</x-th>
@@ -72,7 +81,8 @@
         <tbody>
             @foreach ($this->cars as $car)
                 <x-tr>
-                    <x-th>{{ $car->code }}</x-th>
+                    <x-td>{{ $loop->iteration }}</x-td>
+                    <x-td>{{ $car->code }}</x-td>
                     <x-td>{{ $car->brand->name }}</x-td>
                     <x-td>{{ $car->type->name }}</x-td>
                     <x-td>{{ $car->year }}</x-td>

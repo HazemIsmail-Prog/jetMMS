@@ -3,6 +3,7 @@
 namespace App\Livewire\Cars;
 
 use App\Models\Car;
+use App\Models\Company;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -12,7 +13,20 @@ class CarIndex extends Component
 {
     use WithPagination;
 
-    public $filters = ['car_code' => ''];
+    public $filters = [
+        'car_code' => '',
+        'year' => '',
+        'company_id' => [],
+    ];
+
+    #[Computed()]
+    public function companies()
+    {
+        return Company::query()
+            ->select('id', 'name_en', 'name_ar', 'name_' . app()->getLocale() . ' as name')
+            ->orderBy('name')
+            ->get();
+    }
 
     #[Computed]
     #[On('carsUpdated')]
@@ -32,6 +46,12 @@ class CarIndex extends Component
             ->withSum('car_services','cost')
             ->when($this->filters['car_code'], function ($q) {
                 $q->where('code', $this->filters['car_code']);
+            })
+            ->when($this->filters['year'], function ($q) {
+                $q->where('year', $this->filters['year']);
+            })
+            ->when($this->filters['company_id'], function ($q) {
+                $q->whereIn('company_id', $this->filters['company_id']);
             })
             ->orderBy('notes')
             ->paginate(500);
