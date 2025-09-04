@@ -123,7 +123,7 @@ class OrderController extends Controller
 
         return view('pages.orders.index', [
             'tags' => Order::select('tag')->distinct()->whereNotNull('tag')->where('tag', '!=', '')->get()->pluck('tag')->unique()->values(),
-            'departments' => DepartmentResource::collection(Department::where('is_service', true)->get()),
+            'departments' => DepartmentResource::collection(Department::where('is_service', true)->orderByDesc('position')->get()),
             'technicians' => UserResource::collection(User::whereHas('orders_technician')->get()),
             'creators' => UserResource::collection(User::whereHas('orders_creator')->get()),
         ]);

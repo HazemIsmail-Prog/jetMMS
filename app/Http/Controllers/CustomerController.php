@@ -66,7 +66,7 @@ class CustomerController extends Controller
         }
 
         return view('pages.customers.index',[
-            'departments' => DepartmentResource::collection(Department::where('active', 1)->where('is_service', 1)->get()),
+            'departments' => DepartmentResource::collection(Department::where('active', 1)->where('is_service', 1)->orderByDesc('position')->get()),
         ]);
     }
 
