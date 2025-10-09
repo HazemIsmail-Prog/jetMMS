@@ -757,8 +757,8 @@ class OrderController extends Controller
             return response()->json(['error' => __('messages.you_dont_have_permission_to_apply_discount')], 403);
         }
 
-        // check if invoice date is today
-        if($invoice->created_at->endOfDay()->addHours(4)->isPast()) {
+        // check if invoice date is today or if user is super admin
+        if($invoice->created_at->endOfDay()->addHours(4)->isPast() && auth()->id() != 1) {
             return response()->json(['error' => __('messages.you_cant_apply_discount_to_old_invoices')], 400);
         }
 

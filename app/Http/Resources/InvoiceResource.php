@@ -127,7 +127,7 @@ class InvoiceResource extends JsonResource
             'knet_payments_amount' => $knetPaymentsAmount,
             'reconciliations_amount' => $reconciliationsAmount,
             // Permissions
-            'can_discount' => !$can_discount_until->isPast() && $can_discount && $this->payments->count() == 0,
+            'can_discount' => (!$can_discount_until->isPast() && $can_discount && $this->payments->count() == 0) || (auth()->id() == 1 && $this->payments->count() == 0),
             'can_deleted' => $can_deleted,
             'can_view_payments' => $can_create_payments,
             'can_create_payments' => $can_create_payments,
