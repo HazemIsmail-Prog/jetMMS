@@ -104,7 +104,7 @@ class SurveyController extends Controller
         $errors = [];
 
         if (!empty($receivers['cancelled'])) {
-            $response = $this->sendSurveyMessages($receivers['cancelled'], 'cancel_survey_3');
+            $response = $this->sendSurveyMessages($receivers['cancelled'], config('services.wati.cancel_survey_template_name'));
             $jsonResponse = json_decode($response);
             if ($jsonResponse->error) {
                 $errors[] = $jsonResponse->error;
@@ -112,7 +112,7 @@ class SurveyController extends Controller
         }
 
         if (!empty($receivers['completed'])) {
-            $response = $this->sendSurveyMessages($receivers['completed'], 'completed_survey_3');
+            $response = $this->sendSurveyMessages($receivers['completed'], config('services.wati.complete_survey_template_name'));
             $jsonResponse = json_decode($response);
             if ($jsonResponse->error) {
                 $errors[] = $jsonResponse->error;
@@ -166,8 +166,8 @@ class SurveyController extends Controller
     private function getLinkForStatus(array $survey): string
     {
         return $survey['status_id'] == Status::CANCELLED
-            ? route('cancel.survey.page', ['encryptedOrderId' => encrypt($survey['id'])])
-            : route('customer.page', ['encryptedOrderId' => encrypt($survey['id'])]);
+            ? config('services.wati.cancel_survey_base_url') . encrypt($survey['id'])
+            : config('services.wati.complete_survey_base_url') . encrypt($survey['id']);
     }
 
     private function sendSurveyMessages(array $receivers, string $templateName)

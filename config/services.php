@@ -34,6 +34,10 @@ return [
     'wati' => [
         'base_url' => env('WATI_BASE_URL'),
         'bearer_token' => env('WATI_BEARER_TOKEN'),
+        'complete_survey_template_name' => env('WATI_COMPLETE_SURVEY_TEMPLATE_NAME'),
+        'cancel_survey_template_name' => env('WATI_CANCEL_SURVEY_TEMPLATE_NAME'),
+        'complete_survey_base_url' => env('WATI_COMPLETE_SURVEY_BASE_URL'),
+        'cancel_survey_base_url' => env('WATI_CANCEL_SURVEY_BASE_URL'),
     ],
 
 ];
