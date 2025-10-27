@@ -95,6 +95,8 @@ class PendingPayments extends Component
 
             ->withSum('payments as queryPaymentsAmount', 'amount')
 
+            ->withSum('reconciliations as queryReconciliationsAmount', 'amount')
+
             ->when($this->filters['technician_id'], function ($q) {
                 $q->whereHas('order', function ($q) {
                     $q->whereIn('technician_id', $this->filters['technician_id']);

@@ -77,7 +77,7 @@
             @php
                 $amount = (round(($invoice->queryServicesAmount - $invoice->discount) + $invoice->delivery
                 + $invoice->queryPartsAmountFromDetails + $invoice->queryPartsAmountFromParts -
-                $invoice->queryPaymentsAmount,3));
+                $invoice->queryPaymentsAmount,3) - $invoice->queryReconciliationsAmount);
             @endphp
             @if($amount > 0)
                 <x-tr wire:key="payment-{{$invoice->id}}-{{rand()}}">
@@ -104,7 +104,7 @@
                 <x-th>{{ __('messages.total') }}</x-th>
                 <x-th>{{ number_format((round(($this->invoices->sum('queryServicesAmount') - $this->invoices->sum('discount')) + $this->invoices->sum('delivery')
                     + $this->invoices->sum('queryPartsAmountFromDetails') + $this->invoices->sum('queryPartsAmountFromParts') -
-                    $this->invoices->sum('queryPaymentsAmount'),3)),3) }}</x-th>
+                    $this->invoices->sum('queryPaymentsAmount') - $this->invoices->sum('queryReconciliationsAmount'),3)),3) }}</x-th>
             </tr>
         </x-tfoot>
     </x-table>
