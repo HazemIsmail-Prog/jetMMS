@@ -46,6 +46,7 @@
                         <x-thead>
                             <x-tr>
                                 <x-th>{{ __('messages.order_number') }}</x-th>
+                                <x-th>{{ __('messages.survey_counter') }}</x-th>
                                 <x-th>{{ __('messages.customer_phone') }}</x-th>
                                 <x-th>{{ __('messages.status') }}</x-th>
                                 <x-th></x-th>
@@ -55,6 +56,7 @@
                             <template x-for="order in surveysList" :key="order.id">
                                 <x-tr>
                                     <x-td x-text="order.id"></x-td>
+                                    <x-td x-text="order.survey_counter || '-'"></x-td>
                                     <x-td x-text="order.phone.number"></x-td>
                                     <x-td>
                                         <span class="px-2 py-0.5 pb-1 text-xs rounded-full flex items-center" 

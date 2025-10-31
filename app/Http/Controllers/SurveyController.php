@@ -182,6 +182,18 @@ class SurveyController extends Controller
             'receivers' => $receivers
         ];
 
+        $orderNumbers = [];
+
+        foreach ($receivers as $receiver) {
+            $orderNumbers[] = $receiver['customParams'][0]['value'];
+        }
+
+        $orders = Order::whereIn('id', $orderNumbers)->get();
+
+        $orders->each(function ($order) {
+            $order->increment('survey_counter');
+        });
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

@@ -866,4 +866,6 @@ return [
     'set_appointment' => 'تعيين موعد',
     'appointment_time_is_now' => 'موعد استحقاق الطلب',
     'this_will_delete_the_appointment' => 'سيتم حذف الموعد',
+    'percentage_payslips' => 'رواتب فنيين النسبة',
+    'survey_counter' => 'عدد الاستبيانات',
 ];
