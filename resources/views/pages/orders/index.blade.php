@@ -397,7 +397,7 @@
                                     :class="{ 'bg-red-100 dark:bg-red-700': surveysList.find(o => o.id === order.id) }"
                                     @click="toggleSurveyInList(order)"
                                 >
-                                    <span x-text="surveysList.find(o => o.id === order.id) ? '{{ __('messages.remove_from_survey_list') }}' : '{{ __('messages.add_to_survey_list') }}'"></span>
+                                    <span x-text="surveysList.find(o => o.id === order.id) ? '{{ __('messages.remove_from_survey_list') }}' + order.survey_counter : '{{ __('messages.add_to_survey_list') }} ' + order.survey_counter"></span>
                                 </button>
                             </template>
 
