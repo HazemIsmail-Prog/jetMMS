@@ -88,6 +88,10 @@ class OrderController extends Controller
                 })
                 ->when($request->status_ids, function($query) use ($request) {
                     $query->whereIn('status_id', $request->status_ids);
+                    $query->orderBy('completed_at', 'desc');
+                    $query->orderBy('cancelled_at', 'desc');
+                    $query->orderBy('created_at', 'desc');
+                    $query->orderBy('id', 'desc');
                 })
                 ->when($request->technician_ids, function($query) use ($request) {
                     $query->whereIn('technician_id', $request->technician_ids);
