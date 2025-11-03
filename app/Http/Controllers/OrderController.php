@@ -88,10 +88,6 @@ class OrderController extends Controller
                 })
                 ->when($request->status_ids, function($query) use ($request) {
                     $query->whereIn('status_id', $request->status_ids);
-                    $query->orderBy('completed_at', 'desc');
-                    $query->orderBy('cancelled_at', 'desc');
-                    // $query->orderBy('created_at', 'desc');
-                    // $query->orderBy('id', 'desc');
                 })
                 ->when($request->technician_ids, function($query) use ($request) {
                     $query->whereIn('technician_id', $request->technician_ids);
@@ -110,15 +106,20 @@ class OrderController extends Controller
                 })
                 ->when($request->start_completed_at, function($query) use ($request) {
                     $query->whereDate('completed_at', '>=', $request->start_completed_at);
+                    $query->orderBy('completed_at', 'desc');
+
                 })
                 ->when($request->end_completed_at, function($query) use ($request) {    
                     $query->whereDate('completed_at', '<=', $request->end_completed_at);
+                    $query->orderBy('completed_at', 'desc');
                 })
                 ->when($request->start_cancelled_at, function($query) use ($request) {
                     $query->whereDate('cancelled_at', '>=', $request->start_cancelled_at);
+                    $query->orderBy('cancelled_at', 'desc');
                 })
                 ->when($request->end_cancelled_at, function($query) use ($request) {        
                     $query->whereDate('cancelled_at', '<=', $request->end_cancelled_at);
+                    $query->orderBy('cancelled_at', 'desc');
                 })
                 ->orderBy('id','desc')
                 ->paginate(10);
