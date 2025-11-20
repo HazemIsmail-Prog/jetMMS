@@ -97,6 +97,9 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ReconciliationController;
+use App\Http\Controllers\OtherIncomeCategoryController;
+use App\Http\Controllers\IncomeInvoiceController;
+use App\Http\Controllers\IncomePaymentController;
 
 
 
@@ -165,6 +168,28 @@ Route::middleware([
             // Route::get('customers', CustomerIndex::class)
             //     ->name('customer.index')
             //     ->can('viewAny', Customer::class);
+
+
+            Route::controller(OtherIncomeCategoryController::class)->group(function () {
+                Route::get('other-income-categories', 'index')->name('other-income-categories.index');
+                Route::post('other-income-categories', 'store');
+                Route::put('other-income-categories/{otherIncomeCategory}', 'update');
+                Route::delete('other-income-categories/{otherIncomeCategory}', 'destroy');
+            });
+            
+            Route::controller(IncomeInvoiceController::class)->group(function () {
+                Route::get('income-invoices', 'index')->name('income-invoices.index');
+                Route::post('income-invoices', 'store');
+                Route::put('income-invoices/{incomeInvoice}', 'update');
+                Route::delete('income-invoices/{incomeInvoice}', 'destroy');
+            });
+
+            Route::controller(IncomePaymentController::class)->group(function () {
+                Route::get('income-invoices/{incomeInvoice}/payments', 'index')->name('income-payments.index');
+                Route::post('income-invoices/{incomeInvoice}/payments', 'store');
+                Route::put('income-invoices/{incomeInvoice}/payments/{incomePayment}', 'update');
+                Route::delete('income-invoices/{incomeInvoice}/payments/{incomePayment}', 'destroy');
+            });
 
 
             // Orders (new routes for Alpine JS Version)

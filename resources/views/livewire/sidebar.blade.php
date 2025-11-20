@@ -128,6 +128,9 @@
             @can('viewAny', App\Models\Voucher::class)
                 <x-sidebar-item icon="document-text" route="vouchers.index" :title="__('messages.journal_vouchers')" />
             @endcan
+            @if(auth()->user()->hasPermission('income_invoices_menu'))
+                <x-sidebar-item icon="chart-pie" route="income-invoices.index" :title="__('messages.income_invoices')" />
+            @endif
             @can('accounting_reports', App\Models\DummyModel::class)
                 <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
                     @can('daily_review_report', App\Models\DummyModel::class)
@@ -234,6 +237,9 @@
             @can('admin_title', App\Models\DummyModel::class)
                 <h3 class=" py-3 text-xs uppercase text-slate-500 font-semibold ps-3">{{ __('messages.admin') }}</h3>
             @endcan
+             @if(auth()->user()->hasPermission('other_income_categories_menu'))
+                <x-sidebar-item icon="chart-pie" route="other-income-categories.index" :title="__('messages.other_income_categories')" />
+            @endif
             @can('viewAny', App\Models\Supplier::class)
                 <x-sidebar-item icon="chart-pie" route="supplier.index" :title="__('messages.suppliers')" />
             @endcan

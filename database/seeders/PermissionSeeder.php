@@ -180,6 +180,29 @@ class PermissionSeeder extends Seeder
             ['name' => 'services_delete',               'section_name_ar' => 'مسؤول النظام',        'section_name_en' => 'admin',                   'desc_ar' => 'حذف خدمة',                          'desc_en' => 'Shifts Menu'],
             ['name' => 'settings_menu',                 'section_name_ar' => 'مسؤول النظام',        'section_name_en' => 'admin',                   'desc_ar' => 'عرض قائمة اعدادت النظام',          'desc_en' => 'Shifts Menu'],
            
+            // Other income categories
+            ['name' => 'other_income_categories_menu',          'section_name_ar' => 'انواع الايرادات الاخرى',        'section_name_en' => 'other_income_categories',                   'desc_ar' => 'عرض قائمة انواع الايرادات الاخرى',    'desc_en' => 'Other Income Categories Menu'],
+            ['name' => 'other_income_categories_create',        'section_name_ar' => 'انواع الايرادات الاخرى',        'section_name_en' => 'other_income_categories',                   'desc_ar' => 'اضافة انواع الايرادات الاخرى',              'desc_en' => 'Other Income Categories Menu'],
+            ['name' => 'other_income_categories_edit',          'section_name_ar' => 'انواع الايرادات الاخرى',        'section_name_en' => 'other_income_categories',                   'desc_ar' => 'تعديل انواع الايرادات الاخرى',              'desc_en' => 'Other Income Categories Menu'],
+            ['name' => 'other_income_categories_delete',        'section_name_ar' => 'انواع الايرادات الاخرى',        'section_name_en' => 'other_income_categories',                   'desc_ar' => 'حذف انواع الايرادات الاخرى',                'desc_en' => 'Other Income Categories Menu'],
+           
+            // Income Invoices
+            ['name' => 'income_invoices_menu',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'عرض قائمة فواتير الايراد',    'desc_en' => 'Income Invoices Menu'],
+            ['name' => 'income_invoices_create',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'اضافة فاتورة ايراد',              'desc_en' => 'Income Invoices Menu'],
+            ['name' => 'income_invoices_edit',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'تعديل فاتورة ايراد',              'desc_en' => 'Income Invoices Menu'],
+            ['name' => 'income_invoices_delete',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'حذف فاتورة ايراد',                'desc_en' => 'Income Invoices Menu'],
+
+            // Income Invoices Attachments
+            ['name' => 'income_invoices_attachments_menu',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'عرض مرفقات فواتير الايراد',    'desc_en' => 'Income Invoices Attachments Menu'],
+            ['name' => 'income_invoices_attachments_create',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'اضافة مرفق فواتير الايراد',              'desc_en' => 'Income Invoices Attachments Menu'],
+            ['name' => 'income_invoices_attachments_edit',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'تعديل مرفق فواتير الايراد',              'desc_en' => 'Income Invoices Attachments Menu'],
+            ['name' => 'income_invoices_attachments_delete',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'حذف مرفق فواتير الايراد',                'desc_en' => 'Income Invoices Attachments Menu'],
+
+            // Income Invoices Payments
+            ['name' => 'income_invoices_payments_menu',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'عرض دفعات فواتير الايراد',    'desc_en' => 'Income Invoices Payments Menu'],
+            ['name' => 'income_invoices_payments_create',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'اضافة دفعة فواتير الايراد',              'desc_en' => 'Income Invoices Payments Menu'],
+            ['name' => 'income_invoices_payments_edit',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'تعديل دفعة فواتير الايراد',              'desc_en' => 'Income Invoices Payments Menu'],
+            ['name' => 'income_invoices_payments_delete',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'حذف دفعة فواتير الايراد',                'desc_en' => 'Income Invoices Payments Menu'],
         ];
 
         foreach ($permissions as $permission) {
@@ -196,7 +219,7 @@ class PermissionSeeder extends Seeder
                 ]
             );
         }
-        Role::find(1)->permissions()->attach(Permission::pluck('id'));
+        // Role::find(1)->permissions()->attach(Permission::pluck('id'));
         
         //Run the following code to seed only permissions seeder
         //php artisan db:seed --class=PermissionSeeder

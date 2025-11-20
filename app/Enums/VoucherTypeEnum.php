@@ -11,7 +11,8 @@ enum VoucherTypeEnum:string
     case PART_INVOICE = 'part_invoice';
     case COST = 'cost';
     case RECONCILIATION = 'reconciliation';
-
+    case INCOME_INVOICE = 'income_invoice';
+    case INCOME_PAYMENT = 'income_payment';
     public function title() : string {
         return match($this){
             VoucherTypeEnum::JV => __('messages.journal_voucher'),
@@ -21,6 +22,8 @@ enum VoucherTypeEnum:string
             VoucherTypeEnum::PART_INVOICE => __('messages.part_invoice_voucher'),
             VoucherTypeEnum::COST => __('messages.cost_voucher'),
             VoucherTypeEnum::RECONCILIATION => __('messages.reconciliation_voucher'),
+            VoucherTypeEnum::INCOME_INVOICE => __('messages.income_invoice_voucher'),
+            VoucherTypeEnum::INCOME_PAYMENT => __('messages.income_payment_voucher'),
         };
     }
 
@@ -34,6 +37,8 @@ enum VoucherTypeEnum:string
             VoucherTypeEnum::PART_INVOICE => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-300',
             VoucherTypeEnum::COST => 'bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-300',
             VoucherTypeEnum::RECONCILIATION => 'bg-purple-100 text-purple-800 dark:bg-purple-700 dark:text-purple-300',
+            VoucherTypeEnum::INCOME_INVOICE => 'bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-300',
+            VoucherTypeEnum::INCOME_PAYMENT => 'bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-300',
         };
     }
 }
