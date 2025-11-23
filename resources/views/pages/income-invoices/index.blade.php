@@ -32,7 +32,7 @@
         x-on:open-create-modal.window="openModal(null)"
     >
 
-    <div class="flex justify-end mb-4">
+    <div class="flex flex-col justify-center mb-4">
 
 
         <x-table>
@@ -43,7 +43,7 @@
                     <x-th>{{__('messages.other_income_category')}}</x-th>
                     <x-th>{{__('messages.date')}}</x-th>
                     <x-th>{{__('messages.amount')}}</x-th>
-                    <x-th>{{__('messages.narration')}}</x-th>
+                    <x-th class="!min-w-[300px]">{{__('messages.narration')}}</x-th>
                     <x-th>{{__('messages.paid_amount')}}</x-th>
                     <x-th>{{__('messages.cash')}}</x-th>
                     <x-th>{{__('messages.knet')}}</x-th>
@@ -61,7 +61,7 @@
                         <x-td x-text="incomeInvoice.manual_number"></x-td>
                         <x-td x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></x-td>
                         <x-td x-text="incomeInvoice.formatted_date"></x-td>
-                        <x-td x-text="formatNumber(incomeInvoice.amount)"></x-td>
+                        <x-td x-text="formatNumber(parseFloat(incomeInvoice.amount))"></x-td>
                         <x-td x-text="incomeInvoice.narration" class="!whitespace-normal"></x-td>
                         <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).paidAmount)"></x-td>
                         <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).cash)"></x-td>
@@ -101,6 +101,20 @@
                     </x-tr>
                 </template>
             </tbody>
+            <x-tfoot>
+                <tr>
+                    <x-th colspan="4">{{__('messages.total')}}</x-th>
+                    <x-th x-text="formatNumber(getTotals().amount)"></x-th>
+                    <x-th></x-th>
+                    <x-th x-text="formatNumber(getTotals().paidAmount)"></x-th>
+                    <x-th x-text="formatNumber(getTotals().cash)"></x-th>
+                    <x-th x-text="formatNumber(getTotals().knet)"></x-th>
+                    <x-th x-text="formatNumber(getTotals().bankDeposit)"></x-th>
+                    <x-th x-text="formatNumber(getTotals().remainingAmount)"></x-th>
+                    <x-th></x-th>
+                    <x-th></x-th>
+                </tr>
+            </x-tfoot>
 
         </x-table>
 
@@ -124,6 +138,32 @@
                 init() {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
                     this.getIncomeInvoices();
+                },
+
+                getTotals() {
+                    let amount = 0;
+                    let cash = 0;
+                    let knet = 0;
+                    let bankDeposit = 0;
+                    let paidAmount = 0;
+                    let remainingAmount = 0;
+                    this.incomeInvoices.forEach(incomeInvoice => {
+                        amount += parseFloat(incomeInvoice.amount);
+                        cash += this.getIncomeInvoicePayments(incomeInvoice.id).cash;
+                        knet += this.getIncomeInvoicePayments(incomeInvoice.id).knet;
+                        bankDeposit += this.getIncomeInvoicePayments(incomeInvoice.id).bankDeposit;
+                        paidAmount += this.getIncomeInvoicePayments(incomeInvoice.id).paidAmount;
+                        remainingAmount += this.getIncomeInvoicePayments(incomeInvoice.id).remainingAmount;
+                    });
+                    return {
+                        amount: amount,
+                        cash: cash,
+                        knet: knet,
+                        bankDeposit: bankDeposit,
+                        paidAmount: paidAmount,
+                        remainingAmount: remainingAmount
+                    };
+   
                 },
 
                 getIncomeInvoicePayments(incomeInvoiceId) {
@@ -156,6 +196,7 @@
                 },
 
                 formatNumber(number) {
+                    if (number === 0 || number === null) return '-';
                     return number.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
                 },
 
