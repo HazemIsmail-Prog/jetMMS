@@ -14,12 +14,12 @@
 
     <div x-data="dailyReviewReport()">
 
-    <template x-teleport="#excel">
-        <x-button x-on:click="exportToExcel" x-bind:disabled="exporting" >
-            <span x-show="!exporting">{{ __('messages.export_to_excel') }}</span>
-            <span x-show="exporting" class="animate-pulse">{{ __('messages.loading') }}</span>
-        </x-button>
-    </template>
+        <template x-teleport="#excel">
+            <x-button x-on:click="exportToExcel" x-bind:disabled="exporting" >
+                <span x-show="!exporting">{{ __('messages.export_to_excel') }}</span>
+                <span x-show="exporting" class="animate-pulse">{{ __('messages.loading') }}</span>
+            </x-button>
+        </template>
         <div class=" flex items-center justify-between mb-3">
 
             <div class=" flex items-end gap-3 no-print">
@@ -104,14 +104,64 @@
             </div>
         </template>
 
-        <div x-show="preparedTechniciansData.filter(technician => technician.visible).length > 0" class="grid grid-cols-12 gap-1 footer-row rounded-lg overflow-clip">
+        <div class="my-5" x-show="incomeInvoices.length > 0">
+            <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100">{{ __('messages.income_invoices') }}</h3>
+                
+            <div class="rounded-lg overflow-clip">
+                <!-- header -->
+                <div class="grid grid-cols-12 gap-1 grid-rows-2 header-row mb-1">
+                    <div class="table-cell col-span-5 row-span-2">{{ __('messages.other_income_category') }}</div>
+                    <div class="table-cell col-span-2 col-start-6">{{ __('messages.invoices') }}</div>
+                    <div class="table-cell col-span-3 col-start-8">{{ __('messages.cost_centers') }}</div>
+                    <div class="table-cell col-span-2 col-start-11">{{ __('messages.accounts') }}</div>
+                    <div class="table-cell col-start-6 row-start-2">{{ __('messages.amount') }}</div>
+                    <div class="table-cell col-start-7 row-start-2">{{ __('messages.parts_difference') }}</div>
+                    <div class="table-cell col-start-8 row-start-2">{{ __('messages.services') }}</div>
+                    <div class="table-cell col-start-9 row-start-2">{{ __('messages.parts') }}</div>
+                    <div class="table-cell col-start-10 row-start-2">{{ __('messages.delivery') }}</div>
+                    <div class="table-cell col-start-11 row-start-2">{{ __('messages.income_account_id') }}</div>
+                    <div class="table-cell col-start-12 row-start-2">{{ __('messages.cost_account_id') }}</div>
+                </div>
+
+                <!-- other income categories -->
+                <div>
+                    <template x-for="incomeInvoice in incomeInvoices" :key="incomeInvoice.other_income_category_id">
+                        <div class="grid grid-cols-12 gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900">
+                            <div  class="table-cell col-span-5" x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></div>
+                            <div  class="table-cell" x-text="formatNumber(incomeInvoice.total_amount)"></div>
+                            <div  class="table-cell"></div>
+                            <div  class="table-cell"></div>
+                            <div  class="table-cell"></div>
+                            <div  class="table-cell"></div>
+                            <div  class="table-cell" x-text="formatNumber(incomeInvoice.total_amount)"></div>
+                            <div  class="table-cell"></div>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- other income categories footer -->
+                <div class="grid grid-cols-12 gap-1 footer-row mb-1">
+                    <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
+                    <div class="table-cell" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
+                    <div class="table-cell"></div>
+                    <div class="table-cell"></div>
+                    <div class="table-cell"></div>
+                    <div class="table-cell"></div>
+                    <div class="table-cell" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
+                    <div class="table-cell"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-1 footer-row rounded-lg overflow-clip">
             <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().invoice_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().invoice_total + getOtherIncomeCategoryTotal())"></div>
             <div class="table-cell" x-bind:class="getPageTotal().internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_vouchers_total)"></div>
             <div class="table-cell" x-text="formatNumber(getPageTotal().services_vouchers_total)"></div>
             <div class="table-cell" x-text="formatNumber(getPageTotal().parts_vouchers_total)"></div>
             <div class="table-cell" x-text="formatNumber(getPageTotal().delivery_vouchers_total)"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().income_vouchers_total)"></div>
+            <div class="table-cell" x-text="formatNumber(getPageTotal().income_vouchers_total + getOtherIncomeCategoryTotal())"></div>
             <div class="table-cell" x-text="formatNumber(getPageTotal().cost_vouchers_total)"></div>
         </div>
     </div>
@@ -122,8 +172,10 @@
 <script>
     function dailyReviewReport() {
         return {
+            otherIncomeCategories:@js($otherIncomeCategories),
             isloading: false,
             exporting: false,
+            incomeInvoices:[],
             departments:[],
             titles:[],
             technicians:[],
@@ -145,10 +197,19 @@
                 this.fetchData()
             },
 
+            getOtherIncomeCategoryNameById(id) {
+                return this.otherIncomeCategories.find(otherIncomeCategory => otherIncomeCategory.id === id)?.name;
+            },
+
+            getOtherIncomeCategoryTotal(){
+                return this.incomeInvoices.reduce((total, incomeInvoice) => total + parseFloat(incomeInvoice.total_amount), 0);
+            },
+
             fetchData() {
                 this.isloading = true;
                 this.exporting = false;
                 this.departments = [];
+                this.incomeInvoices = [];
                 this.technicians = [];
                 this.invoices = [];
                 this.invoice_details = [];
@@ -164,6 +225,7 @@
                     .then((response) => {
                         this.departments = response.data.departments;
                         this.titles = response.data.titles;
+                        this.incomeInvoices = response.data.income_invoices;
                         this.technicians = response.data.technicians;
                         this.invoices = response.data.invoices;
                         this.invoice_details = response.data.invoice_details;

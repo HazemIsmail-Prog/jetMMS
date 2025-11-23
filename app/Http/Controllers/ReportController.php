@@ -15,6 +15,8 @@ use App\Http\Resources\AccountResource;
 use App\Http\Resources\UserResource;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DailyReviewExport;
+use App\Models\IncomeInvoice;
+use App\Models\OtherIncomeCategory;
 
 class ReportController extends Controller
 {
@@ -234,7 +236,17 @@ class ReportController extends Controller
                 ->whereNull('voucher_details.deleted_at')
                 ->get();
 
+            $income_invoices = IncomeInvoice::query()
+                ->select('other_income_category_id', DB::raw('SUM(amount) as total_amount'))
+                ->whereDate('date', '>=', $request->start_date)
+                ->whereDate('date', '<=', $request->end_date)
+                ->groupBy('other_income_category_id')
+                ->get()->toArray();
+
+                // dd($income_invoices);
+
             return response()->json([
+                'income_invoices' => $income_invoices,
                 'departments' => $departments,
                 'titles' => $titles,
                 'technicians' => UserResource::collection($technicians),
@@ -245,7 +257,9 @@ class ReportController extends Controller
             ]);
         }
 
-        return view('pages.reports.daily_review');
+        $otherIncomeCategories = OtherIncomeCategory::all();
+
+        return view('pages.reports.daily_review', compact('otherIncomeCategories'));
     }
 
     public function daily_review_exportToExcel(Request $request)

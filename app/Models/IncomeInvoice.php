@@ -35,7 +35,7 @@ class IncomeInvoice extends Model
     // get formatted date
     public function getFormattedDateAttribute()
     {
-        return $this->date->format('d-m-Y');
+        return $this->date ? $this->date->format('d-m-Y') : null;
     }
 
     public function vouchers()
