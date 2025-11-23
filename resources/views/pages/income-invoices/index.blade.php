@@ -34,6 +34,27 @@
 
     <div class="flex flex-col justify-center mb-4">
 
+        <div class="flex items-end justify-between gap-2 mb-4">
+            <div>
+                <x-label for="other_income_category_id">{{ __('messages.other_income_category') }}</x-label>
+                <!-- start area searchable select -->
+                <div 
+                    x-data="{
+                        items:otherIncomeCategories,
+                        selectedItemIds:filters.other_income_category_ids,
+                        placeholder: '{{ __('messages.search') }}'
+                    }"
+                    x-model="selectedItemIds"
+                    x-modelable="filters.other_income_category_ids"
+                >
+                    <x-multipule-searchable-select />
+                </div>
+            </div>
+            <x-button @click="getEmptyFilters">
+                {{__('messages.reset_filters')}}
+            </x-button>
+        </div>
+
 
         <x-table>
             <x-thead>
@@ -133,11 +154,21 @@
                 otherIncomeCategories: @js($otherIncomeCategories),
                 bankAccounts: @js($bankAccounts),
                 incomeInvoices: [],
+                filters: {},
                 currentPage: 1,
                 lastPage: 1,
                 init() {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
-                    this.getIncomeInvoices();
+                    this.getEmptyFilters();
+                    this.$watch('filters', () => {
+                        this.getIncomeInvoices(1);
+                    });
+                },
+
+                getEmptyFilters() {
+                    this.filters = {
+                        other_income_category_ids: [],
+                    };
                 },
 
                 getTotals() {
@@ -205,7 +236,9 @@
                 },
 
                 getIncomeInvoices(page=1) {
-                    axios.get('/income-invoices?page=' + page)
+                    axios.get('/income-invoices?page=' + page, {
+                        params: this.filters
+                    })
                         .then(response => {
                             if (page === 1) {
                                 this.incomeInvoices = [];

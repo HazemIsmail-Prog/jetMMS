@@ -24,6 +24,9 @@ class IncomeInvoiceController extends Controller
                 ->with('attachments')
                 ->with('creator')
                 ->withCount('attachments')
+                ->when(request()->has('other_income_category_ids'), function ($query) {
+                    $query->whereIn('other_income_category_id', request()->other_income_category_ids);
+                })
                 ->paginate(10);
             return response()->json([
                 'data' => $incomeInvoices->items(),
