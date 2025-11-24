@@ -312,17 +312,15 @@ Route::middleware([
             Route::get('accounts', AccountIndex::class)
                 ->name('account.index')
                 ->can('viewAny', Account::class);
-            Route::get('accounts/reports/daily_review/exportToExcel', [ReportController::class, 'daily_review_exportToExcel'])->can('daily_review_report', DummyModel::class);
 
-            Route::get('accounts/reports/daily_review', [ReportController::class, 'daily_review'])
-                ->name('daily_review')
-                ->can('daily_review_report', DummyModel::class)
-                ;
+            Route::controller(ReportController::class)->group(function () {
+                Route::get('accounts/reports/daily_review/exportToExcel', 'daily_review_exportToExcel')->can('daily_review_report', DummyModel::class);
+                Route::get('accounts/reports/daily_review', 'daily_review')->can('daily_review_report', DummyModel::class)->name('daily_review');
+                Route::get('accounts/reports/trial_balance', 'trial_balance')->can('trial_balance_report', DummyModel::class)->name('trial_balance');
 
-            // Route::get('accounts/reports/daily_review', DailyReview::class)
-            //     ->name('daily_review')
-            //     ->can('daily_review_report', DummyModel::class)
-            //     ;
+                Route::get('invoices/report', 'invoices')->name('invoice.report');
+                Route::get('invoices/report/getData', 'getData');
+            });
 
             Route::get('accounts/reports/collection_statement', CollectionStatement::class)
                 ->name('collection_statement')
@@ -356,21 +354,9 @@ Route::middleware([
                 ->name('balance_sheet')
                 ->can('balance_sheet_report', DummyModel::class);
 
-
-            Route::get('accounts/reports/trial_balance', [ReportController::class, 'trial_balance'])
-                ->name('trial_balance');
-
-            // Route::get('accounts/reports/trial_balance', TrialBalance::class)
-            //     ->name('trial_balance')
-            //     ->can('trial_balance_report', DummyModel::class);
-
             Route::get('accounts/reports/profit_loss', [ProfitLossController::class, 'index']) // TODO:change class to its new page
                 ->name('profit_loss')
                 ->can('profit_loss_report', DummyModel::class);
-
-            // Invoices
-            Route::get('invoices/report',[ReportController::class, 'invoices'])->name('invoice.report');
-            Route::get('invoices/report/getData',[ReportController::class, 'getData']);
 
             // new routes for Alpine JS Version
             Route::get('invoices/exportToExcel', [InvoiceController::class, 'exportToExcel']);
