@@ -215,5 +215,35 @@ class VoucherController extends Controller
         return VoucherDetailResource::collection($voucher_details);
     }
 
+    public function destroy(Voucher $voucher)
+    {
+        // check if auth user has permission to delete voucher
+        if(!auth()->user()->hasPermission('journal_vouchers_delete')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
 
+        // check if voucher type is jv
+        if($voucher->type->value != 'jv') {
+            return response()->json(['error' => 'Journal vouchers can only be deleted via journal'], 400);
+        }
+
+        // check if voucher has attachments
+        if($voucher->attachments->count() > 0) {
+            return response()->json(['error' => 'Voucher has attachments'], 400);
+        }
+
+        $old_voucher = $voucher->load('voucherDetails')->toArray();
+        DB::beginTransaction();
+        try {
+            $voucher->voucherDetails()->forceDelete();
+            $voucher->attachments()->forceDelete();
+            $voucher->forceDelete();
+            DB::commit();
+            ActionsLog::logAction('Voucher', 'Delete', $old_voucher['id'], 'Voucher deleted successfully',[], $old_voucher);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        return response()->json(['message' => 'Voucher deleted successfully']);
+    }
 }

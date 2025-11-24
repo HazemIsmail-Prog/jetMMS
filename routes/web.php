@@ -374,6 +374,7 @@ Route::middleware([
             Route::post('vouchers', [VoucherController::class,'store']);
             Route::put('vouchers/{voucher}', [VoucherController::class,'update']);
             Route::get('getVoucherDetails/{voucher}', [VoucherController::class,'getVoucherDetails']);
+            Route::delete('vouchers/{voucher}', [VoucherController::class,'destroy']);
 
             // Vouchers (old with Livewire)
             // Route::get('vouchers', VoucherIndex::class)
