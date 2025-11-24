@@ -884,4 +884,7 @@ return [
     "bank_account" => "حساب البنك",
     "created_by" => "انشئ بواسطة",
     "income_report" => "تقرير الإيرادات",
+    "total_credit" => "اجمالي الايرادات",
+    "total_debit" => "اجمالي المصروفات",
+    "total_income" => "اجمالي الإيرادات",
 ];

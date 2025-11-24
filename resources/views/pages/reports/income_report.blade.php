@@ -35,28 +35,28 @@
             <x-thead>
                 <tr>
                     <x-th>{{ __('messages.department') }}</x-th>
+                    <x-th>{{ __('messages.total_credit') }}</x-th>
+                    <x-th>{{ __('messages.total_debit') }}</x-th>
                     <x-th>{{__('messages.total_income')}}</x-th>
 
                 </tr>
             </x-thead>
             <tbody>
-                <template x-for="department in departments" :key="department.id">
-                    <x-tr x-show="getDepartmentTotals(department.id).total > 0">
-                        <x-td x-text="department.name"></x-td>
-                        <x-td x-text="formatNumber(getDepartmentTotals(department.id).total)"></x-td>
-                    </x-tr>
-                </template>
-                <template x-for="incomeInvoice in incomeInvoices" :key="incomeInvoice.other_income_category_id">
+                <template x-for="voucherDetail in voucherDetails" :key="voucherDetail.account_id">
                     <x-tr>
-                        <x-td x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></x-td>
-                        <x-td x-text="formatNumber(incomeInvoice.total_amount)"></x-td>
+                        <x-td x-text="getOtherIncomeCategoryNameByIncomeAccountId(voucherDetail.account_id) || getDepartmentNameByIncomeAccountId(voucherDetail.account_id)"></x-td>
+                        <x-td x-text="formatNumber(voucherDetail.total_credit)"></x-td>
+                        <x-td x-text="formatNumber(voucherDetail.total_debit)"></x-td>
+                        <x-td x-text="formatNumber(voucherDetail.total_credit - voucherDetail.total_debit)"></x-td>
                     </x-tr>
                 </template>
             </tbody>
             <x-tfoot>
                 <tr>
                     <x-th>{{ __('messages.total') }}</x-th>
-                    <x-th x-text="formatNumber(getPageTotal())"></x-th>
+                    <x-th x-text="formatNumber(getPageTotal().total_credit)"></x-th>
+                    <x-th x-text="formatNumber(getPageTotal().total_debit)"></x-th>
+                    <x-th x-text="formatNumber(getPageTotal().total_income)"></x-th>
                 </tr>
             </x-tfoot>
         </x-table>
@@ -69,12 +69,11 @@
 <script>
     function incomeReport() {
         return {
-            otherIncomeCategories:@js($otherIncomeCategories),
-            departments:@js($departments),
+            otherIncomeCategories:[],
+            departments:[],
             isloading: false,
             exporting: false,
-            incomeInvoices:[],
-            departmentInvoices:[],
+            voucherDetails:[],
             start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
             end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
             numberFormatter: new Intl.NumberFormat('en-US', {
@@ -87,47 +86,27 @@
             },
 
             getPageTotal() {
-                let invoice_detail = 0;
-                let invoice_part_detail = 0;
-                let delivery = 0;
-                let discount = 0;
-                this.departmentInvoices.forEach(invoice => {
-                    invoice_detail += parseFloat(invoice.invoice_details_total_amount || 0);
-                    invoice_part_detail += parseFloat(invoice.invoice_part_details_total_amount || 0);
-                    delivery += parseFloat(invoice.delivery || 0);
-                    discount += parseFloat(invoice.discount || 0);
-                });
-                let total = invoice_detail + invoice_part_detail + delivery - discount;
-                this.incomeInvoices.forEach(incomeInvoice => {
-                    total += parseFloat(incomeInvoice.total_amount || 0);
-                });
-                return total;
-            },
-
-            getOtherIncomeCategoryNameById(id) {
-                return this.otherIncomeCategories.find(otherIncomeCategory => otherIncomeCategory.id === id)?.name;
-            },
-
-            getDepartmentTotals(departmentId) {
-                let invoice_detail = 0;
-                let invoice_part_detail = 0;
-                let delivery = 0;
-                let discount = 0;
-                this.departmentInvoices.forEach(invoice => {
-                    if(invoice.department_id === departmentId){
-                        invoice_detail += parseFloat(invoice.invoice_details_total_amount || 0);
-                        invoice_part_detail += parseFloat(invoice.invoice_part_details_total_amount || 0);
-                        delivery += parseFloat(invoice.delivery || 0);
-                        discount += parseFloat(invoice.discount || 0);
-                    }
+                let total_credit = 0;
+                let total_debit = 0;
+                let total_income = 0;
+                this.voucherDetails.forEach(voucherDetail => {
+                    total_credit += parseFloat(voucherDetail.total_credit || 0);
+                    total_debit += parseFloat(voucherDetail.total_debit || 0);
+                    total_income += parseFloat(voucherDetail.total_credit - voucherDetail.total_debit || 0);
                 });
                 return {
-                    invoice_detail: invoice_detail,
-                    invoice_part_detail: invoice_part_detail,
-                    delivery: delivery,
-                    discount: discount,
-                    total: invoice_detail + invoice_part_detail + delivery - discount
+                    total_credit: total_credit,
+                    total_debit: total_debit,
+                    total_income: total_income
                 };
+            },
+
+            getOtherIncomeCategoryNameByIncomeAccountId(incomeAccountId) {
+                return this.otherIncomeCategories.find(otherIncomeCategory => otherIncomeCategory.income_account_id === incomeAccountId)?.name;
+            },
+
+            getDepartmentNameByIncomeAccountId(incomeAccountId) {
+                return this.departments.find(department => department.income_account_id === incomeAccountId)?.name;
             },
 
             fetchData() {
@@ -142,8 +121,9 @@
                         }
                     })
                     .then((response) => {
-                        this.incomeInvoices = response.data.income_invoices;
-                        this.departmentInvoices = response.data.department_invoices;
+                        this.voucherDetails = response.data.voucher_details;
+                        this.otherIncomeCategories = response.data.otherIncomeCategories;
+                        this.departments = response.data.departments;
                     })
                     .catch((error) => {
                         alert(error.response.data.message);
@@ -154,7 +134,6 @@
             },
 
             formatNumber(value) {
-                // return value;
                 if(value === 0){
                     return '-';
                 }

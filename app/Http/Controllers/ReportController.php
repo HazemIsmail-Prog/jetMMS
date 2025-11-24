@@ -420,48 +420,39 @@ class ReportController extends Controller
 
     public function income_report(Request $request)
     {
+
         abort_if(!auth()->user()->hasPermission('income_report'), 403);
 
         if($request->wantsJson()){
 
-            $department_invoices = Invoice::query()
-                ->leftJoin('orders', 'orders.id', '=', 'invoices.order_id')
-                ->leftJoin('invoice_details', 'invoice_details.invoice_id', '=', 'invoices.id')
-                ->leftJoin('invoice_part_details', 'invoice_part_details.invoice_id', '=', 'invoices.id')
-                ->select(
-                    'invoices.id', 
-                    'invoices.created_at', 
-                    'invoices.delivery', 
-                    'invoices.discount', 
-                    'orders.department_id', 
-                    DB::raw('SUM(invoice_details.quantity * invoice_details.price) as invoice_details_total_amount'),
-                    DB::raw('SUM(invoice_part_details.quantity * invoice_part_details.price) as invoice_part_details_total_amount')
-                )
-                ->whereDate('invoices.created_at', '>=', $request->start_date)
-                ->whereDate('invoices.created_at', '<=', $request->end_date)
-                ->whereNull('invoices.deleted_at')
-                ->groupBy('invoices.id', 'invoices.created_at', 'invoices.delivery', 'invoices.discount', 'orders.department_id')
-                ->get()->toArray();
+            $otherIncomeCategories = OtherIncomeCategory::all();
+            $departments = Department::query()
+                ->where('is_service', true)
+                ->get()
+            ;
 
-            $income_invoices = IncomeInvoice::query()
-                ->select('other_income_category_id', DB::raw('SUM(amount) as total_amount'))
-                ->whereDate('date', '>=', $request->start_date)
-                ->whereDate('date', '<=', $request->end_date)
-                ->groupBy('other_income_category_id')
-                ->get()->toArray();
+            $other_income_categories_account_ids = $otherIncomeCategories->pluck('income_account_id');
+            $departments_account_ids = $departments->pluck('income_account_id');
+            $income_account_ids = $other_income_categories_account_ids->merge($departments_account_ids)->unique()->values()->all();
+        
+            $voucher_details = VoucherDetail::query()
+                ->whereIn('account_id', $income_account_ids)
+                ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
+                ->whereDate('vouchers.date', '>=', $request->start_date)
+                ->whereDate('vouchers.date', '<=', $request->end_date)
+                ->whereNull('voucher_details.deleted_at')
+                ->select('voucher_details.account_id', DB::raw('SUM(voucher_details.debit) as total_debit'), DB::raw('SUM(voucher_details.credit) as total_credit'))
+                ->groupBy('voucher_details.account_id')
+                ->get();
 
             return response()->json([
-                'department_invoices' => $department_invoices,
-                'income_invoices' => $income_invoices,
+                'voucher_details' => $voucher_details,
+                'otherIncomeCategories' => $otherIncomeCategories,
+                'departments' => $departments,
             ]);
         }
 
-        $otherIncomeCategories = OtherIncomeCategory::all();
-        $departments = Department::query()
-            ->where('is_service', true)
-            ->get()
-        ;
 
-        return view('pages.reports.income_report', compact('otherIncomeCategories', 'departments'));
+        return view('pages.reports.income_report');
     }
 }
