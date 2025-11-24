@@ -417,4 +417,51 @@ class ReportController extends Controller
         return Excel::download(new DailyReviewExport('excels.daily-review', 'DailyReview', $data), 'DailyReview.xlsx');  //Excel
 
     }
+
+    public function income_report(Request $request)
+    {
+        abort_if(!auth()->user()->hasPermission('income_report'), 403);
+
+        if($request->wantsJson()){
+
+            $department_invoices = Invoice::query()
+                ->leftJoin('orders', 'orders.id', '=', 'invoices.order_id')
+                ->leftJoin('invoice_details', 'invoice_details.invoice_id', '=', 'invoices.id')
+                ->leftJoin('invoice_part_details', 'invoice_part_details.invoice_id', '=', 'invoices.id')
+                ->select(
+                    'invoices.id', 
+                    'invoices.created_at', 
+                    'invoices.delivery', 
+                    'invoices.discount', 
+                    'orders.department_id', 
+                    DB::raw('SUM(invoice_details.quantity * invoice_details.price) as invoice_details_total_amount'),
+                    DB::raw('SUM(invoice_part_details.quantity * invoice_part_details.price) as invoice_part_details_total_amount')
+                )
+                ->whereDate('invoices.created_at', '>=', $request->start_date)
+                ->whereDate('invoices.created_at', '<=', $request->end_date)
+                ->whereNull('invoices.deleted_at')
+                ->groupBy('invoices.id', 'invoices.created_at', 'invoices.delivery', 'invoices.discount', 'orders.department_id')
+                ->get()->toArray();
+
+            $income_invoices = IncomeInvoice::query()
+                ->select('other_income_category_id', DB::raw('SUM(amount) as total_amount'))
+                ->whereDate('date', '>=', $request->start_date)
+                ->whereDate('date', '<=', $request->end_date)
+                ->groupBy('other_income_category_id')
+                ->get()->toArray();
+
+            return response()->json([
+                'department_invoices' => $department_invoices,
+                'income_invoices' => $income_invoices,
+            ]);
+        }
+
+        $otherIncomeCategories = OtherIncomeCategory::all();
+        $departments = Department::query()
+            ->where('is_service', true)
+            ->get()
+        ;
+
+        return view('pages.reports.income_report', compact('otherIncomeCategories', 'departments'));
+    }
 }

@@ -883,4 +883,5 @@ return [
     "edit_income_payment" => "تعديل دفعة إيراد",
     "bank_account" => "حساب البنك",
     "created_by" => "انشئ بواسطة",
+    "income_report" => "تقرير الإيرادات",
 ];

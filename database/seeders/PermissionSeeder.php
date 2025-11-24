@@ -203,6 +203,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'income_invoices_payments_create',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'اضافة دفعة فواتير الايراد',              'desc_en' => 'Income Invoices Payments Menu'],
             ['name' => 'income_invoices_payments_edit',          'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'تعديل دفعة فواتير الايراد',              'desc_en' => 'Income Invoices Payments Menu'],
             ['name' => 'income_invoices_payments_delete',        'section_name_ar' => 'فواتير الايراد',        'section_name_en' => 'income_invoices',                   'desc_ar' => 'حذف دفعة فواتير الايراد',                'desc_en' => 'Income Invoices Payments Menu'],
+
+            // Income Report
+            ['name' => 'income_report',          'section_name_ar' => 'التقارير',        'section_name_en' => 'reports',                   'desc_ar' => 'عرض تقرير الايرادات',    'desc_en' => 'view income report'],
         ];
 
         foreach ($permissions as $permission) {

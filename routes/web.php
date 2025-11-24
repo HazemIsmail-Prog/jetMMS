@@ -314,6 +314,7 @@ Route::middleware([
                 ->can('viewAny', Account::class);
 
             Route::controller(ReportController::class)->group(function () {
+                Route::get('accounts/reports/income_report', 'income_report')->name('income_report');
                 Route::get('accounts/reports/daily_review/exportToExcel', 'daily_review_exportToExcel')->can('daily_review_report', DummyModel::class);
                 Route::get('accounts/reports/daily_review', 'daily_review')->can('daily_review_report', DummyModel::class)->name('daily_review');
                 Route::get('accounts/reports/trial_balance', 'trial_balance')->can('trial_balance_report', DummyModel::class)->name('trial_balance');

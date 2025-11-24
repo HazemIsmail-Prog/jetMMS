@@ -133,6 +133,9 @@
             @endif
             @can('accounting_reports', App\Models\DummyModel::class)
                 <x-sidebar-dropdown title="{{ __('messages.reports') }}" icon="chart-bar">
+                    @if(auth()->user()->hasPermission('income_report'))
+                        <x-nested-sidebar-item route="income_report" :title="__('messages.income_report')" />
+                    @endif
                     @can('daily_review_report', App\Models\DummyModel::class)
                         <x-nested-sidebar-item route="daily_review" :title="__('messages.daily_review')" />
                     @endcan
