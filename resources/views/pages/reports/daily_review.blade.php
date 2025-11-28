@@ -44,7 +44,7 @@
 
             <!-- departments -->
             <template x-for="department in departments" :key="department.id">
-                <div class="my-5" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.visible).length > 0">
+                <div class="my-5" x-show="getDepartmentTotal(department.id).visible">
                     <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100" x-text="department.name"></h3>
                 
                     <!-- header -->
@@ -71,30 +71,30 @@
 
                     <!-- technicians -->
                     <template x-for="title in titles" :key="title.id">
-                        <div>
-                            <template x-for="technician in preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id)" :key="technician.id">
-                                <div class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit" x-show="technician.visible">
+                        <div x-show="getTitleTotals(department.id, title.id).visible">
+                            <template x-for="technician in getTechniciansSortedByName(department.id, title.id)" :key="technician.id">
+                                <div class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit">
                                     <div  class="table-cell w-[300px]" x-text="technician.name"></div>
-                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.invoice_total)"></div>
-                                    <div  class="table-cell w-[150px]" x-bind:class="technician.internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.invoices_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.internal_parts_account_total)" x-bind:class="technician.internal_parts_account_total < 0 ? '!text-red-500' : ''"></div>
                                     <div  class="table-cell w-[150px]" x-text="formatNumber(technician.services_vouchers_total)"></div>
                                     <div  class="table-cell w-[150px]" x-text="formatNumber(technician.parts_vouchers_total)"></div>
                                     <div  class="table-cell w-[150px]" x-text="formatNumber(technician.delivery_vouchers_total)"></div>
-                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.income_vouchers_total)"></div>
-                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.cost_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.income_account_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.cost_account_total)"></div>
                                 </div>
                             </template>
 
                             <!-- title -->
-                            <div class="flex gap-1 mb-1 divider-row mb-1 w-fit" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id && technician.visible).length > 0">
+                            <div class="flex gap-1 mb-1 divider-row mb-1 w-fit">
                                 <div class="table-cell w-[300px]" x-text="title.name_ar"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).invoice_total)"></div>
-                                <div class="table-cell w-[150px]" x-bind:class="getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total)"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).services_vouchers_total)"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).parts_vouchers_total)"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).delivery_vouchers_total)"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).income_vouchers_total)"></div>
-                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).cost_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).invoices_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).internal_parts_account_total)" x-bind:class="getTitleTotals(department.id, title.id).internal_parts_account_total < 0 ? '!text-red-500' : ''"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).services_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).parts_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).delivery_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).income_account_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getTitleTotals(department.id, title.id).cost_account_total)"></div>
                             </div>
                         </div>
                     </template>
@@ -102,13 +102,13 @@
                     <!-- department footer -->
                     <div class="flex gap-1 footer-row mb-1 w-fit">
                         <div class="table-cell w-[300px]">{{ __('messages.total') }}</div>
-                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).invoice_total)"></div>
-                        <div class="table-cell w-[150px]" x-bind:class="getDepartmentTotal(department.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).invoices_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_account_total)" x-bind:class="getDepartmentTotal(department.id).internal_parts_account_total < 0 ? '!text-red-500' : ''"></div>
                         <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).services_vouchers_total)"></div>
                         <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).parts_vouchers_total)"></div>
                         <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).delivery_vouchers_total)"></div>
-                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).income_vouchers_total)"></div>
-                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).cost_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).income_account_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).cost_account_total)"></div>
                     </div>
 
 
@@ -174,13 +174,13 @@
             <!-- page total -->
             <div class="flex gap-1 footer-row mb-1 w-fit">
                 <div class="table-cell w-[300px]">{{ __('messages.total') }}</div>
-                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().invoice_total + getOtherIncomeCategoryTotal())"></div>
-                <div class="table-cell w-[150px]" x-bind:class="getPageTotal().internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().invoices_total + getOtherIncomeCategoryTotal())"></div>
+                <div class="table-cell w-[150px]" x-bind:class="getPageTotal().internal_parts_account_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_account_total)"></div>
                 <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().services_vouchers_total)"></div>
                 <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().parts_vouchers_total)"></div>
                 <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().delivery_vouchers_total)"></div>
-                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().income_vouchers_total + getOtherIncomeCategoryTotal())"></div>
-                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().cost_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().income_account_total + getOtherIncomeCategoryTotal())"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().cost_account_total)"></div>
             </div>
 
         </div>
@@ -200,13 +200,7 @@
             departments:[],
             titles:[],
             technicians:[],
-            invoices:[],
-            invoice_details:[],
-            invoice_part_details:[],
             voucher_details:[],
-            preparedTechniciansData:[],
-            // start_date: '2024-08-18', // yesterday date
-            // end_date: '2024-08-18',
             start_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0], // yesterday date
             end_date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
             numberFormatter: new Intl.NumberFormat('en-US', {
@@ -218,25 +212,14 @@
                 this.fetchData()
             },
 
-            getOtherIncomeCategoryNameById(id) {
-                return this.otherIncomeCategories.find(otherIncomeCategory => otherIncomeCategory.id === id)?.name;
-            },
-
-            getOtherIncomeCategoryTotal(){
-                return this.incomeInvoices.reduce((total, incomeInvoice) => total + parseFloat(incomeInvoice.total_amount), 0);
-            },
-
             fetchData() {
                 this.isloading = true;
                 this.exporting = false;
                 this.departments = [];
+                this.titles = [];
                 this.incomeInvoices = [];
                 this.technicians = [];
-                this.invoices = [];
-                this.invoice_details = [];
-                this.invoice_part_details = [];
                 this.voucher_details = [];
-                this.preparedTechniciansData = [];
                 axios.get('/accounts/reports/daily_review', {
                         params: {
                             start_date: this.start_date,
@@ -248,11 +231,7 @@
                         this.titles = response.data.titles;
                         this.incomeInvoices = response.data.income_invoices;
                         this.technicians = response.data.technicians;
-                        this.invoices = response.data.invoices;
-                        this.invoice_details = response.data.invoice_details;
-                        this.invoice_part_details = response.data.invoice_part_details;
                         this.voucher_details = response.data.voucher_details;
-                        this.preparedTechniciansData = this.getPreparedTechniciansData();
                     })
                     .catch((error) => {
                         alert(error.response.data.message);
@@ -262,140 +241,112 @@
                     });
             },
 
-            getDepartmentTechnicians(departmentId){
-                return this.technicians.filter(technician => technician.department_id === departmentId);
+            getTechniciansSortedByName(departmentId, titleId) {
+                return this.technicians
+                    .filter(technician => technician.department_id === departmentId && technician.title_id === titleId)
+                    .sort((a, b) => {
+                        const nameA = a.name ?? '';
+                        const nameB = b.name ?? '';
+                        return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+                    });
+            },
+
+            getTitleTotals(departmentId, titleId) {
+                let invoices_total = 0;
+                let services_vouchers_total = 0;
+                let parts_vouchers_total = 0;
+                let delivery_vouchers_total = 0;
+                let income_account_total = 0;
+                let cost_account_total = 0;
+                let internal_parts_account_total = 0;
+
+                title_data = this.technicians.filter(technician => technician.department_id === departmentId && technician.title_id === titleId);
+
+                invoices_total = title_data.reduce((total, technician) => total + technician.invoices_total, 0);
+                services_vouchers_total = title_data.reduce((total, technician) => total + technician.services_vouchers_total, 0);
+                parts_vouchers_total = title_data.reduce((total, technician) => total + technician.parts_vouchers_total, 0);
+                delivery_vouchers_total = title_data.reduce((total, technician) => total + technician.delivery_vouchers_total, 0);
+                income_account_total = title_data.reduce((total, technician) => total + technician.income_account_total, 0);
+                cost_account_total = title_data.reduce((total, technician) => total + technician.cost_account_total, 0);
+                internal_parts_account_total = title_data.reduce((total, technician) => total + technician.internal_parts_account_total, 0);
+
+                return {
+                    invoices_total: invoices_total,
+                    services_vouchers_total: services_vouchers_total,
+                    parts_vouchers_total: parts_vouchers_total,
+                    delivery_vouchers_total: delivery_vouchers_total,
+                    income_account_total: income_account_total,
+                    cost_account_total: cost_account_total,
+                    internal_parts_account_total: internal_parts_account_total,
+                    visible: invoices_total + services_vouchers_total + parts_vouchers_total + delivery_vouchers_total + income_account_total + cost_account_total + internal_parts_account_total !== 0,
+                };
+            },
+
+            getDepartmentTotal(departmentId) {
+                let invoices_total = 0;
+                let services_vouchers_total = 0;
+                let parts_vouchers_total = 0;
+                let delivery_vouchers_total = 0;
+                let income_account_total = 0;
+                let cost_account_total = 0;
+                let internal_parts_account_total = 0;
+
+                department_data = this.technicians.filter(technician => technician.department_id === departmentId);
+                
+                invoices_total = department_data.reduce((total, technician) => total + technician.invoices_total, 0);
+                services_vouchers_total = department_data.reduce((total, technician) => total + technician.services_vouchers_total, 0);
+                parts_vouchers_total = department_data.reduce((total, technician) => total + technician.parts_vouchers_total, 0);
+                delivery_vouchers_total = department_data.reduce((total, technician) => total + technician.delivery_vouchers_total, 0);
+                income_account_total = department_data.reduce((total, technician) => total + technician.income_account_total, 0);
+                cost_account_total = department_data.reduce((total, technician) => total + technician.cost_account_total, 0);
+                internal_parts_account_total = department_data.reduce((total, technician) => total + technician.internal_parts_account_total, 0);
+                
+                return {
+                    invoices_total: invoices_total,
+                    services_vouchers_total: services_vouchers_total,
+                    parts_vouchers_total: parts_vouchers_total,
+                    delivery_vouchers_total: delivery_vouchers_total,
+                    income_account_total: income_account_total,
+                    cost_account_total: cost_account_total,
+                    internal_parts_account_total: internal_parts_account_total,
+                    visible: invoices_total + services_vouchers_total + parts_vouchers_total + delivery_vouchers_total + income_account_total + cost_account_total + internal_parts_account_total !== 0,
+                };
+            },
+
+            getOtherIncomeCategoryNameById(id) {
+                return this.otherIncomeCategories.find(otherIncomeCategory => otherIncomeCategory.id === id)?.name;
+            },
+
+            getOtherIncomeCategoryTotal(){
+                return this.incomeInvoices.reduce((total, incomeInvoice) => total + parseFloat(incomeInvoice.total_amount), 0);
             },
 
             getPageTotal(){
-                let totals = {
-                    invoice_total: 0,
-                    services_vouchers_total: 0,
-                    parts_vouchers_total: 0,
-                    delivery_vouchers_total: 0,
-                    income_vouchers_total: 0,
-                    cost_vouchers_total: 0,
-                    internal_parts_vouchers_total: 0,
+                let invoices_total = 0;
+                let services_vouchers_total = 0;
+                let parts_vouchers_total = 0;
+                let delivery_vouchers_total = 0;
+                let income_account_total = 0;
+                let cost_account_total = 0;
+                let internal_parts_account_total = 0;
+
+                invoices_total = this.technicians.reduce((total, technician) => total + technician.invoices_total, 0);
+                services_vouchers_total = this.technicians.reduce((total, technician) => total + technician.services_vouchers_total, 0);
+                parts_vouchers_total = this.technicians.reduce((total, technician) => total + technician.parts_vouchers_total, 0);
+                delivery_vouchers_total = this.technicians.reduce((total, technician) => total + technician.delivery_vouchers_total, 0);
+                income_account_total = this.technicians.reduce((total, technician) => total + technician.income_account_total, 0);
+                cost_account_total = this.technicians.reduce((total, technician) => total + technician.cost_account_total, 0);
+                internal_parts_account_total = this.technicians.reduce((total, technician) => total + technician.internal_parts_account_total, 0);
+
+                return {
+                    invoices_total: invoices_total,
+                    services_vouchers_total: services_vouchers_total,
+                    parts_vouchers_total: parts_vouchers_total,
+                    delivery_vouchers_total: delivery_vouchers_total,
+                    income_account_total: income_account_total,
+                    cost_account_total: cost_account_total,
+                    internal_parts_account_total: internal_parts_account_total,
                 };
-                this.preparedTechniciansData.forEach(technician => {
-                    totals.invoice_total += technician.invoice_total;
-                    totals.services_vouchers_total += technician.services_vouchers_total;
-                    totals.parts_vouchers_total += technician.parts_vouchers_total;
-                    totals.delivery_vouchers_total += technician.delivery_vouchers_total;
-                    totals.income_vouchers_total += technician.income_vouchers_total;
-                    totals.cost_vouchers_total += technician.cost_vouchers_total;
-                    totals.internal_parts_vouchers_total += technician.internal_parts_vouchers_total;
-                });
-                return totals;
-            },
-
-            getDepartmentTotal(departmentId){
-                let totals = {
-                    invoice_total: 0,
-                    services_vouchers_total: 0,
-                    parts_vouchers_total: 0,
-                    delivery_vouchers_total: 0,
-                    income_vouchers_total: 0,
-                    cost_vouchers_total: 0,
-                    internal_parts_vouchers_total: 0,
-                };
-                this.preparedTechniciansData.forEach(technician => {
-                    if(technician.department_id === departmentId){
-                        totals.invoice_total += technician.invoice_total;
-                        totals.services_vouchers_total += technician.services_vouchers_total;
-                        totals.parts_vouchers_total += technician.parts_vouchers_total;
-                        totals.delivery_vouchers_total += technician.delivery_vouchers_total;
-                        totals.income_vouchers_total += technician.income_vouchers_total;
-                        totals.cost_vouchers_total += technician.cost_vouchers_total;
-                        totals.internal_parts_vouchers_total += technician.internal_parts_vouchers_total;
-                    }
-                });
-                return totals;
-            },
-
-
-            getDepartmentTotalByTitle(departmentId, titleId){
-                let totals = {
-                    invoice_total: 0,
-                    services_vouchers_total: 0,
-                    parts_vouchers_total: 0,
-                    delivery_vouchers_total: 0,
-                    income_vouchers_total: 0,
-                    cost_vouchers_total: 0,
-                    internal_parts_vouchers_total: 0,
-                };
-                this.preparedTechniciansData.forEach(technician => {
-                    if(technician.department_id === departmentId && technician.title_id === titleId){
-                        totals.invoice_total += technician.invoice_total;
-                        totals.services_vouchers_total += technician.services_vouchers_total;
-                        totals.parts_vouchers_total += technician.parts_vouchers_total;
-                        totals.delivery_vouchers_total += technician.delivery_vouchers_total;
-                        totals.income_vouchers_total += technician.income_vouchers_total;
-                        totals.cost_vouchers_total += technician.cost_vouchers_total;
-                        totals.internal_parts_vouchers_total += technician.internal_parts_vouchers_total;
-                    }
-                });
-                return totals;
-            },
-
-
-            getPreparedTechniciansData(){
-                return this.technicians.map(technician => {
-
-
-                    const invoices = this.invoices.filter(invoice => invoice.technician_id === technician.id);
-                    const invoice_delivery = invoices.reduce((total, invoice) => total + invoice.delivery, 0);
-                    const invoice_discount = invoices.reduce((total, invoice) => total + invoice.discount, 0);
-                    const invoice_details = this.invoice_details.filter(invoice_detail => invoices.some(invoice => invoice.id === invoice_detail.invoice_id));
-                    const invoice_part_details = this.invoice_part_details.filter(invoice_part_detail => invoices.some(invoice => invoice.id === invoice_part_detail.invoice_id));
-                    const totalInvoiceDetails = invoice_details.reduce((total, invoice_detail) => total + invoice_detail.total_amount, 0);
-                    const totalInvoicePartDetails = invoice_part_details.reduce((total, invoice_part_detail) => total + invoice_part_detail.total_amount, 0);
-                    const invoice_total = totalInvoiceDetails + totalInvoicePartDetails + invoice_delivery - invoice_discount;
-
-
-
-                    const income_account_id = this.departments.find(d => d.id === technician.department_id).income_account_id;
-                    const cost_account_id = this.departments.find(d => d.id === technician.department_id).cost_account_id;
-                    const internal_parts_account_id = this.departments.find(d => d.id === technician.department_id).internal_parts_account_id;
-                    const vouchers = this.voucher_details.filter(voucher => voucher.user_id === technician.id);
-                    const services_vouchers_total = vouchers
-                        .filter(voucher => voucher.cost_center_id === 1)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-                    const parts_vouchers_total = vouchers
-                        .filter(voucher => voucher.cost_center_id === 2)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-                    const delivery_vouchers_total = vouchers
-                        .filter(voucher => voucher.cost_center_id === 3)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-
-                    const income_vouchers_total = vouchers
-                        .filter(voucher => voucher.account_id === income_account_id)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-
-                    const cost_vouchers_total = vouchers
-                        .filter(voucher => voucher.account_id === cost_account_id)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-
-                    const internal_parts_vouchers_total = vouchers
-                        .filter(voucher => voucher.account_id === internal_parts_account_id)
-                        .reduce((total, voucher) => total + (parseFloat(voucher.debit) - parseFloat(voucher.credit)), 0);
-
-                    const visible = invoice_total + services_vouchers_total + parts_vouchers_total + delivery_vouchers_total + income_vouchers_total + cost_vouchers_total + internal_parts_vouchers_total !== 0;
-
-                    return {
-                        id: technician.id,
-                        department_id: technician.department_id,
-                        name: technician.name,
-                        title_id: technician.title_id,
-                        invoice_total: Math.abs(Math.round(invoice_total * 1000) / 1000),
-                        services_vouchers_total: Math.abs(Math.round(services_vouchers_total * 1000) / 1000),
-                        parts_vouchers_total: Math.round((Math.abs(parts_vouchers_total) + internal_parts_vouchers_total) * 1000) / 1000,
-                        delivery_vouchers_total: Math.abs(Math.round(delivery_vouchers_total * 1000) / 1000),
-                        income_vouchers_total: Math.abs(Math.round(income_vouchers_total * 1000) / 1000),
-                        cost_vouchers_total: Math.abs(Math.round(cost_vouchers_total * 1000) / 1000),
-                        internal_parts_vouchers_total: Math.round(internal_parts_vouchers_total * 1000) / 1000,
-                        visible: visible,
-                    }
-                });
             },
 
             formatNumber(value) {

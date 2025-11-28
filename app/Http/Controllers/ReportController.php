@@ -164,77 +164,113 @@ class ReportController extends Controller
 
         if ($request->wantsJson()) {
 
-            // Eager load related accounts for departments to avoid N+1 in frontend
             $departments = Department::query()
                 ->where('is_service', true)
-                ->get()
-            ;
+                ->get();
 
-            // Get titles in one query, ordered
             $titles = Title::query()
                 ->whereIn('id', Title::TECHNICIANS_GROUP)
                 ->orderBy('id')
                 ->get();
 
-            // Get technicians in one query, only those in service departments and with relevant title
-            $departmentIds = $departments->pluck('id');
             $technicians = User::query()
-                ->whereIn('department_id', $departmentIds)
-                ->whereIn('title_id', Title::TECHNICIANS_GROUP)
-                ->select('id', 'department_id', 'name_ar', 'name_en', 'title_id')
-                ->get();
+            ->whereIn('users.title_id', Title::TECHNICIANS_GROUP)
+            ->join('orders', 'orders.technician_id', '=', 'users.id')
+            ->join('invoices', 'invoices.order_id', '=', 'orders.id')
+            ->whereDate('invoices.created_at', '>=', $request->start_date)
+            ->whereDate('invoices.created_at', '<=', $request->end_date)
+            ->whereNull('invoices.deleted_at')
+            ->select(
+                'users.id',
+                'users.department_id',
+                'users.name_'.app()->getLocale(),
+                'users.title_id',
+                DB::raw('COALESCE(SUM(invoices.discount), 0) as total_discount'),
+                DB::raw('COALESCE(SUM(invoices.delivery), 0) as total_delivery'),
+            )
+            ->groupBy('users.id', 'users.department_id', 'users.name_'.app()->getLocale(), 'users.title_id')
+            ->get();
 
-            // Get invoices in one query, join orders to get technician_id directly
-            $invoices = Invoice::query()
-                ->select(
-                    'invoices.id',
-                    'invoices.created_at',
-                    'invoices.delivery',
-                    'invoices.discount',
-                    'orders.technician_id'
-                )
-                ->join('orders', 'orders.id', '=', 'invoices.order_id')
-                ->whereDate('invoices.created_at', '>=', $request->start_date)
-                ->whereDate('invoices.created_at', '<=', $request->end_date)
-                ->whereNull('invoices.deleted_at')
-                ->get();
 
-            $invoiceIds = $invoices->pluck('id');
+            $invoices_details = DB::table('invoice_details')
+            ->join('invoices', 'invoice_details.invoice_id', '=', 'invoices.id')
+            ->join('orders', 'orders.id', '=', 'invoices.order_id')
+            ->join('users', 'users.id', '=', 'orders.technician_id')
+            ->whereDate('invoices.created_at', '>=', $request->start_date)
+            ->whereDate('invoices.created_at', '<=', $request->end_date)
+            ->whereNull('invoices.deleted_at')
+            ->select(
+                'orders.technician_id',
+                'orders.department_id',
+                'users.title_id',
+                DB::raw('SUM(invoice_details.quantity * invoice_details.price) as total_amount'),
+            )
+            ->groupBy('orders.technician_id', 'orders.department_id', 'users.title_id')
+            ->get();
 
-            // Get invoice_details and invoice_part_details in one query each, grouped
-            $invoice_details = DB::table('invoice_details')
-                ->select(
-                    'invoice_id',
-                    DB::raw('SUM(quantity * price) as total_amount')
-                )
-                ->whereIn('invoice_id', $invoiceIds)
-                ->whereNull('invoice_details.deleted_at')
-                ->groupBy('invoice_id')
-                ->get();
-
-            $invoice_part_details = DB::table('invoice_part_details')
-                ->select(
-                    'invoice_id',
-                    DB::raw('SUM(quantity * price) as total_amount')
-                )
-                ->whereIn('invoice_id', $invoiceIds)
-                ->groupBy('invoice_id')
-                ->get();
+            $invoices_part_details = DB::table('invoice_part_details')
+            ->join('invoices', 'invoice_part_details.invoice_id', '=', 'invoices.id')
+            ->join('orders', 'orders.id', '=', 'invoices.order_id')
+            ->join('users', 'users.id', '=', 'orders.technician_id')
+            ->whereDate('invoices.created_at', '>=', $request->start_date)
+            ->whereDate('invoices.created_at', '<=', $request->end_date)
+            ->whereNull('invoices.deleted_at')
+            ->select(
+                'orders.technician_id',
+                'orders.department_id',
+                'users.title_id',
+                DB::raw('SUM(invoice_part_details.quantity * invoice_part_details.price) as total_amount'),
+            )
+            ->groupBy('orders.technician_id', 'orders.department_id', 'users.title_id')
+            ->get();
 
             // Get voucher_details with join, only for relevant date range
             $voucher_details = DB::table('voucher_details')
-                ->select(
-                    'vouchers.id',
-                    'account_id',
-                    'cost_center_id',
-                    'user_id',
-                    'debit',
-                    'credit'
-                )
-                ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
-                ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
-                ->whereNull('voucher_details.deleted_at')
-                ->get();
+            ->join('vouchers', 'voucher_details.voucher_id', '=', 'vouchers.id')
+            ->whereBetween('vouchers.date', [$request->start_date, $request->end_date])
+            ->whereNull('voucher_details.deleted_at')
+            ->select(
+                'account_id',
+                'user_id',
+                DB::raw("SUM(CASE WHEN cost_center_id = 1 THEN debit - credit ELSE 0 END) as services_vouchers_total"),
+                DB::raw("SUM(CASE WHEN cost_center_id = 2 THEN debit - credit ELSE 0 END) as parts_vouchers_total"),
+                DB::raw("SUM(CASE WHEN cost_center_id = 3 THEN debit - credit ELSE 0 END) as delivery_vouchers_total"),
+                DB::raw("SUM(debit - credit) as total"),
+            )
+            ->groupBy('account_id', 'user_id')
+            ->get();
+
+            $technicians_data = [];
+            foreach ($technicians as $technician) {
+                $invoice_details_total = $invoices_details->where('technician_id', $technician->id)->sum('total_amount');
+                $invoice_part_details_total = $invoices_part_details->where('technician_id', $technician->id)->sum('total_amount');
+                
+                $services_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('services_vouchers_total'));
+                $parts_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('parts_vouchers_total'));
+                $delivery_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('delivery_vouchers_total'));
+
+                $income_account_id = $departments->where('id', $technician->department_id)->first()->income_account_id;
+                $cost_account_id = $departments->where('id', $technician->department_id)->first()->cost_account_id;
+                $internal_parts_account_id = $departments->where('id', $technician->department_id)->first()->internal_parts_account_id;
+
+                $income_account_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $income_account_id)->sum('total'));
+                $cost_account_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $cost_account_id)->sum('total'));
+                $internal_parts_account_total = $voucher_details->where('user_id', $technician->id)->where('account_id', $internal_parts_account_id)->sum('total');
+               
+                $technicians_data[] = [
+                    'id' => $technician->id,
+                    'department_id' => $technician->department_id,
+                    'title_id' => $technician->title_id,
+                    'name' => $technician->{'name_'.app()->getLocale()},
+                    'invoices_total' => $invoice_details_total + $invoice_part_details_total + $technician->total_delivery - $technician->total_discount,
+                    'services_vouchers_total' => $services_voucher_details_total,
+                    'parts_vouchers_total' => $parts_voucher_details_total,
+                    'delivery_vouchers_total' => $delivery_voucher_details_total,
+                    'income_account_total' => $income_account_total,
+                    'cost_account_total' => $cost_account_total,
+                    'internal_parts_account_total' => $internal_parts_account_total,
+                ];
+            }
 
             $income_invoices = IncomeInvoice::query()
                 ->select('other_income_category_id', DB::raw('SUM(amount) as total_amount'))
@@ -243,16 +279,11 @@ class ReportController extends Controller
                 ->groupBy('other_income_category_id')
                 ->get()->toArray();
 
-                // dd($income_invoices);
-
             return response()->json([
                 'income_invoices' => $income_invoices,
                 'departments' => $departments,
                 'titles' => $titles,
-                'technicians' => UserResource::collection($technicians),
-                'invoices' => $invoices,
-                'invoice_details' => $invoice_details,
-                'invoice_part_details' => $invoice_part_details,
+                'technicians' => $technicians_data,
                 'voucher_details' => $voucher_details,
             ]);
         }
