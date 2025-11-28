@@ -20,6 +20,8 @@
                 <span x-show="exporting" class="animate-pulse">{{ __('messages.loading') }}</span>
             </x-button>
         </template>
+
+        <!-- filters -->
         <div class=" flex items-center justify-between mb-3">
 
             <div class=" flex items-end gap-3 no-print">
@@ -37,133 +39,152 @@
             </div>
         </div>
 
-        <template x-for="department in departments" :key="department.id">
-            <div class="my-5" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.visible).length > 0">
-                <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100" x-text="department.name"></h3>
-                
-                <div class="rounded-lg overflow-clip">
+        <!-- data -->
+        <div class="overflow-x-scroll">
 
+            <!-- departments -->
+            <template x-for="department in departments" :key="department.id">
+                <div class="my-5" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.visible).length > 0">
+                    <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100" x-text="department.name"></h3>
+                
                     <!-- header -->
-                    <div class="grid grid-cols-12 gap-1 grid-rows-2 header-row mb-1">
-                        <div class="table-cell col-span-5 row-span-2">{{ __('messages.technician') }}</div>
-                        <div class="table-cell col-span-2 col-start-6">{{ __('messages.invoices') }}</div>
-                        <div class="table-cell col-span-3 col-start-8">{{ __('messages.cost_centers') }}</div>
-                        <div class="table-cell col-span-2 col-start-11">{{ __('messages.accounts') }}</div>
-                        <div class="table-cell col-start-6 row-start-2">{{ __('messages.amount') }}</div>
-                        <div class="table-cell col-start-7 row-start-2">{{ __('messages.parts_difference') }}</div>
-                        <div class="table-cell col-start-8 row-start-2">{{ __('messages.services') }}</div>
-                        <div class="table-cell col-start-9 row-start-2">{{ __('messages.parts') }}</div>
-                        <div class="table-cell col-start-10 row-start-2">{{ __('messages.delivery') }}</div>
-                        <div class="table-cell col-start-11 row-start-2">{{ __('messages.income_account_id') }}</div>
-                        <div class="table-cell col-start-12 row-start-2">{{ __('messages.cost_account_id') }}</div>
+                    <div class="flex gap-1 mb-1 header-row w-fit">
+                        <div class="table-cell !w-[300px]">{{ __('messages.technician') }}</div>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-1 header-row">
+                                <div class="table-cell" style="width: calc(300px + 4px);">{{ __('messages.invoices') }}</div>
+                                <div class="table-cell" style="width: calc(450px + 8px);">{{ __('messages.cost_centers') }}</div>
+                                <div class="table-cell" style="width: calc(300px + 4px);">{{ __('messages.accounts') }}</div>
+                            </div>
+                            <div class="flex items-center gap-1 header-row">
+                                <div class="table-cell w-[150px]">{{ __('messages.amount') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.parts_difference') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.services') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.parts') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.delivery') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.income_account_id') }}</div>
+                                <div class="table-cell w-[150px]">{{ __('messages.cost_account_id') }}</div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!-- technicians -->
                     <template x-for="title in titles" :key="title.id">
                         <div>
                             <template x-for="technician in preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id)" :key="technician.id">
-                                <div class="grid grid-cols-12 gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900" x-show="technician.visible">
-                                    <div  class="table-cell col-span-5" x-text="technician.name"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.invoice_total)"></div>
-                                    <div  class="table-cell" x-bind:class="technician.internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.services_vouchers_total)"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.parts_vouchers_total)"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.delivery_vouchers_total)"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.income_vouchers_total)"></div>
-                                    <div  class="table-cell" x-text="formatNumber(technician.cost_vouchers_total)"></div>
+                                <div class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit" x-show="technician.visible">
+                                    <div  class="table-cell w-[300px]" x-text="technician.name"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.invoice_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-bind:class="technician.internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(technician.internal_parts_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.services_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.parts_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.delivery_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.income_vouchers_total)"></div>
+                                    <div  class="table-cell w-[150px]" x-text="formatNumber(technician.cost_vouchers_total)"></div>
                                 </div>
                             </template>
 
                             <!-- title -->
-                            <div class="grid grid-cols-12 gap-1 divider-row mb-1" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id && technician.visible).length > 0">
-                                <div class="table-cell col-span-5" x-text="title.name_ar"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).invoice_total)"></div>
-                                <div class="table-cell" x-bind:class="getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total)"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).services_vouchers_total)"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).parts_vouchers_total)"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).delivery_vouchers_total)"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).income_vouchers_total)"></div>
-                                <div class="table-cell" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).cost_vouchers_total)"></div>
+                            <div class="flex gap-1 mb-1 divider-row mb-1 w-fit" x-show="preparedTechniciansData.filter(technician => technician.department_id === department.id && technician.title_id === title.id && technician.visible).length > 0">
+                                <div class="table-cell w-[300px]" x-text="title.name_ar"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).invoice_total)"></div>
+                                <div class="table-cell w-[150px]" x-bind:class="getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).internal_parts_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).services_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).parts_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).delivery_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).income_vouchers_total)"></div>
+                                <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotalByTitle(department.id, title.id).cost_vouchers_total)"></div>
                             </div>
                         </div>
                     </template>
 
-
                     <!-- department footer -->
-                    <div class="grid grid-cols-12 gap-1 footer-row mb-1">
-                        <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).invoice_total)"></div>
-                        <div class="table-cell" x-bind:class="getDepartmentTotal(department.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_vouchers_total)"></div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).services_vouchers_total)"></div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).parts_vouchers_total)"></div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).delivery_vouchers_total)"></div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).income_vouchers_total)"></div>
-                        <div class="table-cell" x-text="formatNumber(getDepartmentTotal(department.id).cost_vouchers_total)"></div>
+                    <div class="flex gap-1 footer-row mb-1 w-fit">
+                        <div class="table-cell w-[300px]">{{ __('messages.total') }}</div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).invoice_total)"></div>
+                        <div class="table-cell w-[150px]" x-bind:class="getDepartmentTotal(department.id).internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getDepartmentTotal(department.id).internal_parts_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).services_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).parts_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).delivery_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).income_vouchers_total)"></div>
+                        <div class="table-cell w-[150px]" x-text="formatNumber(getDepartmentTotal(department.id).cost_vouchers_total)"></div>
                     </div>
-                </div>
-            </div>
-        </template>
 
-        <div class="my-5" x-show="incomeInvoices.length > 0">
-            <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100">{{ __('messages.income_invoices') }}</h3>
-                
-            <div class="rounded-lg overflow-clip">
+
+                </div>
+            </template>
+
+            <!-- income invoices -->
+            <div class="my-5" x-show="incomeInvoices.length > 0">
+                <h3 class="mb-2 font-semibold text-xl text-gray-700 dark:text-gray-100">{{ __('messages.income_invoices') }}</h3>
+                    
                 <!-- header -->
-                <div class="grid grid-cols-12 gap-1 grid-rows-2 header-row mb-1">
-                    <div class="table-cell col-span-5 row-span-2">{{ __('messages.other_income_category') }}</div>
-                    <div class="table-cell col-span-2 col-start-6">{{ __('messages.invoices') }}</div>
-                    <div class="table-cell col-span-3 col-start-8">{{ __('messages.cost_centers') }}</div>
-                    <div class="table-cell col-span-2 col-start-11">{{ __('messages.accounts') }}</div>
-                    <div class="table-cell col-start-6 row-start-2">{{ __('messages.amount') }}</div>
-                    <div class="table-cell col-start-7 row-start-2">{{ __('messages.parts_difference') }}</div>
-                    <div class="table-cell col-start-8 row-start-2">{{ __('messages.services') }}</div>
-                    <div class="table-cell col-start-9 row-start-2">{{ __('messages.parts') }}</div>
-                    <div class="table-cell col-start-10 row-start-2">{{ __('messages.delivery') }}</div>
-                    <div class="table-cell col-start-11 row-start-2">{{ __('messages.income_account_id') }}</div>
-                    <div class="table-cell col-start-12 row-start-2">{{ __('messages.cost_account_id') }}</div>
+                <div class="flex gap-1 mb-1 header-row w-fit">
+                    <div class="table-cell !w-[300px]">{{ __('messages.technician') }}</div>
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-1 header-row">
+                            <div class="table-cell" style="width: calc(300px + 4px);">{{ __('messages.invoices') }}</div>
+                            <div class="table-cell" style="width: calc(450px + 8px);">{{ __('messages.cost_centers') }}</div>
+                            <div class="table-cell" style="width: calc(300px + 4px);">{{ __('messages.accounts') }}</div>
+                        </div>
+                        <div class="flex items-center gap-1 header-row">
+                            <div class="table-cell w-[150px]">{{ __('messages.amount') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.parts_difference') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.services') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.parts') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.delivery') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.income_account_id') }}</div>
+                            <div class="table-cell w-[150px]">{{ __('messages.cost_account_id') }}</div>
+                        </div>
+
+                    </div>
                 </div>
 
                 <!-- other income categories -->
                 <div>
                     <template x-for="incomeInvoice in incomeInvoices" :key="incomeInvoice.other_income_category_id">
-                        <div class="grid grid-cols-12 gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900">
-                            <div  class="table-cell col-span-5" x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></div>
-                            <div  class="table-cell" x-text="formatNumber(incomeInvoice.total_amount)"></div>
-                            <div  class="table-cell"></div>
-                            <div  class="table-cell"></div>
-                            <div  class="table-cell"></div>
-                            <div  class="table-cell"></div>
-                            <div  class="table-cell" x-text="formatNumber(incomeInvoice.total_amount)"></div>
-                            <div  class="table-cell"></div>
+                        <div class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit">
+                            <div  class="table-cell w-[300px]" x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></div>
+                            <div  class="table-cell w-[150px]" x-text="formatNumber(incomeInvoice.total_amount)"></div>
+                            <div  class="table-cell w-[150px]"></div>
+                            <div  class="table-cell w-[150px]"></div>
+                            <div  class="table-cell w-[150px]"></div>
+                            <div  class="table-cell w-[150px]"></div>
+                            <div  class="table-cell w-[150px]" x-text="formatNumber(incomeInvoice.total_amount)"></div>
+                            <div  class="table-cell w-[150px]"></div>
                         </div>
                     </template>
                 </div>
                 
                 <!-- other income categories footer -->
-                <div class="grid grid-cols-12 gap-1 footer-row mb-1">
-                    <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
-                    <div class="table-cell" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
-                    <div class="table-cell"></div>
-                    <div class="table-cell"></div>
-                    <div class="table-cell"></div>
-                    <div class="table-cell"></div>
-                    <div class="table-cell" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
-                    <div class="table-cell"></div>
+                <div class="flex gap-1 footer-row mb-1 w-fit">
+                    <div class="table-cell w-[300px]">{{ __('messages.total') }}</div>
+                    <div class="table-cell w-[150px]" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
+                    <div class="table-cell w-[150px]"></div>
+                    <div class="table-cell w-[150px]"></div>
+                    <div class="table-cell w-[150px]"></div>
+                    <div class="table-cell w-[150px]"></div>
+                    <div class="table-cell w-[150px]" x-text="formatNumber(getOtherIncomeCategoryTotal())"></div>
+                    <div class="table-cell w-[150px]"></div>
                 </div>
 
             </div>
-        </div>
 
-        <div class="grid grid-cols-12 gap-1 footer-row rounded-lg overflow-clip">
-            <div class="table-cell col-span-5">{{ __('messages.total') }}</div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().invoice_total + getOtherIncomeCategoryTotal())"></div>
-            <div class="table-cell" x-bind:class="getPageTotal().internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_vouchers_total)"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().services_vouchers_total)"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().parts_vouchers_total)"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().delivery_vouchers_total)"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().income_vouchers_total + getOtherIncomeCategoryTotal())"></div>
-            <div class="table-cell" x-text="formatNumber(getPageTotal().cost_vouchers_total)"></div>
+            <!-- page total -->
+            <div class="flex gap-1 footer-row mb-1 w-fit">
+                <div class="table-cell w-[300px]">{{ __('messages.total') }}</div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().invoice_total + getOtherIncomeCategoryTotal())"></div>
+                <div class="table-cell w-[150px]" x-bind:class="getPageTotal().internal_parts_vouchers_total < 0 ? '!text-red-500' : ''" x-text="formatNumber(getPageTotal().internal_parts_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().services_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().parts_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().delivery_vouchers_total)"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().income_vouchers_total + getOtherIncomeCategoryTotal())"></div>
+                <div class="table-cell w-[150px]" x-text="formatNumber(getPageTotal().cost_vouchers_total)"></div>
+            </div>
+
         </div>
+        
     </div>
 </x-app-layout>
 
