@@ -244,14 +244,15 @@ class ReportController extends Controller
             foreach ($technicians as $technician) {
                 $invoice_details_total = $invoices_details->where('technician_id', $technician->id)->sum('total_amount');
                 $invoice_part_details_total = $invoices_part_details->where('technician_id', $technician->id)->sum('total_amount');
-                
-                $services_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('services_vouchers_total'));
-                $parts_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('parts_vouchers_total'));
-                $delivery_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->sum('delivery_vouchers_total'));
-
+    
                 $income_account_id = $departments->where('id', $technician->department_id)->first()->income_account_id;
                 $cost_account_id = $departments->where('id', $technician->department_id)->first()->cost_account_id;
                 $internal_parts_account_id = $departments->where('id', $technician->department_id)->first()->internal_parts_account_id;
+                
+                $services_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $income_account_id)->sum('services_vouchers_total'));
+                $parts_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $income_account_id)->sum('parts_vouchers_total'));
+                $delivery_voucher_details_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $income_account_id)->sum('delivery_vouchers_total'));
+
 
                 $income_account_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $income_account_id)->sum('total'));
                 $cost_account_total = abs($voucher_details->where('user_id', $technician->id)->where('account_id', $cost_account_id)->sum('total'));
