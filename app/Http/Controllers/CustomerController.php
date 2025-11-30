@@ -54,6 +54,9 @@ class CustomerController extends Controller
                 ->when($request->street, function($query) use ($request) {
                     $query->whereRelation('addresses', 'street', 'like', '%' . $request->street . '%');
                 })
+                ->when($request->building, function($query) use ($request) {
+                    $query->whereRelation('addresses', 'building', 'like', '%' . $request->building . '%');
+                })
                 ->when($request->start_created_at, function($query) use ($request) {
                     $query->whereDate('created_at', '>=', $request->start_created_at);
                 })
