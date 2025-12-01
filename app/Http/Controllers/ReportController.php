@@ -175,20 +175,36 @@ class ReportController extends Controller
 
             $technicians = User::query()
             ->whereIn('users.title_id', Title::TECHNICIANS_GROUP)
-            ->join('orders', 'orders.technician_id', '=', 'users.id')
-            ->join('invoices', 'invoices.order_id', '=', 'orders.id')
+            // ->join('orders', 'orders.technician_id', '=', 'users.id')
+            // ->join('invoices', 'invoices.order_id', '=', 'orders.id')
+            // ->whereDate('invoices.created_at', '>=', $request->start_date)
+            // ->whereDate('invoices.created_at', '<=', $request->end_date)
+            // ->whereNull('invoices.deleted_at')
+            // ->select(
+            //     'users.id',
+            //     'users.department_id',
+            //     'users.name_'.app()->getLocale(),
+            //     'users.title_id',
+            //     DB::raw('COALESCE(SUM(invoices.discount), 0) as total_discount'),
+            //     DB::raw('COALESCE(SUM(invoices.delivery), 0) as total_delivery'),
+            // )
+            // ->groupBy('users.id', 'users.department_id', 'users.name_'.app()->getLocale(), 'users.title_id')
+            ->get();
+
+            $invoices = Invoice::query()
+            ->join('orders', 'orders.id', '=', 'invoices.order_id')
+            ->join('users', 'users.id', '=', 'orders.technician_id')
             ->whereDate('invoices.created_at', '>=', $request->start_date)
             ->whereDate('invoices.created_at', '<=', $request->end_date)
             ->whereNull('invoices.deleted_at')
             ->select(
-                'users.id',
-                'users.department_id',
-                'users.name_'.app()->getLocale(),
-                'users.title_id',
-                DB::raw('COALESCE(SUM(invoices.discount), 0) as total_discount'),
-                DB::raw('COALESCE(SUM(invoices.delivery), 0) as total_delivery'),
+                'orders.technician_id', 
+                'orders.department_id', 
+                'users.title_id', 
+                DB::raw('SUM(invoices.discount) as total_discount'),
+                DB::raw('SUM(invoices.delivery) as total_delivery'),
             )
-            ->groupBy('users.id', 'users.department_id', 'users.name_'.app()->getLocale(), 'users.title_id')
+            ->groupBy('orders.technician_id', 'orders.department_id', 'users.title_id')
             ->get();
 
 
@@ -242,6 +258,9 @@ class ReportController extends Controller
 
             $technicians_data = [];
             foreach ($technicians as $technician) {
+
+                $total_delivery = $invoices->where('technician_id', $technician->id)->sum('total_delivery');
+                $total_discount = $invoices->where('technician_id', $technician->id)->sum('total_discount');
                 $invoice_details_total = $invoices_details->where('technician_id', $technician->id)->sum('total_amount');
                 $invoice_part_details_total = $invoices_part_details->where('technician_id', $technician->id)->sum('total_amount');
     
@@ -263,7 +282,7 @@ class ReportController extends Controller
                     'department_id' => $technician->department_id,
                     'title_id' => $technician->title_id,
                     'name' => $technician->{'name_'.app()->getLocale()},
-                    'invoices_total' => $invoice_details_total + $invoice_part_details_total + $technician->total_delivery - $technician->total_discount,
+                    'invoices_total' => $invoice_details_total + $invoice_part_details_total + $total_delivery - $total_discount,
                     'services_vouchers_total' => $services_voucher_details_total,
                     'parts_vouchers_total' => $parts_voucher_details_total,
                     'delivery_vouchers_total' => $delivery_voucher_details_total,

@@ -73,7 +73,7 @@
                     <template x-for="title in titles" :key="title.id">
                         <div x-show="getTitleTotals(department.id, title.id).visible">
                             <template x-for="technician in getTechniciansSortedByName(department.id, title.id)" :key="technician.id">
-                                <div class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit">
+                                <div x-show="getTechnicianVisible(technician)" class="flex gap-1 mb-1 hover:bg-gray-100 dark:hover:bg-gray-900 w-fit">
                                     <div  class="table-cell w-[300px]" x-text="technician.name"></div>
                                     <div  class="table-cell w-[150px]" x-text="formatNumber(technician.invoices_total)"></div>
                                     <div  class="table-cell w-[150px]" x-text="formatNumber(technician.internal_parts_account_total)" x-bind:class="technician.internal_parts_account_total < 0 ? '!text-red-500' : ''"></div>
@@ -249,6 +249,10 @@
                         const nameB = b.name ?? '';
                         return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
                     });
+            },
+
+            getTechnicianVisible(technician) {
+                return technician.invoices_total + technician.services_vouchers_total + technician.parts_vouchers_total + technician.delivery_vouchers_total + technician.income_account_total + technician.cost_account_total + technician.internal_parts_account_total !== 0;
             },
 
             getTitleTotals(departmentId, titleId) {
