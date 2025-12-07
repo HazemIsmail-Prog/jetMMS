@@ -26,7 +26,7 @@ class ReconciliationController extends Controller
         $invoiceRemainingBalance = $invoiceArray['remaining_balance'];
 
         // check if reconciliation amount is greater than invoice remaining balance
-        if ($request->amount > $invoiceRemainingBalance) {
+        if ($request->amount > round($invoiceRemainingBalance , 3)) {
             return response()->json(['error' => 'Reconciliation amount is greater than invoice remaining balance'], 400);
         }
 

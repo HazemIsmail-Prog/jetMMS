@@ -99,7 +99,7 @@ class InvoiceController extends Controller
             ->get();
 
         $technicians = User::query()
-            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            // ->whereIn('title_id', Title::TECHNICIANS_GROUP)
             ->get();
 
         $users = User::query()
