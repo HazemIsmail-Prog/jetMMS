@@ -18,6 +18,9 @@ class LetterController extends Controller
                 ->when($request->type, function ($query, $type) {
                     return $query->where('type', $type);
                 })
+                ->when($request->search, function ($query, $search) {
+                    return $query->where('subject', 'like', '%' . $search . '%');
+                })
                 ->orderBy('id', 'desc')
                 ->paginate(30);
             return LetterResource::collection($letters);

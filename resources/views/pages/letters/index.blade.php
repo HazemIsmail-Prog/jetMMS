@@ -4,9 +4,12 @@
     </x-slot>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('messages.letters') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('messages.letters') }}
+            </h2>
+            <div id="addNew"></div>
+        </div>
     </x-slot>
 
 
@@ -17,19 +20,33 @@
         x-data="lettersComponent"
         x-on:attachments-count-updated.window="updateAttachmentsCount"
     >
-        <div class="flex justify-end mb-4">
-            <x-select class="w-full max-w-xs" x-model="filters.type">
-                <option value="">{{__('messages.all')}}</option>
-                <option value="incoming">{{__('messages.incoming')}}</option>
-                <option value="outgoing">{{__('messages.outgoing')}}</option>
-            </x-select>
-            <div class="flex-1"></div>
+
+        <template x-teleport="#addNew">
             @can('create', App\Models\Letter::class)
                 <x-button @click="openModal(null)">
                     {{__('messages.add_letter')}}
                 </x-button>
             @endcan
+        </template>
+
+
+
+        <div class="flex mb-4 gap-2">
+            <div>
+                <x-label for="search">{{__('messages.search')}}</x-label>
+                <x-input type="text" x-model.debounce="filters.search" />
+            </div>
+            <div>
+                <x-label for="type">{{__('messages.type')}}</x-label>
+                <x-select class="w-full" x-model="filters.type">
+                    <option value="">{{__('messages.all')}}</option>
+                    <option value="incoming">{{__('messages.incoming')}}</option>
+                    <option value="outgoing">{{__('messages.outgoing')}}</option>
+                </x-select>
+            </div>
         </div>
+
+
 
         <x-table>
             <x-thead>
@@ -190,12 +207,13 @@
                 lastPage: 1,
                 filters: {
                     type: '',
+                    search: '',
                 },
                 init() {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
                     this.form = this.getEmptyForm();
                     this.getLetters();
-                    this.$watch('filters.type', () => {
+                    this.$watch('filters', () => {
                         this.getLetters(1);
                     });
                 },
