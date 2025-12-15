@@ -21,13 +21,13 @@
         x-on:attachments-count-updated.window="updateAttachmentsCount"
     >
 
+    @can('create', App\Models\Letter::class)
         <template x-teleport="#addNew">
-            @can('create', App\Models\Letter::class)
-                <x-button @click="openModal(null)">
-                    {{__('messages.add_letter')}}
-                </x-button>
-            @endcan
+            <x-button @click="openModal(null)">
+                {{__('messages.add_letter')}}
+            </x-button>
         </template>
+    @endcan
 
 
 
