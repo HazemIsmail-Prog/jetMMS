@@ -850,7 +850,7 @@ class OrderController extends Controller
         }
 
         // check if order has only one invoice
-        if($order->invoices->count() == 1) {
+        if($order->invoices->count() == 1 && $order->status_id == Status::COMPLETED) {
             return response()->json(['error' => __('messages.order_has_only_one_invoice_you_cant_delete_it')], 400);
         }
 

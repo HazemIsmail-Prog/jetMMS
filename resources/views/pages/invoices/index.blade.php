@@ -215,7 +215,7 @@
                                             <span x-show="invoice.attachments_count > 0" style="font-size: 0.6rem;" x-text="invoice.attachments_count"></span>
                                     </x-badgeWithCounter>
                                 </template>
-                                <template x-if="invoice.order.invoices_count > 1 && invoice.can_deleted && invoice.deleted_at === null">
+                                <template x-if="(invoice.order.invoices_count > 1 && invoice.order.status_id == 4 && invoice.can_deleted && invoice.deleted_at === null) || (invoice.order.status_id !== 4 && invoice.can_deleted && invoice.deleted_at === null)">
                                     <x-badgeWithCounter
                                         class="px-2 border-red-500 dark:border-red-500 text-red-500 dark:text-red-500 hover:bg-red-500 hover:text-white"
                                         title="{{ __('messages.delete') }}"
