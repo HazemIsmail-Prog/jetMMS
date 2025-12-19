@@ -27,6 +27,24 @@ class IncomeInvoiceController extends Controller
                 ->when(request()->has('other_income_category_ids'), function ($query) {
                     $query->whereIn('other_income_category_id', request()->other_income_category_ids);
                 })
+                ->when(request()->has('start_date'), function ($query) {
+                    $query->where('date', '>=', request()->start_date);
+                })
+                ->when(request()->has('end_date'), function ($query) {
+                    $query->where('date', '<=', request()->end_date);
+                })
+                ->when(request()->has('payment_status') && request()->payment_status, function ($query) {
+                    $status = request()->payment_status;
+                    // Attach a sum aggregate on payments per invoice
+                    $query->withSum('payments as payments_sum', 'amount');
+                    if ($status === 'paid') {
+                        $query->havingRaw('COALESCE(payments_sum,0) = amount');
+                    } elseif ($status === 'partially_paid') {
+                        $query->havingRaw('COALESCE(payments_sum,0) > 0 AND COALESCE(payments_sum,0) < amount');
+                    } elseif ($status === 'unpaid') {
+                        $query->havingRaw('COALESCE(payments_sum,0) = 0');
+                    }
+                })
                 ->paginate(10);
             return response()->json([
                 'data' => $incomeInvoices->items(),

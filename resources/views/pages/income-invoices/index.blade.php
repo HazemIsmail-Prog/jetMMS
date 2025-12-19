@@ -50,6 +50,24 @@
                     <x-multipule-searchable-select />
                 </div>
             </div>
+            <div>
+                <x-label for="payment_status">{{ __('messages.payment_status') }}</x-label>
+                <x-select id="payment_status" x-model.debounce="filters.payment_status" class="text-start py-0 w-[200px]">
+                    <option value="">{{ __('messages.all') }}</option>
+                    <option value="paid">{{ __('messages.paid') }}</option>
+                    <option value="partially_paid">{{ __('messages.partially_paid') }}</option>
+                    <option value="unpaid">{{ __('messages.unpaid') }}</option>
+                </x-select>
+            </div>
+            <div>
+                <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
+                <x-input type="date" id="start_date" x-model.debounce="filters.start_date" class="text-start py-0 w-[200px]" />
+            </div>
+            <div>
+                <x-label for="end_date">{{ __('messages.end_date') }}</x-label>
+                <x-input type="date" id="end_date" x-model.debounce="filters.end_date" class="w-[200px] text-start py-0" />
+            </div>
+            <div class="flex-1"></div>
             <x-button @click="getEmptyFilters">
                 {{__('messages.reset_filters')}}
             </x-button>
@@ -168,6 +186,9 @@
                 getEmptyFilters() {
                     this.filters = {
                         other_income_category_ids: [],
+                        start_date: null,
+                        end_date: null,
+                        payment_status: null,
                     };
                 },
 
