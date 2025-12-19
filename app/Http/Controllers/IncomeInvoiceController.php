@@ -37,12 +37,16 @@ class IncomeInvoiceController extends Controller
                     $status = request()->payment_status;
                     // Attach a sum aggregate on payments per invoice
                     $query->withSum('payments as payments_sum', 'amount');
+
+                    // The HAVING clause here causes a MySQL error since 'amount' is not grouped.
+                    // Rewrite as a whereRaw clause using a subquery for payment status filtering
+
                     if ($status === 'paid') {
-                        $query->havingRaw('COALESCE(payments_sum,0) = amount');
+                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = income_invoices.amount');
                     } elseif ($status === 'partially_paid') {
-                        $query->havingRaw('COALESCE(payments_sum,0) > 0 AND COALESCE(payments_sum,0) < amount');
+                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) > 0 AND (SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) < income_invoices.amount');
                     } elseif ($status === 'unpaid') {
-                        $query->havingRaw('COALESCE(payments_sum,0) = 0');
+                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = 0');
                     }
                 })
                 ->paginate(10);
