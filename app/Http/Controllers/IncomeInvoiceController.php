@@ -33,20 +33,24 @@ class IncomeInvoiceController extends Controller
                 ->when(request()->has('end_date'), function ($query) {
                     $query->where('date', '<=', request()->end_date);
                 })
-                ->when(request()->has('payment_status') && request()->payment_status, function ($query) {
-                    $status = request()->payment_status;
-                    // Attach a sum aggregate on payments per invoice
-                    $query->withSum('payments as payments_sum', 'amount');
+                ->when(request()->has('payment_statuses') && is_array(request()->payment_statuses) && count(request()->payment_statuses), function ($query) {
+                    $statuses = request()->payment_statuses;
 
-                    // The HAVING clause here causes a MySQL error since 'amount' is not grouped.
-                    // Rewrite as a whereRaw clause using a subquery for payment status filtering
+                    // Build the subqueries for each status and combine with OR for multi-select
+                    $statusConditions = [];
 
-                    if ($status === 'paid') {
-                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = income_invoices.amount');
-                    } elseif ($status === 'partially_paid') {
-                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) > 0 AND (SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) < income_invoices.amount');
-                    } elseif ($status === 'unpaid') {
-                        $query->whereRaw('(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = 0');
+                    if (in_array('paid', $statuses)) {
+                        $statusConditions[] = "(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = income_invoices.amount";
+                    }
+                    if (in_array('partially_paid', $statuses)) {
+                        $statusConditions[] = "(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) > 0 AND (SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) < income_invoices.amount";
+                    }
+                    if (in_array('unpaid', $statuses)) {
+                        $statusConditions[] = "(SELECT COALESCE(SUM(amount),0) FROM income_payments WHERE income_invoice_id = income_invoices.id) = 0";
+                    }
+
+                    if (count($statusConditions)) {
+                        $query->whereRaw('(' . implode(' OR ', $statusConditions) . ')');
                     }
                 })
                 ->paginate(10);
