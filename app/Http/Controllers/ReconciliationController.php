@@ -146,6 +146,7 @@ class ReconciliationController extends Controller
 
         if($validatedReconciliationData['type'] == 'costs') {
             $debitAccountId = $invoice->order->department->cost_account_id;
+            $creditAccountId = $invoice->order->department->receivables_account_id;
             $orderTechnician = User::find($invoice->order->technician_id);
             return [
                 [
@@ -156,7 +157,7 @@ class ReconciliationController extends Controller
                     'user_id' => $orderTechnician->id,
                 ],
                 [
-                    'account_id' => $forAllCreditAccountId,
+                    'account_id' => $creditAccountId,
                     'credit' => $validatedReconciliationData['amount'],
                     'debit' => 0,
                     'narration' => $narration,
