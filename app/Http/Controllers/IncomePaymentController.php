@@ -16,7 +16,7 @@ class IncomePaymentController extends Controller
             $incomePayments = $incomeInvoice->payments()
                 ->orderBy('date', 'desc')
                 ->with('creator')
-                ->paginate(10);
+                ->paginate(100);
             return response()->json([
                 'data' => $incomePayments->items(),
                 'meta' => [
