@@ -724,6 +724,21 @@ class OrderController extends Controller
             ];
         })->all();
 
+        $invoiceTotalAmountAfterDiscount = 0;
+        $invoiceTotalAmountAfterDiscount += $request->delivery;
+        $invoiceTotalAmountAfterDiscount += array_sum(array_map(function ($service) {
+            return $service['price'] * $service['quantity'];
+        }, $prepared_selected_services));
+        $invoiceTotalAmountAfterDiscount += array_sum(array_map(function ($part) {
+            return $part['price'] * $part['quantity'];
+        }, $prepared_parts));
+
+        $invoiceTotalAmountAfterDiscount -= $request->discount;
+
+        if((float)$invoiceTotalAmountAfterDiscount < (float)config('constants.invoice_minimum_amount')) {
+            return response()->json(['error' => __('messages.invoice_amount_after_discount_cannot_less_than', ['amount' => (float)config('constants.invoice_minimum_amount')])], 400);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -788,6 +803,19 @@ class OrderController extends Controller
         // check if discount is greater than the invoice services amount
         if((float)$request->discount > (float)$invoice_services_amount) {
             return response()->json(['error' => __('messages.discount_cannot_be_greater_than_the_invoice_services_amount')], 400);
+        }
+
+        // get invoice total amount after discount
+        $invoiceTotalAmountAfterDiscount = 0;
+        $invoiceTotalAmountAfterDiscount += $invoice_services_amount;
+        $invoiceTotalAmountAfterDiscount += $invoice->internal_parts_amount;
+        $invoiceTotalAmountAfterDiscount += $invoice->external_parts_amount;
+        $invoiceTotalAmountAfterDiscount += $invoice->delivery;
+        $invoiceTotalAmountAfterDiscount -= $request->discount;
+
+
+        if((float)$invoiceTotalAmountAfterDiscount < (float)config('constants.invoice_minimum_amount')) {
+            return response()->json(['error' => __('messages.invoice_amount_after_discount_cannot_less_than', ['amount' => (float)config('constants.invoice_minimum_amount')])], 400);
         }
 
         $oldInvoice = $invoice->fresh()->toArray();

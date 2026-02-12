@@ -887,4 +887,6 @@ return [
     "total_credit" => "اجمالي الايرادات",
     "total_debit" => "اجمالي المصروفات",
     "total_income" => "اجمالي الإيرادات",
+
+    "invoice_amount_after_discount_cannot_less_than" => "اجمالي الفاتورة بعد الخصم يجب أن لا يقل عن :amount دينار",
 ];
