@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Enums\LeaveStatusEnum;
 
 class Employee extends Model
 {
@@ -17,6 +18,7 @@ class Employee extends Model
 
     protected $guarded = [];
     protected $with = ['user:id,name_ar,name_en'];
+    protected $appends = ['is_in_leave'];
 
     protected $casts = [
         'joinDate' => 'date:Y-m-d',
@@ -169,6 +171,16 @@ class Employee extends Model
     }
     public function getFormatedSalaryAttribute() {
         return number_format($this->salary, 3);
+    }
+
+    public function getIsInLeaveAttribute() {
+        return $this
+            ->leaves
+            // ->where('type', LeaveTypeEnum::ANNUAL)
+            ->where('status', LeaveStatusEnum::APPROVED)
+            ->where('start_date', '<=', today())
+            ->where('end_date', '>=', today())
+            ->first() ? true : false;
     }
 
 }

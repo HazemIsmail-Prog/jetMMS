@@ -93,7 +93,14 @@
             @foreach ($this->employees as $employee)
                 <x-tr>
                     <x-td>{{ $loop->iteration }}</x-td>
-                    <x-td>{{ $employee->user->name }}</x-td>
+                    <x-td>
+                        <div>{{ $employee->user->name }}</div>
+                        @if ($employee->is_in_leave)
+                            <div class="inline-block bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                {{ __('messages.in_leave') }}
+                            </div>
+                        @endif
+                    </x-td>
                     <x-td>{{ $employee->user->title->name }}</x-td>
                     <x-td>{{ $employee->user->department->name ?? '-' }}</x-td>
                     <x-td>{{ $employee->company->name ?? '-' }}</x-td>
