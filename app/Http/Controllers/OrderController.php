@@ -1071,6 +1071,11 @@ class OrderController extends Controller
 
     public function exportToExcel(Request $request)
     {
+
+        if(!auth()->user()->can('export_orders', Order::class)) {
+            return response()->json(['error' => __('messages.you_dont_have_permission_to_export_orders')], 403);
+        }
+
         $orders = Order::query()
         ->with('phone')
         ->with('address')

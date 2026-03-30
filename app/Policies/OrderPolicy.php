@@ -64,5 +64,10 @@ class OrderPolicy
     }
     
 
+    public function export_orders(User $user): bool
+    {
+        return $user->hasPermission('orders_export');
+    }
+
 
 }

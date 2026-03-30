@@ -84,6 +84,7 @@
             </span>
         </template>
 
+        @can('export_orders', App\Models\Order::class)
         <template x-teleport="#excel">
             <x-button 
                 @click="exportToExcel"
@@ -96,6 +97,7 @@
                 {{ __('messages.export_to_excel') }}
             </x-button>
         </template>
+        @endcan
 
         <!-- Filters Toggle Button -->
         <div class="mb-4">
