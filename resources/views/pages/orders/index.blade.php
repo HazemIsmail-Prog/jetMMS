@@ -84,8 +84,8 @@
             </span>
         </template>
 
-        @can('export_orders', App\Models\Order::class)
-        <template x-teleport="#excel">
+        @if(auth()->user()->hasPermission('export_orders'))
+            <template  x-teleport="#excel">
             <x-button 
                 @click="exportToExcel"
                 x-bind:disabled="exporting || totalRecords > maxExportSize"
@@ -97,7 +97,7 @@
                 {{ __('messages.export_to_excel') }}
             </x-button>
         </template>
-        @endcan
+        @endif
 
         <!-- Filters Toggle Button -->
         <div class="mb-4">
