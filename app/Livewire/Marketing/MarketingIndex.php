@@ -78,6 +78,7 @@ class MarketingIndex extends Component
 
     public function excel()
     {
+        abort_if(!auth()->user()->hasPermission('export_marketings'), 403);
         if ($this->getData()->count() > $this->maxExportSize) {
             return;
         } else {

@@ -26,24 +26,26 @@
         </span>
     @endteleport
 
-    @teleport('#excel')
-        <div>
-            @if ($this->marketings->total() <= $maxExportSize)
-                <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
-                    wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
-                    wire:loading.attr="disabled">
-                    <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden"
-                        wire:target="excel">
-                        {{ __('messages.exporting') }}
-                    </span>
-                    <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
-                </x-button>
-            @else
-                <x-button disabled class=" cursor-not-allowed"
-                    title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{ __('messages.export_to_excel') }}</x-button>
-            @endif
-        </div>
-    @endteleport
+    @if(auth()->user()->hasPermission('export_marketings'))
+        @teleport('#excel')
+            <div>
+                @if ($this->marketings->total() <= $maxExportSize)
+                    <x-button wire:confirm="{{ __('messages.are_u_sure') }}"
+                        wire:loading.class=" animate-pulse duration-75 cursor-not-allowed" wire:click="excel"
+                        wire:loading.attr="disabled">
+                        <span class="hidden text-red-400 dark:text-red-600" wire:loading.remove.class=" hidden"
+                            wire:target="excel">
+                            {{ __('messages.exporting') }}
+                        </span>
+                        <span wire:loading.remove wire:target="excel">{{ __('messages.export_to_excel') }}</span>
+                    </x-button>
+                @else
+                    <x-button disabled class=" cursor-not-allowed"
+                        title="{{ __('messages.max_export_size', ['maxExportSize' => $maxExportSize]) }}">{{ __('messages.export_to_excel') }}</x-button>
+                @endif
+            </div>
+        @endteleport
+    @endif
 
     @if ($this->marketings->hasPages())
         <x-slot name="footer">
