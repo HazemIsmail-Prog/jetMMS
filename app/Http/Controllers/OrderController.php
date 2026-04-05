@@ -801,7 +801,7 @@ class OrderController extends Controller
             ->sum(DB::raw('quantity * price'));
 
         // check if discount is greater than the invoice services amount
-        if((float)$request->discount > ((float)$invoice_services_amount * 0.4)) {
+        if((float)$request->discount > ((float)$invoice_services_amount * 0.5)) {
             return response()->json(['error' => __('messages.discount_cannot_be_greater_than_the_invoice_services_amount')], 400);
         }
 
