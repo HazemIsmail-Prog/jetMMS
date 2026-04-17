@@ -148,6 +148,40 @@
                             <!-- end area searchable select -->
                             <p class="text-sm text-red-600 dark:text-red-400" x-show="formErrors.bank_charges_account_id" x-text="formErrors.bank_charges_account_id"></p>
                         </div>
+                        <div>
+                            <x-label for="refund_account_id">{{ __('messages.refund_account_id') }}</x-label>
+                            <!-- start area searchable select -->
+                            <div 
+                                x-data="{
+                                    items:accounts,
+                                    selectedItemId:form.refund_account_id,
+                                    placeholder: '{{ __('messages.search') }}'
+                                }"
+                                x-model="selectedItemId"
+                                x-modelable="form.refund_account_id"
+                            >
+                                <x-single-searchable-select />
+                            </div>
+                            <!-- end area searchable select -->
+                            <p class="text-sm text-red-600 dark:text-red-400" x-show="formErrors.refund_account_id" x-text="formErrors.refund_account_id"></p>
+                        </div>
+                        <div>
+                            <x-label for="cost_account_id">{{ __('messages.cost_account_id') }}</x-label>
+                            <!-- start area searchable select -->
+                            <div 
+                                x-data="{
+                                    items:accounts,
+                                    selectedItemId:form.cost_account_id,
+                                    placeholder: '{{ __('messages.search') }}'
+                                }"
+                                x-model="selectedItemId"
+                                x-modelable="form.cost_account_id"
+                            >
+                                <x-single-searchable-select />
+                            </div>
+                            <!-- end area searchable select -->
+                            <p class="text-sm text-red-600 dark:text-red-400" x-show="formErrors.cost_account_id" x-text="formErrors.cost_account_id"></p>
+                        </div>
         
 
                         <!-- Action Buttons -->
@@ -201,6 +235,8 @@
                         cash_account_id: null,
                         knet_account_id: null,
                         bank_charges_account_id: null,
+                        refund_account_id: null,
+                        cost_account_id: null,
                     };
                     this.loading = false;
                 },
@@ -237,6 +273,16 @@
                     // check if the bank_charges_account_id is empty
                     if(!this.form.bank_charges_account_id) {
                         this.formErrors.bank_charges_account_id = '{{ __('messages.bank_charges_account_is_required') }}';
+                    }
+
+                    // check if the refund_account_id is empty
+                    if(!this.form.refund_account_id) {
+                        this.formErrors.refund_account_id = '{{ __('messages.refund_account_is_required') }}';
+                    }
+
+                    // check if the cost_account_id is empty
+                    if(!this.form.cost_account_id) {
+                        this.formErrors.cost_account_id = '{{ __('messages.cost_account_is_required') }}';
                     }
 
                     // check if errors is empty

@@ -11,6 +11,8 @@ use App\Services\IncomeInvoiceService;
 use App\Models\Account;
 use App\Http\Resources\AccountResource;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+
 class IncomeInvoiceController extends Controller
 {
     public function index()
@@ -21,6 +23,7 @@ class IncomeInvoiceController extends Controller
             $incomeInvoices = IncomeInvoice::query()
                 ->orderBy('date', 'desc')
                 ->with('payments')
+                ->with('incomeReconciliations')
                 ->with('attachments')
                 ->with('creator')
                 ->withCount('attachments')
@@ -67,7 +70,9 @@ class IncomeInvoiceController extends Controller
         // dd(config('constants.bank_accounts_ids'));
         $bankAccounts = AccountResource::collection(Account::whereIn('id', config('constants.bank_accounts_ids'))->get());
         $otherIncomeCategories = OtherIncomeCategory::all();
-        return view('pages.income-invoices.index', compact('otherIncomeCategories', 'bankAccounts'));
+        $users = User::query()->get();
+
+        return view('pages.income-invoices.index', compact('otherIncomeCategories', 'bankAccounts', 'users'));
     }
 
     public function store(Request $request)

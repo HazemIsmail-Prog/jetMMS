@@ -890,4 +890,8 @@ return [
 
     "invoice_amount_after_discount_cannot_less_than" => "اجمالي الفاتورة بعد الخصم يجب أن لا يقل عن :amount دينار",
     "in_leave" => "اجازة",
+    "sales_refund" => "مردودات مبيعات",
+    "refund_account_is_required" => "يجب اختيار حساب المردودات",
+    "refund_account_id" => "حساب المردودات",
+
 ];

@@ -22,6 +22,8 @@
     @include('modals.attachments')
     @include('modals.attachment-form')
 
+    <!-- reconciliation form modal -->
+    @include('modals.income-reconciliation-form')
     <div
         x-data="incomeInvoicesComponent"
         x-on:income-invoice-created.window="getIncomeInvoices(1)"
@@ -92,6 +94,7 @@
                     <x-th>{{__('messages.cash')}}</x-th>
                     <x-th>{{__('messages.knet')}}</x-th>
                     <x-th>{{__('messages.bank_deposit')}}</x-th>
+                    <x-th>{{__('messages.reconciliations')}}</x-th>
                     <x-th>{{__('messages.remaining_amount')}}</x-th>
                     <x-th>{{__('messages.created_by')}}</x-th>
                     <x-th></x-th>
@@ -111,7 +114,8 @@
                         <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).cash)"></x-td>
                         <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).knet)"></x-td>
                         <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).bankDeposit)"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).remainingAmount)"></x-td>
+                        <x-td x-text="formatNumber(getIncomeInvoiceReconciliations(incomeInvoice.id))"></x-td>
+                        <x-td x-text="formatNumber(getIncomeInvoiceRemainingAmount(incomeInvoice.id))"></x-td>
                         <x-td x-text="incomeInvoice.creator.name"></x-td>
                         <x-td>
                             <div class="flex justify-end gap-2">
@@ -119,6 +123,13 @@
                                     <x-badgeWithCounter title="{{ __('messages.add_payment') }}"
                                         @click="openPaymentsModal(incomeInvoice)">
                                         <span class="text-sm px-2">{{ __('messages.view_payments') }}</span>
+                                    </x-badgeWithCounter>
+                                </template>
+                                <template x-if="incomeInvoice.user_can_add_reconciliation">
+                                    <x-badgeWithCounter
+                                        title="{{ __('messages.add_reconciliation') }}"
+                                        @click="openReconciliationModal(incomeInvoice)">
+                                        {{ __('messages.add_reconciliation') }}
                                     </x-badgeWithCounter>
                                 </template>
                                 <template x-if="incomeInvoice.can_view_attachments">
@@ -154,6 +165,7 @@
                     <x-th x-text="formatNumber(getTotals().cash)"></x-th>
                     <x-th x-text="formatNumber(getTotals().knet)"></x-th>
                     <x-th x-text="formatNumber(getTotals().bankDeposit)"></x-th>
+                    <x-th x-text="formatNumber(getTotals().reconciliationsAmount)"></x-th>
                     <x-th x-text="formatNumber(getTotals().remainingAmount)"></x-th>
                     <x-th></x-th>
                     <x-th></x-th>
@@ -174,12 +186,12 @@
     <script>
         function incomeInvoicesComponent() {
             return {
-                otherIncomeCategories: @js($otherIncomeCategories),
-                bankAccounts: @js($bankAccounts),
+                otherIncomeCategories: @json($otherIncomeCategories),
+                bankAccounts: @json($bankAccounts),
                 paymentStatusesList: [
-                    {id: 'paid', name: '{{ __('messages.paid') }}'},
-                    {id: 'partially_paid', name: '{{ __('messages.partially_paid') }}'},
-                    {id: 'unpaid', name: '{{ __('messages.unpaid') }}'},
+                    {id: 'paid', name: `{{ __('messages.paid') }}`},
+                    {id: 'partially_paid', name: `{{ __('messages.partially_paid') }}`},
+                    {id: 'unpaid', name: `{{ __('messages.unpaid') }}`},
                 ],
                 incomeInvoices: [],
                 filters: {},
@@ -209,13 +221,14 @@
                     let bankDeposit = 0;
                     let paidAmount = 0;
                     let remainingAmount = 0;
+                    let reconciliationsAmount = 0;
                     this.incomeInvoices.forEach(incomeInvoice => {
                         amount += parseFloat(incomeInvoice.amount);
                         cash += this.getIncomeInvoicePayments(incomeInvoice.id).cash;
                         knet += this.getIncomeInvoicePayments(incomeInvoice.id).knet;
                         bankDeposit += this.getIncomeInvoicePayments(incomeInvoice.id).bankDeposit;
                         paidAmount += this.getIncomeInvoicePayments(incomeInvoice.id).paidAmount;
-                        remainingAmount += this.getIncomeInvoicePayments(incomeInvoice.id).remainingAmount;
+                        reconciliationsAmount += this.getIncomeInvoiceReconciliations(incomeInvoice.id);
                     });
                     return {
                         amount: amount,
@@ -223,9 +236,18 @@
                         knet: knet,
                         bankDeposit: bankDeposit,
                         paidAmount: paidAmount,
-                        remainingAmount: remainingAmount
+                        reconciliationsAmount: reconciliationsAmount,
+                        remainingAmount: amount - paidAmount - reconciliationsAmount
                     };
-   
+
+                },
+
+                getIncomeInvoiceReconciliations(incomeInvoiceId) {
+                    let reconciliationsAmount = 0;
+                    this.incomeInvoices.find(incomeInvoice => incomeInvoice.id === incomeInvoiceId)?.income_reconciliations.forEach(reconciliation => {
+                        reconciliationsAmount += parseFloat(reconciliation.amount);
+                    });
+                    return reconciliationsAmount;
                 },
 
                 getIncomeInvoicePayments(incomeInvoiceId) {
@@ -246,6 +268,7 @@
                         }
                     });
                     paidAmount = cash + knet + bankDeposit;
+                    
                     remainingAmount = parseFloat(this.incomeInvoices.find(incomeInvoice => incomeInvoice.id === incomeInvoiceId)?.amount) - paidAmount;
 
                     return {
@@ -255,6 +278,14 @@
                         paidAmount: paidAmount,
                         remainingAmount: remainingAmount
                     };
+                },
+
+                getIncomeInvoiceRemainingAmount(incomeInvoiceId) {
+                    const invoice = this.incomeInvoices.find(incomeInvoice => incomeInvoice.id === incomeInvoiceId);
+                    const invoiceAmount = parseFloat(invoice.amount);
+                    const invoicePaymentsAmount = this.getIncomeInvoicePayments(incomeInvoiceId).paidAmount;
+                    const invoiceReconciliationsAmount = this.getIncomeInvoiceReconciliations(incomeInvoiceId);
+                    return Number((invoiceAmount - invoicePaymentsAmount - invoiceReconciliationsAmount).toFixed(3));
                 },
 
                 formatNumber(number) {
@@ -290,6 +321,10 @@
 
                 openPaymentsModal(incomeInvoice) {
                     this.$dispatch('open-income-payments-modal', {selectedIncomeInvoice: incomeInvoice});
+                },
+
+                openReconciliationModal(incomeInvoice) {
+                    this.$dispatch('open-income-reconciliation-form-modal', {selectedIncomeInvoice: incomeInvoice});
                 },
 
                 deleteIncomeInvoice(id) {

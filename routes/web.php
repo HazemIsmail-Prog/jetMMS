@@ -100,6 +100,7 @@ use App\Http\Controllers\ReconciliationController;
 use App\Http\Controllers\OtherIncomeCategoryController;
 use App\Http\Controllers\IncomeInvoiceController;
 use App\Http\Controllers\IncomePaymentController;
+use App\Http\Controllers\IncomeReconciliationController;
 
 
 
@@ -189,6 +190,11 @@ Route::middleware([
                 Route::post('income-invoices/{incomeInvoice}/payments', 'store');
                 Route::put('income-invoices/{incomeInvoice}/payments/{incomePayment}', 'update');
                 Route::delete('income-invoices/{incomeInvoice}/payments/{incomePayment}', 'destroy');
+            });
+
+            Route::controller(IncomeReconciliationController::class)->group(function () {
+                Route::get('income-invoices/{incomeInvoice}/reconciliations', 'index')->name('income-reconciliations.index');
+                Route::post('income-invoices/{incomeInvoice}/reconciliations', 'store');
             });
 
 

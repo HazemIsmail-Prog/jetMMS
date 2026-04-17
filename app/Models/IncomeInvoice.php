@@ -19,6 +19,7 @@ class IncomeInvoice extends Model
         'can_update_attachment',
         'can_delete_attachment',
         'formatted_date',
+        'user_can_add_reconciliation',
     ];
 
     protected $casts = [
@@ -26,6 +27,11 @@ class IncomeInvoice extends Model
     ];
 
     protected $guarded = [];
+
+    public function otherIncomeCategory()
+    {
+        return $this->belongsTo(OtherIncomeCategory::class);
+    }
 
     public function creator()
     {
@@ -46,6 +52,11 @@ class IncomeInvoice extends Model
     public function payments()
     {
         return $this->hasMany(IncomePayment::class, 'income_invoice_id');
+    }
+
+    public function incomeReconciliations()
+    {
+        return $this->hasMany(IncomeReconciliation::class, 'income_invoice_id');
     }
 
     public function attachments()
@@ -92,5 +103,10 @@ class IncomeInvoice extends Model
     public function getCanDeleteAttachmentAttribute()
     {
         return auth()->user()->hasPermission('income_invoices_attachments_delete');
+    }
+
+    public function getUserCanAddReconciliationAttribute()
+    {
+        return auth()->user()->hasPermission('income_reconciliations_create');
     }
 }

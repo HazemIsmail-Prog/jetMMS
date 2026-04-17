@@ -40,7 +40,7 @@ class IncomePaymentController extends Controller
 
         $validatedData['created_by'] = auth()->id();
         // check if amount is greater than the max available amount
-        $maxAvailableAmount = $incomeInvoice->amount - $incomeInvoice->payments()->sum('amount');
+        $maxAvailableAmount = $incomeInvoice->amount - $incomeInvoice->payments()->sum('amount') - $incomeInvoice->incomeReconciliations()->sum('amount');
         if($validatedData['amount'] > $maxAvailableAmount) {
             $validator = Validator::make([], []);
             $validator->errors()->add('amount', __('messages.amount_cannot_be_greater_than_the_max_available_amount') . ' ' . $maxAvailableAmount);
@@ -85,7 +85,7 @@ class IncomePaymentController extends Controller
         try {
             $incomePayment->update($validatedData);
             // rollback if total amount of payments is greater than the invoice amount
-            if($incomeInvoice->payments()->sum('amount') > $incomeInvoice->amount) {
+            if($incomeInvoice->payments()->sum('amount') + $incomeInvoice->incomeReconciliations()->sum('amount') > $incomeInvoice->amount) {
                 // add amount to error bag
                 $validator = Validator::make([], []);
                 $validator->errors()->add('amount', __('messages.total_amount_of_payments_cannot_be_greater_than_the_invoice_amount'));

@@ -45,6 +45,8 @@ class OtherIncomeCategoryController extends Controller
             'cash_account_id' => 'required|exists:accounts,id',
             'knet_account_id' => 'required|exists:accounts,id',
             'bank_charges_account_id' => 'required|exists:accounts,id',
+            'refund_account_id' => 'required|exists:accounts,id',
+            'cost_account_id' => 'required|exists:accounts,id',
         ]);
 
         $validatedData['created_by'] = auth()->id();
@@ -65,6 +67,8 @@ class OtherIncomeCategoryController extends Controller
             'cash_account_id' => 'required|exists:accounts,id',
             'knet_account_id' => 'required|exists:accounts,id',
             'bank_charges_account_id' => 'required|exists:accounts,id',
+            'refund_account_id' => 'required|exists:accounts,id',
+            'cost_account_id' => 'required|exists:accounts,id',
         ]);
         $otherIncomeCategory->update($validatedData);
         return response()->json(['data' => $otherIncomeCategory]);

@@ -37,6 +37,8 @@
                     <x-th>{{__('messages.cash_account_id')}}</x-th>
                     <x-th>{{__('messages.knet_account_id')}}</x-th>
                     <x-th>{{__('messages.bank_charges_account_id')}}</x-th>
+                    <x-th>{{__('messages.refund_account_id')}}</x-th>
+                    <x-th>{{__('messages.cost_account_id')}}</x-th>
                     <x-th></x-th>
                 </tr>
             </x-thead>
@@ -50,6 +52,8 @@
                         <x-td x-text="getAccountNameById(otherIncomeCategory.cash_account_id)"></x-td>
                         <x-td x-text="getAccountNameById(otherIncomeCategory.knet_account_id)"></x-td>
                         <x-td x-text="getAccountNameById(otherIncomeCategory.bank_charges_account_id)"></x-td>
+                        <x-td x-text="getAccountNameById(otherIncomeCategory.refund_account_id)"></x-td>
+                        <x-td x-text="getAccountNameById(otherIncomeCategory.cost_account_id)"></x-td>
                         <x-td>
                             <div class="flex justify-end gap-2">
                                 <template x-if="otherIncomeCategory.can_edit">
