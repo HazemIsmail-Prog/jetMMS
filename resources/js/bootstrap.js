@@ -4,12 +4,6 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-document.querySelectorAll('input[type="number"]').forEach(function(input) {
-    input.addEventListener('wheel', function(event) {
-        event.preventDefault(); // Disables increment/decrement on scroll
-    }, {passive: false});
-});
-
 import axios from 'axios';
 window.axios = axios;
 
