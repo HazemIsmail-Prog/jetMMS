@@ -7,6 +7,7 @@
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('messages.income_invoices') }}
+                <span id="counter"></span>
             </h2>
             @if(auth()->user()->hasPermission('income_invoices_create'))
                 <x-button @click="$dispatch('open-create-modal')">
@@ -34,152 +35,171 @@
         x-on:open-create-modal.window="openModal(null)"
     >
 
-    <div class="flex flex-col justify-center mb-4">
+        <template x-teleport="#counter">
+            <span 
+                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                x-text="totalRecords"
+            >
+            </span>
+        </template>
 
-        <div class="flex items-end justify-between gap-2 mb-4">
-            <div>
-                <x-label for="other_income_category_id">{{ __('messages.other_income_category') }}</x-label>
-                <!-- start area searchable select -->
-                <div 
-                    x-data="{
-                        items:otherIncomeCategories,
-                        selectedItemIds:filters.other_income_category_ids,
-                        placeholder: '{{ __('messages.search') }}'
-                    }"
-                    x-model="selectedItemIds"
-                    x-modelable="filters.other_income_category_ids"
-                >
-                    <x-multipule-searchable-select />
+        <div class="flex flex-col justify-center mb-4">
+
+
+            <div class="flex items-end justify-between gap-2 mb-4">
+
+                <div>
+                    <x-label for="search">{{ __('messages.search') }}</x-label>
+                    <x-input type="text" id="search" x-model.debounce="filters.search" class="text-start py-0 w-[200px]" />
                 </div>
-            </div>
-            <div>
-                <x-label for="payment_status">{{ __('messages.payment_status') }}</x-label>
-                <div 
-                    x-data="{
-                        items:paymentStatusesList,
-                        selectedItemIds:filters.payment_statuses,
-                        placeholder: '{{ __('messages.search') }}'
-                    }"
-                    x-model="selectedItemIds"
-                    x-modelable="filters.payment_statuses"
-                >
-                    <x-multipule-searchable-select />
+
+                <div>
+                    <x-label for="other_income_category_id">{{ __('messages.other_income_category') }}</x-label>
+                    <!-- start area searchable select -->
+                    <div 
+                        x-data="{
+                            items:otherIncomeCategories,
+                            selectedItemIds:filters.other_income_category_ids,
+                            placeholder: '{{ __('messages.search') }}'
+                        }"
+                        x-model="selectedItemIds"
+                        x-modelable="filters.other_income_category_ids"
+                    >
+                        <x-multipule-searchable-select />
+                    </div>
                 </div>
+
+                <div>
+                    <x-label for="payment_status">{{ __('messages.payment_status') }}</x-label>
+                    <div 
+                        x-data="{
+                            items:paymentStatusesList,
+                            selectedItemIds:filters.payment_statuses,
+                            placeholder: '{{ __('messages.search') }}'
+                        }"
+                        x-model="selectedItemIds"
+                        x-modelable="filters.payment_statuses"
+                    >
+                        <x-multipule-searchable-select />
+                    </div>
+                </div>
+
+                <div>
+                    <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
+                    <x-input type="date" id="start_date" x-model.debounce="filters.start_date" class="text-start py-0 w-[200px]" />
+                </div>
+                <div>
+                    <x-label for="end_date">{{ __('messages.end_date') }}</x-label>
+                    <x-input type="date" id="end_date" x-model.debounce="filters.end_date" class="w-[200px] text-start py-0" />
+                </div>
+                <div class="flex-1"></div>
+                <x-button @click="getEmptyFilters">
+                    {{__('messages.reset_filters')}}
+                </x-button>
             </div>
-            <div>
-                <x-label for="start_date">{{ __('messages.start_date') }}</x-label>
-                <x-input type="date" id="start_date" x-model.debounce="filters.start_date" class="text-start py-0 w-[200px]" />
+
+
+            <x-table>
+                <x-thead>
+                    <tr>
+                        <x-th>{{__('messages.invoice_number')}}</x-th>
+                        <x-th>{{__('messages.manual_id')}}</x-th>
+                        <x-th>{{__('messages.other_income_category')}}</x-th>
+                        <x-th>{{__('messages.date')}}</x-th>
+                        <x-th>{{__('messages.amount')}}</x-th>
+                        <x-th class="!min-w-[300px]">{{__('messages.narration')}}</x-th>
+                        <x-th>{{__('messages.paid_amount')}}</x-th>
+                        <x-th>{{__('messages.cash')}}</x-th>
+                        <x-th>{{__('messages.knet')}}</x-th>
+                        <x-th>{{__('messages.bank_deposit')}}</x-th>
+                        <x-th>{{__('messages.reconciliations')}}</x-th>
+                        <x-th>{{__('messages.remaining_amount')}}</x-th>
+                        <x-th>{{__('messages.created_by')}}</x-th>
+                        <x-th></x-th>
+                    </tr>
+                </x-thead>
+
+                <tbody>
+                    <template x-for="incomeInvoice in incomeInvoices" :key="incomeInvoice.id">
+                        <x-tr>
+                            <x-td x-text="incomeInvoice.id"></x-td>
+                            <x-td x-text="incomeInvoice.manual_number"></x-td>
+                            <x-td x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></x-td>
+                            <x-td x-text="incomeInvoice.formatted_date"></x-td>
+                            <x-td x-text="formatNumber(parseFloat(incomeInvoice.amount))"></x-td>
+                            <x-td x-text="incomeInvoice.narration" class="!whitespace-normal"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).paidAmount)"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).cash)"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).knet)"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).bankDeposit)"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoiceReconciliations(incomeInvoice.id))"></x-td>
+                            <x-td x-text="formatNumber(getIncomeInvoiceRemainingAmount(incomeInvoice.id))"></x-td>
+                            <x-td x-text="incomeInvoice.creator.name"></x-td>
+                            <x-td>
+                                <div class="flex justify-end gap-2">
+                                    <template x-if="incomeInvoice.can_view_payments">
+                                        <x-badgeWithCounter title="{{ __('messages.add_payment') }}"
+                                            @click="openPaymentsModal(incomeInvoice)">
+                                            <span class="text-sm px-2">{{ __('messages.view_payments') }}</span>
+                                        </x-badgeWithCounter>
+                                    </template>
+                                    <template x-if="incomeInvoice.user_can_add_reconciliation">
+                                        <x-badgeWithCounter
+                                            title="{{ __('messages.add_reconciliation') }}"
+                                            @click="openReconciliationModal(incomeInvoice)">
+                                            {{ __('messages.add_reconciliation') }}
+                                        </x-badgeWithCounter>
+                                    </template>
+                                    <template x-if="incomeInvoice.can_view_attachments">
+                                        <x-badgeWithCounter title="{{ __('messages.attachments') }}"
+                                            @click="$dispatch('open-attachment-index-modal',{model: incomeInvoice, type: 'IncomeInvoice'})">
+                                            <x-svgs.attachment class="h-4 w-4" />
+                                            <span x-show="incomeInvoice.attachments_count > 0" style="font-size: 0.6rem;" x-text="incomeInvoice.attachments_count"></span>
+                                        </x-badgeWithCounter>
+                                    </template>
+                                    <template x-if="incomeInvoice.can_edit">
+                                        <x-badgeWithCounter title="{{ __('messages.edit') }}"
+                                            @click="openModal(incomeInvoice)">
+                                            <x-svgs.edit class="h-4 w-4" />
+                                        </x-badgeWithCounter>
+                                    </template>
+                                    <template x-if="incomeInvoice.can_delete">
+                                        <x-badgeWithCounter title="{{ __('messages.delete') }}"
+                                            @click="deleteIncomeInvoice(incomeInvoice.id)">
+                                            <x-svgs.trash class="h-4 w-4 text-red-500" />
+                                        </x-badgeWithCounter>
+                                    </template>
+                                </div>
+                            </x-td>
+                        </x-tr>
+                    </template>
+                </tbody>
+                <x-tfoot>
+                    <tr>
+                        <x-th colspan="4">{{__('messages.total')}}</x-th>
+                        <x-th x-text="formatNumber(getTotals().amount)"></x-th>
+                        <x-th></x-th>
+                        <x-th x-text="formatNumber(getTotals().paidAmount)"></x-th>
+                        <x-th x-text="formatNumber(getTotals().cash)"></x-th>
+                        <x-th x-text="formatNumber(getTotals().knet)"></x-th>
+                        <x-th x-text="formatNumber(getTotals().bankDeposit)"></x-th>
+                        <x-th x-text="formatNumber(getTotals().reconciliationsAmount)"></x-th>
+                        <x-th x-text="formatNumber(getTotals().remainingAmount)"></x-th>
+                        <x-th></x-th>
+                        <x-th></x-th>
+                    </tr>
+                </x-tfoot>
+
+            </x-table>
+
+            <!-- load more -->
+            <div class="flex justify-center mt-4" x-show="currentPage < lastPage">
+                <x-button @click="loadMore">
+                    {{__('messages.load_more')}}
+                </x-button>
             </div>
-            <div>
-                <x-label for="end_date">{{ __('messages.end_date') }}</x-label>
-                <x-input type="date" id="end_date" x-model.debounce="filters.end_date" class="w-[200px] text-start py-0" />
-            </div>
-            <div class="flex-1"></div>
-            <x-button @click="getEmptyFilters">
-                {{__('messages.reset_filters')}}
-            </x-button>
         </div>
 
-
-        <x-table>
-            <x-thead>
-                <tr>
-                    <x-th>{{__('messages.invoice_number')}}</x-th>
-                    <x-th>{{__('messages.manual_id')}}</x-th>
-                    <x-th>{{__('messages.other_income_category')}}</x-th>
-                    <x-th>{{__('messages.date')}}</x-th>
-                    <x-th>{{__('messages.amount')}}</x-th>
-                    <x-th class="!min-w-[300px]">{{__('messages.narration')}}</x-th>
-                    <x-th>{{__('messages.paid_amount')}}</x-th>
-                    <x-th>{{__('messages.cash')}}</x-th>
-                    <x-th>{{__('messages.knet')}}</x-th>
-                    <x-th>{{__('messages.bank_deposit')}}</x-th>
-                    <x-th>{{__('messages.reconciliations')}}</x-th>
-                    <x-th>{{__('messages.remaining_amount')}}</x-th>
-                    <x-th>{{__('messages.created_by')}}</x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-thead>
-
-            <tbody>
-                <template x-for="incomeInvoice in incomeInvoices" :key="incomeInvoice.id">
-                    <x-tr>
-                        <x-td x-text="incomeInvoice.id"></x-td>
-                        <x-td x-text="incomeInvoice.manual_number"></x-td>
-                        <x-td x-text="getOtherIncomeCategoryNameById(incomeInvoice.other_income_category_id)"></x-td>
-                        <x-td x-text="incomeInvoice.formatted_date"></x-td>
-                        <x-td x-text="formatNumber(parseFloat(incomeInvoice.amount))"></x-td>
-                        <x-td x-text="incomeInvoice.narration" class="!whitespace-normal"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).paidAmount)"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).cash)"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).knet)"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoicePayments(incomeInvoice.id).bankDeposit)"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoiceReconciliations(incomeInvoice.id))"></x-td>
-                        <x-td x-text="formatNumber(getIncomeInvoiceRemainingAmount(incomeInvoice.id))"></x-td>
-                        <x-td x-text="incomeInvoice.creator.name"></x-td>
-                        <x-td>
-                            <div class="flex justify-end gap-2">
-                                <template x-if="incomeInvoice.can_view_payments">
-                                    <x-badgeWithCounter title="{{ __('messages.add_payment') }}"
-                                        @click="openPaymentsModal(incomeInvoice)">
-                                        <span class="text-sm px-2">{{ __('messages.view_payments') }}</span>
-                                    </x-badgeWithCounter>
-                                </template>
-                                <template x-if="incomeInvoice.user_can_add_reconciliation">
-                                    <x-badgeWithCounter
-                                        title="{{ __('messages.add_reconciliation') }}"
-                                        @click="openReconciliationModal(incomeInvoice)">
-                                        {{ __('messages.add_reconciliation') }}
-                                    </x-badgeWithCounter>
-                                </template>
-                                <template x-if="incomeInvoice.can_view_attachments">
-                                    <x-badgeWithCounter title="{{ __('messages.attachments') }}"
-                                        @click="$dispatch('open-attachment-index-modal',{model: incomeInvoice, type: 'IncomeInvoice'})">
-                                        <x-svgs.attachment class="h-4 w-4" />
-                                        <span x-show="incomeInvoice.attachments_count > 0" style="font-size: 0.6rem;" x-text="incomeInvoice.attachments_count"></span>
-                                    </x-badgeWithCounter>
-                                </template>
-                                <template x-if="incomeInvoice.can_edit">
-                                    <x-badgeWithCounter title="{{ __('messages.edit') }}"
-                                        @click="openModal(incomeInvoice)">
-                                        <x-svgs.edit class="h-4 w-4" />
-                                    </x-badgeWithCounter>
-                                </template>
-                                <template x-if="incomeInvoice.can_delete">
-                                    <x-badgeWithCounter title="{{ __('messages.delete') }}"
-                                        @click="deleteIncomeInvoice(incomeInvoice.id)">
-                                        <x-svgs.trash class="h-4 w-4 text-red-500" />
-                                    </x-badgeWithCounter>
-                                </template>
-                            </div>
-                        </x-td>
-                    </x-tr>
-                </template>
-            </tbody>
-            <x-tfoot>
-                <tr>
-                    <x-th colspan="4">{{__('messages.total')}}</x-th>
-                    <x-th x-text="formatNumber(getTotals().amount)"></x-th>
-                    <x-th></x-th>
-                    <x-th x-text="formatNumber(getTotals().paidAmount)"></x-th>
-                    <x-th x-text="formatNumber(getTotals().cash)"></x-th>
-                    <x-th x-text="formatNumber(getTotals().knet)"></x-th>
-                    <x-th x-text="formatNumber(getTotals().bankDeposit)"></x-th>
-                    <x-th x-text="formatNumber(getTotals().reconciliationsAmount)"></x-th>
-                    <x-th x-text="formatNumber(getTotals().remainingAmount)"></x-th>
-                    <x-th></x-th>
-                    <x-th></x-th>
-                </tr>
-            </x-tfoot>
-
-        </x-table>
-
-        <!-- load more -->
-        <div class="flex justify-center mt-4" x-show="currentPage < lastPage">
-            <x-button @click="loadMore">
-                {{__('messages.load_more')}}
-            </x-button>
-        </div>
     </div>
 
 
@@ -197,6 +217,7 @@
                 filters: {},
                 currentPage: 1,
                 lastPage: 1,
+                totalRecords: 0,
                 init() {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
                     this.getEmptyFilters();
@@ -207,6 +228,7 @@
 
                 getEmptyFilters() {
                     this.filters = {
+                        search: '',
                         other_income_category_ids: [],
                         start_date: null,
                         end_date: null,
@@ -310,6 +332,7 @@
                             }
                             this.currentPage = response.data.meta.current_page;
                             this.lastPage = response.data.meta.last_page;
+                            this.totalRecords = response.data.meta.total;
                         })
                         .catch(error => {
                             alert(error.response.data.message);

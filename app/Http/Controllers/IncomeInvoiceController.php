@@ -27,6 +27,9 @@ class IncomeInvoiceController extends Controller
                 ->with('attachments')
                 ->with('creator')
                 ->withCount('attachments')
+                ->when(request()->has('search'), function ($query) {
+                    $query->whereAny(['manual_number','narration'], 'like', '%' . request()->search . '%');
+                })
                 ->when(request()->has('other_income_category_ids'), function ($query) {
                     $query->whereIn('other_income_category_id', request()->other_income_category_ids);
                 })
