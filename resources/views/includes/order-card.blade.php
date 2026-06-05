@@ -15,6 +15,7 @@
                 <div class="text-xs" x-text="order.phone.number"></div>
             </div>
             <h4 class="mt-2 text-xs" x-text="order.address.full_address"></h4>
+            <h4 class="mt-2 text-xs" x-show="order.customer.notes" x-text="order.customer.notes"></h4>
         </div>
     
         <div
