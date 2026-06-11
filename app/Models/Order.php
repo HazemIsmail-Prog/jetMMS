@@ -19,6 +19,10 @@ class Order extends Model
 
     protected $guarded = [];
 
+    protected $appends = [
+        'cancelled_by',
+    ];
+
     protected $casts = [
         'estimated_start_date' => 'date:Y-m-d',
         'created_at' => 'datetime',
@@ -92,6 +96,11 @@ class Order extends Model
     public function statuses()
     {
         return $this->hasMany(OrderStatus::class);
+    }
+
+    public function getCancelledByAttribute()
+    {
+        return $this->statuses()->where('status_id', Status::CANCELLED)->orderByDesc('id')->first()->creator ?? null;
     }
 
     public function getRemainingAmountAttribute()

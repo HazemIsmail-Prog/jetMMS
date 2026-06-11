@@ -15,6 +15,7 @@
             <th>@lang('messages.completed_at')        </th>
             <th>@lang('messages.cancelled_at')        </th>
             <th>@lang('messages.cancel_reason')       </th>
+            <th>@lang('messages.cancelled_by')        </th>
             <th>@lang('messages.created_at')          </th>
         </tr>
     </thead>
@@ -35,6 +36,7 @@
             <td>{{ $row->completed_at ? $row->completed_at->format('d-m-Y H:i'):'' }}</td>
             <td>{{ $row->cancelled_at ? $row->cancelled_at->format('d-m-Y H:i'):'' }}</td>
             <td>{{ @$row->reason }}                                                  </td>
+            <td>{{ @$row->cancelled_by->name }}                                      </td>
             <td>{{ $row->created_at->format('d-m-Y H:i') }}                          </td>
         </tr>
         @endforeach
