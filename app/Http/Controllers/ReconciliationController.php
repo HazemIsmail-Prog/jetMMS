@@ -89,7 +89,7 @@ class ReconciliationController extends Controller
                         'credit' => $validatedReconciliationData['amount'],
                         'debit' => 0,
                         'narration' => $narration,
-                        'user_id' => $validatedReconciliationData['related_user_id'] ?? null,
+                        'user_id' => $invoice->order->technician_id ?? null,
                     ]
                 ];
         }
