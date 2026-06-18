@@ -1,8 +1,7 @@
 <div style="font-size: 0.8rem;text-align:center">
     <p>كفالة على العمل ١٠ أيام فقط </P>
     <p>الكفالة لا تشمل أعمال تسليك الصرف الصحي او أعمال الالتماس الكهربائي</p>
-    <div>{{ config('app.name') }}</div>
-    <div>{{ $settings->address_ar }}</div>
-    <div>{{ $settings->address_en }}</div>
-    <div>{{ $settings->phone }}</div>
+    @if($footer_image_src)
+        <img src="{{ $footer_image_src }}" alt="footer">
+    @endif
 </div>

@@ -191,10 +191,29 @@ class InvoiceController extends Controller
         $page_title = 'MD Invoice No.' . $invoice->id;
         $file_name = $page_title . '.pdf';
 
-        $mpdf = new Mpdf();
+        $mpdf = new Mpdf([
+            'margin_top' => 33,
+            'margin_bottom' => 15,
+            'margin_left' => 15,
+            'margin_right' => 15,
+        ]);
         $mpdf->showImageErrors = true;
         $body = view('livewire.invoices.pdf.pdf', compact('invoice', 'page_title'));
-        $footer = view('livewire.invoices.pdf.footer');
+        // set header if exists
+        if(file_exists(public_path('images/header.png'))) {
+            $header_image = base64_encode(file_get_contents(public_path('images/header.png')));
+            $header_image_src = 'data:image/png;base64,' . $header_image;
+            $header = view('livewire.invoices.pdf.header', compact('header_image_src'));
+            $mpdf->SetHTMLHeader($header);
+        }
+        // set footer if exists
+        $footer_image_src = null;
+        if(file_exists(public_path('images/footer.png'))) {
+            $footer_image = base64_encode(file_get_contents(public_path('images/footer.png')));
+            $footer_image_src = 'data:image/png;base64,' . $footer_image;
+        }
+        // set footer
+        $footer = view('livewire.invoices.pdf.footer', compact('footer_image_src'));
         $mpdf->SetHTMLFooter($footer);
         $mpdf->WriteHTML($body); //should be before output directly
         $mpdf->Output($file_name, 'I');
@@ -207,12 +226,31 @@ class InvoiceController extends Controller
         $page_title = 'MD Detailed Invoice No.' . $invoice->id;
         $file_name = $page_title . '.pdf';
 
-        $mpdf = new Mpdf();
+        $mpdf = new Mpdf([
+            'margin_top' => 33,
+            'margin_bottom' => 15,
+            'margin_left' => 15,
+            'margin_right' => 15,
+        ]);
         $mpdf->showImageErrors = true;
         $body = view('livewire.invoices.pdf.detailed_pdf', compact('invoice', 'page_title'));
-        $footer = view('livewire.invoices.pdf.footer');
+        // set header if exists
+        if(file_exists(public_path('images/header.png'))) {
+            $header_image = base64_encode(file_get_contents(public_path('images/header.png')));
+            $header_image_src = 'data:image/png;base64,' . $header_image;
+            $header = view('livewire.invoices.pdf.header', compact('header_image_src'));
+            $mpdf->SetHTMLHeader($header);
+        }
+        // set footer if exists
+        $footer_image_src = null;
+        if(file_exists(public_path('images/footer.png'))) {
+            $footer_image = base64_encode(file_get_contents(public_path('images/footer.png')));
+            $footer_image_src = 'data:image/png;base64,' . $footer_image;
+        }
+        // set footer
+        $footer = view('livewire.invoices.pdf.footer', compact('footer_image_src'));
         $mpdf->SetHTMLFooter($footer);
-        // ini_set("pcre.backtrack_limit", "5000000");
+        
         $mpdf->WriteHTML($body); //should be before output directly
         $mpdf->Output($file_name, 'I');
         // $mpdf->Output(storage_path('app/public/invoices/' . $file_name), 'F'); //use this when send to whatsapp

@@ -34,6 +34,7 @@
             border-bottom: 2px solid #00a4e0;
             padding-bottom: 10px;
             margin-bottom: 20px;
+            margin-top: 15px;
             grid-column: span 2;
             /* Spanning both columns */
         }
