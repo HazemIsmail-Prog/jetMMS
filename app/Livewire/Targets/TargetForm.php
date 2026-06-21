@@ -73,7 +73,7 @@ class TargetForm extends Component
         return User::query()
             ->select('id', 'title_id', 'department_id', 'active', 'name_' . app()->getLocale())
             ->whereIn('title_id', Title::TECHNICIANS_GROUP)
-            ->whereActive(1)
+            // ->whereActive(1)
             ->when($this->department_id, function ($q) {
                 $q->whereIn('department_id', $this->department_id);
             })

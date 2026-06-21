@@ -50,7 +50,7 @@
         </template>
 
         <!-- Filters -->
-        <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div class=" mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
             <div>
                 <x-label for="name">{{ __('messages.name') }}</x-label>
                 <x-input id="name" x-model.debounce="filters.name" class="w-full text-start py-0" />
@@ -83,6 +83,10 @@
             <div>
                 <x-label for="street">{{ __('messages.street') }}</x-label>
                 <x-input id="street" x-model="filters.street" class="w-full py-0" dir="ltr" />
+            </div>
+            <div>
+                <x-label for="jadda">{{ __('messages.jadda') }}</x-label>
+                <x-input id="jadda" x-model="filters.jadda" class="w-full py-0" dir="ltr" />
             </div>
             <div>
                 <x-label for="building">{{ __('messages.building') }}</x-label>
