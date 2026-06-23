@@ -40,7 +40,7 @@ class EmployeeForm extends Form
             'passport_no' => 'required',
             'startingSalary' => 'required',
             'startingLeaveBalance' => 'required',
-            'lastWorkingDate' => 'nullable|required_unless:status,in,"active","under_test"',
+            'lastWorkingDate' => 'nullable|required_unless:status,in,"active","under_test","on_leave_of_absence"',
             'status' => 'required',
         ];
     }
