@@ -894,4 +894,6 @@ return [
     "refund_account_is_required" => "يجب اختيار حساب المردودات",
     "refund_account_id" => "حساب المردودات",
 
+    "on_leave_of_absence" => "مخالف اجازة",
+
 ];
