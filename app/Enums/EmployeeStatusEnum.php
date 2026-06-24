@@ -22,11 +22,11 @@ enum EmployeeStatusEnum:string
 
     public function color() : string {
         return match($this){
-            EmployeeStatusEnum::ACTIVE => 'green',
-            EmployeeStatusEnum::RESIGNED => 'red',
-            EmployeeStatusEnum::TERMINATED => 'red',
-            EmployeeStatusEnum::TEMP => 'gray',
-            EmployeeStatusEnum::ON_LEAVE_OF_ABSENCE => 'blue',
+            EmployeeStatusEnum::ACTIVE => 'oklch(79.2% 0.209 151.711)',
+            EmployeeStatusEnum::RESIGNED => 'oklch(70.4% 0.191 22.216)',
+            EmployeeStatusEnum::TERMINATED => 'oklch(70.4% 0.191 22.216)',
+            EmployeeStatusEnum::TEMP => 'oklch(70.7% 0.022 261.325)',
+            EmployeeStatusEnum::ON_LEAVE_OF_ABSENCE => 'oklch(78.9% 0.154 211.53)',
         };
     }
 }

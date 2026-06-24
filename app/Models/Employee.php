@@ -157,7 +157,7 @@ class Employee extends Model
         return '<span dir="ltr">' . ($this->joinDate->format('d-m-Y')) . '</span>';
     }
     public function getFormatedStatusAttribute() {
-        return '<div class="text-'. $this->status->color().'-400">'. $this->status->title() . '</div>';
+        return '<div style="color: '. $this->status->color().'">'. $this->status->title() . '</div>';
     }
 
     public function getFormatedLeaveDaysBalanceAttribute() {
