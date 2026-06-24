@@ -17,6 +17,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DailyReviewExport;
 use App\Models\IncomeInvoice;
 use App\Models\OtherIncomeCategory;
+use App\Models\OrderStatus;
+use App\Models\Status;
 
 class ReportController extends Controller
 {
@@ -505,5 +507,72 @@ class ReportController extends Controller
 
 
         return view('pages.reports.income_report');
+    }
+
+
+    public function dispatchingHistory(Request $request)
+    {
+        abort_if(!auth()->user()->hasPermission('dispatching_history_report'), 403);
+
+        
+        if($request->wantsJson()){
+            $query = OrderStatus::query()
+                ->orderBy('order_id', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->with('order')
+                ->with('status');
+
+                if($request->has('order_number') && $request->order_number !== null){
+                    $query->where('order_id', $request->order_number);
+                }
+
+                if($request->has('user_ids') && $request->user_ids !== null){
+                    $query->whereIn('user_id', $request->user_ids);
+                }
+
+                if($request->has('status_ids') && $request->status_ids !== null){
+                    $query->whereIn('status_id', $request->status_ids);
+                }
+                
+                if($request->has('department_ids')){
+                    $query->whereHas('order', function($query) use ($request){
+                        $query->whereIn('department_id', $request->department_ids);
+                    });
+                }
+                if($request->has('technician_ids')){
+                    $query->whereHas('order', function($query) use ($request){
+                        $query->whereIn('technician_id', $request->technician_ids);
+                    });
+                }
+
+                if($request->has('start_created_at') && $request->start_created_at !== null){
+                    $query->whereDate('created_at', '>=', $request->start_created_at);
+                }
+                if($request->has('end_created_at') && $request->end_created_at !== null){
+                    $query->whereDate('created_at', '<=', $request->end_created_at);
+                }
+
+                $order_statuses = $query->paginate(50);
+            return response()->json($order_statuses);
+        }
+
+        $users = User::query()
+            ->select('id', 'name_ar', 'name_en')
+            ->get();
+
+        $departments = Department::query()
+            ->select('id', 'name_ar', 'name_en')
+            ->get();
+
+        $technicians = User::query()
+            ->select('id', 'name_ar', 'name_en')
+            ->whereIn('title_id', Title::TECHNICIANS_GROUP)
+            ->get();
+
+        $statuses = Status::query()
+            ->select('id', 'name_ar', 'name_en')
+            ->get();
+
+        return view('pages.reports.dispatching_history', compact('users', 'departments', 'technicians', 'statuses'));
     }
 }

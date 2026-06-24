@@ -327,6 +327,7 @@ Route::middleware([
 
                 Route::get('invoices/report', 'invoices')->name('invoice.report');
                 Route::get('invoices/report/getData', 'getData');
+                Route::get('dispatching-history', 'dispatchingHistory')->name('dispatching-history');
             });
 
             Route::get('accounts/reports/collection_statement', CollectionStatement::class)

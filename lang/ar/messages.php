@@ -895,5 +895,6 @@ return [
     "refund_account_id" => "حساب المردودات",
 
     "on_leave_of_absence" => "مخالف اجازة",
+    "dispatching_history" => "توزيع الطلبات",
 
 ];

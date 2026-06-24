@@ -28,4 +28,23 @@ class OrderStatus extends Model
     {
         return $this->belongsTo(User::class, 'technician_id');
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    protected $appends = ['formated_created_at_date', 'formated_created_at_time'];
+
+    public function getFormatedCreatedAtDateAttribute()
+    {
+        return $this->created_at->format('Y-m-d');
+    }
+
+    public function getFormatedCreatedAtTimeAttribute()
+    {
+        return $this->created_at->format('H:i');
+    }
+    
+    
 }

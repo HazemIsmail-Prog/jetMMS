@@ -72,6 +72,9 @@
                     @if(auth()->user()->hasPermission('cancel_surveys_menu'))
                         <x-nested-sidebar-item route="cancel-surveys.index" :title="__('messages.cancel_surveys')" />
                     @endif
+                    @if(auth()->user()->hasPermission('dispatching_history_report'))
+                        <x-nested-sidebar-item route="dispatching-history" :title="__('messages.dispatching_history')" />
+                    @endif
                 </x-sidebar-dropdown>
             @endcan
             @can('canDispatch', App\Models\DummyModel::class)
