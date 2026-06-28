@@ -102,7 +102,7 @@
 
                         <div>
                             <x-label for="contract_value">{{ __('messages.contract_value') }}</x-label>
-                            <x-input id="contract_value" class="w-full" x-model="form.contract_value" type="number" />
+                            <x-input id="contract_value" class="w-full" x-model="form.contract_value" type="number" step="0.001" />
                         </div>
 
                         <div>
