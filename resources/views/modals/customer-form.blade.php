@@ -352,12 +352,12 @@
                         }
                     }
                     // check if all addresses fiels are unique
-                    const addressFields = this.form.addresses.map(address => `${address.area_id}-${address.block}-${address.street}-${address.jadda}-${address.building}-${address.apartment}-${address.notes}`);
-                    const uniqueAddressFields = [...new Set(addressFields)];
-                    if (uniqueAddressFields.length !== addressFields.length) {
-                        alert('{{ __('messages.addresses_fields_must_be_unique') }}');
-                        return false;
-                    }
+                    //const addressFields = this.form.addresses.map(address => `${address.area_id}-${address.block}-${address.street}-${address.jadda}-${address.building}-${address.apartment}-${address.notes}`);
+                    //const uniqueAddressFields = [...new Set(addressFields)];
+                    //if (uniqueAddressFields.length !== addressFields.length) {
+                    //    alert('{{ __('messages.addresses_fields_must_be_unique') }}');
+                    //    return false;
+                    //}
 
 
                     return true;
