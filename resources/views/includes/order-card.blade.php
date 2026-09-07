@@ -56,6 +56,15 @@
                 <x-badgeWithCounter @click="openOrderModal(order)">
                     <x-svgs.list class="h-4 w-4" />
                 </x-badgeWithCounter>
+                <template x-if="order.can_list_attachments">
+                    <x-badgeWithCounter
+                        title="{{ __('messages.attachments') }}"
+                        @click="$dispatch('open-attachment-index-modal', {model: order, type: 'Order'})"
+                    >
+                        <x-svgs.attachment class="h-4 w-4" />
+                        <span x-show="order.attachments_count > 0" style="font-size: 0.6rem;" x-text="order.attachments_count"></span>
+                    </x-badgeWithCounter>
+                </template>
                 <template x-if="isFirstOrNextOrderButtonVisible()">
                     <x-badgeWithCounter @click="setAsFirstOrNextOrder(order.id)">
                         <x-svgs.arrow-up class="h-4 w-4" />

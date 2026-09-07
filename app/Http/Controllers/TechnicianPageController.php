@@ -35,7 +35,7 @@ class TechnicianPageController extends Controller
         
         $order
             ->load('status', 'department', 'technician', 'customer', 'phone', 'address')
-            ->loadCount('invoices')
+            ->loadCount(['invoices', 'attachments'])
             ->load('invoices.invoice_details', 'invoices.invoice_part_details', 'invoices.payments.user');
         return new OrderResource($order);
     }

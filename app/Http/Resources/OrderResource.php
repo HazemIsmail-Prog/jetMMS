@@ -28,6 +28,10 @@ class OrderResource extends JsonResource
         $userCanEditOrder = $user->hasPermission('orders_edit') || $this->created_by == $user->id;
         $userCanViewOrderDetails = true;
         $userCanSendSurvey = $user->hasPermission('orders_send_survey');
+        $can_list_attachments = $user->hasPermission('orders_attachments_list');
+        $can_create_attachments = $user->hasPermission('orders_attachments_create');
+        $can_update_attachments = $user->hasPermission('orders_attachments_update');
+        $can_delete_attachments = $user->hasPermission('orders_attachments_delete');
         $formatted_id = str_pad($this->id, 8, '0', STR_PAD_LEFT);
 
 
@@ -43,6 +47,10 @@ class OrderResource extends JsonResource
             'can_view_order_details' => $userCanViewOrderDetails,
             'can_hold_order' => $this->invoices_count == 0 && $userCanHoldOrder,
             'can_cancel_order' => $this->invoices_count == 0 && $userCanCancelOrder,
+            'can_list_attachments' => $can_list_attachments,
+            'can_create_attachment' => $can_create_attachments,
+            'can_update_attachment' => $can_update_attachments,
+            'can_delete_attachment' => $can_delete_attachments,
 
             // Basic
             'id' => $this->id,
@@ -94,6 +102,7 @@ class OrderResource extends JsonResource
 
             // Belongs to Relations
             'invoices_count' => $this->whenCounted('invoices'),
+            'attachments_count' => $this->whenCounted('attachments'),
             'status' => new StatusResource($this->whenLoaded('status')),
             'creator' => new UserResource($this->whenLoaded('creator')),
             'customer' => new CustomerResource($this->whenLoaded('customer')),

@@ -30,6 +30,7 @@ class DispatchingPageController extends Controller
             ->with('address')
             ->with('creator')
             ->withCount('invoices')
+            ->withCount('attachments')
             ->where('department_id', $department->id)
             ->whereIn('status_id', [Status::CREATED, Status::DESTRIBUTED, Status::ON_HOLD, Status::RECEIVED, Status::ARRIVED])
             ->orWhere(function($query) use ($department) {

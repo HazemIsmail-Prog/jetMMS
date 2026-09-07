@@ -2,14 +2,30 @@
 
     @include('modals.invoice-form')
     @include('modals.payment-form')
+    @include('modals.attachments')
+    @include('modals.attachment-form')
 
-    <div x-data="technicianPage">
+    <div 
+        x-data="technicianPage"
+        x-on:attachments-count-updated.window="updateAttachmentsCount"
+    >
         <template x-if="currentOrderForTechnician">
             <div class="flex flex-col h-full gap-2">
                 <div class=" px-2 border dark:border-gray-700 dark:text-gray-300 rounded-lg">
-                    <div class=" flex items-center gap-2 border-b dark:border-gray-700 py-2">
-                        <x-svgs.hash class="w-4 h-4 shrink-0" />
-                        <p x-text="currentOrderForTechnician.formatted_id"></p>
+                    <div class=" flex items-center justify-between gap-2 border-b dark:border-gray-700 py-2">
+                        <div class="flex items-center gap-2">
+                            <x-svgs.hash class="w-4 h-4 shrink-0" />
+                            <p x-text="currentOrderForTechnician.formatted_id"></p>
+                        </div>
+                        <template x-if="currentOrderForTechnician.can_list_attachments && currentOrderForTechnician.status_id != 2">
+                            <x-badgeWithCounter
+                                title="{{ __('messages.attachments') }}"
+                                @click="$dispatch('open-attachment-index-modal', {model: currentOrderForTechnician, type: 'Order'})"
+                            >
+                                <x-svgs.attachment class="h-4 w-4" />
+                                <span x-show="currentOrderForTechnician.attachments_count > 0" style="font-size: 0.6rem;" x-text="currentOrderForTechnician.attachments_count"></span>
+                            </x-badgeWithCounter>
+                        </template>
                     </div>
                     <div class=" flex items-center gap-2 border-b dark:border-gray-700 py-2">
                         <x-svgs.user class="w-4 h-4 shrink-0" />
@@ -149,6 +165,24 @@
                         .finally(() => {
                             this.loading = false;
                         });
+                },
+
+                updateAttachmentsCount(e) {
+                    if (!this.currentOrderForTechnician || this.currentOrderForTechnician.id !== e.detail.modelId) {
+                        return;
+                    }
+
+                    if (this.currentOrderForTechnician.attachments_count == null) {
+                        this.currentOrderForTechnician.attachments_count = 0;
+                    }
+
+                    if (e.detail.method === 'delete') {
+                        this.currentOrderForTechnician.attachments_count--;
+                    }
+
+                    if (e.detail.method === 'create') {
+                        this.currentOrderForTechnician.attachments_count++;
+                    }
                 },
 
                 async getInvoiceResource(invoiceId) {

@@ -57,6 +57,7 @@ class OrderController extends Controller
                 ->with('invoices.invoice_details')
                 ->with('invoices.invoice_part_details')
                 ->with('invoices.payments')
+                ->withCount('attachments')
                 ->when($request->customer_name, function($query) use ($request) {
                     $query->whereRelation('customer', 'name', 'like', '%' . $request->customer_name . '%');
                 })
@@ -284,7 +285,7 @@ class OrderController extends Controller
     {
         $order
             ->load('status', 'department', 'technician', 'customer', 'phone', 'address','creator', 'invoices', 'invoices.invoice_details', 'invoices.invoice_part_details', 'invoices.payments')
-            ->loadCount('invoices');
+            ->loadCount(['invoices', 'attachments']);
         return new OrderResource($order);
     }
 

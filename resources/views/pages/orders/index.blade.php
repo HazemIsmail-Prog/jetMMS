@@ -28,6 +28,7 @@
         @order-updated.window="handleOrderUpdatedEvent"
         @order-created.window="handleOrderCreatedEvent"
         @customer-updated.window="handleCustomerUpdatedEvent"
+        @attachments-count-updated.window="updateAttachmentsCount"
     >
         <template x-if="surveysList.length > 0">
             <div class="fixed z-10 bottom-1 end-1 space-y-2 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-6 border-2 border-indigo-100 dark:border-gray-700">
@@ -418,6 +419,17 @@
                                     <x-svgs.list class="h-4 w-4" />
                                 </x-badgeWithCounter>
                             </template>
+
+                            <template x-if="order.can_list_attachments">
+                                <x-badgeWithCounter
+                                    title="{{ __('messages.attachments') }}"
+                                    class="hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    @click="$dispatch('open-attachment-index-modal', {model: order, type: 'Order'})"
+                                >
+                                    <x-svgs.attachment class="h-4 w-4" />
+                                    <span x-show="order.attachments_count > 0" style="font-size: 0.6rem;" x-text="order.attachments_count"></span>
+                                </x-badgeWithCounter>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -582,6 +594,25 @@
 
                 handleOrderCreatedEvent(e) {
                     this.orders.unshift(e.detail.order);
+                },
+
+                updateAttachmentsCount(e) {
+                    const index = this.orders.findIndex(order => order.id === e.detail.modelId);
+                    if (index === -1) {
+                        return;
+                    }
+
+                    if (this.orders[index].attachments_count == null) {
+                        this.orders[index].attachments_count = 0;
+                    }
+
+                    if (e.detail.method === 'delete') {
+                        this.orders[index].attachments_count--;
+                    }
+
+                    if (e.detail.method === 'create') {
+                        this.orders[index].attachments_count++;
+                    }
                 },
 
                 async handleCustomerUpdatedEvent(e) {

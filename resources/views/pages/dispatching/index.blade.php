@@ -23,6 +23,7 @@
         @technician-selected.window="setTechnician"
         @reorder-orders-in-same-box.window="reorderOrdersInSameBox"
         @set-as-first-or-next-order.window="setAsFirstOrNextOrder"
+        @attachments-count-updated.window="updateAttachmentsCount"
     >
         <template x-teleport="#counter">
             <div class="flex items-center gap-2">
@@ -462,6 +463,25 @@
                     this.orders[index].technician_id = null;
                     // this.orders.splice(index, 1);
                     // backend exist in cancel-reason-modal
+                },
+
+                updateAttachmentsCount(e) {
+                    const index = this.orders.findIndex(order => order.id == e.detail.modelId);
+                    if (index === -1) {
+                        return;
+                    }
+
+                    if (this.orders[index].attachments_count == null) {
+                        this.orders[index].attachments_count = 0;
+                    }
+
+                    if (e.detail.method === 'delete') {
+                        this.orders[index].attachments_count--;
+                    }
+
+                    if (e.detail.method === 'create') {
+                        this.orders[index].attachments_count++;
+                    }
                 },
 
                 async setOrderAppointment(e) {

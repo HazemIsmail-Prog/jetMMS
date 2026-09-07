@@ -153,7 +153,7 @@ Route::middleware([
             Route::get('alerts',AlertIndex::class)->name('alerts')->can('alerts_menu',DummyModel::class);
 
 
-            Route::apiResource('attachments', AttachmentController::class);
+            Route::apiResource('attachments', AttachmentController::class)->withoutMiddleware(NoTechnicians::class);
 
             // ========== Operations ==========
 
