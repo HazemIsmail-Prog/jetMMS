@@ -21,7 +21,7 @@ class AttachmentRequest extends FormRequest
      */
     public function rules(): array
     {
-        $fileRule = 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,bmp';
+        $fileRule = 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,bmp,mp4,mov,avi,wmv,webm,mkv,mpeg,mpg,3gp,m4v';
         $rules = [
             'description_ar' => 'required|string|max:255',
             'description_en' => 'required|string|max:255',

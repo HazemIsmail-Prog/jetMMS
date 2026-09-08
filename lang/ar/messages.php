@@ -733,7 +733,7 @@ return [
     'description_en_required' => 'يجب ادخال الوصف بالانجليزي',
     'file_required' => 'يجب ادخال الملف',
     'file_file' => 'يجب ان يكون الملف ملف',
-    'file_mimes' => 'يجب ان يكون الملف من نوع pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,bmp',
+    'file_mimes' => 'يجب ان يكون الملف من نوع pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,bmp,mp4,mov,avi,wmv,webm,mkv,mpeg,mpg,3gp,m4v',
     'edit_attachment' => 'تعديل مرفق',
     'total_amount' => 'اجمالي المبلغ',
     'in_progress_orders' => 'طلبات قيد التنفيذ',
