@@ -21,11 +21,11 @@ class AttachmentRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd($this->expirationDate);
+        $fileRule = 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,bmp';
         $rules = [
             'description_ar' => 'required|string|max:255',
             'description_en' => 'required|string|max:255',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx',
+            'file' => $fileRule,
             'expirationDate' => 'nullable|date',
             'alertable' => 'required|boolean',
             'alertBefore' => 'nullable',
@@ -42,7 +42,7 @@ class AttachmentRequest extends FormRequest
             if (is_string($this->file)) {
                 $rules['file'] = 'required|string';
             } else {
-                $rules['file'] = 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx';
+                $rules['file'] = $fileRule;
             }
         }
         return $rules;
