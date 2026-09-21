@@ -13,7 +13,7 @@
     @teleport('#counter')
     <span
         class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-        {{ $this->contracts->total() }}
+        {{ $this->total }}
     </span>
     @endteleport
 
@@ -36,15 +36,6 @@
             @endif
     </div>
     @endteleport --}}
-
-    @if ($this->contracts->hasPages())
-    <x-slot name="footer">
-        <span id="pagination"></span>
-    </x-slot>
-    @teleport('#pagination')
-    <div class="">{{ $this->contracts->links() }}</div>
-    @endteleport
-    @endif
 
     @livewire('contracts.contract-form')
 
@@ -93,6 +84,15 @@
                 wire:model.live="filters.end_contract_date" />
         </div>
 
+        <div>
+            <x-label for="status">{{ __('messages.status') }}</x-label>
+            <x-select id="status" class="w-36 min-w-full text-center py-0" wire:model.live="filters.status">
+                <option value="">{{ __('messages.all') }}</option>
+                <option value="active">{{ __('messages.active') }}</option>
+                <option value="expired">{{ __('messages.expired') }}</option>
+            </x-select>
+        </div>
+
     </div>
 
 
@@ -105,6 +105,10 @@
                 <x-th>{{ __('messages.customer') }}</x-th>
                 <x-th>{{ __('messages.contract_date') }}</x-th>
                 <x-th>{{ __('messages.contract_duration') }}</x-th>
+                <x-th>{{ __('messages.units_count') }}</x-th>
+                <x-th>{{ __('messages.central_count') }}</x-th>
+                <x-th>{{ __('messages.sp_included') }}</x-th>
+                <x-th>{{ __('messages.compressor_included') }}</x-th>
                 <x-th>{{ __('messages.contract_value') }}</x-th>
                 <x-th>{{ __('messages.collected_amount') }}</x-th>
                 <x-th>{{ __('messages.remaining_amount') }}</x-th>
@@ -127,6 +131,22 @@
                 </x-td>
                 <x-td>{{ $contract->contract_date }}</x-td>
                 <x-td>{{ $contract->contract_duration }}</x-td>
+                <x-td>{{ $contract->units_count }}</x-td>
+                <x-td>{{ $contract->central_count }}</x-td>
+                <x-td>
+                    @if ($contract->sp_included)
+                    <x-svgs.dblcheck class="h-4 w-4 text-green-600 dark:text-green-500" />
+                    @else
+                    <x-svgs.close class="h-4 w-4 text-red-600 dark:text-red-500" />
+                    @endif
+                </x-td>
+                <x-td>
+                    @if ($contract->compressor_included)
+                    <x-svgs.dblcheck class="h-4 w-4 text-green-600 dark:text-green-500" />
+                    @else
+                    <x-svgs.close class="h-4 w-4 text-red-600 dark:text-red-500" />
+                    @endif
+                </x-td>
                 <x-td>{{ $contract->contract_value }}</x-td>
                 <x-td>{{ $contract->collected_amount }}</x-td>
                 <x-td>{{ $contract->contract_value - $contract->collected_amount }}</x-td>
@@ -164,5 +184,30 @@
             </x-tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <x-tr class="font-semibold !bg-gray-100 dark:!bg-gray-700" dir="ltr">
+                <x-td>{{ __('messages.total') }}</x-td>
+                <x-td></x-td>
+                <x-td></x-td>
+                <x-td></x-td>
+                <x-td>{{ number_format($this->summary['total_units']) }}</x-td>
+                <x-td>{{ number_format($this->summary['total_central']) }}</x-td>
+                <x-td></x-td>
+                <x-td></x-td>
+                <x-td>{{ number_format($this->summary['total_value'], 2) }}</x-td>
+                <x-td class="text-green-600 dark:text-green-500">{{ number_format($this->summary['total_collected'], 2) }}</x-td>
+                <x-td class="text-red-600 dark:text-red-500">{{ number_format($this->summary['total_remaining'], 2) }}</x-td>
+                <x-td></x-td>
+                <x-td></x-td>
+            </x-tr>
+        </tfoot>
     </x-table>
+
+    @if ($this->contracts->count() < $this->total)
+    <div class="mt-4 flex justify-center">
+        <x-button wire:click="loadMore" wire:loading.attr="disabled">
+            {{ __('messages.load_more') }}
+        </x-button>
+    </div>
+    @endif
 </div>

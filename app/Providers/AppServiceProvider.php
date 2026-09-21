@@ -8,6 +8,7 @@ use App\Models\Area;
 use App\Models\Setting;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        $this->registerLivewireOnlyBladeDirectives();
+
         // \Debugbar::enable();
         \Debugbar::disable();
 
@@ -48,6 +51,21 @@ class AppServiceProvider extends ServiceProvider
         if (Schema::hasTable('settings')) {
             View::share('settings', Setting::find(1));
         }
+    }
+
+    // Livewire's @teleport / @endteleport are registered only while rendering a
+    // Livewire component, so views compiled without an active render (e.g.
+    // `php artisan view:cache`) emit them as literal text. Register them globally
+    // with the exact same output so they always compile correctly.
+    protected function registerLivewireOnlyBladeDirectives()
+    {
+        Blade::directive('teleport', function ($expression) {
+            return '<template x-teleport="<?php echo e(' . $expression . '); ?>">';
+        });
+
+        Blade::directive('endteleport', function () {
+            return '</template>';
+        });
     }
 
     // This function to delete livewire-tmp files older then 5 minutes

@@ -138,6 +138,13 @@
                         </div>
 
                         <div>
+                            <x-label for="compressor_included" class="flex items-center">
+                                <x-checkbox x-model="form.compressor_included" id="compressor_included" />
+                                <span class="ms-2 ">{{ __('messages.compressor_included') }}</span>
+                            </x-label>
+                        </div>
+
+                        <div>
                             <x-label for="active" class="flex items-center">
                                 <x-checkbox x-model="form.active" id="active" />
                                 <span class="ms-2 ">{{ __('messages.active') }}</span>
@@ -200,6 +207,7 @@
                         notes: null,
                         active: false,
                         sp_included: false,
+                        compressor_included: false,
                     };
                     this.loading = false;
                 },

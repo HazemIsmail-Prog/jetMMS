@@ -26,6 +26,7 @@ class ContractForm extends Form
     public $notes;
     public bool $active = true;
     public bool $sp_included = false;
+    public bool $compressor_included = false;
 
     public function rules()
     {
@@ -48,6 +49,7 @@ class ContractForm extends Form
             'notes' => 'nullable',
             'active' => 'required',
             'sp_included' => 'required',
+            'compressor_included' => 'required',
         ];
     }
 

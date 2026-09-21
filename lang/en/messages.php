@@ -612,6 +612,9 @@ return [
     'residential' => 'Residential',
     'commercial' => 'Commercial',
     'sp_included' => 'Spare Parts Included',
+    'compressor_included' => 'Compressor Included',
+    'expired' => 'Expired',
+    'load_more' => 'Load More',
 
     'quotations' => 'Quotations',
     'quotation_number' => 'Quotation Number',

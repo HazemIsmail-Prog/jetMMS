@@ -11,14 +11,12 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 
 class ContractIndex extends Component
 {
-    use WithPagination;
-
     public $contract_type;
+    public $perPage = 30;
 
     public function mount()
     {
@@ -39,6 +37,7 @@ class ContractIndex extends Component
         'creators' => [],
         'start_contract_date' => '',
         'end_contract_date' => '',
+        'status' => '',
     ];
 
     #[Computed()]
@@ -71,7 +70,7 @@ class ContractIndex extends Component
 
     public function updatedFilters()
     {
-        $this->resetPage();
+        $this->perPage = 30;
     }
 
     public function getData()
@@ -115,6 +114,15 @@ class ContractIndex extends Component
             })
             ->when($this->filters['end_contract_date'], function (Builder $q) {
                 $q->whereDate('contract_date', '<=', $this->filters['end_contract_date']);
+            })
+            ->when($this->filters['status'] == 'active', function (Builder $q) {
+                $q->where('active', true);
+            })
+            ->when($this->filters['status'] == 'expired', function (Builder $q) {
+                $q->where(function (Builder $q) {
+                    $q->whereDate('contract_expiration_date', '<', now()->toDateString())
+                        ->orWhere('active', false);
+                });
             });
     }
 
@@ -123,8 +131,32 @@ class ContractIndex extends Component
     #[On('attachmentsUpdated')]
     public function contracts()
     {
-        return $this->getData()
-            ->paginate(200);
+        return $this->getData()->limit($this->perPage)->get();
+    }
+
+    #[Computed()]
+    public function total()
+    {
+        return $this->getData()->count();
+    }
+
+    public function loadMore()
+    {
+        $this->perPage += 30;
+    }
+
+    #[Computed()]
+    public function summary()
+    {
+        $contracts = $this->contracts;
+
+        return [
+            'total_value' => $contracts->sum('contract_value'),
+            'total_collected' => $contracts->sum('collected_amount'),
+            'total_remaining' => $contracts->sum('contract_value') - $contracts->sum('collected_amount'),
+            'total_units' => $contracts->sum('units_count'),
+            'total_central' => $contracts->sum('central_count'),
+        ];
     }
 
     public function delete(Contract $contract) {

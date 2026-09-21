@@ -131,6 +131,13 @@
                     </div>
 
                     <div>
+                        <x-label for="compressor_included" class="flex items-center">
+                            <x-checkbox wire:model="form.compressor_included" id="compressor_included" />
+                            <span class="ms-2 ">{{ __('messages.compressor_included') }}</span>
+                        </x-label>
+                    </div>
+
+                    <div>
                         <x-label for="active" class="flex items-center">
                             <x-checkbox wire:model="form.active" id="active" />
                             <span class="ms-2 ">{{ __('messages.active') }}</span>

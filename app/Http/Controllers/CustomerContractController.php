@@ -30,6 +30,7 @@ class CustomerContractController extends Controller
             'collected_amount' => 'nullable|numeric',
             'notes' => 'nullable|string|max:255',
             'sp_included' => 'nullable|boolean',
+            'compressor_included' => 'nullable|boolean',
             'active' => 'nullable|boolean',
             'contract_expiration_date' => 'nullable|date',
         ]);

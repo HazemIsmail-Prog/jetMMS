@@ -633,6 +633,7 @@ return [
     'residential' => 'سكني',
     'commercial' => 'استثماري',
     'sp_included' => 'يشمل قطع غيار',
+    'compressor_included' => 'يشمل كمبروسر',
 
 
     'quotations' => 'عروض الاسعار',
